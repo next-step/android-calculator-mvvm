@@ -1,3 +1,2 @@
-include ':domain'
 include ':app'
 rootProject.name = "AndroidCalculator"
