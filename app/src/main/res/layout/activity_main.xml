@@ -24,6 +24,19 @@
         tools:ignore="HardcodedText"
         />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/textView"
+        app:layout_constraintEnd_toEndOf="@id/textView"
+        app:layout_constraintStart_toStartOf="@id/textView"
+        app:layout_constraintTop_toTopOf="@id/textView"
+        tools:listitem="@layout/item_result"
+        tools:visibility="visible"
+        />
+
     <View
         android:id="@+id/divider"
         android:layout_width="0dp"
