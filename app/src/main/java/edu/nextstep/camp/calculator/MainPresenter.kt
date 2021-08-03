@@ -30,6 +30,7 @@ class MainPresenter(
         if (result == null) {
             view.showIncompleteExpressionError()
         } else {
+            expression = Expression(listOf(result))
             view.showResult(result)
         }
     }
