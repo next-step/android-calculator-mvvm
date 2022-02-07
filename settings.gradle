@@ -1,2 +1,3 @@
-include ':app'
+include ':calculator'
+include ':counter'
 rootProject.name = "AndroidCalculator"
