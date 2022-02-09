@@ -1,6 +1,7 @@
 package edu.nextstep.camp.counter
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -15,5 +16,12 @@ class CounterActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_counter)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+
+        viewModel.eventShowToast.observe(this) { stringId ->
+            stringId?.let {
+                Toast.makeText(this, stringId, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
+
