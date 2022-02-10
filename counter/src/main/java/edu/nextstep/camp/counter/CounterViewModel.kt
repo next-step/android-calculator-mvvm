@@ -9,7 +9,7 @@ class CounterViewModel: ViewModel() {
     private val _count: MutableLiveData<Counter> = MutableLiveData(Counter(0))
     val count: LiveData<Counter>
         get() = _count
-    val counter: Counter get() = _count.value ?: Counter(0)
+    private val counter: Counter get() = _count.value ?: Counter(0)
 
     private val _countIsZeroEvent = SingleLiveEvent<Unit>()
     val countIsZeroEvent: LiveData<Unit>
