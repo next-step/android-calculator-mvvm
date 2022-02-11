@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="edu.nextstep.camp.counter.CounterViewModel" />
     </data>
 
     <LinearLayout
@@ -19,7 +21,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="24sp"
-            tools:text="11" />
+            tools:text="@{viewModel.counter.toString()}" />
 
         <Button
             android:id="@+id/buttonUp"
@@ -34,5 +36,7 @@
             android:layout_height="wrap_content"
             android:text="Down"
             tools:ignore="HardcodedText" />
+
     </LinearLayout>
+
 </layout>
