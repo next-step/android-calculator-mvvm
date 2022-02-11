@@ -53,8 +53,6 @@ class CounterActivity : AppCompatActivity() {
         private fun createCounterViewModel(): CounterViewModel {
             val initialCounter = 0
             return CounterViewModel(initialCounter)
-            val testDependencyInitValue = 0
-            return CounterViewModel(testDependencyInitValue)
         }
     }
 }
