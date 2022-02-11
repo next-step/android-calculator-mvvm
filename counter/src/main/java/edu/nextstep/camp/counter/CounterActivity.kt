@@ -2,6 +2,7 @@ package edu.nextstep.camp.counter
 
 import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -18,11 +19,25 @@ class CounterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_counter)
         setContentView(binding.root)
 
+        setupViewModel()
+        observeViewModel()
+    }
+
+    private fun setupViewModel() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+    }
+
+    private fun observeViewModel() {
+        with(viewModel) {
+            showErrorMessage.observe(this@CounterActivity) {
+                Toast.makeText(this@CounterActivity, "0 이하로는 내릴 수 없습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
@@ -36,8 +51,8 @@ class CounterActivity : AppCompatActivity() {
         }
 
         private fun createCounterViewModel(): CounterViewModel {
-            val testDependencyInitValue = 0
-            return CounterViewModel(testDependencyInitValue)
+            val initialCounter = 0
+            return CounterViewModel(initialCounter)
         }
     }
 }

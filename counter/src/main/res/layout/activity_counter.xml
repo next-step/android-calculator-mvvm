@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="edu.nextstep.camp.counter.CounterViewModel" />
@@ -27,6 +28,7 @@
             android:id="@+id/buttonUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.up()}"
             android:text="Up"
             tools:ignore="HardcodedText" />
 
@@ -34,6 +36,7 @@
             android:id="@+id/buttonDown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.down()}"
             android:text="Down"
             tools:ignore="HardcodedText" />
 
