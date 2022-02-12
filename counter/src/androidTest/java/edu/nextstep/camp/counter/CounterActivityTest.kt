@@ -14,30 +14,34 @@ class CounterActivityTest {
     var activityScenarioRule = ActivityScenarioRule(CounterActivity::class.java)
 
     @Test
-    fun up() {
-        // when
+    fun click_up_button_plus_number() {
+        // given count = 0
+        // when up 버튼 클릭
         onView(withId(R.id.buttonUp)).perform(click())
 
-        // then
+        // then count = 1
         onView(withId(R.id.textView)).check(matches(withText("1")))
     }
 
     @Test
-    fun down_1_to_0() {
-        // when
+    fun click_down_button_minus_number() {
+        // given count = 1
         onView(withId(R.id.buttonUp)).perform(click())
+
+        // when down 버튼 클릭
         onView(withId(R.id.buttonDown)).perform(click())
 
-        // then
+        // then count = 0
         onView(withId(R.id.textView)).check(matches(withText("0")))
     }
 
     @Test
-    fun down_0_to_0() {
-        // when
+    fun zero_number_click_down_button_still_zero() {
+        // given count = 0
+        // when down 버튼 클릭
         onView(withId(R.id.buttonDown)).perform(click())
 
-        // then
+        // then count = 0
         onView(withId(R.id.textView)).check(matches(withText("0")))
     }
 }
