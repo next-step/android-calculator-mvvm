@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class CounterViewModel : ViewModel() {
-    private var _count = MutableLiveData("0")
-    val count: LiveData<String>
+    private var _count = MutableLiveData(0)
+    val count: LiveData<Int>
         get() = _count
 
     private val _isMinusCount = MutableLiveData(false)
@@ -14,14 +14,14 @@ class CounterViewModel : ViewModel() {
         get() = _isMinusCount
 
     fun upCount() {
-        _count.value = count.value?.toInt()?.plus(1).toString()
+        _count.value = count.value?.plus(1)
     }
 
     fun downCount() {
-        if (count.value == "0") {
+        if (count.value == 0) {
             _isMinusCount.value = true
             return
         }
-        _count.value = count.value?.toInt()?.minus(1).toString()
+        _count.value = count.value?.minus(1)
     }
 }

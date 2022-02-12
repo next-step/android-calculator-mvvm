@@ -20,7 +20,7 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewmodel.count}"
+            android:text="@{viewmodel.count.toString()}"
             android:textColor="@color/black"
             android:textSize="24sp"
             tools:text="11" />
