@@ -9,8 +9,8 @@ class CounterViewModel : ViewModel() {
     val count: LiveData<Int>
         get() = _count
 
-    private val _isMinusCount = MutableLiveData(false)
-    val isMinusCount: MutableLiveData<Boolean>
+    private val _isMinusCount = SingleLiveEvent(false)
+    val isMinusCount: SingleLiveEvent<Boolean>
         get() = _isMinusCount
 
     fun upCount() {
