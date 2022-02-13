@@ -21,7 +21,7 @@ class CounterActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        binding.viewModel.showErrorMessage.observe(this) {
+        viewModel.showErrorMessage.observe(this) {
             if (it.consumed) return@observe
             Toast.makeText(this, "0 이하로는 내릴 수 없습니다.", Toast.LENGTH_LONG).show()
             it.consume()
