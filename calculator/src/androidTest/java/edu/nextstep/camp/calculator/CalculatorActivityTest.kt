@@ -6,7 +6,6 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import edu.nextstep.camp.calculator.view.CalculatorActivity
 import org.junit.Rule
 import org.junit.Test
 
@@ -118,9 +117,8 @@ class CalculatorActivityTest {
 
     @Test
     fun withOperand_inputOperand_addOperandNextToNumber() {
-        // given: 숫자가 입력되었을 때
-        val basicText = "1"
-        onView(withId(R.id.textView)).perform(setTextInTextView(basicText))
+        // given: 숫자 1이 입력되었을 때
+        onView(withId(R.id.button1)).perform(click())
 
         // when: 사용자가 피연산자 2를 누르면
         onView(withId(R.id.button2)).perform(click())
@@ -132,21 +130,18 @@ class CalculatorActivityTest {
     @Test
     fun withoutOperand_inputOperator_showNothing() {
         // GIVEN - 아무것도 입력이 되어있지 않을 때
-        val emptyString = ""
-        onView(withId(R.id.textView)).perform(setTextInTextView(emptyString))
 
         // WHEN - 사용자가 +, -, *, / 를 누르면
         onView(withId(R.id.buttonPlus)).perform(click())
 
         // THEN - 입력이 되지 않는다.
-        onView(withId(R.id.textView)).check(matches(withText(emptyString)))
+        onView(withId(R.id.textView)).check(matches(withText("")))
     }
 
     @Test
     fun withOperand_inputOperator_showStatement() {
         // GIVEN - 1이 입력되어 있을 때
-        val operand = "1"
-        onView(withId(R.id.textView)).perform(setTextInTextView(operand))
+        onView(withId(R.id.button1)).perform(click())
 
         // WHEN - 사용자가 +, -, *, / 를 누르면
         onView(withId(R.id.buttonPlus)).perform(click())
@@ -158,21 +153,21 @@ class CalculatorActivityTest {
     @Test
     fun inputNothing_clickDeleteButton_showNothing() {
         // GIVEN - 아무것도 입력이 되어있지 않을 때
-        val emptyString = ""
-        onView(withId(R.id.textView)).perform(setTextInTextView(emptyString))
 
         // WHEN - 사용자가 취소 버튼을 누르면
         onView(withId(R.id.buttonDelete)).perform(click())
 
         // THEN - 변화가 없다.
-        onView(withId(R.id.textView)).check(matches(withText(emptyString)))
+        onView(withId(R.id.textView)).check(matches(withText("")))
     }
 
     @Test
     fun inputStatement_oneClickDeleteButton_deleteOperandOrOperator() {
-        // GIVEN - 수식이 입력이 될 때
-        val statement = "32 + 1"
-        onView(withId(R.id.textView)).perform(setTextInTextView(statement))
+        // GIVEN - 수식 32 + 1 이 입력이 될 때
+        onView(withId(R.id.button3)).perform(click())
+        onView(withId(R.id.button2)).perform(click())
+        onView(withId(R.id.buttonPlus)).perform(click())
+        onView(withId(R.id.button1)).perform(click())
 
         // WHEN - 사용자가 취소 버튼 한 번 누르면
         onView(withId(R.id.buttonDelete)).perform(click())
@@ -183,9 +178,11 @@ class CalculatorActivityTest {
 
     @Test
     fun inputStatement_multiClickDeleteButton_deleteOperandOrOperator() {
-        // GIVEN - 수식이 입력이 될 때
-        val statement = "32 + 1"
-        onView(withId(R.id.textView)).perform(setTextInTextView(statement))
+        // GIVEN - 수식 32 + 1 이 입력이 될 때
+        onView(withId(R.id.button3)).perform(click())
+        onView(withId(R.id.button2)).perform(click())
+        onView(withId(R.id.buttonPlus)).perform(click())
+        onView(withId(R.id.button1)).perform(click())
 
         // WHEN - 사용자가 취소 버튼을 여러번 누르면
         onView(withId(R.id.buttonDelete)).perform(click())
@@ -198,9 +195,10 @@ class CalculatorActivityTest {
 
     @Test
     fun inputStatement_clickEqualButton_showResult() {
-        // GIVEN - 수식이 입력이 될 때
-        val statement = "2 + 2"
-        onView(withId(R.id.textView)).perform(setTextInTextView(statement))
+        // GIVEN - 수식 2 + 2 이 입력이 될 때
+        onView(withId(R.id.button2)).perform(click())
+        onView(withId(R.id.buttonPlus)).perform(click())
+        onView(withId(R.id.button2)).perform(click())
 
         // WHEN - 사용자가 결과 버튼을 누르면
         onView(withId(R.id.buttonEquals)).perform(click())
@@ -211,16 +209,17 @@ class CalculatorActivityTest {
 
     @Test
     fun inputStatement_clickEqualButton_recordStatement() {
-        // GIVEN - 수식이 입력이 될 때
-        val statement = "2 + 2"
-        onView(withId(R.id.textView)).perform(setTextInTextView(statement))
+        // GIVEN - 수식 2 + 2 이 입력이 될 때
+        onView(withId(R.id.button2)).perform(click())
+        onView(withId(R.id.buttonPlus)).perform(click())
+        onView(withId(R.id.button2)).perform(click())
 
         // WHEN - 사용자가 계산 버튼과 기록 보기 버튼을 누르면
         onView(withId(R.id.buttonEquals)).perform(click())
         onView(withId(R.id.buttonMemory)).perform(click())
 
         // THEN - 수식의 결과가 기록 목록에 저장된 걸 볼 수 있다.
-        onView(withId(R.id.tv_expression)).check(matches(withText(statement)))
+        onView(withId(R.id.tv_expression)).check(matches(withText("2 + 2")))
         onView(withId(R.id.tv_result)).check(matches(withText("= 4")))
     }
 }
