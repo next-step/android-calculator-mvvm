@@ -1,4 +1,4 @@
-package edu.nextstep.camp.calculator.view
+package edu.nextstep.camp.calculator
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
