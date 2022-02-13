@@ -4,9 +4,8 @@ import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 
-class CalculatorPresenter(
-    private val view: CalculatorContract.View
-) : CalculatorContract.Presenter {
+class CalculatorPresenter(private val view: CalculatorContract.View) : CalculatorContract.Presenter {
+
     private val calculator = Calculator()
     private var expression = Expression.EMPTY
 

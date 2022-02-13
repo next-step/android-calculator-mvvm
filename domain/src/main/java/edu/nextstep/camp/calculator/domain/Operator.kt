@@ -1,9 +1,7 @@
 package edu.nextstep.camp.calculator.domain
 
-enum class Operator(
-    val sign: String,
-    val operation: (Int, Int) -> Int,
-) {
+enum class Operator(val sign: String, val operation: (Int, Int) -> Int) {
+
     Plus("+", { x, y -> x + y }),
     Minus("-", { x, y -> x - y }),
     Multiply("*", { x, y -> x * y }),

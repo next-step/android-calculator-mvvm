@@ -11,6 +11,7 @@ import org.junit.Before
 import org.junit.Test
 
 class CalculatorPresenterTest {
+
     private lateinit var presenter: CalculatorPresenter
     private lateinit var view: CalculatorContract.View
 

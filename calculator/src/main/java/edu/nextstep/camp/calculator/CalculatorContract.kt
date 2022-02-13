@@ -4,6 +4,7 @@ import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 
 interface CalculatorContract {
+
     interface View {
         var presenter: Presenter
 

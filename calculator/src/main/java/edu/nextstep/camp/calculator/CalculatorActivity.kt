@@ -8,6 +8,7 @@ import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 
 class CalculatorActivity : AppCompatActivity(), CalculatorContract.View {
+
     private lateinit var binding: ActivityCalculatorBinding
     override lateinit var presenter: CalculatorContract.Presenter
 
