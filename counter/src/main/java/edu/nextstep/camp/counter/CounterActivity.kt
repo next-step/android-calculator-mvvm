@@ -2,6 +2,7 @@ package edu.nextstep.camp.counter
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import edu.nextstep.camp.counter.databinding.ActivityCounterBinding
 
@@ -14,7 +15,7 @@ class CounterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCounterBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_counter)
+        setContentView(binding.root)
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
