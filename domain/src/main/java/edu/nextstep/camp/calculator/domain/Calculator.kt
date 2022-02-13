@@ -48,4 +48,3 @@ class Calculator {
         const val WRONG_INPUT: String = "잘못된 입력입니다."
     }
 }
-

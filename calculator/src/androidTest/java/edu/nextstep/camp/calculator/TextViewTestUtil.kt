@@ -12,7 +12,8 @@ fun setTextInTextView(str: String): ViewAction {
     return object : ViewAction {
         override fun getConstraints(): Matcher<View> {
             return CoreMatchers.allOf(
-                ViewMatchers.isDisplayed(), ViewMatchers.isAssignableFrom(
+                ViewMatchers.isDisplayed(),
+                ViewMatchers.isAssignableFrom(
                     TextView::class.java
                 )
             )
