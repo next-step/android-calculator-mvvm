@@ -57,4 +57,6 @@ dependencies {
     androidTestImplementation "org.junit.jupiter:junit-jupiter-api:5.8.2"
     androidTestImplementation "de.mannodermaus.junit5:android-test-core:1.2.2"
     androidTestRuntimeOnly "de.mannodermaus.junit5:android-test-runner:1.2.2"
+
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
 }
