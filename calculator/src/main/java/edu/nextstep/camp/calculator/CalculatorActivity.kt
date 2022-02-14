@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.collect
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
     private val calculatorViewModel: CalculatorViewModel by viewModels()
-    private val recordAdapter by lazy { RecordAdapter() }
+    private lateinit var recordAdapter: RecordAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +26,7 @@ class CalculatorActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerView() {
+        recordAdapter = RecordAdapter()
         binding.recyclerView.adapter = recordAdapter
     }
 
