@@ -5,6 +5,7 @@ import com.google.common.truth.Truth.assertThat
 import edu.nextstep.camp.calculator.domain.Calculator.Companion.IS_NOT_OPERATOR
 import edu.nextstep.camp.calculator.domain.Calculator.Companion.IS_NOT_OR_BLANK
 import edu.nextstep.camp.calculator.domain.Calculator.Companion.WRONG_INPUT
+import edu.nextstep.camp.calculator.domain.Injector
 import edu.nextstep.camp.calculator.domain.model.CalculateResult
 import edu.nextstep.camp.calculator.domain.model.RecordStatement
 import junit.framework.Assert.assertEquals
@@ -26,11 +27,14 @@ class CalculatorViewModelTest {
 
     @BeforeEach
     fun setUp() {
-        calculatorViewModel = CalculatorViewModel()
+        calculatorViewModel = CalculatorViewModel(
+            Injector.providesExpression(),
+            Injector.providesCalculatorRepository()
+        )
     }
 
     @Test
-    fun `수식 1 을 입력하면 1이 보여야한다`() = runBlocking {
+    fun `수식 1 을 입력하면 1이 보여야한다`() {
         // WHEN
         calculatorViewModel.appendOperand(1)
 
@@ -49,7 +53,7 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `수식 1 + 2 - 1 을 입력하고 계산하면 1이 보여야한다`() = runBlocking {
+    fun `수식 1 + 2 - 1 을 입력하고 계산하면 1이 보여야한다`() {
         // WHEN
         calculatorViewModel.appendOperand(1)
         calculatorViewModel.appendOperator("+")
@@ -63,7 +67,7 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `수식 1 + 2 - 1 에서 요소를 제거하면 1 + 2 - 가 보여야한다`() = runBlocking {
+    fun `수식 1 + 2 - 1 에서 요소를 제거하면 1 + 2 - 가 보여야한다`() {
         // WHEN
         calculatorViewModel.appendOperand(1)
         calculatorViewModel.appendOperator("+")
@@ -130,7 +134,7 @@ class CalculatorViewModelTest {
         ]
     )
     @ParameterizedTest(name = "{0}을 계산하면 {0} = {1}이 저장된다")
-    fun recordStatementTest(expression: String, result: String) = runBlocking {
+    fun recordStatementTest(expression: String, result: String) {
         val statement = RecordStatement(
             expression = expression,
             calculateResult = CalculateResult(result)
@@ -151,7 +155,7 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `기록 버튼이 클릭되면 화면을 보여준다`() = runBlocking {
+    fun `기록 버튼이 클릭되면 화면을 보여준다`() {
         //WHEN
         calculatorViewModel.toggleMemoryView()
 
