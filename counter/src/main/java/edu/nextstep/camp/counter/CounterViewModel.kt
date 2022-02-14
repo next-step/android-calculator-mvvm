@@ -4,13 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class CounterViewModel : ViewModel() {
-    private val _count = MutableLiveData(0)
+class CounterViewModel(initialCount: Int = 0) : ViewModel() {
+    private val _count = MutableLiveData(initialCount)
     val count: LiveData<Int>
         get() = _count
 
-    private val _lessThenZeroEvent = MutableLiveData<Event<Unit>>()
-    val lessThenZeroEvent: LiveData<Event<Unit>>
+    private val _lessThenZeroEvent = MutableLiveData<Event<Boolean>>()
+    val lessThenZeroEvent: LiveData<Event<Boolean>>
         get() = _lessThenZeroEvent
 
     fun increaseCount() {
@@ -21,7 +21,7 @@ class CounterViewModel : ViewModel() {
     fun decreaseCount() {
         var count = _count.value ?: return
         if (count <= 0) {
-            _lessThenZeroEvent.value = Event(Unit)
+            _lessThenZeroEvent.value = Event(true)
             return
         }
         _count.value = --count
