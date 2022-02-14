@@ -3,7 +3,7 @@ package edu.nextstep.camp.counter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 
-class CounterViewModel(private val initialNumber: Int = 0) : ViewModel() {
+class CounterViewModel(initialNumber: Int = 0) : ViewModel() {
 
     private val _countEvent = SingleLiveEvent<Int>()
     val countEvent: LiveData<Int> get() = _countEvent
@@ -12,7 +12,7 @@ class CounterViewModel(private val initialNumber: Int = 0) : ViewModel() {
     val errorEvent: LiveData<Void> get() = _errorEvent
 
     init {
-        _countEvent.postValue(initialNumber)
+        _countEvent.value = initialNumber
     }
 
     fun up() {
