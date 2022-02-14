@@ -5,7 +5,9 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
+import kotlinx.coroutines.flow.collect
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
@@ -28,14 +30,18 @@ class CalculatorActivity : AppCompatActivity() {
     }
 
     private fun showError() {
-        calculatorViewModel.errorString.observe(this) {
-            Toast.makeText(this@CalculatorActivity, it, Toast.LENGTH_SHORT).show()
+        lifecycleScope.launchWhenStarted {
+            calculatorViewModel.errorString.collect {
+                Toast.makeText(this@CalculatorActivity, it, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
     private fun recordStatement() {
-        calculatorViewModel.recordStatement.observe(this) {
-            recordAdapter.addStatement(it)
+        lifecycleScope.launchWhenStarted {
+            calculatorViewModel.recordStatement.collect {
+                recordAdapter.addStatement(it ?: return@collect)
+            }
         }
     }
 }
