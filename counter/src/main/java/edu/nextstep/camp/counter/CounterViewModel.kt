@@ -10,7 +10,7 @@ class CounterViewModel : ViewModel() {
     val eventShowToast = SingleLiveEvent<Int>()
 
     private val _count = MutableLiveData(0)
-    val count: LiveData<Int> get() = _count
+    val count: LiveData<Int> = _count
 
     fun countUp() {
         val currentCount = _count.value ?: 0

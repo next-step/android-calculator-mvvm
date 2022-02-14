@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import edu.nextstep.camp.counter.databinding.ActivityCounterBinding
 
 class CounterActivity : AppCompatActivity() {
@@ -13,14 +12,12 @@ class CounterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_counter)
+        binding = ActivityCounterBinding.inflate(layoutInflater)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
         viewModel.eventShowToast.observe(this) { stringId ->
-            stringId?.let {
-                Toast.makeText(this, stringId, Toast.LENGTH_SHORT).show()
-            }
+            Toast.makeText(this, stringId ?: return@observe, Toast.LENGTH_SHORT).show()
         }
     }
 }
