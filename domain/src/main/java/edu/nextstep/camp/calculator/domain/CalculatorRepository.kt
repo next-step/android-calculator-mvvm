@@ -10,4 +10,11 @@ class CalculatorRepository {
     }
 
     fun getRecordStatement(): List<RecordStatement> = recordStatementList
+
+    companion object {
+        private var instance: CalculatorRepository? = null
+        fun getInstance(): CalculatorRepository = instance ?: synchronized(this) {
+            instance ?: CalculatorRepository().also { instance = it }
+        }
+    }
 }

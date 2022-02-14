@@ -12,9 +12,10 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class CalculatorViewModel : ViewModel() {
-    private val expression = Expression()
-    private val calculatorRepository = CalculatorRepository()
+class CalculatorViewModel(
+    private val expression: Expression,
+    private val calculatorRepository: CalculatorRepository
+) : ViewModel() {
 
     private val _statement = MutableStateFlow("")
     val statement = _statement.asStateFlow()

@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
-    private val calculatorViewModel: CalculatorViewModel by viewModels()
+    private val calculatorViewModel: CalculatorViewModel by viewModels { ViewModelFactory(this) }
     private lateinit var recordAdapter: RecordAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {

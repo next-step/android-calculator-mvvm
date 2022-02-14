@@ -29,4 +29,11 @@ class Expression {
     private fun String.isDigitOnly() = this.filter { it.isDigit() }.length == this.length
 
     fun deleteLastElement(str: String) = str.dropLast(1).trim()
+
+    companion object {
+        private var instance: Expression? = null
+        fun getInstance(): Expression = instance ?: synchronized(this) {
+            instance ?: Expression().also { instance = it }
+        }
+    }
 }
