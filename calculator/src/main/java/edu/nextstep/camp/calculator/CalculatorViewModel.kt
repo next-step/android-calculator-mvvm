@@ -25,7 +25,7 @@ class CalculatorViewModel : ViewModel() {
     private val _memoryViewVisibility = MutableStateFlow(false)
     val memoryViewVisibility = _memoryViewVisibility.asStateFlow()
 
-    private val _recordStatement = MutableStateFlow<RecordStatement?>(null)
+    private val _recordStatement = MutableStateFlow<List<RecordStatement>>(emptyList())
     val recordStatement = _recordStatement.asStateFlow()
 
     fun appendOperand(operand: Int) {
@@ -54,8 +54,8 @@ class CalculatorViewModel : ViewModel() {
                 expression = expressionString,
                 calculateResult = CalculateResult(statement.value)
             )
-            _recordStatement.value = recordStatement
             saveStatement(recordStatement)
+            _recordStatement.value = calculatorRepository.getRecordStatement()
         }.onFailure {
             viewModelScope.launch {
                 _errorString.emit(it.message!!)

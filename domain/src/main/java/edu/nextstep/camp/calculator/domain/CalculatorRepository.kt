@@ -9,5 +9,5 @@ class CalculatorRepository {
         recordStatementList.add(recordStatement)
     }
 
-    fun getRecordStatement(): RecordStatement = recordStatementList.last()
+    fun getRecordStatement(): List<RecordStatement> = recordStatementList
 }
