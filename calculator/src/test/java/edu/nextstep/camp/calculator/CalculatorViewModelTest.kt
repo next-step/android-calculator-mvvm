@@ -139,6 +139,17 @@ class CalculatorViewModelTest {
             expression = expression,
             calculateResult = CalculateResult(result)
         )
+        initStatement(expression)
+
+        // WHEN
+        calculatorViewModel.calculateStatement()
+
+        // THEN
+        assertThat(calculatorViewModel.recordStatementList.value.last().calculateResult)
+            .isEqualTo(statement.calculateResult)
+    }
+
+    private fun initStatement(expression: String) {
         expression.split(" ").map {
             if (it.toIntOrNull() == null) {
                 calculatorViewModel.appendOperator(it)
@@ -146,12 +157,6 @@ class CalculatorViewModelTest {
                 calculatorViewModel.appendOperand(it.toInt())
             }
         }
-
-        // WHEN
-        calculatorViewModel.calculateStatement()
-
-        // THEN
-        assertThat(calculatorViewModel.recordStatementList.value.first()).isEqualTo(statement)
     }
 
     @Test
