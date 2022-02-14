@@ -21,6 +21,8 @@ object Test {
     const val JUPITER_API = "org.junit.jupiter:junit-jupiter-api:5.8.2"
     const val JUNIT5_CORE = "de.mannodermaus.junit5:android-test-core:1.2.2"
     const val JUNIT5_RUNNER = "de.mannodermaus.junit5:android-test-runner:1.2.2"
+    const val COROUTINE = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0"
+    const val TURBINE = "app.cash.turbine:turbine:0.7.0"
 }
 
 object Material {

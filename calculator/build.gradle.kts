@@ -60,6 +60,8 @@ dependencies {
         testImplementation(MOCK)
         testImplementation(JUPITER)
         testImplementation(CORE)
+        testImplementation(COROUTINE)
+        testImplementation(TURBINE)
         androidTestImplementation(EXT)
         androidTestImplementation(ESPRESSO)
         androidTestImplementation(RUNNER)
