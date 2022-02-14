@@ -1,7 +1,7 @@
-const val kotlinVersion = "1.6.10"
+const val KOTLIN_VERSION = "1.6.10"
 
 object Androidx {
-    const val STDLIB = "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    const val STDLIB = "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
     const val CORE = "androidx.core:core-ktx:1.7.0"
     const val APP_COMPAT = "androidx.appcompat:appcompat:1.4.1"
     const val CONSTRAINTLAYOUT = "androidx.constraintlayout:constraintlayout:2.1.3"
