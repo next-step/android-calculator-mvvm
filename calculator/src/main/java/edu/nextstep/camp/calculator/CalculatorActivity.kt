@@ -5,9 +5,12 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
@@ -31,9 +34,11 @@ class CalculatorActivity : AppCompatActivity() {
     }
 
     private fun showError() {
-        lifecycleScope.launchWhenStarted {
-            calculatorViewModel.errorString.collect {
-                Toast.makeText(this@CalculatorActivity, it, Toast.LENGTH_SHORT).show()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                calculatorViewModel.errorString.collect {
+                    Toast.makeText(this@CalculatorActivity, it, Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

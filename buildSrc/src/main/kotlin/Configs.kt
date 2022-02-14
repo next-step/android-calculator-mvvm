@@ -6,6 +6,7 @@ object Androidx {
     const val APP_COMPAT = "androidx.appcompat:appcompat:1.4.1"
     const val CONSTRAINTLAYOUT = "androidx.constraintlayout:constraintlayout:2.1.3"
     const val FRAGMENT = "androidx.fragment:fragment-ktx:1.4.1"
+    const val LIFECYCLE = "androidx.lifecycle:lifecycle-runtime-ktx:2.4.0"
 }
 
 object Test {

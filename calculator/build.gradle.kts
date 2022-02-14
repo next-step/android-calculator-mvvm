@@ -52,6 +52,7 @@ dependencies {
         implementation(APP_COMPAT)
         implementation(CONSTRAINTLAYOUT)
         implementation(FRAGMENT)
+        implementation(LIFECYCLE)
     }
     Test.run {
         testRuntimeOnly(VINTAGE)
