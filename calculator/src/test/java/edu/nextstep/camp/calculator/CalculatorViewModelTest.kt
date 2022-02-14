@@ -149,4 +149,13 @@ class CalculatorViewModelTest {
         // THEN
         assertThat(calculatorViewModel.recordStatementList.value.first()).isEqualTo(statement)
     }
+
+    @Test
+    fun `기록 버튼이 클릭되면 화면을 보여준다`() = runBlocking {
+        //WHEN
+        calculatorViewModel.toggleMemoryView()
+
+        //THEN
+        assertThat(calculatorViewModel.memoryViewVisibility.value).isEqualTo(true)
+    }
 }
