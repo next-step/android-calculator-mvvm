@@ -39,7 +39,7 @@ class CalculatorActivity : AppCompatActivity() {
 
     private fun recordStatement() {
         lifecycleScope.launchWhenStarted {
-            calculatorViewModel.recordStatement.collect {
+            calculatorViewModel.recordStatementList.collect {
                 recordAdapter.submitList(it)
             }
         }

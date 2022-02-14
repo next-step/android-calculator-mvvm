@@ -147,6 +147,6 @@ class CalculatorViewModelTest {
         calculatorViewModel.calculateStatement()
 
         // THEN
-        assertThat(calculatorViewModel.recordStatement.value).isEqualTo(statement)
+        assertThat(calculatorViewModel.recordStatementList.value.first()).isEqualTo(statement)
     }
 }
