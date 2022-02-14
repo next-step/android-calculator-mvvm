@@ -17,7 +17,7 @@ class CounterViewModel(private val initialNumber: Int = 0) : ViewModel() {
 
     fun up() {
         val value = _countEvent.value ?: 0
-        _countEvent.postValue(value + 1)
+        _countEvent.value = value + 1
     }
 
     fun down() {
@@ -27,6 +27,6 @@ class CounterViewModel(private val initialNumber: Int = 0) : ViewModel() {
             return
         }
 
-        _countEvent.postValue(value - 1)
+        _countEvent.value = value - 1
     }
 }
