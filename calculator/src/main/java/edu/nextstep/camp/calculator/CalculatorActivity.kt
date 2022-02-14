@@ -2,6 +2,7 @@ package edu.nextstep.camp.calculator
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 import edu.nextstep.camp.calculator.domain.Expression
@@ -9,6 +10,8 @@ import edu.nextstep.camp.calculator.domain.Operator
 
 class CalculatorActivity : AppCompatActivity(), CalculatorContract.View {
     private lateinit var binding: ActivityCalculatorBinding
+    private val viewModel: CalculatorViewModel by viewModels()
+
     override lateinit var presenter: CalculatorContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,6 +20,13 @@ class CalculatorActivity : AppCompatActivity(), CalculatorContract.View {
         setContentView(binding.root)
         presenter = CalculatorPresenter(this)
 
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+
+        setObserve()
+    }
+
+    private fun setObserve() {
         binding.button0.setOnClickListener { presenter.addToExpression(0) }
         binding.button1.setOnClickListener { presenter.addToExpression(1) }
         binding.button2.setOnClickListener { presenter.addToExpression(2) }
