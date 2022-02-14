@@ -113,25 +113,7 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(1)
 
         // when
-        viewModel.removeLast()
-
-        // then
-        assertThat(viewModel.displayResult.getOrAwaitValue()).isEqualTo("32 +")
-
-        // when
-        viewModel.removeLast()
-
-        // then
-        assertThat(viewModel.displayResult.getOrAwaitValue()).isEqualTo("32")
-
-        // when
-        viewModel.removeLast()
-
-        // then
-        assertThat(viewModel.displayResult.getOrAwaitValue()).isEqualTo("3")
-
-        // when
-        viewModel.removeLast()
+        repeat(4) { viewModel.removeLast() }
 
         // then
         assertThat(viewModel.displayResult.getOrAwaitValue()).isEmpty()
