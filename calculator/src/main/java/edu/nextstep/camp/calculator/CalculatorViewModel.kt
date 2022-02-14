@@ -20,8 +20,8 @@ class CalculatorViewModel(
     private val _statement = MutableStateFlow("")
     val statement = _statement.asStateFlow()
 
-    private val _errorString = MutableSharedFlow<String>()
-    val errorString = _errorString.asSharedFlow()
+    private val _errorMessage = MutableSharedFlow<String>()
+    val errorMessage = _errorMessage.asSharedFlow()
 
     private val _memoryViewVisibility = MutableStateFlow(false)
     val memoryViewVisibility = _memoryViewVisibility.asStateFlow()
@@ -56,7 +56,7 @@ class CalculatorViewModel(
             _recordStatementList.value = calculatorRepository.getRecordStatement()
         }.onFailure {
             viewModelScope.launch {
-                it.message?.let { _errorString.emit(it) }
+                it.message?.let { _errorMessage.emit(it) }
             }
         }
     }

@@ -83,7 +83,7 @@ class CalculatorViewModelTest {
             calculatorViewModel.calculateStatement()
         }
 
-        calculatorViewModel.errorString.test {
+        calculatorViewModel.errorMessage.test {
             job.start()
             assertEquals(IS_NOT_OR_BLANK, awaitItem())
         }
@@ -99,7 +99,7 @@ class CalculatorViewModelTest {
         }
 
         // THEN
-        calculatorViewModel.errorString.test {
+        calculatorViewModel.errorMessage.test {
             job.start()
             assertEquals(WRONG_INPUT, awaitItem())
         }
@@ -115,7 +115,7 @@ class CalculatorViewModelTest {
             calculatorViewModel.calculateStatement()
         }
         // THEN
-        calculatorViewModel.errorString.test {
+        calculatorViewModel.errorMessage.test {
             job.start()
             assertEquals(IS_NOT_OPERATOR, awaitItem())
         }

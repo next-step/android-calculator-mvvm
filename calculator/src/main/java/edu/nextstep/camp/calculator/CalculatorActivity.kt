@@ -36,7 +36,7 @@ class CalculatorActivity : AppCompatActivity() {
     private fun showError() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                calculatorViewModel.errorString.collect {
+                calculatorViewModel.errorMessage.collect {
                     Toast.makeText(this@CalculatorActivity, it, Toast.LENGTH_SHORT).show()
                 }
             }
