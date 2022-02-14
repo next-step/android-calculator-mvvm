@@ -29,16 +29,12 @@ class CalculatorViewModel : ViewModel() {
     val recordStatement = _recordStatement.asStateFlow()
 
     fun appendOperand(operand: Int) {
-        viewModelScope.launch {
-            _memoryViewVisibility.emit(false)
-        }
+        closeMemoryView()
         _statement.value = expression.appendOperand(statement.value, operand.toString())
     }
 
     fun appendOperator(operator: String) {
-        viewModelScope.launch {
-            _memoryViewVisibility.emit(false)
-        }
+        closeMemoryView()
         _statement.value = expression.appendOperator(statement.value, operator) ?: statement.value
     }
 
@@ -48,6 +44,7 @@ class CalculatorViewModel : ViewModel() {
 
     fun calculateStatement() {
         runCatching {
+            closeMemoryView()
             val expressionString = statement.value
             _statement.value = expression.calculatedValue(expressionString)
             val recordStatement = RecordStatement(
@@ -65,6 +62,10 @@ class CalculatorViewModel : ViewModel() {
 
     fun toggleMemoryView() {
         _memoryViewVisibility.value = !memoryViewVisibility.value
+    }
+
+    private fun closeMemoryView() {
+        _memoryViewVisibility.value = false
     }
 
     private fun saveStatement(recordStatement: RecordStatement) {
