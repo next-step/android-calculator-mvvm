@@ -56,7 +56,7 @@ class CalculatorViewModel(
             _recordStatementList.value = calculatorRepository.getRecordStatement()
         }.onFailure {
             viewModelScope.launch {
-                _errorString.emit(it.message!!)
+                it.message?.let { _errorString.emit(it) }
             }
         }
     }
