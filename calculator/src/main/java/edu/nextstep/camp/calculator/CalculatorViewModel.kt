@@ -5,6 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class CalculatorViewModel : ViewModel() {
+    private val _result = MutableLiveData("")
+        val result: LiveData<String>
+            get() = _result
+
+    fun num(clickedNumber: Int) {
+        val result = _result.value ?: return
+        _result.value = clickedNumber.toString()
+    }
 
     fun plus() {
 
@@ -27,5 +35,4 @@ class CalculatorViewModel : ViewModel() {
     fun equals() {}
 
     fun memory() {}
-
 }
