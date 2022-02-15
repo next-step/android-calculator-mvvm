@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
-import edu.nextstep.camp.calculator.domain.Expression
-import edu.nextstep.camp.calculator.domain.Operator
 
 class CalculatorActivity : AppCompatActivity(), CalculatorContract.View {
     private lateinit var binding: ActivityCalculatorBinding
@@ -27,15 +25,15 @@ class CalculatorActivity : AppCompatActivity(), CalculatorContract.View {
         binding.button7.setOnClickListener { presenter.addToExpression(7) }
         binding.button8.setOnClickListener { presenter.addToExpression(8) }
         binding.button9.setOnClickListener { presenter.addToExpression(9) }
-        binding.buttonPlus.setOnClickListener { presenter.addToExpression(Operator.Plus) }
-        binding.buttonMinus.setOnClickListener { presenter.addToExpression(Operator.Minus) }
-        binding.buttonMultiply.setOnClickListener { presenter.addToExpression(Operator.Multiply) }
-        binding.buttonDivide.setOnClickListener { presenter.addToExpression(Operator.Divide) }
+        binding.buttonPlus.setOnClickListener { presenter.addToExpression(edu.nextstep.camp.domain.calculator.Operator.Plus) }
+        binding.buttonMinus.setOnClickListener { presenter.addToExpression(edu.nextstep.camp.domain.calculator.Operator.Minus) }
+        binding.buttonMultiply.setOnClickListener { presenter.addToExpression(edu.nextstep.camp.domain.calculator.Operator.Multiply) }
+        binding.buttonDivide.setOnClickListener { presenter.addToExpression(edu.nextstep.camp.domain.calculator.Operator.Divide) }
         binding.buttonDelete.setOnClickListener { presenter.removeLast() }
         binding.buttonEquals.setOnClickListener { presenter.calculate() }
     }
 
-    override fun showExpression(expression: Expression) {
+    override fun showExpression(expression: edu.nextstep.camp.domain.calculator.Expression) {
         binding.textView.text = expression.toString()
     }
 

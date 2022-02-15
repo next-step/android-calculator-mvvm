@@ -1,8 +1,7 @@
 package edu.nextstep.camp.calculator
 
-import com.google.common.truth.Truth.assertThat
-import edu.nextstep.camp.calculator.domain.Expression
-import edu.nextstep.camp.calculator.domain.Operator
+import com.google.common.truth.Truth.*
+import edu.nextstep.camp.domain.calculator.Expression
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
@@ -43,7 +42,7 @@ class CalculatorPresenterTest {
 
         // when
         presenter.addToExpression(1)
-        presenter.addToExpression(Operator.Plus)
+        presenter.addToExpression(edu.nextstep.camp.domain.calculator.Operator.Plus)
 
         // then
         val actual = expressionSlot.captured
@@ -73,7 +72,7 @@ class CalculatorPresenterTest {
         every { view.showExpression(any()) } answers { nothing }
         every { view.showResult(any()) } answers { nothing }
         presenter.addToExpression(1)
-        presenter.addToExpression(Operator.Plus)
+        presenter.addToExpression(edu.nextstep.camp.domain.calculator.Operator.Plus)
         presenter.addToExpression(2)
 
         // when
