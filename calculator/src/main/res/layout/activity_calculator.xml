@@ -6,7 +6,6 @@
         <variable
             name="viewModel"
             type="edu.nextstep.camp.calculator.CalculatorViewModel" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,6 +25,7 @@
             android:hint="0"
             android:textAlignment="viewEnd"
             android:textSize="24sp"
+            android:text="@{viewModel.expressionEvent.toString()}"
             app:layout_constraintBottom_toBottomOf="@id/divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
