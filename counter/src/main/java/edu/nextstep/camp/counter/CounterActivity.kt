@@ -22,7 +22,7 @@ class CounterActivity : AppCompatActivity() {
 
     private fun observeMinusCount() {
         viewModel.isMinusCount.observe(this) {
-            if (it) Toast.makeText(this, "0 이하로 내릴 수 없습니다", Toast.LENGTH_SHORT).show()
+            if (it == true) Toast.makeText(this, "0 이하로 내릴 수 없습니다", Toast.LENGTH_SHORT).show()
         }
     }
 }
