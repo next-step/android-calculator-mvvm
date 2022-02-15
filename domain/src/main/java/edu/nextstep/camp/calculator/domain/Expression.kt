@@ -1,6 +1,6 @@
 package edu.nextstep.camp.calculator.domain
 
-class Expression {
+class Expression private constructor() {
     private val calculator by lazy { Calculator() }
 
     fun calculatedValue(str: String): String {
