@@ -3,7 +3,6 @@ package edu.nextstep.camp.calculator
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import edu.nextstep.camp.calculator.domain.Calculator
-import edu.nextstep.camp.calculator.domain.Event
 import edu.nextstep.camp.calculator.domain.Expression
 import org.junit.Before
 import org.junit.Rule
