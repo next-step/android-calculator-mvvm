@@ -5,9 +5,9 @@ import com.google.common.truth.Truth.assertThat
 import edu.nextstep.camp.calculator.domain.Calculator.Companion.IS_NOT_OPERATOR
 import edu.nextstep.camp.calculator.domain.Calculator.Companion.IS_NOT_OR_BLANK
 import edu.nextstep.camp.calculator.domain.Calculator.Companion.WRONG_INPUT
-import edu.nextstep.camp.calculator.domain.Injector
-import edu.nextstep.camp.calculator.domain.model.CalculateResult
-import edu.nextstep.camp.calculator.domain.model.RecordStatement
+import edu.nextstep.camp.calculator.domain.CalculatorRepository
+import edu.nextstep.camp.calculator.domain.di.ExpressionInjector
+import io.mockk.mockk
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -16,8 +16,6 @@ import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.CsvSource
 
 @ExperimentalCoroutinesApi
 @ExtendWith(CoroutinesTestExtension::class)
@@ -27,14 +25,13 @@ class CalculatorViewModelTest {
 
     @BeforeEach
     fun setUp() {
-        calculatorViewModel = CalculatorViewModel(
-            Injector.providesExpression(),
-            Injector.providesCalculatorRepository()
-        )
+        val repository: CalculatorRepository = mockk(relaxed = true)
+        calculatorViewModel =
+            CalculatorViewModel(ExpressionInjector.providesExpression(), repository)
     }
 
     @Test
-    fun `수식 1 을 입력하면 1이 보여야한다`() {
+    fun `수식 1 을 입력하면 1 이 보여야한다`() {
         // WHEN
         calculatorViewModel.appendOperand(1)
 
@@ -125,46 +122,12 @@ class CalculatorViewModelTest {
         }
     }
 
-    @CsvSource(
-        delimiter = '=',
-        value = [
-            "1 + 2=3",
-            "2 * 4=8",
-            "2 * 3 * 4=24"
-        ]
-    )
-    @ParameterizedTest(name = "{0}을 계산하면 {0} = {1}이 저장된다")
-    fun recordStatementTest(expression: String, result: String) {
-        val statement = RecordStatement(
-            expression = expression,
-            calculateResult = CalculateResult(result)
-        )
-        initStatement(expression)
-
-        // WHEN
-        calculatorViewModel.calculateStatement()
-
-        // THEN
-        assertThat(calculatorViewModel.recordStatementList.value.last().calculateResult)
-            .isEqualTo(statement.calculateResult)
-    }
-
-    private fun initStatement(expression: String) {
-        expression.split(" ").map {
-            if (it.toIntOrNull() == null) {
-                calculatorViewModel.appendOperator(it)
-            } else {
-                calculatorViewModel.appendOperand(it.toInt())
-            }
-        }
-    }
-
     @Test
     fun `기록 버튼이 클릭되면 화면을 보여준다`() {
-        //WHEN
+        // WHEN
         calculatorViewModel.toggleMemoryView()
 
-        //THEN
+        // THEN
         assertThat(calculatorViewModel.memoryViewVisibility.value).isEqualTo(true)
     }
 }
