@@ -1,6 +1,6 @@
 package edu.nextstep.camp.calculator
 
-import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
@@ -10,38 +10,31 @@ class CalculatorViewModel : ViewModel() {
 
     val eventShowIncompleteExpressionError = SingleLiveEvent<Unit>()
 
-    private val expression = MutableLiveData(Expression.EMPTY)
+    private val _expression = MutableLiveData(Expression.EMPTY)
+    val expression: LiveData<Expression> = _expression
 
-    val expressionResult = MediatorLiveData<String>().apply {
-        addSource(expression) {
-            this.postValue(it.toString())
-        }
-    }
+    private val expressionNotNull get() = _expression.value ?: Expression.EMPTY
 
     fun addToExpression(operand: Int) {
-        expression.value?.let {
-            expression.postValue(it.plus(operand))
-        }
+        _expression.postValue(expressionNotNull.plus(operand))
     }
 
     fun addToExpression(operator: Operator) {
-        expression.value?.let {
-            expression.postValue(it.plus(operator))
-        }
+        _expression.postValue(expressionNotNull.plus(operator))
     }
 
     fun calculate() {
         val result = calculator.calculate(expression.value.toString())
         if (result == null) {
             showIncompleteExpressionError()
-        } else {
-            expression.postValue(Expression(listOf(result)))
+            return
         }
+        _expression.postValue(Expression(listOf(result)))
     }
 
     fun removeLast() {
-        expression.value?.let {
-            expression.postValue(it.removeLast())
+        _expression.value?.let {
+            _expression.postValue(it.removeLast())
         }
     }
 
