@@ -1,20 +1,11 @@
 package edu.nextstep.camp.calculator.domain
 
 import edu.nextstep.camp.calculator.domain.model.RecordStatement
+import kotlinx.coroutines.flow.Flow
 
-class CalculatorRepository private constructor() {
-    private val recordStatementList = mutableListOf<RecordStatement>()
+interface CalculatorRepository {
 
-    fun saveStatement(recordStatement: RecordStatement) {
-        recordStatementList.add(recordStatement)
-    }
+    suspend fun saveStatement(recordStatement: RecordStatement)
 
-    fun getRecordStatement(): List<RecordStatement> = recordStatementList
-
-    companion object {
-        private var instance: CalculatorRepository? = null
-        fun getInstance(): CalculatorRepository = instance ?: synchronized(this) {
-            instance ?: CalculatorRepository().also { instance = it }
-        }
-    }
+    suspend fun getStatements(): Flow<List<RecordStatement>>
 }

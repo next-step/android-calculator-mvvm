@@ -9,7 +9,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class CalculatorActivity : AppCompatActivity() {
@@ -24,7 +23,7 @@ class CalculatorActivity : AppCompatActivity() {
         binding.calculatorViewModel = calculatorViewModel
 
         initRecyclerView()
-        recordStatement()
+        getStatement()
         showError()
     }
 
@@ -42,10 +41,13 @@ class CalculatorActivity : AppCompatActivity() {
         }
     }
 
-    private fun recordStatement() {
-        lifecycleScope.launchWhenStarted {
-            calculatorViewModel.recordStatementList.collect {
-                recordAdapter.submitList(it)
+    private fun getStatement() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                calculatorViewModel.getStatements().collect {
+                    recordAdapter.submitList(it)
+                    binding.recyclerView.scrollToPosition(recordAdapter.itemCount)
+                }
             }
         }
     }
