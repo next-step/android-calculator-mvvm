@@ -31,6 +31,7 @@ class Expression private constructor() {
     fun deleteLastElement(str: String) = str.dropLast(1).trim()
 
     companion object {
+        @Volatile
         private var instance: Expression? = null
         fun getInstance(): Expression = instance ?: synchronized(this) {
             instance ?: Expression().also { instance = it }
