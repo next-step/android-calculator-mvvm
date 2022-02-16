@@ -26,4 +26,8 @@ class CounterViewModel : ViewModel() {
         }
         _count.value = count - 1
     }
+
+    fun setCount(value: Int) {
+        _count.value = value
+    }
 }
