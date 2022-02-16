@@ -1,6 +1,9 @@
 package edu.nextstep.camp.calculator
 
 import com.google.common.truth.Truth.assertThat
+import io.mockk.every
+import io.mockk.mockk
+import kotlinx.coroutines.flow.flow
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -11,11 +14,14 @@ import org.junit.jupiter.params.provider.ValueSource
 
 @ExtendWith(InstantExecutorExtension::class)
 internal class CalculatorViewModelTest {
+    private lateinit var memoryDao: MemoryDao
     private lateinit var viewModel: CalculatorViewModel
 
     @BeforeEach
     fun setUp() {
-        viewModel = CalculatorViewModel()
+        memoryDao = mockk()
+        every { memoryDao.getAllMemory() } answers { flow { emptyList<Memory>() } }
+        viewModel = CalculatorViewModel(memoryDao)
     }
 
     @ValueSource(
@@ -159,5 +165,16 @@ internal class CalculatorViewModelTest {
         // then
         val actual = viewModel.eventShowIncompleteExpressionError.getOrAwaitValue()
         assertThat(actual).isEqualTo(null)
+    }
+
+    @Test
+    @DisplayName("초기 상태에서 시간 아이콘을 누르면 메모리 리스트는 보이고 계산 결과는 안보여야 한다.")
+    fun test9() {
+        // when
+        viewModel.showAndHideMemoryListVisible()
+
+        // then
+        val actual = viewModel.isVisibleMemoryList.getOrAwaitValue()
+        assertThat(actual).isEqualTo(true)
     }
 }
