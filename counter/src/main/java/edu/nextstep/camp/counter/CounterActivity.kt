@@ -20,9 +20,7 @@ class CounterActivity : AppCompatActivity() {
         binding.viewModel = viewModel
 
         viewModel.errorEvent.observe(this) {
-            if (it.consumed) return@observe
             Toast.makeText(this, R.string.counter_error_message, Toast.LENGTH_LONG).show()
-            it.consume()
         }
     }
 }
