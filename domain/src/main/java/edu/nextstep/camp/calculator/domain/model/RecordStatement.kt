@@ -5,5 +5,5 @@ import java.util.UUID
 data class RecordStatement(
     val uuid: UUID = UUID.randomUUID(),
     val expression: String,
-    val calculateResult: CalculateResult
+    val calculateResult: String
 )
