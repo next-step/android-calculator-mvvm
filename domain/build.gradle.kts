@@ -13,7 +13,11 @@ tasks.test {
 }
 
 dependencies {
-    implementation(Androidx.STDLIB)
+    Kotlin.run {
+        implementation(STDLIB)
+        implementation(COROUTINE)
+    }
+
     Test.run {
         testRuntimeOnly(VINTAGE)
         testImplementation(JUPITER)

@@ -1,7 +1,16 @@
-const val KOTLIN_VERSION = "1.6.10"
+object Kotlin {
+    private const val KOTLIN_VERSION = "1.6.10"
+
+    const val STDLIB = "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
+    const val COROUTINE = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0"
+    const val GSON = "com.google.code.gson:gson:2.9.0"
+}
+
+object Others {
+    const val ROBOLECTRIC = "org.robolectric:robolectric:4.6.1"
+}
 
 object Androidx {
-    const val STDLIB = "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
     const val CORE = "androidx.core:core-ktx:1.7.0"
     const val APP_COMPAT = "androidx.appcompat:appcompat:1.4.1"
     const val CONSTRAINTLAYOUT = "androidx.constraintlayout:constraintlayout:2.1.3"
@@ -28,4 +37,13 @@ object Test {
 
 object Material {
     const val MATERIAL = "com.google.android.material:material:1.5.0"
+}
+
+object Room {
+    private const val ROOM_VERSION = "2.4.1"
+
+    const val RUNTIME = "androidx.room:room-runtime:$ROOM_VERSION"
+    const val COMPILER = "androidx.room:room-compiler:$ROOM_VERSION"
+    const val KTX = "androidx.room:room-ktx:$ROOM_VERSION"
+    const val TESTING = "androidx.room:room-testing:$ROOM_VERSION"
 }
