@@ -15,27 +15,25 @@ class CalculatorViewModel : ViewModel() {
     private val _errorEvent = SingleLiveEvent<Void>()
     val errorEvent: LiveData<Void> get() = _errorEvent
 
-    init {
-        _expressionEvent.value = Expression.EMPTY
-    }
+    private val currentExpression: Expression get() = _expressionEvent.value ?: Expression.EMPTY
 
     fun addToExpression(operand: Int) {
-        val newExpression = _expressionEvent.value!! + operand
-        _expressionEvent.value =  newExpression
+        val newExpression = currentExpression + operand
+        _expressionEvent.value = newExpression
     }
 
     fun addToExpression(operator: Operator) {
-        val newExpression = _expressionEvent.value!! + operator
-        _expressionEvent.value =  newExpression
+        val newExpression = currentExpression + operator
+        _expressionEvent.value = newExpression
     }
 
     fun removeLast() {
-        val newExpression = _expressionEvent.value!!.removeLast()
-        _expressionEvent.value =  newExpression
+        val newExpression = currentExpression.removeLast()
+        _expressionEvent.value = newExpression
     }
 
     fun calculate() {
-        val result = calculator.calculate(_expressionEvent.value!!.toString())
+        val result = calculator.calculate(currentExpression.toString())
         if (result == null) {
             _errorEvent.call()
             return
