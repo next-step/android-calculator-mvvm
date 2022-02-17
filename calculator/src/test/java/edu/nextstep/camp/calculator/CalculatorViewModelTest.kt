@@ -78,6 +78,17 @@ class CalculatorViewModelTest {
         assertThat(actualExpression.toString()).isEmpty()
     }
 
+    @Test
+    fun `수식 12에서, 마지막을 제거하면, 수식을 1로 갱신한다`() {
+        // given :
+        val viewModel = CalculatorViewModel(Expression(12))
+        // when :
+        viewModel.removeLast()
+        // then :
+        val actualExpression = viewModel.expression.getOrAwaitValue()
+        assertThat(actualExpression.toString()).isEqualTo("1")
+    }
+
     // 입력된 수식이 있을 때, 사용자가 지우기 버튼을 누르면 수식에 마지막으로 입력된 연산자 또는 피연산자가 지워져야 한다.
     // - 32 + 1 -> 지우기 클릭 -> 32 + -> 지우기 클릭 -> 32 -> 지우기 클릭 -> 3 -> 지우기 클릭 ->  -> 지우기 클릭 ->
     // 입력된 수신이 완전할 때, 사용자가 = 버튼을 누르면 입력된 수식의 결과가 화면에 보여야 한다.
