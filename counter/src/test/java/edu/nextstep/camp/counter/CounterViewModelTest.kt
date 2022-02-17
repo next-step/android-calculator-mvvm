@@ -1,15 +1,10 @@
 package edu.nextstep.camp.counter
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
-import java.util.concurrent.TimeoutException
 
 class CounterViewModelTest {
 
@@ -33,7 +28,7 @@ class CounterViewModelTest {
     }
 
     @Test
-    internal fun `주어진 값이 0일 때 up을 한 번 호출하면 1이 되어야 한다`() {
+    fun `주어진 값이 0일 때 up을 한 번 호출하면 1이 되어야 한다`() {
         // given
         // when
         viewModel.up()
