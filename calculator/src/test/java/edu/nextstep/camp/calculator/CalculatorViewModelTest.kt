@@ -55,6 +55,18 @@ class CalculatorViewModelTest {
         val actualExpression = viewModel.expression.getOrAwaitValue()
         assertThat(actualExpression.toString()).isEqualTo("1 +")
     }
+
+    @Test
+    fun `수식 1 +에서, 연산자 -가 입력되면, 수식을 1 -로 갱신한다`() {
+        // given :
+        val viewModel = CalculatorViewModel(Expression(1, Operator.Plus))
+        // when :
+        viewModel.addToExpression(Operator.Minus)
+        // then :
+        val actualExpression = viewModel.expression.getOrAwaitValue()
+        assertThat(actualExpression.toString()).isEqualTo("1 -")
+    }
+
     // 입력된 피연산자가 없을 때, 사용자가 연산자 +, -, ×, ÷ 버튼을 누르면 화면에 아무런 변화가 없어야 한다.
     // -  -> + 클릭 ->
     // 입력된 피연산자가 있을 때, 사용자가 연산자 +, -, ×, ÷ 버튼을 누르면 해당 기호가 화면에 보여야 한다.
