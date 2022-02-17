@@ -4,11 +4,26 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
-    private val viewModel: CalculatorViewModel by viewModels()
+    private val viewModel: CalculatorViewModel by viewModels {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return CalculatorViewModel(
+                    memoryDao = MemoryDatabase.getInstance(this@CalculatorActivity).getMemoryDao()
+                ) as T
+            }
+        }
+    }
+    private val adapter by lazy { CalculatorAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,11 +32,22 @@ class CalculatorActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         setContentView(binding.root)
         initViewModel()
+        initRecyclerView()
     }
 
     private fun initViewModel() {
+        lifecycleScope.launch {
+            viewModel.memoryFlow.collect {
+                adapter.replaceAll(it)
+            }
+        }
         viewModel.eventShowIncompleteExpressionError.observe(this) {
             Toast.makeText(this, R.string.incomplete_expression, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun initRecyclerView() {
+        binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.recyclerView.adapter = adapter
     }
 }

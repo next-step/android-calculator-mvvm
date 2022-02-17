@@ -1,6 +1,9 @@
 package edu.nextstep.camp.calculator
 
 import com.google.common.truth.Truth.assertThat
+import io.mockk.every
+import io.mockk.mockk
+import kotlinx.coroutines.flow.flow
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -11,11 +14,14 @@ import org.junit.jupiter.params.provider.ValueSource
 
 @ExtendWith(InstantExecutorExtension::class)
 internal class CalculatorViewModelTest {
+    private lateinit var memoryDao: MemoryDao
     private lateinit var viewModel: CalculatorViewModel
 
     @BeforeEach
     fun setUp() {
-        viewModel = CalculatorViewModel()
+        memoryDao = mockk()
+        every { memoryDao.getAllMemory() } answers { flow { emptyList<Memory>() } }
+        viewModel = CalculatorViewModel(memoryDao)
     }
 
     @ValueSource(
@@ -29,8 +35,8 @@ internal class CalculatorViewModelTest {
         viewModel.addToExpression(rawOperand)
 
         // then
-        val actual = viewModel.expressionResult.getOrAwaitValue()
-        assertThat(actual).isEqualTo(rawOperand.toString())
+        val actual = viewModel.expression.getOrAwaitValue()
+        assertThat(actual.toString()).isEqualTo(rawOperand.toString())
     }
 
     @CsvSource(
@@ -48,27 +54,26 @@ internal class CalculatorViewModelTest {
         viewModel.addToExpression(rawOperand2)
 
         // then
-        val actual = viewModel.expressionResult.getOrAwaitValue()
-        assertThat(actual).isEqualTo(expected)
+        val actual = viewModel.expression.getOrAwaitValue()
+        assertThat(actual.toString()).isEqualTo(expected)
     }
 
     @CsvSource(
         value = [
-            "8,9,89",
-            "80,90,8090",
+            "+", "-", "*", "/",
         ]
     )
     @ParameterizedTest(name = "입력된 피연산자가 없을 때, 사용자가 연산자 {0} 버튼을 누르면 화면에 아무런 변화가 없어야 한다.")
     fun test3(rawOperator: String) {
         // given
-        val operator = Operator.of(rawOperator) ?: return
+        val operator = Operator.of(rawOperator) ?: error("operator is null")
 
         // when
         viewModel.addToExpression(operator)
 
         // then
-        val actual = viewModel.expressionResult.getOrAwaitValue()
-        assertThat(actual).isEqualTo(Expression.EMPTY.toString())
+        val actual = viewModel.expression.getOrAwaitValue()
+        assertThat(actual.toString()).isEqualTo(Expression.EMPTY.toString())
     }
 
     @CsvSource(
@@ -83,12 +88,12 @@ internal class CalculatorViewModelTest {
         viewModel.addToExpression(rawOperand)
 
         // when
-        val operator = Operator.of(rawOperator) ?: return
+        val operator = Operator.of(rawOperator) ?: error("operator is null")
         viewModel.addToExpression(operator)
 
         // then
-        val actual = viewModel.expressionResult.getOrAwaitValue()
-        assertThat(actual).isEqualTo(expected)
+        val actual = viewModel.expression.getOrAwaitValue()
+        assertThat(actual.toString()).isEqualTo(expected)
     }
 
     @Test
@@ -98,8 +103,8 @@ internal class CalculatorViewModelTest {
         viewModel.removeLast()
 
         // then
-        val actual = viewModel.expressionResult.getOrAwaitValue()
-        assertThat(actual).isEqualTo(Expression.EMPTY.toString())
+        val actual = viewModel.expression.getOrAwaitValue()
+        assertThat(actual.toString()).isEqualTo(Expression.EMPTY.toString())
     }
 
     @CsvSource(
@@ -119,8 +124,8 @@ internal class CalculatorViewModelTest {
         viewModel.removeLast()
 
         // then
-        val actual = viewModel.expressionResult.getOrAwaitValue()
-        assertThat(actual).isEqualTo(expected)
+        val actual = viewModel.expression.getOrAwaitValue()
+        assertThat(actual.toString()).isEqualTo(expected)
     }
 
     @CsvSource(
@@ -134,7 +139,7 @@ internal class CalculatorViewModelTest {
     @ParameterizedTest(name = "완전한 수식 {0} {1} {2} 있을 때, = 버튼을 누르면 {2} 보여야 한다.")
     fun test7(rawOperand1: Int, rawOperator: String, rawOperand2: Int, expected: String) {
         // given
-        val operator = Operator.of(rawOperator) ?: return
+        val operator = Operator.of(rawOperator) ?: error("operator is null")
         viewModel.addToExpression(rawOperand1)
         viewModel.addToExpression(operator)
         viewModel.addToExpression(rawOperand2)
@@ -143,8 +148,8 @@ internal class CalculatorViewModelTest {
         viewModel.calculate()
 
         // then
-        val actual = viewModel.expressionResult.getOrAwaitValue()
-        assertThat(actual).isEqualTo(expected)
+        val actual = viewModel.expression.getOrAwaitValue()
+        assertThat(actual.toString()).isEqualTo(expected)
     }
 
     @Test
@@ -160,5 +165,16 @@ internal class CalculatorViewModelTest {
         // then
         val actual = viewModel.eventShowIncompleteExpressionError.getOrAwaitValue()
         assertThat(actual).isEqualTo(null)
+    }
+
+    @Test
+    @DisplayName("초기 상태에서 시간 아이콘을 누르면 메모리 리스트는 보이고 계산 결과는 안보여야 한다.")
+    fun test9() {
+        // when
+        viewModel.showAndHideMemoryListVisible()
+
+        // then
+        val actual = viewModel.isVisibleMemoryList.getOrAwaitValue()
+        assertThat(actual).isEqualTo(true)
     }
 }
