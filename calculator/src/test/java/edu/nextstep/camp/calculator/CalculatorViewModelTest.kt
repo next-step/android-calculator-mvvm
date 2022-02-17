@@ -111,8 +111,14 @@ class CalculatorViewModelTest {
         assertThat(actualExpression.toString()).isEqualTo("3")
     }
 
-    // 입력된 수신이 완전할 때, 사용자가 = 버튼을 누르면 입력된 수식의 결과가 화면에 보여야 한다.
-    // - 3 + 2 -> = 클릭 -> 5
-    // 입력된 수식이 완전하지 않을 때, 사용자가 = 버튼을 눌렀을 때 완성되지 않은 수식입니다 토스트 메세지가 화면에 보여야 한다.
-    // - 3 + -> = 클릭 -> 완성되지 않은 수식입니다
+    @Test
+    fun `미완성 수식에서, 결과를 구하면, 잘못된 수식을 알리는 이벤트가 발생한다`() {
+        // given :
+        val viewModel = CalculatorViewModel(Expression(1, Operator.Plus))
+        // when :
+        viewModel.calculate()
+        // then :
+        val actualEvent = viewModel.incompleteExpressionEvent.getOrAwaitValue()
+        assertThat(actualEvent.peek()).isTrue()
+    }
 }

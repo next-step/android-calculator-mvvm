@@ -2,6 +2,7 @@ package edu.nextstep.camp.calculator
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import edu.nextstep.camp.calculator.utils.Event
 import edu.nextstep.camp.calculator.utils.NonNullLiveData
 import edu.nextstep.camp.domain.calculator.Calculator
@@ -10,7 +11,7 @@ import edu.nextstep.camp.domain.calculator.Operator
 
 class CalculatorViewModel(
     private val initialExpression: Expression = Expression.EMPTY
-) {
+) : ViewModel() {
     private val calculator = Calculator()
 
     private val _expression = NonNullLiveData(initialExpression)
