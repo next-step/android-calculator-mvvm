@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.*
 import edu.nextstep.camp.calculator.utils.getOrAwaitValue
 import edu.nextstep.camp.domain.calculator.Expression
+import edu.nextstep.camp.domain.calculator.Operator
 import org.junit.Rule
 import org.junit.Test
 
@@ -22,6 +23,16 @@ class CalculatorViewModelTest {
         assertThat(actualExpression.toString()).isEqualTo("1")
     }
 
+    @Test
+    fun `빈 수식에, 연산자가 입력되면, 수식에 아무런 변화가 없다`() {
+        // given :
+        val viewModel = CalculatorViewModel(initialExpression = Expression.EMPTY)
+        // when :
+        viewModel.addToExpression(Operator.Plus)
+        // than :
+        val actualExpression = viewModel.expression.getOrAwaitValue()
+        assertThat(actualExpression.toString()).isEmpty()
+    }
     // 입력된 피연산자가 없을 때, 사용자가 연산자 +, -, ×, ÷ 버튼을 누르면 화면에 아무런 변화가 없어야 한다.
     // -  -> + 클릭 ->
     // 입력된 피연산자가 있을 때, 사용자가 연산자 +, -, ×, ÷ 버튼을 누르면 해당 기호가 화면에 보여야 한다.
