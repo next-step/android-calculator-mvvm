@@ -100,8 +100,17 @@ class CalculatorViewModelTest {
         assertThat(actualExpression.toString()).isEqualTo("1")
     }
 
-    // 입력된 수식이 있을 때, 사용자가 지우기 버튼을 누르면 수식에 마지막으로 입력된 연산자 또는 피연산자가 지워져야 한다.
-    // - 32 + 1 -> 지우기 클릭 -> 32 + -> 지우기 클릭 -> 32 -> 지우기 클릭 -> 3 -> 지우기 클릭 ->  -> 지우기 클릭 ->
+    @Test
+    fun `완성된 수식에서, 결과를 구하면, 수식을 결과 값으로 갱신한다`() {
+        // given :
+        val viewModel = CalculatorViewModel(Expression(1, Operator.Plus, 2))
+        // when :
+        viewModel.calculate()
+        // then :
+        val actualExpression = viewModel.expression.getOrAwaitValue()
+        assertThat(actualExpression.toString()).isEqualTo("3")
+    }
+
     // 입력된 수신이 완전할 때, 사용자가 = 버튼을 누르면 입력된 수식의 결과가 화면에 보여야 한다.
     // - 3 + 2 -> = 클릭 -> 5
     // 입력된 수식이 완전하지 않을 때, 사용자가 = 버튼을 눌렀을 때 완성되지 않은 수식입니다 토스트 메세지가 화면에 보여야 한다.
