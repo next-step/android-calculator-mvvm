@@ -1,8 +1,10 @@
-package edu.nextstep.camp.calculator.domain
+package edu.nextstep.camp.domain.calculator
 
 data class Expression(
     private val values: List<Any> = emptyList()
 ) {
+    constructor(vararg values: Any) : this(values.toList())
+
     operator fun plus(operand: Int): Expression {
         return when (val last = values.lastOrNull()) {
             is Operator -> Expression(values + operand)

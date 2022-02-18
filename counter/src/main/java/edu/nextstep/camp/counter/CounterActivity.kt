@@ -11,10 +11,12 @@ class CounterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ActivityCounterBinding.inflate(layoutInflater).apply {
+        ActivityCounterBinding.inflate(layoutInflater).also {
+            setContentView(it.root)
+        }.run {
             lifecycleOwner = this@CounterActivity
             viewModel = counterViewModel
-        }.also { setContentView(it.root) }
+        }
         observeCounterViewModelEvent()
     }
 
