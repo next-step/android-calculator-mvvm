@@ -6,8 +6,7 @@ import edu.nextstep.camp.domain.Calculator
 import edu.nextstep.camp.domain.Expression
 import edu.nextstep.camp.domain.Operator
 
-class CalculatorViewModel : ViewModel() {
-    private val calculator = Calculator()
+class CalculatorViewModel(private val calculator: Calculator = Calculator()) : ViewModel() {
 
     private val _expressionEvent = SingleLiveEvent<Expression>()
     val expressionEvent: LiveData<Expression> get() = _expressionEvent
