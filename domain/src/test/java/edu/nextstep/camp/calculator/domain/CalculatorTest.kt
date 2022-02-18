@@ -1,6 +1,6 @@
 package edu.nextstep.camp.calculator.domain
 
-import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -18,7 +18,7 @@ class CalculatorTest {
         val actual = calculator.calculate("1 + 2")
 
         // then
-        assertThat(actual).isEqualTo(3)
+        Truth.assertThat(actual).isEqualTo(3)
     }
 
     @Test
@@ -27,7 +27,7 @@ class CalculatorTest {
         val actual = calculator.calculate("1 - 2")
 
         // then
-        assertThat(actual).isEqualTo(-1)
+        Truth.assertThat(actual).isEqualTo(-1)
     }
 
     @Test
@@ -36,7 +36,7 @@ class CalculatorTest {
         val actual = calculator.calculate("1 * 2")
 
         // then
-        assertThat(actual).isEqualTo(2)
+        Truth.assertThat(actual).isEqualTo(2)
     }
 
     @Test
@@ -45,7 +45,7 @@ class CalculatorTest {
         val actual = calculator.calculate("4 / 2")
 
         // then
-        assertThat(actual).isEqualTo(2)
+        Truth.assertThat(actual).isEqualTo(2)
     }
 
     @Test
@@ -54,7 +54,7 @@ class CalculatorTest {
         val actual = calculator.calculate("qwe")
 
         // then
-        assertThat(actual).isNull()
+        Truth.assertThat(actual).isNull()
     }
 
     @Test
@@ -63,6 +63,6 @@ class CalculatorTest {
         val actual = calculator.calculate("1 +")
 
         // then
-        assertThat(actual).isNull()
+        Truth.assertThat(actual).isNull()
     }
 }

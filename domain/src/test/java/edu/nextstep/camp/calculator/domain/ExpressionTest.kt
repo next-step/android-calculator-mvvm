@@ -1,6 +1,6 @@
 package edu.nextstep.camp.calculator.domain
 
-import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth
 import org.junit.jupiter.api.Test
 
 class ExpressionTest {
@@ -13,7 +13,7 @@ class ExpressionTest {
         val actual = expression + 1
 
         // then
-        assertThat(actual.toString()).isEqualTo("1")
+        Truth.assertThat(actual.toString()).isEqualTo("1")
     }
 
     @Test
@@ -25,7 +25,7 @@ class ExpressionTest {
         val actual = expression + 9
 
         // then
-        assertThat(actual.toString()).isEqualTo("89")
+        Truth.assertThat(actual.toString()).isEqualTo("89")
     }
 
     @Test
@@ -37,7 +37,7 @@ class ExpressionTest {
         val actual = expression + Operator.Plus
 
         // then
-        assertThat(actual.toString()).isEqualTo("")
+        Truth.assertThat(actual.toString()).isEqualTo("")
     }
 
     @Test
@@ -49,7 +49,7 @@ class ExpressionTest {
         val actual = expression + Operator.Plus
 
         // then
-        assertThat(actual.toString()).isEqualTo("1 +")
+        Truth.assertThat(actual.toString()).isEqualTo("1 +")
     }
 
     @Test
@@ -61,7 +61,7 @@ class ExpressionTest {
         val actual = expression + Operator.Minus
 
         // then
-        assertThat(actual.toString()).isEqualTo("8 -")
+        Truth.assertThat(actual.toString()).isEqualTo("8 -")
     }
 
     @Test
@@ -73,7 +73,7 @@ class ExpressionTest {
         val actual = expression.removeLast()
 
         // then
-        assertThat(actual.toString()).isEqualTo("32 +")
+        Truth.assertThat(actual.toString()).isEqualTo("32 +")
     }
 
     @Test
@@ -85,7 +85,7 @@ class ExpressionTest {
         val actual = expression.removeLast()
 
         // then
-        assertThat(actual.toString()).isEqualTo("32")
+        Truth.assertThat(actual.toString()).isEqualTo("32")
     }
 
     @Test
@@ -97,7 +97,7 @@ class ExpressionTest {
         val actual = expression.removeLast()
 
         // then
-        assertThat(actual.toString()).isEqualTo("3")
+        Truth.assertThat(actual.toString()).isEqualTo("3")
     }
 
     @Test
@@ -109,7 +109,7 @@ class ExpressionTest {
         val actual = expression.removeLast()
 
         // then
-        assertThat(actual.toString()).isEqualTo("")
+        Truth.assertThat(actual.toString()).isEqualTo("")
     }
 
     @Test
@@ -121,6 +121,6 @@ class ExpressionTest {
         val actual = expression.removeLast()
 
         // then
-        assertThat(actual.toString()).isEqualTo("")
+        Truth.assertThat(actual.toString()).isEqualTo("")
     }
 }
