@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import edu.nextstep.camp.calculator.domain.CalculatorRepository
 import edu.nextstep.camp.calculator.domain.Expression
-import edu.nextstep.camp.calculator.domain.model.CalculateResult
 import edu.nextstep.camp.calculator.domain.model.RecordStatement
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -26,9 +26,6 @@ class CalculatorViewModel(
     private val _memoryViewVisibility = MutableStateFlow(false)
     val memoryViewVisibility = _memoryViewVisibility.asStateFlow()
 
-    private val _recordStatementList = MutableStateFlow<List<RecordStatement>>(emptyList())
-    val recordStatementList = _recordStatementList.asStateFlow()
-
     fun appendOperand(operand: Int) {
         closeMemoryView()
         _statement.value = expression.appendOperand(statement.value, operand.toString())
@@ -40,6 +37,7 @@ class CalculatorViewModel(
     }
 
     fun deleteLastElement() {
+        closeMemoryView()
         _statement.value = expression.deleteLastElement(statement.value)
     }
 
@@ -50,15 +48,24 @@ class CalculatorViewModel(
             _statement.value = expression.calculatedValue(expressionString)
             val recordStatement = RecordStatement(
                 expression = expressionString,
-                calculateResult = CalculateResult(statement.value)
+                calculateResult = statement.value
             )
             saveStatement(recordStatement)
-            _recordStatementList.value = calculatorRepository.getRecordStatement()
+            viewModelScope.launch {
+                getStatements()
+            }
         }.onFailure {
             viewModelScope.launch {
                 it.message?.let { _errorMessage.emit(it) }
             }
         }
+    }
+
+    suspend fun getStatements(): Flow<List<RecordStatement>> =
+        calculatorRepository.getStatements()
+
+    private fun saveStatement(recordStatement: RecordStatement) = viewModelScope.launch {
+        calculatorRepository.saveStatement(recordStatement)
     }
 
     fun toggleMemoryView() {
@@ -67,9 +74,5 @@ class CalculatorViewModel(
 
     private fun closeMemoryView() {
         _memoryViewVisibility.value = false
-    }
-
-    private fun saveStatement(recordStatement: RecordStatement) {
-        calculatorRepository.saveStatement(recordStatement)
     }
 }

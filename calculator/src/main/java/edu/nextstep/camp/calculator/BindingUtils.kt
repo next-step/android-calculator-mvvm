@@ -14,6 +14,6 @@ object BindingUtils {
     @JvmStatic
     @BindingAdapter("calculateResultFormatted")
     fun setCalculateResultFormatted(textView: TextView, item: RecordStatement) {
-        textView.text = item.calculateResult.toString()
+        textView.text = "= ${item.calculateResult}"
     }
 }

@@ -1,6 +1,6 @@
 package edu.nextstep.camp.calculator.domain
 
-class Expression {
+class Expression private constructor() {
     private val calculator by lazy { Calculator() }
 
     fun calculatedValue(str: String): String {
@@ -31,6 +31,7 @@ class Expression {
     fun deleteLastElement(str: String) = str.dropLast(1).trim()
 
     companion object {
+        @Volatile
         private var instance: Expression? = null
         fun getInstance(): Expression = instance ?: synchronized(this) {
             instance ?: Expression().also { instance = it }

@@ -40,9 +40,9 @@ android {
 
 dependencies {
     implementation(Material.MATERIAL)
+    implementation(Kotlin.STDLIB)
 
     Androidx.run {
-        implementation(STDLIB)
         implementation(CORE)
         implementation(APP_COMPAT)
         implementation(CONSTRAINTLAYOUT)

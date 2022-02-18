@@ -199,7 +199,6 @@ class CalculatorActivityTest {
         onView(withId(R.id.button2)).perform(click())
         onView(withId(R.id.buttonPlus)).perform(click())
         onView(withId(R.id.button2)).perform(click())
-
         // WHEN - 사용자가 결과 버튼을 누르면
         onView(withId(R.id.buttonEquals)).perform(click())
 
