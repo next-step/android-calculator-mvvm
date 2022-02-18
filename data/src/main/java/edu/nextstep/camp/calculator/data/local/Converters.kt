@@ -4,7 +4,7 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import edu.nextstep.camp.calculator.domain.model.RecordStatement
 
-class Converters {
+internal class Converters {
     @TypeConverter
     fun listToString(value: List<RecordStatement>?): String = Gson().toJson(value)
 
