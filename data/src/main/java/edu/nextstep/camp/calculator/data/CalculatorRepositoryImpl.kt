@@ -20,9 +20,8 @@ internal class CalculatorRepositoryImpl private constructor(
             calculatorDao.insertStatement(recordStatement.map())
         }
 
-    override suspend fun getStatements(): Flow<List<RecordStatement>> = withContext(ioDispatcher) {
+    override fun getStatements(): Flow<List<RecordStatement>> =
         calculatorDao.getAll().map { stateList -> stateList.map() }
-    }
 
     companion object {
         @Volatile

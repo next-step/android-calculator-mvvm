@@ -7,5 +7,5 @@ interface CalculatorRepository {
 
     suspend fun saveStatement(recordStatement: RecordStatement)
 
-    suspend fun getStatements(): Flow<List<RecordStatement>>
+    fun getStatements(): Flow<List<RecordStatement>>
 }
