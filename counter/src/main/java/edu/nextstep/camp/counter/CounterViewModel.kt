@@ -8,8 +8,8 @@ class CounterViewModel(initialNumber: Int = 0) : ViewModel() {
     private val _countEvent = SingleLiveEvent<Int>()
     val countEvent: LiveData<Int> get() = _countEvent
 
-    private val _errorEvent = SingleLiveEvent<Void>()
-    val errorEvent: LiveData<Void> get() = _errorEvent
+    private val _errorEvent = SingleLiveEvent<Unit>()
+    val errorEvent: LiveData<Unit> get() = _errorEvent
 
     init {
         _countEvent.value = initialNumber

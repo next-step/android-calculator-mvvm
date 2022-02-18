@@ -11,8 +11,8 @@ class CalculatorViewModel(private val calculator: Calculator = Calculator()) : V
     private val _expressionEvent = SingleLiveEvent<Expression>()
     val expressionEvent: LiveData<Expression> get() = _expressionEvent
 
-    private val _errorEvent = SingleLiveEvent<Void>()
-    val errorEvent: LiveData<Void> get() = _errorEvent
+    private val _errorEvent = SingleLiveEvent<Unit>()
+    val errorEvent: LiveData<Unit> get() = _errorEvent
 
     private val currentExpression: Expression get() = _expressionEvent.value ?: Expression.EMPTY
 
