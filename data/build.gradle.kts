@@ -22,6 +22,7 @@ java {
 
 dependencies {
     implementation(project(":domain"))
+
     Kotlin.run {
         implementation(STDLIB)
         implementation(GSON)
