@@ -1,4 +1,4 @@
-package edu.nextstep.camp.calculator.data
+package edu.nextstep.camp.calculator.data.mapper
 
 import edu.nextstep.camp.calculator.data.model.Statement
 import edu.nextstep.camp.calculator.domain.model.RecordStatement

@@ -1,6 +1,7 @@
 package edu.nextstep.camp.calculator.data
 
 import edu.nextstep.camp.calculator.data.local.CalculatorDao
+import edu.nextstep.camp.calculator.data.mapper.map
 import edu.nextstep.camp.calculator.domain.CalculatorRepository
 import edu.nextstep.camp.calculator.domain.model.RecordStatement
 import kotlinx.coroutines.CoroutineDispatcher
