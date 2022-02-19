@@ -7,6 +7,7 @@ import edu.nextstep.camp.calculator.domain.model.RecordStatement
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
@@ -21,7 +22,9 @@ internal class CalculatorRepositoryImpl private constructor(
         }
 
     override fun getStatements(): Flow<List<RecordStatement>> =
-        calculatorDao.getAll().map { stateList -> stateList.map() }
+        calculatorDao.getAll()
+            .map { stateList -> stateList.map() }
+            .flowOn(Dispatchers.IO)
 
     companion object {
         @Volatile
