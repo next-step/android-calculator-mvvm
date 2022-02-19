@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
@@ -17,23 +18,23 @@ class CalculatorViewModel(
     private val _expression = MutableLiveData(Expression.EMPTY)
     val expression: LiveData<Expression> = _expression
 
-    private val expressionNotNull get() = _expression.value ?: Expression.EMPTY
+    private fun getCurrentExpression() = _expression.value ?: Expression.EMPTY
 
     private val _isVisibleMemoryList = MutableLiveData(false)
     val isVisibleMemoryList: LiveData<Boolean> = _isVisibleMemoryList
 
-    val memoryFlow = memoryDao.getAllMemory()
+    val memoryFlow: Flow<List<Memory>> = memoryDao.getAllMemory()
 
     fun addToExpression(operand: Int) {
-        _expression.postValue(expressionNotNull.plus(operand))
+        _expression.postValue(getCurrentExpression().plus(operand))
     }
 
     fun addToExpression(operator: Operator) {
-        _expression.postValue(expressionNotNull.plus(operator))
+        _expression.postValue(getCurrentExpression().plus(operator))
     }
 
     fun calculate() {
-        val result = calculator.calculate(expressionNotNull.toString())
+        val result = calculator.calculate(getCurrentExpression().toString())
         if (result == null) {
             showIncompleteExpressionError()
             return
@@ -60,8 +61,8 @@ class CalculatorViewModel(
 
     private fun saveExpressionToMemory(result: Int) {
         viewModelScope.launch {
-            val expression = expressionNotNull.toString()
-            memoryDao.insert(Memory(expression = expression, result = result))
+            val expression = getCurrentExpression().toString()
+            memoryDao.insert(Memory(expression, result))
         }
     }
 }

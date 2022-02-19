@@ -1,15 +1,14 @@
 package edu.nextstep.camp.calculator
 
 import com.google.common.truth.Truth.assertThat
-import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.flow.flow
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
+import org.junit.jupiter.params.provider.EnumSource
 import org.junit.jupiter.params.provider.ValueSource
 
 @ExtendWith(InstantExecutorExtension::class)
@@ -19,8 +18,7 @@ internal class CalculatorViewModelTest {
 
     @BeforeEach
     fun setUp() {
-        memoryDao = mockk()
-        every { memoryDao.getAllMemory() } answers { flow { emptyList<Memory>() } }
+        memoryDao = mockk(relaxed = true)
         viewModel = CalculatorViewModel(memoryDao)
     }
 
@@ -58,18 +56,26 @@ internal class CalculatorViewModelTest {
         assertThat(actual.toString()).isEqualTo(expected)
     }
 
+    @EnumSource(Operator::class)
+    @ParameterizedTest(name = "입력된 피연산자가 없을 때, 사용자가 연산자 {0} 버튼을 누르면 화면에 아무런 변화가 없어야 한다.")
+    fun test3(rawOperator: Operator) {
+        // when
+        viewModel.addToExpression(rawOperator)
+
+        // then
+        val actual = viewModel.expression.getOrAwaitValue()
+        assertThat(actual.toString()).isEqualTo(Expression.EMPTY.toString())
+    }
+
     @CsvSource(
         value = [
-            "+", "-", "*", "/",
+            "Plus", "Minus", "Multiply", "Divide",
         ]
     )
     @ParameterizedTest(name = "입력된 피연산자가 없을 때, 사용자가 연산자 {0} 버튼을 누르면 화면에 아무런 변화가 없어야 한다.")
-    fun test3(rawOperator: String) {
-        // given
-        val operator = Operator.of(rawOperator) ?: error("operator is null")
-
+    fun test3_1(rawOperator: Operator) {
         // when
-        viewModel.addToExpression(operator)
+        viewModel.addToExpression(rawOperator)
 
         // then
         val actual = viewModel.expression.getOrAwaitValue()
