@@ -12,12 +12,12 @@ class CounterViewModel : ViewModel() {
     private val _eventShowErrorMessage = MutableLiveData<Event<Unit>>()
     val eventShowErrorMessage: LiveData<Event<Unit>> get() = _eventShowErrorMessage
 
-    fun onClickButtonUp() {
+    fun incrementCounter() {
         val count = _count.value ?: return
         _count.value = count + 1
     }
 
-    fun onClickButtonDown() {
+    fun decrementCounter() {
         val count = _count.value ?: return
 
         if(count == 0) {
