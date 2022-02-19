@@ -2,6 +2,7 @@ package edu.nextstep.camp.counter
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -12,11 +13,14 @@ class CounterViewModelTest {
 
     private lateinit var counterViewModel: CounterViewModel
 
+    @Before
+    fun setup() {
+        counterViewModel = CounterViewModel()
+    }
+
     @Test
     fun increment_counter_should_increase_count() {
         //when
-        counterViewModel = CounterViewModel()
-
         //given
         counterViewModel.incrementCounter()
 
@@ -27,8 +31,6 @@ class CounterViewModelTest {
     @Test
     fun when_count_is_zero_decrement_counter_should_not_decrease_count() {
         //when
-        counterViewModel = CounterViewModel()
-
         //given
         counterViewModel.decrementCounter()
 
@@ -39,7 +41,6 @@ class CounterViewModelTest {
     @Test
     fun when_count_bigger_than_zero_decrement_counter_should_decrease_count() {
         //when
-        counterViewModel = CounterViewModel()
         counterViewModel.incrementCounter()
         counterViewModel.incrementCounter()
 
