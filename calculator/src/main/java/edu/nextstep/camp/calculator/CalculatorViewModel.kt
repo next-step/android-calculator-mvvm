@@ -37,7 +37,7 @@ class CalculatorViewModel(
         if (result == null) {
             _expressionError.value = Event(Unit)
         } else {
-            _expression.value = Expression(listOf(result))
+            _expression.value = Expression.EMPTY + result
         }
     }
 }
