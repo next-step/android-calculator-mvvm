@@ -7,7 +7,7 @@ import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface MemoryDao {
+internal interface MemoryDao {
 
     @Query("SELECT * FROM memory")
     fun getAllMemory(): Flow<List<Memory>>
