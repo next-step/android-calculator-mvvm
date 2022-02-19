@@ -21,7 +21,7 @@ class CalculatorViewModel(
         get() = _expressionError
 
     fun addToExpression(operand: Int) {
-        _expression.value = _expression.value?.plus(operand)
+        _expression.value = _expression.value?.plus(operand) ?: Expression.EMPTY + operand
     }
 
     fun addToExpression(operator: Operator) {
