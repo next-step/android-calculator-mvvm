@@ -79,7 +79,7 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `수식이 아무것도 입력이 없을때 = 버튼을 누르면 토스트 경고 메세지가 나온다`() {
+    fun `수식이 아무것도 입력이 없을때 = 버튼을 누르면 표현식 오류 이벤트가 발생한다`() {
         // when
         viewModel.calculate()
 
