@@ -23,7 +23,9 @@ class CalculatorActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         viewModel.expressionError.observe(this) {
+            if (it.consumed) return@observe
             Toast.makeText(this, R.string.incomplete_expression, Toast.LENGTH_SHORT).show()
+            it.consume()
         }
     }
 
