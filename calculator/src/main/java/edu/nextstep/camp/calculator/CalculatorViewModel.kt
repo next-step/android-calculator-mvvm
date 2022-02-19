@@ -29,14 +29,6 @@ class CalculatorViewModel(
     val showErrorMessage: LiveData<Event<Unit>>
         get() = _showErrorMessage
 
-    fun loadMemoryFromDatabase() {
-        CoroutineScope(Dispatchers.IO).launch {
-            for (resultRecord in database.resultRecordDao().getAll()) {
-                memory.addResult(resultRecord)
-            }
-        }
-    }
-
     fun operandClick(operand: Int) {
         if (memory.isMemoryShow) {
             return
@@ -95,9 +87,7 @@ class CalculatorViewModel(
             return
         }
 
-        CoroutineScope(Dispatchers.IO).launch {
-            database.resultRecordDao().insertResultRecord(ResultRecord(expression.toString(), res.toString()))
-        }
+        database.resultRecordDao().insertResultRecord(ResultRecord(expression.toString(), res.toString()))
 
         memory.addResult(ResultRecord(expression.toString(), res.toString()))
 

@@ -24,7 +24,7 @@ class CalculatorViewModelFactory(private val context: Context) : ViewModelProvid
         val expression = Expression()
         val calculator = Calculator()
         val database = AppDatabase.getInstance(context)
-        val memory = Memory(mutableListOf())
+        val memory = Memory(database.resultRecordDao().getAll())
         return CalculatorViewModel(expression, calculator, database, memory)
     }
 }
