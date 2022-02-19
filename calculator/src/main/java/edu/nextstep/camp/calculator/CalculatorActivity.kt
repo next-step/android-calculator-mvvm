@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import edu.nextstep.camp.calculator.data.AppDatabase
+import edu.nextstep.camp.calculator.data.ResultRecord
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 
 class CalculatorActivity : AppCompatActivity() {
