@@ -20,7 +20,7 @@ class CounterViewModel : ViewModel() {
     fun decrementCounter() {
         val count = _count.value ?: return
 
-        if(count == 0) {
+        if (count == 0) {
             _eventShowErrorMessage.value = Event(Unit)
             return
         }
