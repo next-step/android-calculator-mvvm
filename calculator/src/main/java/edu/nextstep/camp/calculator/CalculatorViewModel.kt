@@ -56,6 +56,7 @@ class CalculatorViewModel(
             _showErrorMessage.value = Event(Unit)
             return
         }
+        expression = Expression(listOf(res))
         _result.value = res.toString()
     }
 
