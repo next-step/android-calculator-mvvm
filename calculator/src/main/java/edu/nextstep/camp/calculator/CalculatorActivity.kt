@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
+import edu.nextstep.camp.calculator.injector.Injector
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -17,7 +18,7 @@ class CalculatorActivity : AppCompatActivity() {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return CalculatorViewModel(
-                    memoryDao = MemoryDatabase.getInstance(this@CalculatorActivity).getMemoryDao()
+                    memoryRepository = Injector.provideMemoryRepository(this@CalculatorActivity)
                 ) as T
             }
         }

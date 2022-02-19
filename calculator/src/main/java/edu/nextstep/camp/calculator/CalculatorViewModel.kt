@@ -4,11 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import edu.nextstep.camp.calculator.repository.MemoryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
-    private val memoryDao: MemoryDao
+    private val memoryRepository: MemoryRepository
 ) : ViewModel() {
 
     private val calculator = Calculator()
@@ -23,7 +24,7 @@ class CalculatorViewModel(
     private val _isVisibleMemoryList = MutableLiveData(false)
     val isVisibleMemoryList: LiveData<Boolean> = _isVisibleMemoryList
 
-    val memoryFlow: Flow<List<Memory>> = memoryDao.getAllMemory()
+    val memoryFlow: Flow<List<Memory>> = memoryRepository.getAllMemory()
 
     fun addToExpression(operand: Int) {
         _expression.postValue(getCurrentExpression().plus(operand))
@@ -62,7 +63,7 @@ class CalculatorViewModel(
     private fun saveExpressionToMemory(result: Int) {
         viewModelScope.launch {
             val expression = getCurrentExpression().toString()
-            memoryDao.insert(Memory(expression, result))
+            memoryRepository.insert(Memory(expression, result))
         }
     }
 }

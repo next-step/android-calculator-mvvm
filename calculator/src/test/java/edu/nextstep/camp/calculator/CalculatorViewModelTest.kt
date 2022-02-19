@@ -1,6 +1,7 @@
 package edu.nextstep.camp.calculator
 
 import com.google.common.truth.Truth.assertThat
+import edu.nextstep.camp.calculator.repository.MemoryRepository
 import io.mockk.mockk
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -13,13 +14,13 @@ import org.junit.jupiter.params.provider.ValueSource
 
 @ExtendWith(InstantExecutorExtension::class)
 internal class CalculatorViewModelTest {
-    private lateinit var memoryDao: MemoryDao
+    private lateinit var memoryRepository: MemoryRepository
     private lateinit var viewModel: CalculatorViewModel
 
     @BeforeEach
     fun setUp() {
-        memoryDao = mockk(relaxed = true)
-        viewModel = CalculatorViewModel(memoryDao)
+        memoryRepository = mockk(relaxed = true)
+        viewModel = CalculatorViewModel(memoryRepository)
     }
 
     @ValueSource(
