@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Memory(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
     val expression: String,
-    val result: Int
+    val result: Int,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0
 )
