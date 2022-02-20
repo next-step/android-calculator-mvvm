@@ -22,9 +22,9 @@ class CalculatorViewModelTest {
     @Test
     fun `숫자가 입력되면 수식에 추가되고 변경된 수식을 보여줘야 한다`() {
         // given
-        // when
         calculatorViewModel.addToExpression(1)
 
+        // when
         // then
         assertThat(calculatorViewModel.expression.value.toString()).isEqualTo("1")
     }
@@ -32,8 +32,9 @@ class CalculatorViewModelTest {
     @Test
     fun `연산자가 입력되면 수식에 추가되고 변경된 수식을 보여줘야 한다`() {
         // given
-        // when
         calculatorViewModel.addToExpression(1)
+
+        // when
         calculatorViewModel.addToExpression(Operator.Plus)
 
         // then
@@ -43,8 +44,9 @@ class CalculatorViewModelTest {
     @Test
     fun `지우기가 실행되면 수식의 마지막이 지워지고 변경된 수식을 보여줘야 한다`() {
         // given
-        // when
         calculatorViewModel.addToExpression(1)
+
+        // when
         calculatorViewModel.removeLast()
 
         // then
