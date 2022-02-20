@@ -10,7 +10,7 @@ import edu.nextstep.camp.domain.calculator.Expression
 import edu.nextstep.camp.domain.calculator.Operator
 
 class CalculatorViewModel(
-    private val initialExpression: Expression = Expression.EMPTY
+    initialExpression: Expression = Expression.EMPTY
 ) : ViewModel() {
 
     private val _expression = NonNullLiveData(initialExpression)
