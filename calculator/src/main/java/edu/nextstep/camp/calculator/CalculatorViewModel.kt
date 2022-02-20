@@ -6,7 +6,10 @@ import edu.nextstep.camp.domain.Calculator
 import edu.nextstep.camp.domain.Expression
 import edu.nextstep.camp.domain.Operator
 
-class CalculatorViewModel(private val calculator: Calculator = Calculator()) : ViewModel() {
+class CalculatorViewModel(
+    private val calculator: Calculator = Calculator(),
+//    private val memoryDao: MemoryDao = AppDataBase.getInstance(application).memoryDao()
+    ) : ViewModel() {
 
     private val _expressionEvent = SingleLiveEvent<Expression>()
     val expressionEvent: LiveData<Expression> get() = _expressionEvent
