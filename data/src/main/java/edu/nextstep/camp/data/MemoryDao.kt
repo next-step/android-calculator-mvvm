@@ -12,7 +12,4 @@ interface MemoryDao {
 
     @Insert
     suspend fun insert(vararg memory: Memory)
-
-    @Delete
-    fun delete(vararg memory: Memory)
 }

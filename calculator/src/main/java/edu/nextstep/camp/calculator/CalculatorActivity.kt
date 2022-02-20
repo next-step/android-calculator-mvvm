@@ -13,6 +13,8 @@ import edu.nextstep.camp.data.Memory
 
 class CalculatorActivity : AppCompatActivity() {
 
+    private val memoryAdapter = MemoryAdapter()
+
     private val viewModel: CalculatorViewModel by viewModelsFactory {
         CalculatorViewModel(
             memoryDao = AppDataBase.getInstance(this@CalculatorActivity).memoryDao()
@@ -28,6 +30,7 @@ class CalculatorActivity : AppCompatActivity() {
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        binding.recyclerView.adapter = memoryAdapter
 
         observeLiveData()
     }
@@ -54,6 +57,8 @@ class CalculatorActivity : AppCompatActivity() {
     private fun setMemoryView(memories: List<Memory>?) {
         binding.textView.visibility = View.INVISIBLE
         binding.recyclerView.visibility = View.VISIBLE
+        memories?.let { memoryAdapter.refreshMemories(it) }
+
         setButtonEnabled(false)
     }
 
