@@ -10,8 +10,10 @@ abstract class AppDataBase : RoomDatabase() {
     abstract fun memoryDao(): MemoryDao
 
     companion object {
+        private var instance: AppDataBase? = null
+
         fun getInstance(context: Context): AppDataBase {
-            return Room.databaseBuilder(
+            return instance ?: Room.databaseBuilder(
                 context,
                 AppDataBase::class.java, "calculator.db"
             ).build()
