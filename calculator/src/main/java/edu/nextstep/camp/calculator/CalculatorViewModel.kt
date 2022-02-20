@@ -14,7 +14,11 @@ class CalculatorViewModel(private val calculator: Calculator = Calculator()) : V
     private val _errorEvent = SingleLiveEvent<Unit>()
     val errorEvent: LiveData<Unit> get() = _errorEvent
 
+    private val _viewTypeEvent = SingleLiveEvent<CalculatorViewType>()
+    val viewTypeEvent: LiveData<CalculatorViewType> get() = _viewTypeEvent
+
     private val currentExpression: Expression get() = _expressionEvent.value ?: Expression.EMPTY
+    private val viewType: CalculatorViewType get() = _viewTypeEvent.value ?: ExpressionView
 
     fun addToExpression(operand: Int) {
         val newExpression = currentExpression + operand
@@ -39,5 +43,9 @@ class CalculatorViewModel(private val calculator: Calculator = Calculator()) : V
         }
 
         _expressionEvent.value = Expression(listOf(result))
+    }
+
+    fun toggleViewType() {
+        _viewTypeEvent.value = viewType.toggle()
     }
 }
