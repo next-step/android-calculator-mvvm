@@ -1,5 +1,7 @@
 package edu.nextstep.camp.calculator
 
+import edu.nextstep.camp.data.Memory
+
 sealed class CalculatorViewType {
     override fun toString(): String {
         return when (this) {
@@ -11,11 +13,11 @@ sealed class CalculatorViewType {
 
 object ExpressionView : CalculatorViewType()
 
-object MemoryView : CalculatorViewType()
+class MemoryView(val memories: List<Memory>?) : CalculatorViewType()
 
-fun CalculatorViewType.toggle(): CalculatorViewType {
+fun CalculatorViewType.toggle(memories: List<Memory>?): CalculatorViewType {
     return when (this) {
-        is ExpressionView -> MemoryView
+        is ExpressionView -> MemoryView(memories)
         is MemoryView -> ExpressionView
     }
 }

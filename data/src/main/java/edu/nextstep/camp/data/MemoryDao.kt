@@ -11,7 +11,7 @@ interface MemoryDao {
     fun getAll(): List<Memory>
 
     @Insert
-    fun insert(vararg memory: Memory)
+    suspend fun insert(vararg memory: Memory)
 
     @Delete
     fun delete(vararg memory: Memory)

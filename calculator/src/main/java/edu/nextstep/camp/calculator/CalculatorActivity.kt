@@ -5,11 +5,19 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
+import edu.nextstep.camp.data.AppDataBase
+import edu.nextstep.camp.data.Memory
 
 class CalculatorActivity : AppCompatActivity() {
 
-    private val viewModel: CalculatorViewModel by viewModels()
+    private val viewModel: CalculatorViewModel by viewModelsFactory {
+        CalculatorViewModel(
+            memoryDao = AppDataBase.getInstance(this@CalculatorActivity).memoryDao()
+        )
+    }
 
     private lateinit var binding: ActivityCalculatorBinding
 
@@ -32,7 +40,7 @@ class CalculatorActivity : AppCompatActivity() {
         viewModel.viewTypeEvent.observe(this) {
             when (it) {
                 is ExpressionView -> setExpressionView()
-                is MemoryView -> setMemoryView()
+                is MemoryView -> setMemoryView(it.memories)
             }
         }
     }
@@ -43,7 +51,7 @@ class CalculatorActivity : AppCompatActivity() {
         setButtonEnabled(true)
     }
 
-    private fun setMemoryView() {
+    private fun setMemoryView(memories: List<Memory>?) {
         binding.textView.visibility = View.INVISIBLE
         binding.recyclerView.visibility = View.VISIBLE
         setButtonEnabled(false)
@@ -67,6 +75,16 @@ class CalculatorActivity : AppCompatActivity() {
             buttonDivide.isEnabled = enabled
             buttonDelete.isEnabled = enabled
             buttonEquals.isEnabled = enabled
+        }
+    }
+
+    private inline fun <reified T : ViewModel> viewModelsFactory(crossinline viewModelInitialization: () -> T): Lazy<T> {
+        return viewModels {
+            object : ViewModelProvider.Factory {
+                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                    return viewModelInitialization.invoke() as T
+                }
+            }
         }
     }
 }
