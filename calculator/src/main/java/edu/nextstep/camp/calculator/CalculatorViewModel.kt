@@ -12,7 +12,6 @@ import edu.nextstep.camp.domain.calculator.Operator
 class CalculatorViewModel(
     private val initialExpression: Expression = Expression.EMPTY
 ) : ViewModel() {
-    private val calculator = Calculator()
 
     private val _expression = NonNullLiveData(initialExpression)
     val expression: LiveData<Expression>
@@ -36,7 +35,7 @@ class CalculatorViewModel(
 
     fun calculate() {
         val currentExpression = _expression.value
-        val result = calculator.calculate(currentExpression.toString())
+        val result = Calculator.calculate(currentExpression.toString())
         if (result != null) {
             _expression.value = Expression(result)
             return
