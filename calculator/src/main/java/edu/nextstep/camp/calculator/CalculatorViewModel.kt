@@ -7,10 +7,10 @@ import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 
-class CalculatorViewModel : ViewModel() {
+class CalculatorViewModel(expression: Expression = Expression.EMPTY) : ViewModel() {
     private val calculator = Calculator()
 
-    private val _expression = MutableLiveData(Expression.EMPTY)
+    private val _expression = MutableLiveData(expression)
     val expression: LiveData<Expression> get() = _expression
 
     private val _eventShowIncompleteExpressionError = MutableLiveData<Event<Unit>>()
