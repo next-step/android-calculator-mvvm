@@ -13,7 +13,7 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
         } as T
     }
 
-    private fun createCounterViewModel(): CounterViewModel {
-        return CounterViewModel()
+    private fun createCounterViewModel(defaultCount: Int = 0): CounterViewModel {
+        return CounterViewModel(defaultCount)
     }
 }

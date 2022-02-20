@@ -18,13 +18,20 @@ class CounterActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initViewModel()
+        initObserve()
     }
 
     private fun initViewModel() {
         binding.lifecycleOwner = this
         binding.viewModel = counterViewModel
-        counterViewModel.showToast.observe(this) {
-            Toast.makeText(this, R.string.error_counter_under_zero, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun initObserve() {
+        counterViewModel.errorToast.observe(this) {
+            if (it) {
+                Toast.makeText(this, R.string.error_counter_under_zero, Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
     }
 }
