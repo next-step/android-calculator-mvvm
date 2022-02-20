@@ -35,7 +35,7 @@ class CalculatorViewModel : ViewModel() {
         if (result == null) {
             _eventShowIncompleteExpressionError.value = Event(Unit)
         } else {
-            _expression.value = Expression(listOf(result))
+            _expression.value = Expression.EMPTY + result
         }
     }
 }
