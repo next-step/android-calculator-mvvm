@@ -45,8 +45,10 @@ android {
 dependencies {
     implementation(project(":data"))
     implementation(project(":domain"))
-    implementation(Material.MATERIAL)
+
     implementation(Kotlin.STDLIB)
+    implementation(Material.MATERIAL)
+    testImplementation(Others.ROBOLECTRIC)
 
     Androidx.run {
         implementation(CORE)
@@ -55,7 +57,6 @@ dependencies {
         implementation(FRAGMENT)
         implementation(LIFECYCLE)
     }
-    testImplementation(Others.ROBOLECTRIC)
     Test.run {
         testRuntimeOnly(VINTAGE)
         testImplementation(JUNIT4)

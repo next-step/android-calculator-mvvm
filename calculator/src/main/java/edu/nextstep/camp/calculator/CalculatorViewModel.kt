@@ -61,7 +61,7 @@ class CalculatorViewModel(
         }
     }
 
-    suspend fun getStatements(): Flow<List<RecordStatement>> =
+    fun getStatements(): Flow<List<RecordStatement>> =
         calculatorRepository.getStatements()
 
     private fun saveStatement(recordStatement: RecordStatement) = viewModelScope.launch {

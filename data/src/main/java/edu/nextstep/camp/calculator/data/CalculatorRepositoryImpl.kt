@@ -1,11 +1,14 @@
 package edu.nextstep.camp.calculator.data
 
 import edu.nextstep.camp.calculator.data.local.CalculatorDao
+import edu.nextstep.camp.calculator.data.mapper.map
+import edu.nextstep.camp.calculator.data.model.Statement
 import edu.nextstep.camp.calculator.domain.CalculatorRepository
 import edu.nextstep.camp.calculator.domain.model.RecordStatement
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
@@ -16,12 +19,14 @@ internal class CalculatorRepositoryImpl private constructor(
 
     override suspend fun saveStatement(recordStatement: RecordStatement) =
         withContext(ioDispatcher) {
-            calculatorDao.insertStatement(recordStatement.map())
+            val (uuid, expression, calculateResult) = recordStatement
+            calculatorDao.insertStatement(Statement(uuid, expression, calculateResult))
         }
 
-    override suspend fun getStatements(): Flow<List<RecordStatement>> = withContext(ioDispatcher) {
-        calculatorDao.getAll().map { it.map { it.map() } }
-    }
+    override fun getStatements(): Flow<List<RecordStatement>> =
+        calculatorDao.getAll()
+            .map { stateList -> stateList.map() }
+            .flowOn(Dispatchers.IO)
 
     companion object {
         @Volatile
