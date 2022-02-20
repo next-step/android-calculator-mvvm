@@ -29,6 +29,10 @@ class CalculatorViewModel(
     private val currentExpression: Expression get() = _expressionEvent.value ?: Expression.EMPTY
     private val viewType: CalculatorViewType get() = _viewTypeEvent.value ?: ExpressionView
 
+    val isViewTypeExpression: Boolean get() {
+        return viewType.isExpression()
+    }
+
     fun addToExpression(operand: Int) {
         val newExpression = currentExpression + operand
         _expressionEvent.value = newExpression

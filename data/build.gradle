@@ -31,8 +31,13 @@ android {
 }
 
 dependencies {
+    implementation project(':domain')
+    implementation 'androidx.test:core-ktx:1.4.0'
     def room_version = "2.4.1"
     api "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     api "androidx.room:room-ktx:$room_version"
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
+    testImplementation 'com.google.truth:truth:1.1.2'
 }
