@@ -1,8 +1,8 @@
 package edu.nextstep.camp.calculator
 
-import edu.nextstep.camp.calculator.domain.Calculator
-import edu.nextstep.camp.calculator.domain.Expression
-import edu.nextstep.camp.calculator.domain.Operator
+import edu.nextstep.camp.domain.Calculator
+import edu.nextstep.camp.domain.Expression
+import edu.nextstep.camp.domain.Operator
 
 class CalculatorPresenter(
     private val view: CalculatorContract.View

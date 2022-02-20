@@ -1,8 +1,8 @@
 package edu.nextstep.camp.calculator
 
 import com.google.common.truth.Truth.assertThat
-import edu.nextstep.camp.calculator.domain.Expression
-import edu.nextstep.camp.calculator.domain.Operator
+import edu.nextstep.camp.domain.Expression
+import edu.nextstep.camp.domain.Operator
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
@@ -23,7 +23,7 @@ class CalculatorPresenterTest {
     @Test
     fun `숫자가 입력되면 수식에 추가되고 변경된 수식을 보여줘야 한다`() {
         // given
-        val expressionSlot = slot<Expression>()
+        val expressionSlot = slot<edu.nextstep.camp.domain.Expression>()
         every { view.showExpression(capture(expressionSlot)) } answers { nothing }
 
         // when
@@ -38,12 +38,12 @@ class CalculatorPresenterTest {
     @Test
     fun `연산자가 입력되면 수식에 추가되고 변경된 수식을 보여줘야 한다`() {
         // given
-        val expressionSlot = slot<Expression>()
+        val expressionSlot = slot<edu.nextstep.camp.domain.Expression>()
         every { view.showExpression(capture(expressionSlot)) } answers { nothing }
 
         // when
         presenter.addToExpression(1)
-        presenter.addToExpression(Operator.Plus)
+        presenter.addToExpression(edu.nextstep.camp.domain.Operator.Plus)
 
         // then
         val actual = expressionSlot.captured
@@ -54,7 +54,7 @@ class CalculatorPresenterTest {
     @Test
     fun `지우기가 실행되면 수식의 마지막이 지워지고 변경된 수식을 보여줘야 한다`() {
         // given
-        val expressionSlot = slot<Expression>()
+        val expressionSlot = slot<edu.nextstep.camp.domain.Expression>()
         every { view.showExpression(capture(expressionSlot)) } answers { nothing }
 
         // when
@@ -73,7 +73,7 @@ class CalculatorPresenterTest {
         every { view.showExpression(any()) } answers { nothing }
         every { view.showResult(any()) } answers { nothing }
         presenter.addToExpression(1)
-        presenter.addToExpression(Operator.Plus)
+        presenter.addToExpression(edu.nextstep.camp.domain.Operator.Plus)
         presenter.addToExpression(2)
 
         // when
