@@ -17,12 +17,12 @@ class CalculatorViewModel : ViewModel() {
     val eventShowIncompleteExpressionError: LiveData<Event<Unit>> get() = _eventShowIncompleteExpressionError
 
     fun addToExpression(operand: Int) {
-        val previousExpression = expression.value ?: return
+        val previousExpression = expression.value ?: Expression.EMPTY
         _expression.value = previousExpression + operand
     }
 
     fun addToExpression(operator: Operator) {
-        val previousExpression = expression.value ?: return
+        val previousExpression = expression.value ?: Expression.EMPTY
         _expression.value = previousExpression + operator
     }
 
