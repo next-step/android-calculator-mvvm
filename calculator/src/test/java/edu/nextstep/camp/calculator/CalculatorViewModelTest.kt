@@ -26,7 +26,7 @@ class CalculatorViewModelTest {
     @Test
     fun `입력된 피연사자가 없을때, 피연산자 2 버튼을 누르면 화면에 2를 보여준다`() {
         // when : 피연산자 2 버튼을 누르면
-        viewModel.operandClick(2)
+        viewModel.addOperand(2)
 
         // then : 화면에 2를 보여준다
         val actual = viewModel.result.value
@@ -36,10 +36,10 @@ class CalculatorViewModelTest {
     @Test
     fun `이전에 8 버튼을 눌렀을 때, 5 버튼을 누르면 화면에 85를 보여준다`() {
         // given : 8 버튼을 눌렀을 때
-        viewModel.operandClick(8)
+        viewModel.addOperand(8)
 
         // when : 5 버튼을 누르면
-        viewModel.operandClick(5)
+        viewModel.addOperand(5)
 
         // then : 화면에 85를 보여준다
         val actual = viewModel.result.value
@@ -64,7 +64,7 @@ class CalculatorViewModelTest {
     @Test
     fun `입력된 피연산자가 있을때, 연산자 버튼을 누르면 해당 기호를 화면에 보여준다`() {
         // given : 입력된 피연산자가 있을때
-        viewModel.operandClick(8)
+        viewModel.addOperand(8)
 
         // when : 연산자 버튼을 누르면
         viewModel.plus()
@@ -89,9 +89,9 @@ class CalculatorViewModelTest {
     @Test
     fun `입력된 수식이 있을 때, 지우기 버튼을 누르면 수식에 마지막으로 입력된 것이 지워져야 한다`() {
         // given : 입력된 수식이 있을 때
-        viewModel.operandClick(8)
+        viewModel.addOperand(8)
         viewModel.plus()
-        viewModel.operandClick(8)
+        viewModel.addOperand(8)
         viewModel.divide()
 
         // when : 지우기 버튼을 누르면
@@ -119,15 +119,15 @@ class CalculatorViewModelTest {
     @Test
     fun `입력된 수식이 완전할 때, = 버튼을 누르면 입력된 수식의 결과를 화면에 보여준다`() {
         // given : 입력된 수식이 완전할 때
-        viewModel.operandClick(5)
+        viewModel.addOperand(5)
         viewModel.plus()
-        viewModel.operandClick(5)
+        viewModel.addOperand(5)
         viewModel.divide()
-        viewModel.operandClick(2)
+        viewModel.addOperand(2)
         viewModel.multiply()
-        viewModel.operandClick(3)
+        viewModel.addOperand(3)
         viewModel.minus()
-        viewModel.operandClick(2)
+        viewModel.addOperand(2)
 
         // when : = 버튼을 누르면
         viewModel.equals()
@@ -140,9 +140,9 @@ class CalculatorViewModelTest {
     @Test
     fun `입력된 수식이 완전하지 않을 때, = 버튼을 누르면 완성되지 않은 수식입니다 토스트 메세지를 화면에 보여준다`() {
         // given : 입력된 수식이 완전하지 않을 때
-        viewModel.operandClick(5)
+        viewModel.addOperand(5)
         viewModel.plus()
-        viewModel.operandClick(5)
+        viewModel.addOperand(5)
         viewModel.divide()
 
         // when : = 버튼을 누르면

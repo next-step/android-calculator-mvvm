@@ -99,7 +99,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.operandClick(7)}"
+                android:onClick="@{() -> viewModel.addOperand(7)}"
                 android:text="@string/calculator_7"
                 />
 
@@ -108,7 +108,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.operandClick(8)}"
+                android:onClick="@{() -> viewModel.addOperand(8)}"
                 android:text="@string/calculator_8"
                 />
 
@@ -117,7 +117,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.operandClick(9)}"
+                android:onClick="@{() -> viewModel.addOperand(9)}"
                 android:text="@string/calculator_9"
                 />
 
@@ -135,7 +135,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.operandClick(4)}"
+                android:onClick="@{() -> viewModel.addOperand(4)}"
                 android:text="@string/calculator_4"
                 />
 
@@ -144,7 +144,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.operandClick(5)}"
+                android:onClick="@{() -> viewModel.addOperand(5)}"
                 android:text="@string/calculator_5"
                 />
 
@@ -153,7 +153,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.operandClick(6)}"
+                android:onClick="@{() -> viewModel.addOperand(6)}"
                 android:text="@string/calculator_6"
                 />
 
@@ -171,7 +171,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.operandClick(1)}"
+                android:onClick="@{() -> viewModel.addOperand(1)}"
                 android:text="@string/calculator_1"
                 />
 
@@ -180,7 +180,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.operandClick(2)}"
+                android:onClick="@{() -> viewModel.addOperand(2)}"
                 android:text="@string/calculator_2"
                 />
 
@@ -189,7 +189,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.operandClick(3)}"
+                android:onClick="@{() -> viewModel.addOperand(3)}"
                 android:text="@string/calculator_3"
                 />
 
@@ -207,7 +207,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.operandClick(0)}"
+                android:onClick="@{() -> viewModel.addOperand(0)}"
                 android:text="@string/calculator_0"
                 />
 

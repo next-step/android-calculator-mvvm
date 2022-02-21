@@ -30,7 +30,7 @@ class CalculatorViewModel(
 
     var isMemoryVisible = false
 
-    fun operandClick(operand: Int) {
+    fun addOperand(operand: Int) {
         if (isMemoryVisible) {
             return
         }
