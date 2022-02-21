@@ -1,11 +1,12 @@
 package edu.nextstep.camp.calculator.memory
 
 import androidx.recyclerview.widget.DiffUtil
-import edu.nextstep.camp.calculator.domain.Memory
+import edu.nextstep.camp.calculator.domain.model.Memories
+import edu.nextstep.camp.calculator.domain.model.Memory
 
-object MemoryDiffUtil : DiffUtil.ItemCallback<Memory.Item>() {
+object MemoryDiffUtil : DiffUtil.ItemCallback<Memory>() {
 
-    override fun areItemsTheSame(oldItem: Memory.Item, newItem: Memory.Item) = oldItem.expression == newItem.expression
+    override fun areItemsTheSame(oldItem: Memory, newItem: Memory) = oldItem.expression == newItem.expression
 
-    override fun areContentsTheSame(oldItem: Memory.Item, newItem: Memory.Item) = oldItem == newItem
+    override fun areContentsTheSame(oldItem: Memory, newItem: Memory) = oldItem == newItem
 }

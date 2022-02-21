@@ -6,9 +6,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.ListAdapter
 import edu.nextstep.camp.calculator.R
 import edu.nextstep.camp.calculator.databinding.ItemResultBinding
-import edu.nextstep.camp.calculator.domain.Memory
+import edu.nextstep.camp.calculator.domain.model.Memories
+import edu.nextstep.camp.calculator.domain.model.Memory
 
-class MemoryAdapter : ListAdapter<Memory.Item, MemoryViewHolder>(MemoryDiffUtil) {
+class MemoryAdapter : ListAdapter<Memory, MemoryViewHolder>(MemoryDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemoryViewHolder {
         val binding =
