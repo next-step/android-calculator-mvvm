@@ -2,22 +2,26 @@ package edu.nextstep.camp.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
+import edu.nextstep.camp.data.MemoryDao
 import edu.nextstep.camp.domain.Expression
 import edu.nextstep.camp.domain.Operator
+import io.mockk.mockk
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 class CalculatorViewModelTest {
 
-    private lateinit var viewModel: CalculatorViewModel
-
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
+    private lateinit var memoryDao: MemoryDao
+    private lateinit var viewModel: CalculatorViewModel
+
     @Before
     fun setUp() {
-        viewModel = CalculatorViewModel()
+        memoryDao = mockk(relaxed = true)
+        viewModel = CalculatorViewModel(memoryDao = memoryDao)
     }
 
     @Test
