@@ -5,14 +5,14 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 import edu.nextstep.camp.calculator.memory.MemoryAdapter
 
 class CalculatorActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCalculatorBinding
-    private val viewModel: CalculatorViewModel by viewModels { ViewModelFactory(this) }
-
+    private lateinit var viewModel: CalculatorViewModel
     private lateinit var memoryAdapter: MemoryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +28,8 @@ class CalculatorActivity : AppCompatActivity() {
     }
 
     private fun setupViewModel() {
+        viewModel = ViewModelProvider(this, ViewModelFactory(this)).get(CalculatorViewModel::class.java)
+
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
     }
