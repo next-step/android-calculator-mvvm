@@ -2,6 +2,7 @@ package edu.nextstep.camp.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.*
+import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Operator
 import org.junit.Before
 import org.junit.Rule
@@ -16,7 +17,7 @@ class CalculatorViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = CalculatorViewModel()
+        viewModel = CalculatorViewModel(Calculator())
     }
 
     @Test
@@ -112,25 +113,7 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(1)
 
         // when
-        viewModel.removeLast()
-
-        // then
-        assertThat(viewModel.displayResult.getOrAwaitValue()).isEqualTo("32 +")
-
-        // when
-        viewModel.removeLast()
-
-        // then
-        assertThat(viewModel.displayResult.getOrAwaitValue()).isEqualTo("32")
-
-        // when
-        viewModel.removeLast()
-
-        // then
-        assertThat(viewModel.displayResult.getOrAwaitValue()).isEqualTo("3")
-
-        // when
-        viewModel.removeLast()
+        repeat(4) { viewModel.removeLast() }
 
         // then
         assertThat(viewModel.displayResult.getOrAwaitValue()).isEmpty()
