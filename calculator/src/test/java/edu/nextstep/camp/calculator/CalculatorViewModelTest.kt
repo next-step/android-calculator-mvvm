@@ -20,7 +20,7 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(1)
         // than :
         val actualExpression = viewModel.expression.getOrAwaitValue()
-        assertThat(actualExpression.toString()).isEqualTo("1")
+        assertThat(actualExpression).isEqualTo(Expression(1))
     }
 
     @Test
@@ -31,7 +31,7 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(Operator.Plus)
         // than :
         val actualExpression = viewModel.expression.getOrAwaitValue()
-        assertThat(actualExpression.toString()).isEmpty()
+        assertThat(actualExpression).isEqualTo(Expression.EMPTY)
     }
 
     @Test
@@ -42,7 +42,7 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(2)
         // than :
         val actualExpression = viewModel.expression.getOrAwaitValue()
-        assertThat(actualExpression.toString()).isEqualTo("12")
+        assertThat(actualExpression).isEqualTo(Expression(12))
     }
 
     @Test
@@ -53,7 +53,7 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(Operator.Plus)
         // than :
         val actualExpression = viewModel.expression.getOrAwaitValue()
-        assertThat(actualExpression.toString()).isEqualTo("1 +")
+        assertThat(actualExpression).isEqualTo(Expression(1, Operator.Plus))
     }
 
     @Test
@@ -64,7 +64,7 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(Operator.Minus)
         // then :
         val actualExpression = viewModel.expression.getOrAwaitValue()
-        assertThat(actualExpression.toString()).isEqualTo("1 -")
+        assertThat(actualExpression).isEqualTo(Expression(1, Operator.Minus))
     }
 
     @Test
@@ -75,7 +75,7 @@ class CalculatorViewModelTest {
         viewModel.removeLast()
         // then :
         val actualExpression = viewModel.expression.getOrAwaitValue()
-        assertThat(actualExpression.toString()).isEmpty()
+        assertThat(actualExpression).isEqualTo(Expression.EMPTY)
     }
 
     @Test
@@ -86,7 +86,7 @@ class CalculatorViewModelTest {
         viewModel.removeLast()
         // then :
         val actualExpression = viewModel.expression.getOrAwaitValue()
-        assertThat(actualExpression.toString()).isEqualTo("1")
+        assertThat(actualExpression).isEqualTo(Expression(1))
     }
 
     @Test
@@ -97,7 +97,7 @@ class CalculatorViewModelTest {
         viewModel.removeLast()
         // then :
         val actualExpression = viewModel.expression.getOrAwaitValue()
-        assertThat(actualExpression.toString()).isEqualTo("1")
+        assertThat(actualExpression).isEqualTo(Expression(1))
     }
 
     @Test
@@ -108,7 +108,7 @@ class CalculatorViewModelTest {
         viewModel.calculate()
         // then :
         val actualExpression = viewModel.expression.getOrAwaitValue()
-        assertThat(actualExpression.toString()).isEqualTo("3")
+        assertThat(actualExpression).isEqualTo(Expression(3))
     }
 
     @Test
