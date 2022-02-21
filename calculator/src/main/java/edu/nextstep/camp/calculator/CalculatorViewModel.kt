@@ -21,8 +21,8 @@ class CalculatorViewModel(
     private val _showIncompleteExpressionError = SingleLiveEvent<Unit>()
     val showIncompleteExpressionError: LiveData<Unit> get() = _showIncompleteExpressionError
 
-    private val _isMemoryMode = MutableLiveData(false)
-    val isMemoryMode: LiveData<Boolean> get() = _isMemoryMode
+    private val _calculatorMode: MutableLiveData<CalculatorMode> = MutableLiveData(CalculatorMode.Expression)
+    val calculatorMode: LiveData<CalculatorMode> get() = _calculatorMode
 
     private val _memoryResult = MutableLiveData(Memories.EMPTY)
     val memoriesResult: LiveData<Memories> get() = _memoryResult
@@ -71,18 +71,18 @@ class CalculatorViewModel(
     }
 
     fun toggleMode() {
-        when (isMemoryMode.value) {
-            true -> toggleExpressionMode()
-            false -> toggleMemoryMode()
+        when (calculatorMode.value) {
+            CalculatorMode.Memory -> toggleExpressionMode()
+            CalculatorMode.Expression -> toggleMemoryMode()
         }
     }
 
     private fun toggleExpressionMode() {
-        _isMemoryMode.value = false
+        _calculatorMode.value = CalculatorMode.Expression
     }
 
     private fun toggleMemoryMode() {
-        _isMemoryMode.value = true
+        _calculatorMode.value = CalculatorMode.Memory
         _memoryResult.value = memories
     }
 }
