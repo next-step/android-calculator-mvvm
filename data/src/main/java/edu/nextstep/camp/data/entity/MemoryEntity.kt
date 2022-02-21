@@ -8,8 +8,8 @@ import java.util.*
 @Entity(tableName = "memory")
 data class MemoryEntity(
     @PrimaryKey val id: UUID = UUID.randomUUID(),
-    var expression: String = "",
-    var result: Int = 0
+    val expression: String,
+    val result: Int
 ) {
 
     companion object {
