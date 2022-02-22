@@ -15,6 +15,7 @@ class CalculatorActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        binding.recyclerView.adapter = CalculatorMemoryAdapter()
         observeEvent()
     }
 
