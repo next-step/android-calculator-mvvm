@@ -1,7 +1,6 @@
 package edu.nextstep.camp.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
 import com.google.common.truth.Truth.assertThat
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
