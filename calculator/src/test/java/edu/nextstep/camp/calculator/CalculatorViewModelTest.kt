@@ -11,10 +11,10 @@ import org.junit.Test
 
 internal class CalculatorViewModelTest {
 
-    private lateinit var viewModel: CalculatorViewModel
-
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
+
+    private lateinit var viewModel: CalculatorViewModel
 
     @Before
     fun setUp() {
