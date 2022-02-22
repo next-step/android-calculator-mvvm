@@ -30,7 +30,7 @@ class CalculatorViewModel(
 
     var isMemoryVisible = false
 
-    fun operandClick(operand: Int) {
+    fun addToExpression(operand: Int) {
         if (isMemoryVisible) {
             return
         }
@@ -38,35 +38,11 @@ class CalculatorViewModel(
         _result.value = expression.toString()
     }
 
-    fun plus() {
+    fun addToExpression(operator: Operator) {
         if (isMemoryVisible) {
             return
         }
-        expression += Operator.Plus
-        _result.value = expression.toString()
-    }
-
-    fun minus() {
-        if (isMemoryVisible) {
-            return
-        }
-        expression += Operator.Minus
-        _result.value = expression.toString()
-    }
-
-    fun divide() {
-        if (isMemoryVisible) {
-            return
-        }
-        expression += Operator.Divide
-        _result.value = expression.toString()
-    }
-
-    fun multiply() {
-        if (isMemoryVisible) {
-            return
-        }
-        expression += Operator.Multiply
+        expression += operator
         _result.value = expression.toString()
     }
 
