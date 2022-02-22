@@ -6,11 +6,13 @@ import androidx.lifecycle.ViewModel
 import edu.nextstep.camp.calculator.utils.Event
 import edu.nextstep.camp.calculator.utils.NonNullLiveData
 import edu.nextstep.camp.domain.calculator.Calculator
+import edu.nextstep.camp.domain.calculator.CalculatorMemory
 import edu.nextstep.camp.domain.calculator.Expression
 import edu.nextstep.camp.domain.calculator.Operator
 
 class CalculatorViewModel(
-    initialExpression: Expression = Expression.EMPTY
+    initialExpression: Expression = Expression.EMPTY,
+    private val initialCalculatorMemory: CalculatorMemory = CalculatorMemory()
 ) : ViewModel() {
 
     private val _expression = NonNullLiveData(initialExpression)
@@ -29,6 +31,12 @@ class CalculatorViewModel(
     val isVisibleCalculatorMemory: LiveData<Boolean>
         get() = _isVisibleCalculatorMemory
 
+    init {
+        _calculatorMemory.value = initialCalculatorMemory.records.map {
+            CalculatorRecordUiState(it.expression, it.result)
+        }
+    }
+
     fun addToExpression(operand: Int) {
         _expression.value += operand
     }
@@ -44,11 +52,15 @@ class CalculatorViewModel(
     fun calculate() {
         val currentExpression = _expression.value
         val result = Calculator.calculate(currentExpression.toString())
-        if (result != null) {
-            _expression.value = Expression(result)
+        if (result == null) {
+            _incompleteExpressionEvent.value = Event(true)
             return
         }
-        _incompleteExpressionEvent.value = Event(true)
+        initialCalculatorMemory.addRecord(_expression.value, result)
+        _calculatorMemory.value = initialCalculatorMemory.records.map {
+            CalculatorRecordUiState(it.expression, it.result)
+        }
+        _expression.value = Expression(result)
     }
 
     fun toggleVisibilityOfCalculatorMemory() {

@@ -19,16 +19,10 @@ class CalculatorMemoryAdapter :
     }
 
     override fun onBindViewHolder(holderRecord: RecordViewHolder, position: Int) {
-        holderRecord.onBind(getItem(position))
+        holderRecord.binding.uiState = getItem(position)
     }
 
-    class RecordViewHolder(
-        private val binding: ItemResultBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
-        fun onBind(item: CalculatorRecordUiState) {
-            binding.uiState = item
-        }
-    }
+    class RecordViewHolder(val binding: ItemResultBinding) : RecyclerView.ViewHolder(binding.root)
 
     private class RecordDiffUtilCallback : DiffUtil.ItemCallback<CalculatorRecordUiState>() {
         override fun areItemsTheSame(
