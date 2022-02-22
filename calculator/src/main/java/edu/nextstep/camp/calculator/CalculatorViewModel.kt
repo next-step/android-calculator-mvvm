@@ -17,6 +17,10 @@ class CalculatorViewModel(
     val expression: LiveData<Expression>
         get() = _expression
 
+    private val _calculatorMemory = MutableLiveData<List<CalculatorRecordUiState>>()
+    val calculatorMemory: LiveData<List<CalculatorRecordUiState>>
+        get() = _calculatorMemory
+
     private val _incompleteExpressionEvent = MutableLiveData<Event<Boolean>>()
     val incompleteExpressionEvent: LiveData<Event<Boolean>>
         get() = _incompleteExpressionEvent
