@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import edu.nextstep.camp.calculator.data.ResultRecord
 import edu.nextstep.camp.calculator.databinding.ItemResultBinding
 
-class ResultAdapter(private val results: MutableList<ResultRecord>) : RecyclerView.Adapter<ViewHolder>() {
+class ResultAdapter(private val results: MutableList<ResultRecord>) : RecyclerView.Adapter<ResultAdapterViewHolder>() {
     fun addResult(resultRecord: ResultRecord) {
         results.add(resultRecord)
     }
@@ -15,14 +15,14 @@ class ResultAdapter(private val results: MutableList<ResultRecord>) : RecyclerVi
         return results.toList()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultAdapterViewHolder {
         val binding: ItemResultBinding = ItemResultBinding.inflate(LayoutInflater.from(parent.context))
-        return ViewHolder(binding)
+        return ResultAdapterViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.expression.text = results[position].expression
-        holder.result.text = results[position].result
+    override fun onBindViewHolder(holderResultAdapter: ResultAdapterViewHolder, position: Int) {
+        holderResultAdapter.expression.text = results[position].expression
+        holderResultAdapter.result.text = results[position].result
     }
 
     override fun getItemCount(): Int {
