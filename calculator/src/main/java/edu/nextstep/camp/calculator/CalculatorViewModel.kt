@@ -37,7 +37,7 @@ class CalculatorViewModel(
                 _calculateFailed.value = Unit
                 return
             }
-        _expression.value = Expression(listOf(calculateValue))
+        _expression.value = Expression.EMPTY + calculateValue
     }
 
     fun removeLast() {
