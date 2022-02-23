@@ -3,7 +3,6 @@ package edu.nextstep.camp.calculator
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import edu.nextstep.camp.calculator.data.AppDatabase
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 
