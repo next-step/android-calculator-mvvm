@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
+import edu.nextstep.camp.calculator.util.SingleLiveEvent
 
 class CalculatorViewModel(
     private val calculator: Calculator = Calculator(),
@@ -15,7 +16,7 @@ class CalculatorViewModel(
     val expression: LiveData<Expression>
         get() = _expression
 
-    private val _calculateFailed:MutableLiveData<Unit> = MutableLiveData()
+    private val _calculateFailed:MutableLiveData<Unit> = SingleLiveEvent()
     val calculateFailed: LiveData<Unit>
         get() = _calculateFailed
 
