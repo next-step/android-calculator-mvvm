@@ -9,7 +9,7 @@ fun convertStringToInt(operand: String): Int = operand.toInt()
 @BindingConversion
 fun convertStringToOperator(operator: String): Operator? {
     val operatorStr =
-        when(operator) {
+        when (operator) {
             "÷" -> "/"
             "×" -> "*"
             else -> operator

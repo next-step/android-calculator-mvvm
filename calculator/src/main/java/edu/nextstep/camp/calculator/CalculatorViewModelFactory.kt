@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModelProvider
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 
-class CalculatorViewModelFactory (
+class CalculatorViewModelFactory(
     private val calculator: Calculator = Calculator(),
     private val initialExpression: Expression = Expression.EMPTY
-): ViewModelProvider.Factory {
+) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

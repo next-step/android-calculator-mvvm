@@ -11,12 +11,12 @@ import edu.nextstep.camp.calculator.util.SingleLiveEvent
 class CalculatorViewModel(
     private val calculator: Calculator = Calculator(),
     initialExpression: Expression = Expression.EMPTY
-): ViewModel() {
-    private val _expression:MutableLiveData<Expression> = MutableLiveData(initialExpression)
+) : ViewModel() {
+    private val _expression: MutableLiveData<Expression> = MutableLiveData(initialExpression)
     val expression: LiveData<Expression>
         get() = _expression
 
-    private val _calculateFailed:MutableLiveData<Unit> = SingleLiveEvent()
+    private val _calculateFailed: MutableLiveData<Unit> = SingleLiveEvent()
     val calculateFailed: LiveData<Unit>
         get() = _calculateFailed
 

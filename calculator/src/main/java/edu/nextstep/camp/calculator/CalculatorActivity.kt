@@ -13,7 +13,7 @@ import edu.nextstep.camp.calculator.domain.Operator
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
-    private val viewModel:CalculatorViewModel by viewModels()
+    private val viewModel: CalculatorViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_calculator)
