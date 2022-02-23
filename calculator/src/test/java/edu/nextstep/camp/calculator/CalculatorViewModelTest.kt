@@ -182,15 +182,11 @@ internal class CalculatorViewModelTest {
         viewModel.calculate()
 
         // then
-        val actual = viewModel.getToastMessage()
-        assertThat(actual).isEqualTo("완성되지 않은 수식입니다")
+        val actual = viewModel.onCalculationErrorEvent.value
+        assertThat(actual).isEqualTo(Unit)
     }
 
     private fun CalculatorViewModel.getText(): String {
         return text.getOrAwaitValue()
-    }
-
-    private fun CalculatorViewModel.getToastMessage(): String {
-        return toastMessage.getOrAwaitValue()
     }
 }

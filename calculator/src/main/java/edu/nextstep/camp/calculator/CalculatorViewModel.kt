@@ -14,8 +14,8 @@ class CalculatorViewModel : ViewModel() {
     private val _text = MutableLiveData("")
     val text: LiveData<String> get() = _text
 
-    private val _toastMessage = SingleLiveEvent<String>()
-    val toastMessage: LiveData<String> get() = _toastMessage
+    private val _onCalculationErrorEvent = SingleLiveEvent<Unit>()
+    val onCalculationErrorEvent: LiveData<Unit> get() = _onCalculationErrorEvent
 
     fun addToExpression(operand: Int) {
         expression += operand
@@ -35,13 +35,9 @@ class CalculatorViewModel : ViewModel() {
     fun calculate() {
         val result = calculator.calculate(expression.toString())
         if (result == null) {
-            _toastMessage.value = TOAST_MESSAGE
+            _onCalculationErrorEvent.value = Unit
             return
         }
         _text.value = result.toString()
-    }
-
-    companion object {
-        private const val TOAST_MESSAGE = "완성되지 않은 수식입니다"
     }
 }
