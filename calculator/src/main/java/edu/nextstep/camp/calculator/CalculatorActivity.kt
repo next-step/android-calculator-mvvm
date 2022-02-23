@@ -12,8 +12,9 @@ import edu.nextstep.camp.calculator.memory.MemoryAdapter
 class CalculatorActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCalculatorBinding
-    private lateinit var viewModel: CalculatorViewModel
-    private lateinit var memoryAdapter: MemoryAdapter
+
+    private val viewModel: CalculatorViewModel by viewModels { ViewModelFactory(this) }
+    private val memoryAdapter: MemoryAdapter by lazy { MemoryAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +29,6 @@ class CalculatorActivity : AppCompatActivity() {
     }
 
     private fun setupViewModel() {
-        viewModel = ViewModelProvider(this, ViewModelFactory(this)).get(CalculatorViewModel::class.java)
-
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
     }
@@ -51,6 +50,6 @@ class CalculatorActivity : AppCompatActivity() {
     }
 
     private fun setupMemoryMode() {
-        binding.recyclerView.adapter = MemoryAdapter().also { memoryAdapter = it }
+        binding.recyclerView.adapter = memoryAdapter
     }
 }
