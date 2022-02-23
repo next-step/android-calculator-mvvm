@@ -8,7 +8,7 @@ import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 
 class CalculatorViewModel(
-    private val calculator: Calculator,
+    private val calculator: Calculator = Calculator(),
     initialExpression: Expression = Expression.EMPTY
 ): ViewModel() {
     private val _expression:MutableLiveData<Expression> = MutableLiveData(initialExpression)
