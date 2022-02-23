@@ -22,7 +22,7 @@ class CounterViewModelTest {
     @Test
     fun `increase 하면 숫자가 1 증가해야 한다`() {
         // when
-        val expected = counterViewModel.count.getOrAwaitValue() + 1
+        val expected = 1
         counterViewModel.increase()
         val actual = counterViewModel.count.getOrAwaitValue()
 
@@ -37,7 +37,7 @@ class CounterViewModelTest {
         counterViewModel = CounterViewModel(default)
 
         // when
-        val expected = default - 1
+        val expected = 9
         counterViewModel.decrease()
         val actual = counterViewModel.count.getOrAwaitValue()
 
