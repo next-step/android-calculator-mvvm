@@ -17,12 +17,15 @@ class CounterViewModel(default: Int = 0) : ViewModel() {
     }
 
     fun decrease() {
-        val count = _count.value ?: return
-        try {
-            check(count > 0)
+        val count = getCount()
+        if (count > 0) {
             _count.value = count - 1
-        } catch (e: IllegalStateException) {
+        } else {
             _errorEvent.value = Unit
         }
+    }
+
+    private fun getCount(): Int {
+        return _count.value ?: 0
     }
 }
