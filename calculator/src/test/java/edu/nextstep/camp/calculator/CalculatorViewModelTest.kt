@@ -21,10 +21,10 @@ class CalculatorViewModelTest {
 
     @Test
     @Parameters(value = [
-        ", 1, 1",
-        ", 2, 2",
-        "1 +, 1, 1 + 1",
-        "12, 1, 121"
+        "     | 1 | 1      ",
+        "     | 2 | 2      ",
+        "1 +  | 1 | 1 + 1  ",
+        "12   | 1 | 121    "
     ])
     @TestCaseName("입력된 상태가 {0}일 때, 피연산자 {1} 버튼을 누르면 화면에 {2} 화면에 보여야 한다")
     fun `피연산자 입력 테스트`(initialString: String, operand: Int, expected: String) {
@@ -40,13 +40,13 @@ class CalculatorViewModelTest {
 
     @Test
     @Parameters(value = [
-        "1, +, 1 +",
-        "2, -, 2 -",
-        "1 + 1, /, 1 + 1 /",
-        "13, *, 13 *",
-        "13 +, *, 13 *",
-        "13 -, -, 13 -",
-        "1 + 1 -, /, 1 + 1 /",
+        "1        |  +  |  1 +      ",
+        "2        |  -  |  2 -      ",
+        "1 + 1    |  /  |  1 + 1 /  ",
+        "13       |  *  |  13 *     ",
+        "13 +     |  *  |  13 *     ",
+        "13 -     |  -  |  13 -     ",
+        "1 + 1 -  |  /  |  1 + 1 /  ",
     ])
     @TestCaseName("입력된 상태가 {0}일 때, 연산자 {1} 버튼을 누르면 화면에 {2} 화면에 보여야 한다")
     fun `연산자 입력 테스트`(initialString: String, operator: String, expected: String) {
@@ -112,10 +112,10 @@ class CalculatorViewModelTest {
 
     @Test
     @Parameters(value = [
-        "1 + 2, 3",
-        "123 - 20 - 3, 100",
-        "30 / 2, 15",
-        "15 / 5 * 3 + 1, 10"
+        "1 + 2            |   3",
+        "123 - 20 - 3     |   100",
+        "30 / 2           |   15",
+        "15 / 5 * 3 + 1   |   10"
     ])
     @TestCaseName("정상적인 수식 {0}이 있을 때 계산 시 결과가 {1}이 된다")
     fun `정상적인 수식이 있을 때 계산 시 계산 테스트`(initialString: String, expected: String) {
