@@ -12,67 +12,67 @@ import edu.nextstep.camp.calculator.domain.Operator
 
 class CalculatorViewModel(
     private var expression: Expression,
-    private var calculator: Calculator,
-    private var database: AppDatabase,
-    private var resultAdapter: ResultAdapter
+    private var calculator: Calculator
 ) : ViewModel() {
-    private val _result = MutableLiveData(expression.toString())
-        val result: LiveData<String>
+    private var _statement = MutableLiveData(expression.toString())
+        val statement: LiveData<String>
+            get() = _statement
+
+    private val _result = MutableLiveData<Event<Int?>>()
+        val result: LiveData<Event<Int?>>
             get() = _result
 
     private val _showErrorMessage = MutableLiveData<Event<Unit>>()
         val showErrorMessage: LiveData<Event<Unit>>
             get() = _showErrorMessage
 
-    fun getResultAdapter(): ResultAdapter {
-        return resultAdapter
-    }
-
-    var isMemoryVisible = false
+    private val _isMemoryVisible = MutableLiveData(false)
+        val isMemoryVisible: LiveData<Boolean>
+            get() = _isMemoryVisible
 
     fun addToExpression(operand: Int) {
-        if (isMemoryVisible) {
+        if (isMemoryVisible.value == true) {
             return
         }
         expression += operand
-        _result.value = expression.toString()
+        _statement.value = expression.toString()
     }
 
     fun addToExpression(operator: Operator) {
-        if (isMemoryVisible) {
+        if (isMemoryVisible.value == true) {
             return
         }
         expression += operator
-        _result.value = expression.toString()
+        _statement.value = expression.toString()
     }
 
     fun erase() {
-        if (isMemoryVisible) {
+        if (isMemoryVisible.value == true) {
             return
         }
         expression = expression.removeLast()
-        _result.value = expression.toString()
+        _statement.value = expression.toString()
     }
 
     fun equals() {
-        if (isMemoryVisible) {
+        if (isMemoryVisible.value == true || _statement.value == null) {
             return
         }
-        val res = calculator.calculate(expression.toString())
-        if (res == null) {
+
+        val calcResultValue: Int? = calculator.calculate(_statement.value!!)
+
+        if (calcResultValue == null) {
             _showErrorMessage.value = Event(Unit)
             return
         }
 
-        database.resultRecordDao().insertResultRecord(ResultRecord(expression.toString(), "= $res"))
+        _result.value = Event(calcResultValue)
 
-        resultAdapter.addResult(ResultRecord(expression.toString(), "= $res"))
-
-        expression = Expression(listOf(res))
-        _result.value = res.toString()
+        expression = Expression(listOf(calcResultValue))
+        _statement.value = expression.toString()
     }
 
     fun memory() {
-        isMemoryVisible = !isMemoryVisible
+        _isMemoryVisible.value = !_isMemoryVisible.value!!
     }
 }

@@ -30,7 +30,7 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(2)
 
         // then : 화면에 2를 보여준다
-        val actual = viewModel.result.value
+        val actual = viewModel.statement.value
         assertThat(actual.toString()).isEqualTo("2")
     }
 
@@ -43,7 +43,7 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(5)
 
         // then : 화면에 85를 보여준다
-        val actual = viewModel.result.value
+        val actual = viewModel.statement.value
         assertThat(actual.toString()).isEqualTo("85")
     }
 
@@ -58,7 +58,7 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(Operator.Multiply)
 
         // then : 화면에 아무런 변화가 없다
-        val actual = viewModel.result.value
+        val actual = viewModel.statement.value
         assertThat(actual.toString()).isEqualTo("")
     }
     
@@ -71,7 +71,7 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(Operator.Plus)
 
         // then : 해당 기호를 화면에 보여준다
-        val actual = viewModel.result.value
+        val actual = viewModel.statement.value
         assertThat(actual.toString()).isEqualTo("8 +")
     }
     @Test
@@ -83,9 +83,45 @@ class CalculatorViewModelTest {
         viewModel.erase()
 
         // then : 화면에 아무런 변화가 없다
-        val actual = viewModel.result.value
+        val actual = viewModel.statement.value
         assertThat(actual.toString()).isEqualTo("")
     }
+
+    @Test
+    fun `입력된 수식이 없을 때, = 버튼을 누르면 화면에 아무런 변화가 없다`() {
+        // given : 입력된 수식이 없을때
+
+        // when : = 버튼을 누르면
+        viewModel.equals()
+        viewModel.equals()
+
+        // then : 화면에 아무런 변화가 없다
+        val actual = viewModel.statement.value
+        assertThat(actual.toString()).isEqualTo("")
+    }
+
+    @Test
+    fun `이전에 3+2= 버튼을 눌러 값 5를 얻었을 때, x 5를 누르면 화면에 25를 보여준다`() {
+        // given : 이전에 3+2= 버튼을 눌러 값 5를 얻었을 때
+        viewModel.addToExpression(3)
+        viewModel.addToExpression(Operator.Plus)
+        viewModel.addToExpression(2)
+        viewModel.equals()
+
+        var actual = viewModel.statement.value
+        assertThat(actual.toString()).isEqualTo("5")
+
+        // when : * 5를 누르면
+        viewModel.addToExpression(Operator.Multiply)
+        viewModel.addToExpression(5)
+        viewModel.equals()
+
+        // then : 화면에 25를 보여준다
+        actual = viewModel.statement.value
+        assertThat(actual.toString()).isEqualTo("25")
+    }
+
+
 
     @Test
     fun `입력된 수식이 있을 때, 지우기 버튼을 누르면 수식에 마지막으로 입력된 것이 지워져야 한다`() {
@@ -99,21 +135,21 @@ class CalculatorViewModelTest {
         viewModel.erase()
 
         // then : 수식에 마지막으로 입력된 것이 지워져야 한다
-        var actual = viewModel.result.value
+        var actual = viewModel.statement.value
         assertThat(actual.toString()).isEqualTo("8 + 8")
 
         // when : 지우기 버튼을 누르면
         viewModel.erase()
 
         // then : 수식에 마지막으로 입력된 것이 지워져야 한다
-        actual = viewModel.result.value
+        actual = viewModel.statement.value
         assertThat(actual.toString()).isEqualTo("8 +")
 
         // when : 지우기 버튼을 누르면
         viewModel.erase()
 
         // then : 수식에 마지막으로 입력된 것이 지워져야 한다
-        actual = viewModel.result.value
+        actual = viewModel.statement.value
         assertThat(actual.toString()).isEqualTo("8")
     }
 
@@ -134,8 +170,8 @@ class CalculatorViewModelTest {
         viewModel.equals()
 
         // then : 입력된 수식의 결과를 화면에 보여준다
-        val actual = viewModel.result.value
-        assertThat(actual.toString()).isEqualTo("13")
+        val actual = viewModel.statement.value
+        assertThat(actual).isEqualTo("13")
     }
 
     @Test
@@ -150,7 +186,7 @@ class CalculatorViewModelTest {
         viewModel.equals()
 
         // then : 완성되지 않은 수식입니다 토스트 메세지를 화면에 보여준다
-        val actual = viewModel.showErrorMessage.value
+        val actual = viewModel.showErrorMessage
         assertThat(actual).isNotEqualTo(null)
     }
 }

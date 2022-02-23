@@ -19,8 +19,6 @@ class CalculatorViewModelFactory(private val context: Context) : ViewModelProvid
     private fun createCalculatorViewModel(): CalculatorViewModel {
         val expression = Expression()
         val calculator = Calculator()
-        val database = AppDatabase.getInstance(context)
-        val resultAdapter = ResultAdapter(database.resultRecordDao().getAll())
-        return CalculatorViewModel(expression, calculator, database, resultAdapter)
+        return CalculatorViewModel(expression, calculator)
     }
 }

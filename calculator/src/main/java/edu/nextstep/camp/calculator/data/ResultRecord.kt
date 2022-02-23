@@ -7,7 +7,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "result_record")
 data class ResultRecord(
     @ColumnInfo val expression: String,
-    @ColumnInfo val result: String
-) {
+    @ColumnInfo val result: String,
     @PrimaryKey(autoGenerate = true) var id: Int = 0
-}
+)
