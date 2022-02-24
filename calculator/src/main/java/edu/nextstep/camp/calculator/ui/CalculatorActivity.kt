@@ -61,7 +61,7 @@ class CalculatorActivity : AppCompatActivity() {
     private fun setMemoryView(memories: List<Memory>?) {
         binding.textView.visibility = View.INVISIBLE
         binding.recyclerView.visibility = View.VISIBLE
-        memories?.let { memoryAdapter.refreshMemories(it) }
+        if (memories != null) memoryAdapter.refreshMemories(memories)
 
         setButtonEnabled(false)
     }
