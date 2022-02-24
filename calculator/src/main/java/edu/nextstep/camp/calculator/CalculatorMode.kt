@@ -1,7 +1,7 @@
 package edu.nextstep.camp.calculator
 
-sealed class CalculatorMode {
+enum class CalculatorMode {
 
-    object Expression : CalculatorMode()
-    object Memory : CalculatorMode()
+    Expression,
+    Memory
 }
