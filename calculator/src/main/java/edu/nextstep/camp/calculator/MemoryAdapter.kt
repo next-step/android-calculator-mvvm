@@ -10,11 +10,12 @@ import edu.nextstep.camp.calculator.databinding.ItemResultBinding
 import edu.nextstep.camp.data.Memory
 
 class MemoryAdapter : RecyclerView.Adapter<MemoryAdapter.ViewHolder>() {
-    private var memories: List<Memory> = mutableListOf()
+    private val memories: MutableList<Memory> = mutableListOf()
 
     @SuppressLint("NotifyDataSetChanged")
     fun refreshMemories(memories: List<Memory>) {
-        this.memories = memories
+        this.memories.clear()
+        this.memories.addAll(memories)
         notifyDataSetChanged()
     }
 
