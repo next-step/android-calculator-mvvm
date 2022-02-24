@@ -57,6 +57,10 @@ dependencies {
         implementation(FRAGMENT)
         implementation(LIFECYCLE)
     }
+    DaggerHiltConfig.run {
+        implementation(ANDROID)
+        kapt(COMPILER)
+    }
     Test.run {
         testRuntimeOnly(VINTAGE)
         testImplementation(JUNIT4)

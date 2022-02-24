@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
-    id("com.google.devtools.ksp") version ("1.6.10-1.0.2")
+    id("kotlin-kapt")
 }
 
 android {
@@ -27,8 +27,12 @@ dependencies {
         implementation(STDLIB)
         implementation(GSON)
     }
+    DaggerHiltConfig.run {
+        implementation(CORE)
+        kapt(COMPILER)
+    }
     Room.run {
-        ksp(COMPILER)
+        kapt(COMPILER)
         implementation(KTX)
         implementation(RUNTIME)
         testImplementation(TESTING)

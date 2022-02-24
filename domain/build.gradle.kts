@@ -1,5 +1,6 @@
 plugins {
     id("kotlin")
+    id("kotlin-kapt")
 }
 
 java {
@@ -16,7 +17,10 @@ dependencies {
         implementation(STDLIB)
         implementation(COROUTINE)
     }
-
+    DaggerHiltConfig.run {
+        implementation(CORE)
+        kapt(COMPILER)
+    }
     Test.run {
         testRuntimeOnly(VINTAGE)
         testImplementation(JUPITER)
