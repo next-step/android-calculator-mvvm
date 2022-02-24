@@ -43,6 +43,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":domain"))
+
     implementation(Kotlin.STDLIB)
     implementation(Material.MATERIAL)
     testImplementation(Others.ROBOLECTRIC)
