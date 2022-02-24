@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
     id 'de.mannodermaus.android-junit5'
 }
 
@@ -9,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "edu.nextstep.camp.calculator"
-        minSdkVersion 26
+        minSdkVersion 21
         targetSdkVersion 31
         versionCode 1
         versionName "1.0"

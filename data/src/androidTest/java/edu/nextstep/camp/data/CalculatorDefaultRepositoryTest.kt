@@ -10,6 +10,7 @@ import io.mockk.every
 import io.mockk.mockk
 import org.junit.Before
 import org.junit.Test
+import java.util.concurrent.Executors
 
 class CalculatorDefaultRepositoryTest {
 
@@ -18,8 +19,10 @@ class CalculatorDefaultRepositoryTest {
 
     @Before
     fun setUp() {
+        val executors = Executors.newSingleThreadExecutor()
+
         calculatorDao = mockk(relaxed = true, relaxUnitFun = true)
-        calculatorRepository = CalculatorDefaultRepository(calculatorDao)
+        calculatorRepository = CalculatorDefaultRepository(calculatorDao, executors)
     }
 
     @Test

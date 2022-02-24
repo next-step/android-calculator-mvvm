@@ -6,14 +6,14 @@ import edu.nextstep.camp.calculator.domain.model.Memory
 import edu.nextstep.camp.data.database.CalculatorDao
 import edu.nextstep.camp.data.entity.MemoryEntity
 import edu.nextstep.camp.data.mapper.mapToDomain
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.FutureTask
 
 internal class CalculatorDefaultRepository(
-    private val calculatorDao: CalculatorDao
+    private val calculatorDao: CalculatorDao,
+    private val executor: ExecutorService
 ) : CalculatorRepository {
-
-    private val executor = Executors.newSingleThreadExecutor()
 
     override fun addMemory(memory: Memory) {
         executor.execute {

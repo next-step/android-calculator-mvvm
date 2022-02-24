@@ -4,6 +4,7 @@ import android.content.Context
 import edu.nextstep.camp.calculator.domain.CalculatorRepository
 import edu.nextstep.camp.data.CalculatorDefaultRepository
 import edu.nextstep.camp.data.database.CalculatorDatabase
+import java.util.concurrent.Executors
 
 object Injector {
 
@@ -11,6 +12,8 @@ object Injector {
 
     fun provideCalculatorRepository(context: Context): CalculatorRepository {
         val database = provideCalculatorDatabase(context)
-        return CalculatorDefaultRepository(database.calculatorDao())
+        val executors = Executors.newSingleThreadExecutor()
+
+        return CalculatorDefaultRepository(database.calculatorDao(), executors)
     }
 }
