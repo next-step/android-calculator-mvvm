@@ -12,10 +12,10 @@ class CalculatorViewModel : ViewModel() {
     private var expression = Expression.EMPTY
 
     private val _text = MutableLiveData("")
-    val text: LiveData<String> get() = _text
+    val text: LiveData<String> = _text
 
     private val _onCalculationErrorEvent = SingleLiveEvent<Unit>()
-    val onCalculationErrorEvent: LiveData<Unit> get() = _onCalculationErrorEvent
+    val onCalculationErrorEvent: LiveData<Unit> = _onCalculationErrorEvent
 
     fun addToExpression(operand: Int) {
         expression += operand
@@ -35,9 +35,10 @@ class CalculatorViewModel : ViewModel() {
     fun calculate() {
         val result = calculator.calculate(expression.toString())
         if (result == null) {
-            _onCalculationErrorEvent.value = Unit
+            _onCalculationErrorEvent.call()
             return
         }
-        _text.value = result.toString()
+        expression = Expression.EMPTY + result
+        _text.value = expression.toString()
     }
 }

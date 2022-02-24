@@ -16,7 +16,7 @@ class CalculatorActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.lifecycleOwner = this
-        binding.vm = viewModel
+        binding.viewModel = viewModel
 
         viewModel.onCalculationErrorEvent.observe(this) {
             Toast.makeText(this, R.string.incomplete_expression, Toast.LENGTH_SHORT).show()
