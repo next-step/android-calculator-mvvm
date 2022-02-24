@@ -1,4 +1,4 @@
-package edu.nextstep.camp.calculator
+package edu.nextstep.camp.calculator.ui
 
 import android.os.Bundle
 import android.view.View
@@ -7,6 +7,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import edu.nextstep.camp.calculator.viewmodel.CalculatorViewModel
+import edu.nextstep.camp.calculator.ExpressionView
+import edu.nextstep.camp.calculator.MemoryView
+import edu.nextstep.camp.calculator.R
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 import edu.nextstep.camp.data.AppDataBase
 import edu.nextstep.camp.data.Memory

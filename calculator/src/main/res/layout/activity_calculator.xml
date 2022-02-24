@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="edu.nextstep.camp.calculator.CalculatorViewModel" />
+            type="edu.nextstep.camp.calculator.viewmodel.CalculatorViewModel" />
 
         <import type="edu.nextstep.camp.domain.Operator"/>
         <import type="android.view.View"/>
@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp"
-        tools:context=".CalculatorActivity"
+        tools:context=".ui.CalculatorActivity"
         >
         <TextView
             android:id="@+id/textView"
