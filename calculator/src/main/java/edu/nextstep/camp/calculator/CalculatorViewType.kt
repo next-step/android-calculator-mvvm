@@ -3,29 +3,17 @@ package edu.nextstep.camp.calculator
 import edu.nextstep.camp.data.Memory
 
 sealed class CalculatorViewType {
-    override fun toString(): String {
-        return when (this) {
-            is ExpressionView -> "Expression"
-            is MemoryView -> "Memory"
-        }
-    }
+    abstract fun toggle(memories: List<Memory>?): CalculatorViewType
 }
 
-object ExpressionView : CalculatorViewType()
+object ExpressionView : CalculatorViewType() {
+    override fun toString(): String = "ExpressionView"
 
-class MemoryView(val memories: List<Memory>?) : CalculatorViewType()
-
-fun CalculatorViewType.toggle(memories: List<Memory>?): CalculatorViewType {
-    return when (this) {
-        is ExpressionView -> MemoryView(memories)
-        is MemoryView -> ExpressionView
-    }
+    override fun toggle(memories: List<Memory>?): CalculatorViewType = MemoryView(memories)
 }
 
-fun CalculatorViewType.isExpression(): Boolean {
-    return this is ExpressionView
-}
+data class MemoryView(val memories: List<Memory>?) : CalculatorViewType() {
+    override fun toString(): String = "MemoryView"
 
-fun CalculatorViewType.isMemory(): Boolean {
-    return this is MemoryView
+    override fun toggle(memories: List<Memory>?): CalculatorViewType = ExpressionView
 }

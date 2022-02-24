@@ -30,7 +30,7 @@ class CalculatorViewModel(
     private val viewType: CalculatorViewType get() = _viewTypeEvent.value ?: ExpressionView
 
     val isViewTypeExpression: Boolean get() {
-        return viewType.isExpression()
+        return viewType is ExpressionView
     }
 
     fun addToExpression(operand: Int) {
@@ -60,7 +60,7 @@ class CalculatorViewModel(
     }
 
     fun toggleViewType() = viewModelScope.launch {
-        val memories = if (viewType.isExpression()) getMemories() else null
+        val memories = if (viewType is ExpressionView) getMemories() else null
         _viewTypeEvent.postValue(viewType.toggle(memories))
     }
 
