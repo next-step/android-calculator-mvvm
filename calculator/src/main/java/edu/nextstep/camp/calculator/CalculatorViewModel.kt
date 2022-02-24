@@ -12,52 +12,65 @@ class CalculatorViewModel(
     private var expression: Expression,
     private var calculator: Calculator
 ) : ViewModel() {
-    private val _result = MutableLiveData(expression.toString())
-        val result: LiveData<String>
+    private var _statement = MutableLiveData(expression.toString())
+        val statement: LiveData<String>
+            get() = _statement
+
+    private val _result = MutableLiveData<Event<Int?>>()
+        val result: LiveData<Event<Int?>>
             get() = _result
 
     private val _showErrorMessage = MutableLiveData<Event<Unit>>()
-    val showErrorMessage: LiveData<Event<Unit>>
-        get() = _showErrorMessage
+        val showErrorMessage: LiveData<Event<Unit>>
+            get() = _showErrorMessage
 
-    fun operandClick(operand: Int) {
+    private val _isMemoryVisible = MutableLiveData(false)
+        val isMemoryVisible: LiveData<Boolean>
+            get() = _isMemoryVisible
+
+    fun addToExpression(operand: Int) {
+        if (isMemoryVisible.value == true) {
+            return
+        }
         expression += operand
-        _result.value = expression.toString()
+        _statement.value = expression.toString()
     }
 
-    fun plus() {
-        expression += Operator.Plus
-        _result.value = expression.toString()
-    }
-
-    fun minus() {
-        expression += Operator.Minus
-        _result.value = expression.toString()
-    }
-
-    fun divide() {
-        expression += Operator.Divide
-        _result.value = expression.toString()
-    }
-
-    fun multiply() {
-        expression += Operator.Multiply
-        _result.value = expression.toString()
+    fun addToExpression(operator: Operator) {
+        if (isMemoryVisible.value == true) {
+            return
+        }
+        expression += operator
+        _statement.value = expression.toString()
     }
 
     fun erase() {
+        if (isMemoryVisible.value == true) {
+            return
+        }
         expression = expression.removeLast()
-        _result.value = expression.toString()
+        _statement.value = expression.toString()
     }
 
     fun equals() {
-        val res = calculator.calculate(expression.toString())
-        if (res == null) {
+        if (isMemoryVisible.value == true || _statement.value == null) {
+            return
+        }
+
+        val calcResultValue: Int? = calculator.calculate(_statement.value!!)
+
+        if (calcResultValue == null) {
             _showErrorMessage.value = Event(Unit)
             return
         }
-        _result.value = res.toString()
+
+        _result.value = Event(calcResultValue)
+
+        expression = Expression(listOf(calcResultValue))
+        _statement.value = expression.toString()
     }
 
-    fun memory() {}
+    fun memory() {
+        _isMemoryVisible.value = !_isMemoryVisible.value!!
+    }
 }
