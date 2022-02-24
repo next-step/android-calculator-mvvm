@@ -3,7 +3,6 @@ object Kotlin {
 
     const val STDLIB = "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
     const val COROUTINE = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0"
-    const val GSON = "com.google.code.gson:gson:2.9.0"
 }
 
 object Others {

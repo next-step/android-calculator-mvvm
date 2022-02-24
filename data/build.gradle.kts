@@ -25,7 +25,6 @@ dependencies {
 
     Kotlin.run {
         implementation(STDLIB)
-        implementation(GSON)
     }
     DaggerHiltConfig.run {
         implementation(CORE)
