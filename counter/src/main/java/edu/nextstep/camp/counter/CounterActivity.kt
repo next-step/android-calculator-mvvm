@@ -16,7 +16,10 @@ class CounterActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_counter)
 
        viewModel.showErrorMessage.observe(this){
-            Toast.makeText(this,"0 이하로는 내릴 수 없습니다.", Toast.LENGTH_SHORT).show()
+           it.consume()?.let {
+               Toast.makeText(this,"0 이하로는 내릴 수 없습니다.", Toast.LENGTH_SHORT).show()
+           }
+
         }
 
         binding.lifecycleOwner = this

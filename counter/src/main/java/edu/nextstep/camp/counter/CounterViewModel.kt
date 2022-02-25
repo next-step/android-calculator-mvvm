@@ -8,8 +8,8 @@ class CounterViewModel : ViewModel() {
     private val _count = MutableLiveData(0)
     val count: LiveData<Int> = _count
 
-    private val _showErrorMessage = MutableLiveData<Unit>()
-    val showErrorMessage: LiveData<Unit> = _showErrorMessage
+    private val _showErrorMessage = MutableLiveData<Event<Unit>>()
+    val showErrorMessage: LiveData<Event<Unit>> = _showErrorMessage
 
     fun countUp() {
         val count = _count.value ?: return
@@ -19,7 +19,7 @@ class CounterViewModel : ViewModel() {
     fun countDown() {
         val count = _count.value ?: return
         if (count == 0) {
-            _showErrorMessage.value = Unit
+            _showErrorMessage.value = Event(Unit)
             return
         }
         _count.value = count - 1
