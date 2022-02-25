@@ -1,22 +1,18 @@
 package edu.nextstep.camp.counter
 
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class CounterViewModel : ViewModel() {
-
-    private val defaultCount = 0
+class CounterViewModel(defaultCount: Int) : ViewModel() {
 
     private val _counter = MutableLiveData<Int>()
-
-    private val _showToast = SingleLiveEvent<Unit>()
-    val showToast: LiveData<Unit>
-        get() = _showToast
-
     val counter: LiveData<Int>
         get() = _counter
+
+    private val _errorToast = SingleLiveEvent<Boolean>()
+    val errorToast: LiveData<Boolean>
+        get() = _errorToast
 
     init {
         _counter.value = defaultCount
@@ -28,7 +24,7 @@ class CounterViewModel : ViewModel() {
 
     fun down() {
         if (counter.value == 0) {
-            _showToast.value = Unit
+            _errorToast.value = true
             return
         }
         _counter.value = counter.value?.minus(1)
