@@ -1,4 +1,4 @@
-package edu.nextstep.camp.calculator.data
+package com.github.dodobest.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

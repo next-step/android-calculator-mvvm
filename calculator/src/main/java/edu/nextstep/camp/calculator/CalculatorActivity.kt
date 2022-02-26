@@ -4,14 +4,15 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import edu.nextstep.camp.calculator.data.AppDatabase
-import edu.nextstep.camp.calculator.data.ResultRecord
+import com.github.dodobest.data.AppDatabase
+import com.github.dodobest.data.DataHandler
+import com.github.dodobest.data.ResultRecord
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
     private val viewModel: CalculatorViewModel by viewModels { CalculatorViewModelFactory(this) }
-    private lateinit var database: AppDatabase
+    private lateinit var dataHandler: DataHandler
     private lateinit var resultAdapter: ResultAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,8 +20,8 @@ class CalculatorActivity : AppCompatActivity() {
         binding = ActivityCalculatorBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        database = AppDatabase.getInstance(this)
-        resultAdapter = ResultAdapter(database.resultRecordDao().getAll())
+        dataHandler = DataHandler(AppDatabase.getInstance(this))
+        resultAdapter = ResultAdapter(dataHandler.getAllMemoryRecord())
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
@@ -36,7 +37,7 @@ class CalculatorActivity : AppCompatActivity() {
             if (it.consumed) return@observe
             val statement = viewModel.statement.value!!
             val result = it.peek()
-            database.resultRecordDao().insertResultRecord(ResultRecord(statement, "= $result"))
+            dataHandler.insertRecord(statement, "= $result")
             resultAdapter.addResult(ResultRecord(statement, "= $result"))
             it.consume()
         }

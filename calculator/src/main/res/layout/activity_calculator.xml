@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
-        <import type="edu.nextstep.camp.calculator.domain.Operator"/>
+        <import type="com.github.dodobest.domain.Operator"/>
         <import type="android.view.View"/>
         <variable
             name="viewModel"

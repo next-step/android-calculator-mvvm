@@ -3,10 +3,9 @@ package edu.nextstep.camp.calculator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import edu.nextstep.camp.calculator.domain.Calculator
-import edu.nextstep.camp.calculator.domain.Event
-import edu.nextstep.camp.calculator.domain.Expression
-import edu.nextstep.camp.calculator.domain.Operator
+import com.github.dodobest.domain.Calculator
+import com.github.dodobest.domain.Expression
+import com.github.dodobest.domain.Operator
 
 class CalculatorViewModel(
     private var expression: Expression,

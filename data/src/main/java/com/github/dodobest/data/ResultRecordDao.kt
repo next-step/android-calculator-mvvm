@@ -1,4 +1,4 @@
-package edu.nextstep.camp.calculator.data
+package com.github.dodobest.data
 
 import androidx.room.Dao
 import androidx.room.Delete

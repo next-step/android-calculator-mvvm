@@ -1,4 +1,4 @@
-package edu.nextstep.camp.calculator.domain
+package edu.nextstep.camp.calculator
 
 class Event<out T>(private val content: T) {
     var consumed = false

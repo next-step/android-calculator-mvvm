@@ -3,16 +3,12 @@ package edu.nextstep.camp.calculator
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import edu.nextstep.camp.calculator.data.ResultRecord
+import com.github.dodobest.data.ResultRecord
 import edu.nextstep.camp.calculator.databinding.ItemResultBinding
 
 class ResultAdapter(private val results: MutableList<ResultRecord>) : RecyclerView.Adapter<ResultAdapterViewHolder>() {
     fun addResult(resultRecord: ResultRecord) {
         results.add(resultRecord)
-    }
-
-    fun getResult(): List<ResultRecord> {
-        return results.toList()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultAdapterViewHolder {

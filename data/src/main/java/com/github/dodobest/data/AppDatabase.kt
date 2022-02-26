@@ -1,4 +1,4 @@
-package edu.nextstep.camp.calculator.data
+package com.github.dodobest.data
 
 import android.content.Context
 import androidx.room.Database
