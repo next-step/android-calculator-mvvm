@@ -5,9 +5,14 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
+import edu.nextstep.camp.data.LocalDataBase
 
 class CalculatorActivity : AppCompatActivity() {
-    private val viewModel by viewModels<CalculatorViewModel>()
+    private val viewModel by viewModels<CalculatorViewModel> {
+        CalculatorViewModelFactory(
+            LocalDataBase.getInstance(applicationContext).calculatorRecordDAO()
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
