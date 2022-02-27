@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.github.dodobest.data.*
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 
 class CalculatorActivity : AppCompatActivity() {
