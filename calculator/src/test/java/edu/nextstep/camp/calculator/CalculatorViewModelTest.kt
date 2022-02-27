@@ -1,7 +1,7 @@
 package edu.nextstep.camp.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.github.dodobest.data.CalculatorRepositoryImpl
+import com.github.dodobest.data.CalculatorRepository
 import com.google.common.truth.Truth.assertThat
 import com.github.dodobest.domain.Calculator
 import com.github.dodobest.domain.Expression
@@ -17,7 +17,7 @@ class CalculatorViewModelTest {
     lateinit var viewModel: CalculatorViewModel
     lateinit var expression: Expression
     lateinit var calculator: Calculator
-    lateinit var calculatorRepository: CalculatorRepositoryImpl
+    lateinit var calculatorRepository: CalculatorRepository
 
     @Before
     fun setUp() {
