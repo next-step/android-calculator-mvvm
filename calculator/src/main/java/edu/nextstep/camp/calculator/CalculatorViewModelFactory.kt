@@ -2,12 +2,14 @@ package edu.nextstep.camp.calculator
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import edu.nextstep.camp.calculator.data.CalculateRepository
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 
 class CalculatorViewModelFactory(
     private val calculator: Calculator = Calculator(),
-    private val initialExpression: Expression = Expression.EMPTY
+    private val initialExpression: Expression = Expression.EMPTY,
+    private val calculateRepository: CalculateRepository,
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
@@ -19,6 +21,6 @@ class CalculatorViewModelFactory(
     }
 
     private fun createCalculatorViewModel(): CalculatorViewModel {
-        return CalculatorViewModel(calculator, initialExpression)
+        return CalculatorViewModel(calculator, initialExpression, calculateRepository)
     }
 }
