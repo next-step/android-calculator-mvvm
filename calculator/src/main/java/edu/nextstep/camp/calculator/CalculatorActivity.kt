@@ -1,15 +1,20 @@
 package edu.nextstep.camp.calculator
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import edu.nextstep.camp.calculator.adapter.CalculationMemoryAdapter
+import edu.nextstep.camp.calculator.data.AppDataBase
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
+import edu.nextstep.camp.calculator.domain.Calculator
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
-    private val viewModel: CalculatorViewModel by viewModels()
+    private val viewModel: CalculatorViewModel by viewModels { ViewModelFactory(this) }
     private val calculationMemoryAdapter by lazy { CalculationMemoryAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +44,20 @@ class CalculatorActivity : AppCompatActivity() {
     private fun getCalculationMemory() {
         viewModel.calculationMemories.observe(this) {
             calculationMemoryAdapter.submitList(it)
+        }
+    }
+
+    class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return when (modelClass) {
+                CalculatorViewModel::class.java -> createMainViewModel()
+                else -> throw IllegalArgumentException()
+            } as T
+        }
+
+        private fun createMainViewModel(): CalculatorViewModel {
+            return CalculatorViewModel(calculator = Calculator(), calculatorDao =  AppDataBase.getInstance(context).calculatorDao())
         }
     }
 }

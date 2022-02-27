@@ -4,14 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import edu.nextstep.camp.calculator.data.CalculationMemory
-import edu.nextstep.camp.calculator.data.CalculatorRepository
-import edu.nextstep.camp.calculator.data.CalculatorRepositoryImpl
-import edu.nextstep.camp.calculator.domain.*
+import edu.nextstep.camp.calculator.data.CalculatorDao
+import edu.nextstep.camp.calculator.domain.Calculator
+import edu.nextstep.camp.calculator.domain.Expression
+import edu.nextstep.camp.calculator.domain.Operator
 import edu.nextstep.camp.calculator.util.Event
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
-    private val calculator: Calculator = Calculator(),
-    private val calculatorRepository: CalculatorRepository = CalculatorRepositoryImpl()
+    private val calculator: Calculator,
+    private val calculatorDao: CalculatorDao
 ) : ViewModel() {
     private var _expression = MutableLiveData(Expression.EMPTY)
     val expression: LiveData<Expression> = _expression
@@ -29,18 +33,23 @@ class CalculatorViewModel(
         get() = _calculationMemories
 
     init {
-        _calculationMemories.value = calculatorRepository.getMemories()
+        CoroutineScope(Dispatchers.IO).launch {
+            _calculationMemories.postValue(calculatorDao.getCalculationMemoryAll())
+        }
     }
 
     fun addToExpression(operand: Int) {
+        hideMemory()
         _expression.value = _expression.value?.plus(operand)
     }
 
     fun addToExpression(operator: Operator) {
+        hideMemory()
         _expression.value = _expression.value?.plus(operator)
     }
 
     fun removeLast() {
+        hideMemory()
         _expression.value = expression.value?.removeLast()
     }
 
@@ -52,10 +61,11 @@ class CalculatorViewModel(
             _showExpressionErrorMessage.value = Event(Unit)
             return
         }
-
-        val newMemories = CalculationMemory(expression, result)
-        calculatorRepository.addMemory(newMemories)
-        _calculationMemories.value = calculatorRepository.getMemories()
+        val newMemories = CalculationMemory(expression.toString(), result.toString())
+        CoroutineScope(Dispatchers.IO).launch {
+            calculatorDao.insertCalculationMemory(newMemories)
+            _calculationMemories.postValue(calculatorDao.getCalculationMemoryAll())
+        }
 
         _expression.value = Expression(listOf(result))
     }
@@ -68,5 +78,4 @@ class CalculatorViewModel(
     fun hideMemory() {
         _isCalculationMemories.value = false
     }
-
 }
