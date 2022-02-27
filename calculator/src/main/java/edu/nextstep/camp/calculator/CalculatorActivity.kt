@@ -9,7 +9,7 @@ import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
-    private lateinit var calculatorRepository: CalculatorRepositoryImpl
+    private lateinit var calculatorRepository: CalculatorRepository
     private lateinit var resultAdapter: ResultAdapter
     private val viewModel: CalculatorViewModel by viewModels { CalculatorViewModelFactory(this, calculatorRepository) }
 
@@ -18,7 +18,8 @@ class CalculatorActivity : AppCompatActivity() {
         binding = ActivityCalculatorBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        calculatorRepository = CalculatorRepositoryImpl(AppDatabase.getInstance(this))
+        calculatorRepository = Injector.provideCalculatorRepository(this)
+//        calculatorRepository = CalculatorRepositoryImpl(AppDatabase.getInstance(this))
         resultAdapter = ResultAdapter(calculatorRepository.getMemories())
 
         binding.lifecycleOwner = this

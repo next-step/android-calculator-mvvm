@@ -1,6 +1,6 @@
 package com.github.dodobest.data
 
-class CalculatorRepositoryImpl(
+internal class CalculatorRepositoryImpl(
     private val database: AppDatabase
 ) : CalculatorRepository {
     override fun addMemory(resultRecord: ResultRecord) {
