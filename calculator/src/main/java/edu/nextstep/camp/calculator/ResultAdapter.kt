@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.dodobest.data.ResultRecord
 import edu.nextstep.camp.calculator.databinding.ItemResultBinding
 
-class ResultAdapter(private val results: MutableList<ResultRecord>) : RecyclerView.Adapter<ResultAdapterViewHolder>() {
-    fun addResult(resultRecord: ResultRecord) {
-        results.add(resultRecord)
+class ResultAdapter(private var results: List<ResultRecord>) : RecyclerView.Adapter<ResultAdapterViewHolder>() {
+    fun setResult(newResults: List<ResultRecord>) {
+        results = newResults
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultAdapterViewHolder {

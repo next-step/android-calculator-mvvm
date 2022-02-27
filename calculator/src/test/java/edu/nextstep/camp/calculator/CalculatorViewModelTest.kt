@@ -1,10 +1,11 @@
 package edu.nextstep.camp.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.github.dodobest.data.CalculatorRepositoryImpl
 import com.google.common.truth.Truth.assertThat
 import com.github.dodobest.domain.Calculator
 import com.github.dodobest.domain.Expression
-import com.github.dodobest.domain.Operator
+import io.mockk.mockk
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -14,14 +15,16 @@ class CalculatorViewModelTest {
     val instantExecutorRule = InstantTaskExecutorRule()
 
     lateinit var viewModel: CalculatorViewModel
-    lateinit var expression: com.github.dodobest.domain.Expression
-    lateinit var calculator: com.github.dodobest.domain.Calculator
+    lateinit var expression: Expression
+    lateinit var calculator: Calculator
+    lateinit var calculatorRepository: CalculatorRepositoryImpl
 
     @Before
     fun setUp() {
-        expression = com.github.dodobest.domain.Expression()
-        calculator = com.github.dodobest.domain.Calculator()
-        viewModel = CalculatorViewModel(expression, calculator)
+        expression = Expression()
+        calculator = Calculator()
+        calculatorRepository = mockk()
+        viewModel = CalculatorViewModel(expression, calculator, calculatorRepository)
     }
 
     @Test
