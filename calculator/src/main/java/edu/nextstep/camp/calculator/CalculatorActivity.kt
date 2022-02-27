@@ -18,9 +18,7 @@ class CalculatorActivity : AppCompatActivity() {
         binding = ActivityCalculatorBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        calculatorRepository = Injector.provideCalculatorRepository(this)
-//        calculatorRepository = CalculatorRepositoryImpl(AppDatabase.getInstance(this))
-        resultAdapter = ResultAdapter(calculatorRepository.getMemories())
+        resultAdapter = ResultAdapter()
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
