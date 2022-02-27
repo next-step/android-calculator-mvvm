@@ -1,7 +1,7 @@
-package edu.nextstep.camp.calculator
+package edu.nextstep.camp.calculator.data
 
 import android.content.Context
-import edu.nextstep.camp.calculator.local.CalculatorDatabase
+import edu.nextstep.camp.calculator.data.local.CalculatorDatabase
 
 class CalculatorRepositoryProvider {
     companion object {

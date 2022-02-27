@@ -1,4 +1,4 @@
-package edu.nextstep.camp.calculator.local
+package edu.nextstep.camp.calculator.data.local
 
 import android.content.Context
 import androidx.room.Database

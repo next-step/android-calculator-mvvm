@@ -1,4 +1,4 @@
-package edu.nextstep.camp.calculator.local
+package edu.nextstep.camp.calculator.data.local
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

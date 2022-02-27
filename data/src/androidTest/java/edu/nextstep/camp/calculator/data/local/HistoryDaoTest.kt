@@ -1,4 +1,4 @@
-package edu.nextstep.camp.calculator.local
+package edu.nextstep.camp.calculator.data.local
 
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
