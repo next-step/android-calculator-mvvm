@@ -2,13 +2,21 @@ package edu.nextstep.camp.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
+import edu.nextstep.camp.calculator.data.CalculateRepository
+import edu.nextstep.camp.calculator.data.local.History
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 import edu.nextstep.camp.calculator.util.getOrAwaitValue
+import io.mockk.coEvery
+import io.mockk.mockk
+import io.mockk.slot
 import junitparams.JUnitParamsRunner
 import junitparams.Parameters
 import junitparams.naming.TestCaseName
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -18,6 +26,14 @@ import org.junit.runner.RunWith
 class CalculatorViewModelTest {
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
+    lateinit var defaultRepository: CalculateRepository
+    @ExperimentalCoroutinesApi
+    val testDispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
+
+    @Before
+    fun setUp() {
+        defaultRepository = mockk()
+    }
 
     @Test
     @Parameters(value = [
@@ -29,7 +45,8 @@ class CalculatorViewModelTest {
     @TestCaseName("입력된 상태가 {0}일 때, 피연산자 {1} 버튼을 누르면 화면에 {2} 화면에 보여야 한다")
     fun `피연산자 입력 테스트`(initialString: String, operand: Int, expected: String) {
         val viewModel = CalculatorViewModel(calculator = Calculator(),
-            initialExpression = getInitialExpression(initialString)
+            initialExpression = getInitialExpression(initialString),
+            defaultRepository
         )
 
         viewModel.addToExpression(operand = operand)
@@ -52,7 +69,8 @@ class CalculatorViewModelTest {
     fun `연산자 입력 테스트`(initialString: String, operator: String, expected: String) {
         val viewModel = CalculatorViewModel(
             calculator = Calculator(),
-            initialExpression = getInitialExpression(initialString)
+            initialExpression = getInitialExpression(initialString),
+            defaultRepository
         )
 
         viewModel.addToExpression(Operator.of(operator)!!)
@@ -71,7 +89,8 @@ class CalculatorViewModelTest {
     @TestCaseName("입력된 수식이 없을 때 연산자 {0} 입력되면 아무런 변화가 없어야한다")
     fun `입력된 수식이 없을 때 연산자가 입력되면 아무런 변화가 없어야한다`(operator: String) {
         val viewModel = CalculatorViewModel(
-            calculator = Calculator()
+            calculator = Calculator(),
+            calculatorRepository = defaultRepository
         )
 
         viewModel.addToExpression(Operator.of(operator)!!)
@@ -84,7 +103,8 @@ class CalculatorViewModelTest {
     @Test
     fun `입력된 수식이 없을 때 지우기가 실행되면 아무런 변화가 없어야한다`() {
         val viewModel = CalculatorViewModel(
-            calculator = Calculator()
+            calculator = Calculator(),
+            calculatorRepository = defaultRepository
         )
 
         viewModel.removeLast()
@@ -98,7 +118,8 @@ class CalculatorViewModelTest {
         // given
         val viewModel = CalculatorViewModel(
             calculator = Calculator(),
-            initialExpression = Expression(listOf(1, Operator.Plus, 2))
+            initialExpression = Expression(listOf(1, Operator.Plus, 2)),
+            calculatorRepository = defaultRepository
         )
 
         // when
@@ -121,7 +142,8 @@ class CalculatorViewModelTest {
     fun `정상적인 수식이 있을 때 계산 시 계산 테스트`(initialString: String, expected: String) {
         val viewModel = CalculatorViewModel(
             calculator = Calculator(),
-            initialExpression = getInitialExpression(initialString)
+            initialExpression = getInitialExpression(initialString),
+            calculatorRepository = defaultRepository
         )
 
         viewModel.calculate()
@@ -134,7 +156,8 @@ class CalculatorViewModelTest {
     fun `비정상적인 수식이 있을 때 테스트`() {
         val viewModel = CalculatorViewModel(
             calculator = Calculator(),
-            initialExpression = Expression(listOf(1, Operator.Plus))
+            initialExpression = Expression(listOf(1, Operator.Plus)),
+            defaultRepository
         )
 
         viewModel.calculate()
@@ -157,5 +180,50 @@ class CalculatorViewModelTest {
             }
         }
         return Expression(expressionParam)
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `저장된_계산한_결과들이_정상적으로_조회된다`() {
+        val savedHistory = listOf(
+            History(1,"1 + 1 - 1 * 8", "8"),
+            History(2,"5 - 1 * 12", "48"),
+            History(3,"1 + 1 / 1 * 8", "16"),
+        )
+        val viewModel = CalculatorViewModel(
+            calculator = Calculator(),
+            calculatorRepository = defaultRepository,
+            ioDispatcher = testDispatcher
+        )
+        coEvery { defaultRepository.getHistoryAll() } returns savedHistory
+
+        viewModel.showCalculateHistory()
+        val actual = viewModel.calculateHistory.getOrAwaitValue()
+
+        assertThat(actual).containsExactlyElementsIn(savedHistory.map { getStringForDisplay(it) })
+    }
+
+    private fun getStringForDisplay(history: History): String {
+        return "${history.formula}\n= ${history.calculateResult}"
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `계산을_수행할_때_계산식과_결과가_저장이_된다`() {
+        val initialString = "1 + 2 + 312 - 10 * 2"
+        val viewModel = CalculatorViewModel(
+            calculator = Calculator(),
+            initialExpression = getInitialExpression(initialString),
+            calculatorRepository = defaultRepository,
+            ioDispatcher = testDispatcher
+        )
+        val saveParamSlot = slot<History>()
+        coEvery { defaultRepository.save(capture(saveParamSlot)) } returns mockk()
+
+        viewModel.calculate()
+        val actual = saveParamSlot.captured
+
+        assertThat(actual.formula).isEqualTo(initialString)
+        assertThat(actual.calculateResult).isEqualTo("610")
     }
 }
