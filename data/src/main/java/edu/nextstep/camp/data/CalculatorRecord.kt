@@ -2,6 +2,7 @@ package edu.nextstep.camp.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import edu.nextstep.camp.domain.calculator.CalculatorMemory
 import edu.nextstep.camp.domain.calculator.Expression
 
 @Entity
@@ -10,3 +11,7 @@ data class CalculatorRecord(
     val expression: Expression,
     val result: Int
 )
+
+fun List<CalculatorRecord>.toListOfDomain() = this.map { it.toDomain() }
+
+fun CalculatorRecord.toDomain() = CalculatorMemory.Record(expression, result)
