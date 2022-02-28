@@ -3,17 +3,22 @@ package edu.nextstep.camp.calculator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import edu.nextstep.camp.calculator.data.CalculateRepository
 import edu.nextstep.camp.calculator.data.local.History
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 import edu.nextstep.camp.calculator.util.SingleLiveEvent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
     private val calculator: Calculator = Calculator(),
     initialExpression: Expression = Expression.EMPTY,
     private val calculatorRepository: CalculateRepository,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
     private val _expression: MutableLiveData<Expression> = MutableLiveData(initialExpression)
     val expression: LiveData<Expression>
@@ -45,7 +50,10 @@ class CalculatorViewModel(
                 return
             }
         _expression.value = Expression.EMPTY + calculateValue
-        calculatorRepository.save(History(expression.toString(), calculateValue.toString()))
+
+        viewModelScope.launch(ioDispatcher) {
+            calculatorRepository.save(History(expression.toString(), calculateValue.toString()))
+        }
     }
 
     fun removeLast() {
@@ -54,8 +62,10 @@ class CalculatorViewModel(
     }
 
     fun showCalculateHistory() {
-        val history: List<History> = calculatorRepository.historyAll
-        _calculateHistory.value = history.map { getStringForDisplay(it) }
+        viewModelScope.launch(ioDispatcher) {
+            val history: List<History> = calculatorRepository.getHistoryAll()
+            _calculateHistory.postValue(history.map { getStringForDisplay(it) })
+        }
     }
 
     private fun getStringForDisplay(history: History): String {
