@@ -11,8 +11,8 @@ import com.github.dodobest.domain.Operator
 
 class CalculatorViewModel(
     private var expression: Expression,
-    private var calculator: Calculator,
-    private var calculatorRepository: CalculatorRepository
+    private val calculator: Calculator,
+    private val calculatorRepository: CalculatorRepository
 ) : ViewModel() {
     private var _statement = MutableLiveData(expression.toString())
         val statement: LiveData<String>
