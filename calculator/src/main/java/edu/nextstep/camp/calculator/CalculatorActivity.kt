@@ -26,7 +26,7 @@ class CalculatorActivity : AppCompatActivity() {
 
         initRecyclerView()
         showMessage()
-        getCalculationMemory()
+        initCalculationMemory()
     }
 
     private fun initRecyclerView() {
@@ -41,7 +41,7 @@ class CalculatorActivity : AppCompatActivity() {
         }
     }
 
-    private fun getCalculationMemory() {
+    private fun initCalculationMemory() {
         viewModel.calculationMemories.observe(this) {
             calculationMemoryAdapter.submitList(it)
         }
