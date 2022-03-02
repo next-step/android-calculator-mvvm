@@ -2,43 +2,43 @@ package edu.nextstep.camp.calculator
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 
-class CalculatorViewModel : ViewModel() {
-    private val calculator = Calculator()
-    private var expression = Expression.EMPTY
+class CalculatorViewModel(
+    private val calculator: Calculator = Calculator()
+) : ViewModel() {
+    private val _expression = MutableLiveData(Expression.EMPTY)
+    val text: LiveData<String> = Transformations.map(_expression) { it.toString() }
 
-    private val _text = MutableLiveData("")
-    val text: LiveData<String> = _text
-
-    private val _onCalculationErrorEvent = SingleLiveEvent<Unit>()
-    val onCalculationErrorEvent: LiveData<Unit> = _onCalculationErrorEvent
+    private val _onCalculationErrorEvent = MutableLiveData<Event>()
+    val onCalculationErrorEvent: LiveData<Event> = _onCalculationErrorEvent
 
     fun addToExpression(operand: Int) {
-        expression += operand
-        _text.value = expression.toString()
+        val expression = _expression.value ?: return
+        _expression.value = expression + operand
     }
 
     fun addToExpression(operator: Operator) {
-        expression += operator
-        _text.value = expression.toString()
+        val expression = _expression.value ?: return
+        _expression.value = expression + operator
     }
 
     fun removeLast() {
-        expression = expression.removeLast()
-        _text.value = expression.toString()
+        val expression = _expression.value ?: return
+        _expression.value = expression.removeLast()
     }
 
     fun calculate() {
+        val expression = _expression.value ?: return
         val result = calculator.calculate(expression.toString())
         if (result == null) {
-            _onCalculationErrorEvent.call()
+            _onCalculationErrorEvent.value = Event.CalculationErrorEvent
             return
         }
-        expression = Expression.EMPTY + result
-        _text.value = expression.toString()
+        _expression.value = Expression.EMPTY + result
     }
 }

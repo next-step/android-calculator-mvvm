@@ -181,6 +181,6 @@ internal class CalculatorViewModelTest {
 
         // then
         val actual = viewModel.onCalculationErrorEvent.value
-        assertThat(actual).isEqualTo(null)
+        assertThat(actual).isEqualTo(Event.CalculationErrorEvent)
     }
 }
