@@ -41,5 +41,9 @@ data class Expression(
 
     companion object {
         val EMPTY = Expression()
+        fun from(rawExpression: String): Expression = Expression(
+            rawExpression.split(" ")
+                .map { Operator.of(it) ?: it.toInt() }
+        )
     }
 }

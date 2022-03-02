@@ -14,7 +14,7 @@ internal class MemoryRepositoryImpl(
         return memoryDao.getAll().map { it.map(MemoryEntity::toDomain) }
     }
 
-    override suspend fun insert(memory: Memory) {
+    override suspend fun addMemory(memory: Memory) {
         memoryDao.insert(MemoryEntity.from(memory))
     }
 }
