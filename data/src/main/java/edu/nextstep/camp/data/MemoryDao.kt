@@ -11,7 +11,7 @@ interface MemoryDao {
     fun getAll(): List<Memory>
 
     @Insert
-    suspend fun insert(vararg memory: Memory)
+    fun insert(vararg memory: Memory)
 
     @Query("SELECT * FROM memory WHERE id LIKE :id LIMIT 1")
     fun getMemoryById(id: Int): Memory

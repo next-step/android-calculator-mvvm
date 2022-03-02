@@ -32,9 +32,10 @@ class CalculatorViewModel(
     private val currentExpression: Expression get() = _expressionEvent.value ?: Expression.EMPTY
     private val viewType: CalculatorViewType get() = _viewTypeEvent.value ?: ExpressionView
 
-    val isViewTypeExpression: Boolean get() {
-        return viewType is ExpressionView
-    }
+    val isViewTypeExpression: Boolean
+        get() {
+            return viewType is ExpressionView
+        }
 
     fun addToExpression(operand: Int) {
         val newExpression = currentExpression + operand
@@ -71,8 +72,9 @@ class CalculatorViewModel(
         memoryDao.getAll()
     }
 
-    private fun saveExpression(expression: Expression, result: Int) = viewModelScope.launch {
-        val memory = Memory(expression.toString(), result.toString())
-        memoryDao.insert(memory)
-    }
+    private fun saveExpression(expression: Expression, result: Int) =
+        viewModelScope.launch(Dispatchers.IO) {
+            val memory = Memory(expression.toString(), result.toString())
+            memoryDao.insert(memory)
+        }
 }

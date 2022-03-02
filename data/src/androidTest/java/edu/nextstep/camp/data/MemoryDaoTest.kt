@@ -1,8 +1,7 @@
 package edu.nextstep.camp.data
 
-import android.content.Context
 import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
+import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
 import edu.nextstep.camp.domain.Expression
 import edu.nextstep.camp.domain.Operator
@@ -10,8 +9,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.junit.After
 import org.junit.Before
+import org.junit.Test
 import java.io.IOException
-import org.junit.jupiter.api.Test
 
 class MemoryDaoTest {
     private lateinit var memoryDao: MemoryDao
@@ -19,9 +18,10 @@ class MemoryDaoTest {
 
     @Before
     fun createDb() {
-        val context = ApplicationProvider.getApplicationContext<Context>()
+        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         db = Room.inMemoryDatabaseBuilder(
-            context, AppDataBase::class.java
+            appContext,
+            AppDataBase::class.java
         ).build()
         memoryDao = db.memoryDao()
     }
@@ -34,13 +34,13 @@ class MemoryDaoTest {
 
     @Test
     @Throws(Exception::class)
-    suspend fun writeMemoryAndReadInList() = withContext(Dispatchers.IO) {
+    fun writeMemoryAndReadInList() {
         val expression = Expression(listOf(10, Operator.Plus, 20)).toString()
         val result = "30"
-        val memory = Memory(expression, result, 0)
+        val memory = Memory(expression, result, 1)
         memoryDao.insert(memory)
 
-        val memoryById = memoryDao.getMemoryById(0)
+        val memoryById = memoryDao.getAll()[0]
         assertThat(memoryById).isEqualTo(memory)
     }
 }
