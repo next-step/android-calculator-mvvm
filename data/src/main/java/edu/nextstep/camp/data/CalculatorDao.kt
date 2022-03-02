@@ -11,5 +11,5 @@ interface CalculatorDao {
     fun getCalculatorHisotry(): List<CalculatorHisotry>
 
     @Insert
-    fun inserCalculatorHisotry(calculatorHisotry: CalculatorHisotry)
+    fun insertCalculatorHisotry(calculatorHisotry: CalculatorHisotry)
 }
