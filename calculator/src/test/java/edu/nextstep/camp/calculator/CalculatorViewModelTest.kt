@@ -180,7 +180,22 @@ internal class CalculatorViewModelTest {
         viewModel.calculate()
 
         // then
-        val actual = viewModel.onCalculationErrorEvent.value
+        val actual = viewModel.onCalculationErrorEvent.getOrAwaitValue()
         assertThat(actual).isEqualTo(Event.CalculationErrorEvent)
+    }
+
+    @Test
+    fun `수식이 '3 + 2'일 때, 계산하면, 계산기록에 '3 + 2 = 5'가 추가되어야 한다`() {
+        // given
+        viewModel.addToExpression(3)
+        viewModel.addToExpression(Operator.Plus)
+        viewModel.addToExpression(2)
+
+        // when
+        viewModel.calculate()
+
+        // then
+        val actual = viewModel.memories.getOrAwaitValue()
+        assertThat(actual).isEqualTo(listOf("3 + 2 = 5"))
     }
 }

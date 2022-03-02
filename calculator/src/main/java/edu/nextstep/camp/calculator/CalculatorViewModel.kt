@@ -6,11 +6,18 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
+import edu.nextstep.camp.calculator.domain.Memories
+import edu.nextstep.camp.calculator.domain.Memory
 import edu.nextstep.camp.calculator.domain.Operator
 
 class CalculatorViewModel(
     private val calculator: Calculator = Calculator()
 ) : ViewModel() {
+    private val _memories = MutableLiveData(Memories())
+    val memories: LiveData<List<String>> = Transformations.map(_memories) {
+        it.map { memory -> "${memory.expression} = ${memory.result}" }
+    }
+
     private val _expression = MutableLiveData(Expression.EMPTY)
     val text: LiveData<String> = Transformations.map(_expression) { it.toString() }
 
@@ -33,6 +40,7 @@ class CalculatorViewModel(
     }
 
     fun calculate() {
+        val memories = _memories.value ?: return
         val expression = _expression.value ?: return
         val result = calculator.calculate(expression.toString())
         if (result == null) {
@@ -40,5 +48,6 @@ class CalculatorViewModel(
             return
         }
         _expression.value = Expression.EMPTY + result
+        _memories.value = memories + Memory(expression, result)
     }
 }

@@ -1,7 +1,7 @@
 package edu.nextstep.camp.calculator.domain
 
 data class Memory(
-    val expression: String,
-    val result: String,
+    val expression: Expression,
+    val result: Int,
     val id: Int = 0
 )
