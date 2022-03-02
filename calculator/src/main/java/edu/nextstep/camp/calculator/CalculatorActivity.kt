@@ -5,14 +5,9 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
-import edu.nextstep.camp.data.LocalDataBase
 
 class CalculatorActivity : AppCompatActivity() {
-    private val viewModel by viewModels<CalculatorViewModel> {
-        CalculatorViewModelFactory(
-            LocalDataBase.getInstance(applicationContext).calculatorRecordDAO()
-        )
-    }
+    private val viewModel by viewModels<CalculatorViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +15,6 @@ class CalculatorActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        binding.recyclerView.adapter = CalculatorMemoryAdapter()
         observeEvent()
     }
 
