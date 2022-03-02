@@ -48,7 +48,7 @@ object Room {
 }
 
 object DaggerHiltConfig {
-    private const val HILT_VERSION = "2.38.1"
+    private const val HILT_VERSION = "2.41"
 
     const val ANDROID_GRADLE_PLUGIN = "com.google.dagger:hilt-android-gradle-plugin:$HILT_VERSION"
     const val ANDROID = "com.google.dagger:hilt-android:$HILT_VERSION"

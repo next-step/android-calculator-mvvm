@@ -4,7 +4,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Memory
-import edu.nextstep.camp.calculator.domain.Operator
 
 @Entity(tableName = "memory")
 internal class MemoryEntity(

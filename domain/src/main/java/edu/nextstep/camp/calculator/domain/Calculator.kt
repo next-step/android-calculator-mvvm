@@ -1,6 +1,8 @@
 package edu.nextstep.camp.calculator.domain
 
-class Calculator {
+import javax.inject.Inject
+
+class Calculator @Inject constructor() {
     fun calculate(rawExpression: String): Int? {
         if (rawExpression.isBlank()) return null
 

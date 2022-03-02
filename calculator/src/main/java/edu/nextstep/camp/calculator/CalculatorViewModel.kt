@@ -4,14 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Memories
 import edu.nextstep.camp.calculator.domain.Memory
+import edu.nextstep.camp.calculator.domain.MemoryRepository
 import edu.nextstep.camp.calculator.domain.Operator
+import javax.inject.Inject
 
-class CalculatorViewModel(
-    private val calculator: Calculator = Calculator()
+@HiltViewModel
+class CalculatorViewModel @Inject constructor(
+    private val calculator: Calculator,
+    private val memoryRepository: MemoryRepository
 ) : ViewModel() {
     private val _memories = MutableLiveData(Memories())
     val memories: LiveData<Memories> = _memories
@@ -49,7 +54,9 @@ class CalculatorViewModel(
             return
         }
         _expression.value = Expression.EMPTY + result
-        _memories.value = memories + Memory(expression, result)
+
+        val memory = Memory(expression, result)
+        _memories.value = memories + memory
     }
 
     fun toggleMemory() {

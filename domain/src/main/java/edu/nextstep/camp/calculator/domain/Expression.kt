@@ -34,15 +34,16 @@ data class Expression(
     }
 
     override fun toString(): String {
-        return values.joinToString(" ") {
+        return values.joinToString(SEPARATOR) {
             if (it is Operator) it.sign else it.toString()
         }
     }
 
     companion object {
         val EMPTY = Expression()
+        private const val SEPARATOR = " "
         fun from(rawExpression: String): Expression = Expression(
-            rawExpression.split(" ")
+            rawExpression.split(SEPARATOR)
                 .map { Operator.of(it) ?: it.toInt() }
         )
     }

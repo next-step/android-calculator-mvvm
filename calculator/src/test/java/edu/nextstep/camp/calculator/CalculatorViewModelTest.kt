@@ -2,6 +2,7 @@ package edu.nextstep.camp.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
+import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Memories
 import edu.nextstep.camp.calculator.domain.Memory
@@ -18,7 +19,10 @@ internal class CalculatorViewModelTest {
 
     @Before
     fun setup() {
-        viewModel = CalculatorViewModel()
+        viewModel = CalculatorViewModel(
+            calculator = Calculator(),
+            memoryRepository = MemoryRepositoryMocked()
+        )
     }
 
     // 입력된 피연산자가 없을 때, 사용자가 피연산자 0 ~ 9 버튼을 누르면 화면에 해당 숫자가 화면에 보여야 한다.

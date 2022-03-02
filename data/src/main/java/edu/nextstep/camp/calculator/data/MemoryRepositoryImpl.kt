@@ -6,8 +6,9 @@ import edu.nextstep.camp.calculator.domain.Memory
 import edu.nextstep.camp.calculator.domain.MemoryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-internal class MemoryRepositoryImpl(
+internal class MemoryRepositoryImpl @Inject constructor(
     private val memoryDao: MemoryDao
 ) : MemoryRepository {
     override fun getAllMemory(): Flow<List<Memory>> {

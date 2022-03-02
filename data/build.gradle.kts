@@ -27,7 +27,7 @@ dependencies {
         implementation(STDLIB)
     }
     DaggerHiltConfig.run {
-        implementation(CORE)
+        implementation(ANDROID)
         kapt(COMPILER)
     }
     Room.run {
