@@ -18,6 +18,9 @@ class CalculatorViewModel(
         it.map { memory -> "${memory.expression} = ${memory.result}" }
     }
 
+    private val _isMemoryVisible = MutableLiveData(false)
+    val isMemoryVisible: LiveData<Boolean> = _isMemoryVisible
+
     private val _expression = MutableLiveData(Expression.EMPTY)
     val text: LiveData<String> = Transformations.map(_expression) { it.toString() }
 
@@ -49,5 +52,10 @@ class CalculatorViewModel(
         }
         _expression.value = Expression.EMPTY + result
         _memories.value = memories + Memory(expression, result)
+    }
+
+    fun toggleMemory() {
+        val isMemoryVisible = _isMemoryVisible.value ?: return
+        _isMemoryVisible.value = !isMemoryVisible
     }
 }

@@ -198,4 +198,27 @@ internal class CalculatorViewModelTest {
         val actual = viewModel.memories.getOrAwaitValue()
         assertThat(actual).isEqualTo(listOf("3 + 2 = 5"))
     }
+
+    @Test
+    fun `계산기록이 보이지 않을 때, 토글하면, 계산기록이 보여야 한다`() {
+        // when
+        viewModel.toggleMemory()
+
+        // then
+        val actual = viewModel.isMemoryVisible.getOrAwaitValue()
+        assertThat(actual).isTrue()
+    }
+
+    @Test
+    fun `계산기록이 보일 때, 토글하면, 계산기록이 보이지 않아야 한다`() {
+        // given
+        viewModel.toggleMemory()
+
+        // when
+        viewModel.toggleMemory()
+
+        // then
+        val actual = viewModel.isMemoryVisible.getOrAwaitValue()
+        assertThat(actual).isFalse()
+    }
 }
