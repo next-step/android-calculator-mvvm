@@ -2,6 +2,9 @@ package edu.nextstep.camp.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
+import edu.nextstep.camp.calculator.domain.Expression
+import edu.nextstep.camp.calculator.domain.Memories
+import edu.nextstep.camp.calculator.domain.Memory
 import edu.nextstep.camp.calculator.domain.Operator
 import org.junit.Before
 import org.junit.Rule
@@ -196,7 +199,8 @@ internal class CalculatorViewModelTest {
 
         // then
         val actual = viewModel.memories.getOrAwaitValue()
-        assertThat(actual).isEqualTo(listOf("3 + 2 = 5"))
+        val expected = Memories(listOf(Memory(Expression(listOf(3, Operator.Plus, 2)), 5)))
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test

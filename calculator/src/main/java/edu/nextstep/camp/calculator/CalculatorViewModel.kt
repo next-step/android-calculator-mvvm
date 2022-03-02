@@ -14,9 +14,7 @@ class CalculatorViewModel(
     private val calculator: Calculator = Calculator()
 ) : ViewModel() {
     private val _memories = MutableLiveData(Memories())
-    val memories: LiveData<List<String>> = Transformations.map(_memories) {
-        it.map { memory -> "${memory.expression} = ${memory.result}" }
-    }
+    val memories: LiveData<Memories> = _memories
 
     private val _isMemoryVisible = MutableLiveData(false)
     val isMemoryVisible: LiveData<Boolean> = _isMemoryVisible
