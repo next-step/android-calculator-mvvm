@@ -28,7 +28,7 @@ class CalculatorViewModel(
     val calculateFailed: LiveData<Unit>
         get() = _calculateFailed
 
-    private val _calculateHistory: MutableLiveData<List<String>?> = MutableLiveData(null)
+    private val _calculateHistory: MutableLiveData<List<String>?> = SingleLiveEvent()
     val calculateHistory: LiveData<List<String>?>
         get() = _calculateHistory
 
