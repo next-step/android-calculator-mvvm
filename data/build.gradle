@@ -47,6 +47,7 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
 
     testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.8.2' // junit4 지원
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
