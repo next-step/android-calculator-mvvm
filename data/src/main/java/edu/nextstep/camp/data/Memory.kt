@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class Memory(
+internal data class Memory(
     @ColumnInfo
     val expression: String,
 

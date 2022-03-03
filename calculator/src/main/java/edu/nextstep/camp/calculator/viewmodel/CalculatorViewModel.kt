@@ -6,18 +6,14 @@ import androidx.lifecycle.viewModelScope
 import edu.nextstep.camp.calculator.CalculatorViewType
 import edu.nextstep.camp.calculator.ExpressionView
 import edu.nextstep.camp.calculator.SingleLiveEvent
-import edu.nextstep.camp.data.Memory
-import edu.nextstep.camp.data.MemoryDao
-import edu.nextstep.camp.domain.Calculator
-import edu.nextstep.camp.domain.Expression
-import edu.nextstep.camp.domain.Operator
+import edu.nextstep.camp.domain.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class CalculatorViewModel(
     private val calculator: Calculator = Calculator(),
-    private val memoryDao: MemoryDao,
+    private val repository: CalculatorRepository
 ) : ViewModel() {
 
     private val _expressionEvent = SingleLiveEvent<Expression>()
@@ -29,8 +25,8 @@ class CalculatorViewModel(
     private val _viewTypeEvent = SingleLiveEvent<CalculatorViewType>()
     val viewTypeEvent: LiveData<CalculatorViewType> get() = _viewTypeEvent
 
-    private val _memoriesEvent = SingleLiveEvent<List<Memory>?>()
-    val memoriesEvent: LiveData<List<Memory>?> get() = _memoriesEvent
+    private val _memoriesEvent = SingleLiveEvent<List<Calculation>?>()
+    val memoriesEvent: LiveData<List<Calculation>?> get() = _memoriesEvent
 
     private val currentExpression: Expression get() = _expressionEvent.value ?: Expression.EMPTY
     private val viewType: CalculatorViewType get() = _viewTypeEvent.value ?: ExpressionView
@@ -67,13 +63,13 @@ class CalculatorViewModel(
         _viewTypeEvent.postValue(viewType.toggle())
     }
 
-    private suspend fun getMemories(): List<Memory> = withContext(Dispatchers.IO) {
-        memoryDao.getAll()
+    private suspend fun getMemories(): List<Calculation> = withContext(Dispatchers.IO) {
+        repository.getAll()
     }
 
     private fun saveExpression(expression: Expression, result: Int) =
         viewModelScope.launch(Dispatchers.IO) {
-            val memory = Memory(expression.toString(), result.toString())
-            memoryDao.insert(memory)
+            val memory = Calculation(expression.toString(), result.toString())
+            repository.insert(memory)
         }
 }

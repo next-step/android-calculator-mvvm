@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import edu.nextstep.camp.calculator.R
-import edu.nextstep.camp.data.Memory
+import edu.nextstep.camp.domain.Calculation
 
 class MemoryAdapter : RecyclerView.Adapter<MemoryViewHolder>() {
-    private val memories: MutableList<Memory> = mutableListOf()
+    private val memories: MutableList<Calculation> = mutableListOf()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun refreshMemories(memories: List<Memory>) {
+    fun refreshMemories(memories: List<Calculation>) {
         this.memories.clear()
         this.memories.addAll(memories)
         notifyDataSetChanged()

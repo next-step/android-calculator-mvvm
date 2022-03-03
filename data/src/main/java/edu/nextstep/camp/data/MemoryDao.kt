@@ -6,13 +6,10 @@ import androidx.room.Insert
 import androidx.room.Query
 
 @Dao
-interface MemoryDao {
+internal interface MemoryDao {
     @Query("SELECT * FROM memory")
     fun getAll(): List<Memory>
 
     @Insert
-    fun insert(vararg memory: Memory)
-
-    @Query("SELECT * FROM memory WHERE id LIKE :id LIMIT 1")
-    fun getMemoryById(id: Int): Memory
+    fun insert(memory: Memory)
 }

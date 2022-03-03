@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(entities = [Memory::class], version = 1)
-abstract class AppDataBase : RoomDatabase() {
+internal abstract class AppDataBase : RoomDatabase() {
     abstract fun memoryDao(): MemoryDao
 
     companion object {

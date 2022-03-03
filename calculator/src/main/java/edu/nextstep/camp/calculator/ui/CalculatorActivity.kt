@@ -9,15 +9,14 @@ import androidx.lifecycle.ViewModelProvider
 import edu.nextstep.camp.calculator.R
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 import edu.nextstep.camp.calculator.viewmodel.CalculatorViewModel
-import edu.nextstep.camp.data.AppDataBase
+import edu.nextstep.camp.data.Injector
 
 class CalculatorActivity : AppCompatActivity() {
-
     private val memoryAdapter = MemoryAdapter()
 
     private val viewModel: CalculatorViewModel by viewModelsFactory {
         CalculatorViewModel(
-            memoryDao = AppDataBase.getInstance(this@CalculatorActivity).memoryDao()
+            repository = Injector.provideMemoryRepository(this)
         )
     }
 
