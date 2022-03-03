@@ -1,7 +1,7 @@
 package edu.nextstep.camp.domain
 
 interface CalculatorRepository {
-    fun getAll(): List<Calculation>
+    suspend fun getAll(): List<Calculation>
 
-    fun insert(calculation: Calculation)
+    suspend fun insert(calculation: Calculation)
 }

@@ -2,11 +2,13 @@ package edu.nextstep.camp.data
 
 import edu.nextstep.camp.domain.Calculation
 import edu.nextstep.camp.domain.CalculatorRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 internal class MemoryRepositoryImpl(private val memoryDao: MemoryDao) : CalculatorRepository {
 
-    override fun getAll(): List<Calculation> {
-        return memoryDao.getAll().map {
+    override suspend fun getAll(): List<Calculation> = withContext(Dispatchers.IO) {
+        memoryDao.getAll().map {
             Calculation(
                 expression = it.expression,
                 result = it.result
@@ -14,7 +16,7 @@ internal class MemoryRepositoryImpl(private val memoryDao: MemoryDao) : Calculat
         }
     }
 
-    override fun insert(calculation: Calculation) {
+    override suspend fun insert(calculation: Calculation) = withContext(Dispatchers.IO) {
         memoryDao.insert(
             Memory(
                 expression = calculation.expression,

@@ -7,9 +7,7 @@ import edu.nextstep.camp.calculator.CalculatorViewType
 import edu.nextstep.camp.calculator.ExpressionView
 import edu.nextstep.camp.calculator.SingleLiveEvent
 import edu.nextstep.camp.domain.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class CalculatorViewModel(
     private val calculator: Calculator = Calculator(),
@@ -57,19 +55,19 @@ class CalculatorViewModel(
         _expressionEvent.value = Expression(listOf(result))
     }
 
-    fun toggleViewType() = viewModelScope.launch {
-        val memories = if (viewType is ExpressionView) getMemories() else null
-        _memoriesEvent.postValue(memories)
+    fun toggleViewType() {
         _viewTypeEvent.postValue(viewType.toggle())
+        getMemories()
     }
 
-    private suspend fun getMemories(): List<Calculation> = withContext(Dispatchers.IO) {
-        repository.getAll()
+    private fun getMemories() = viewModelScope.launch {
+        val memories = if (viewType is ExpressionView) repository.getAll() else null
+        _memoriesEvent.postValue(memories)
+
     }
 
-    private fun saveExpression(expression: Expression, result: Int) =
-        viewModelScope.launch(Dispatchers.IO) {
-            val memory = Calculation(expression.toString(), result.toString())
-            repository.insert(memory)
-        }
+    private fun saveExpression(expression: Expression, result: Int) = viewModelScope.launch {
+        val memory = Calculation(expression.toString(), result.toString())
+        repository.insert(memory)
+    }
 }
