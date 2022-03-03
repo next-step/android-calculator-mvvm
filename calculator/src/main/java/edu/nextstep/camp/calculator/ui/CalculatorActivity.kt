@@ -1,19 +1,15 @@
 package edu.nextstep.camp.calculator.ui
 
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import edu.nextstep.camp.calculator.viewmodel.CalculatorViewModel
-import edu.nextstep.camp.calculator.ExpressionView
-import edu.nextstep.camp.calculator.MemoryView
 import edu.nextstep.camp.calculator.R
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
+import edu.nextstep.camp.calculator.viewmodel.CalculatorViewModel
 import edu.nextstep.camp.data.AppDataBase
-import edu.nextstep.camp.data.Memory
 
 class CalculatorActivity : AppCompatActivity() {
 
@@ -44,46 +40,8 @@ class CalculatorActivity : AppCompatActivity() {
             Toast.makeText(this, R.string.incomplete_expression, Toast.LENGTH_SHORT).show()
         }
 
-        viewModel.viewTypeEvent.observe(this) {
-            when (it) {
-                is ExpressionView -> setExpressionView()
-                is MemoryView -> setMemoryView(it.memories)
-            }
-        }
-    }
-
-    private fun setExpressionView() {
-        binding.textView.visibility = View.VISIBLE
-        binding.recyclerView.visibility = View.INVISIBLE
-        setButtonEnabled(true)
-    }
-
-    private fun setMemoryView(memories: List<Memory>?) {
-        binding.textView.visibility = View.INVISIBLE
-        binding.recyclerView.visibility = View.VISIBLE
-        if (memories != null) memoryAdapter.refreshMemories(memories)
-
-        setButtonEnabled(false)
-    }
-
-    private fun setButtonEnabled(enabled: Boolean) {
-        binding.run {
-            button0.isEnabled = enabled
-            button1.isEnabled = enabled
-            button2.isEnabled = enabled
-            button3.isEnabled = enabled
-            button4.isEnabled = enabled
-            button5.isEnabled = enabled
-            button6.isEnabled = enabled
-            button7.isEnabled = enabled
-            button8.isEnabled = enabled
-            button9.isEnabled = enabled
-            buttonPlus.isEnabled = enabled
-            buttonMinus.isEnabled = enabled
-            buttonMultiply.isEnabled = enabled
-            buttonDivide.isEnabled = enabled
-            buttonDelete.isEnabled = enabled
-            buttonEquals.isEnabled = enabled
+        viewModel.memoriesEvent.observe(this) { memories ->
+            if (memories != null) memoryAdapter.refreshMemories(memories)
         }
     }
 
