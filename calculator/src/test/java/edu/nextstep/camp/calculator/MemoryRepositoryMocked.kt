@@ -4,16 +4,19 @@ import edu.nextstep.camp.calculator.domain.Memories
 import edu.nextstep.camp.calculator.domain.Memory
 import edu.nextstep.camp.calculator.domain.MemoryRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class MemoryRepositoryMocked(
     private var memories: Memories = Memories()
 ) : MemoryRepository {
-    override fun getAllMemory(): Flow<List<Memory>> {
-        return flowOf(memories.toList())
+    private val _state = MutableStateFlow(memories)
+
+    override fun getMemories(): Flow<Memories> {
+        return _state
     }
 
     override suspend fun addMemory(memory: Memory) {
         memories += memory
+        _state.emit(memories)
     }
 }

@@ -2,6 +2,7 @@ package edu.nextstep.camp.calculator.data
 
 import edu.nextstep.camp.calculator.data.local.MemoryDao
 import edu.nextstep.camp.calculator.data.local.MemoryEntity
+import edu.nextstep.camp.calculator.domain.Memories
 import edu.nextstep.camp.calculator.domain.Memory
 import edu.nextstep.camp.calculator.domain.MemoryRepository
 import kotlinx.coroutines.flow.Flow
@@ -11,8 +12,8 @@ import javax.inject.Inject
 internal class MemoryRepositoryImpl @Inject constructor(
     private val memoryDao: MemoryDao
 ) : MemoryRepository {
-    override fun getAllMemory(): Flow<List<Memory>> {
-        return memoryDao.getAll().map { it.map(MemoryEntity::toDomain) }
+    override fun getMemories(): Flow<Memories> {
+        return memoryDao.getAll().map { Memories(it.map(MemoryEntity::toDomain)) }
     }
 
     override suspend fun addMemory(memory: Memory) {

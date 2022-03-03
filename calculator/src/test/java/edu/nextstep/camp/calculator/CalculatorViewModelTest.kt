@@ -7,6 +7,8 @@ import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Memories
 import edu.nextstep.camp.calculator.domain.Memory
 import edu.nextstep.camp.calculator.domain.Operator
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -192,7 +194,7 @@ internal class CalculatorViewModelTest {
     }
 
     @Test
-    fun `수식이 '3 + 2'일 때, 계산하면, 계산기록에 '3 + 2 = 5'가 추가되어야 한다`() {
+    fun `수식이 '3 + 2'일 때, 계산하면, 계산기록에 '3 + 2 = 5'가 추가되어야 한다`() = runBlocking {
         // given
         viewModel.addToExpression(3)
         viewModel.addToExpression(Operator.Plus)
@@ -202,7 +204,7 @@ internal class CalculatorViewModelTest {
         viewModel.calculate()
 
         // then
-        val actual = viewModel.memories.getOrAwaitValue()
+        val actual = viewModel.memories.first()
         val expected = Memories(listOf(Memory(Expression(listOf(3, Operator.Plus, 2)), 5)))
         assertThat(actual).isEqualTo(expected)
     }
