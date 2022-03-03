@@ -14,8 +14,12 @@ import io.mockk.slot
 import junitparams.JUnitParamsRunner
 import junitparams.Parameters
 import junitparams.naming.TestCaseName
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -30,9 +34,17 @@ class CalculatorViewModelTest {
     @ExperimentalCoroutinesApi
     val testDispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
 
+    @ExperimentalCoroutinesApi
     @Before
     fun setUp() {
         defaultRepository = mockk()
+        Dispatchers.setMain(testDispatcher)
+    }
+
+    @ExperimentalCoroutinesApi
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
     }
 
     @Test
@@ -200,11 +212,7 @@ class CalculatorViewModelTest {
         viewModel.showCalculateHistory()
         val actual = viewModel.calculateHistory.getOrAwaitValue()
 
-        assertThat(actual).containsExactlyElementsIn(savedHistory.map { getStringForDisplay(it) })
-    }
-
-    private fun getStringForDisplay(history: History): String {
-        return "${history.formula}\n= ${history.calculateResult}"
+        assertThat(actual).containsExactlyElementsIn(savedHistory)
     }
 
     @ExperimentalCoroutinesApi
