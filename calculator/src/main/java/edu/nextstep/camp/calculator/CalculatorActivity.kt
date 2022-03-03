@@ -27,8 +27,7 @@ class CalculatorActivity : AppCompatActivity() {
         viewModel.calculateHistory.observe(this) {
             it?.let {
                 AlertDialog.Builder(this)
-                    .apply { setMessage(it.joinToString(separator = "\n\n")) }
-                    .create()
+                    .setMessage(it.joinToString(separator = "\n\n"))
                     .show()
             }
         }
