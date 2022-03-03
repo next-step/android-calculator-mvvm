@@ -4,12 +4,12 @@ import com.github.dodobest.domain.CalculatorRepository
 
 internal class CalculatorRepositoryImpl(
     private val database: AppDatabase
-) : CalculatorRepository {
-    override fun addMemory(expression: String, result: String) {
-        database.resultRecordDao().insertResultRecord(ResultRecord(expression, result))
+) : CalculatorRepository<ResultRecord> {
+    override fun addMemory(resultRecord: ResultRecord) {
+        database.resultRecordDao().insertResultRecord(resultRecord)
     }
 
-    override fun getMemories(): MutableList<ResultRecord> {
-        return database.resultRecordDao().getAll()
+    override fun getMemories(): List<ResultRecord> {
+        return database.resultRecordDao().getAll().toList()
     }
 }

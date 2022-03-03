@@ -4,7 +4,7 @@ import android.content.Context
 import com.github.dodobest.domain.CalculatorRepository
 
 object Injector {
-    fun provideCalculatorRepository(context: Context): CalculatorRepository {
+    fun provideCalculatorRepository(context: Context): CalculatorRepository<ResultRecord> {
         return CalculatorRepositoryImpl(AppDatabase.getInstance(context))
     }
 }
