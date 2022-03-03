@@ -1,15 +1,16 @@
 package com.github.dodobest
 
+import com.github.dodobest.domain.Calculator
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class CalculatorTest {
-    private lateinit var calculator: com.github.dodobest.domain.Calculator
+    private lateinit var calculator: Calculator
 
     @BeforeEach
     fun setUp() {
-        calculator = com.github.dodobest.domain.Calculator()
+        calculator = Calculator()
     }
 
     @Test
