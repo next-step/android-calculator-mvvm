@@ -1,7 +1,5 @@
-package com.github.dodobest
+package com.github.dodobest.domain
 
-import com.github.dodobest.domain.Expression
-import com.github.dodobest.domain.Operator
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
 
