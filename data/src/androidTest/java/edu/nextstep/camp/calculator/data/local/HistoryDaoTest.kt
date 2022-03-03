@@ -38,12 +38,15 @@ class HistoryDaoTest {
 
     @Test
     fun `저장되어_있는_모든_history_목록이_나온다`() {
-        val actual =  runBlocking {historyDao.getAll() }
-        assertThat(actual).containsExactly(History(1, "1 + 1", "2"), History(2, "1 + 1 * 3", "6"))
+        val actual = runBlocking { historyDao.getAll() }
+        assertThat(actual).containsExactly(
+            History(1, "1 + 1", "2"),
+            History(2, "1 + 1 * 3", "6")
+        )
     }
 
     @Test
-    fun `history가_정상적으로_저장된다`()  {
+    fun `history가_정상적으로_저장된다`() {
         val insertHistory = History(3, "1 + 4 + 6 - 2", "9")
 
         val actual = runBlocking {
