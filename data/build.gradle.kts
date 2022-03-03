@@ -27,15 +27,14 @@ dependencies {
         implementation(STDLIB)
     }
     DaggerHiltConfig.run {
-        implementation(ANDROID)
         kapt(COMPILER)
+        implementation(ANDROID)
     }
     Room.run {
         kapt(COMPILER)
         implementation(KTX)
         implementation(RUNTIME)
         testImplementation(TESTING)
-        annotationProcessor(COMPILER)
     }
     Test.run {
         testRuntimeOnly(VINTAGE)

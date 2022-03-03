@@ -18,8 +18,8 @@ dependencies {
         implementation(COROUTINE)
     }
     DaggerHiltConfig.run {
-        implementation(CORE)
         kapt(COMPILER)
+        implementation(CORE)
     }
     Test.run {
         testRuntimeOnly(VINTAGE)
