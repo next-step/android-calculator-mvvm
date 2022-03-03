@@ -13,6 +13,7 @@ import edu.nextstep.camp.calculator.util.SingleLiveEvent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CalculatorViewModel(
     private val calculator: Calculator = Calculator(),
@@ -51,8 +52,10 @@ class CalculatorViewModel(
             }
         _expression.value = Expression.EMPTY + calculateValue
 
-        viewModelScope.launch(ioDispatcher) {
-            calculatorRepository.save(History(expression.toString(), calculateValue.toString()))
+        viewModelScope.launch {
+            withContext(ioDispatcher) {
+                calculatorRepository.save(History(expression.toString(), calculateValue.toString()))
+            }
         }
     }
 
@@ -62,9 +65,11 @@ class CalculatorViewModel(
     }
 
     fun showCalculateHistory() {
-        viewModelScope.launch(ioDispatcher) {
-            val history: List<History> = calculatorRepository.getHistoryAll()
-            _calculateHistory.postValue(history.map { getStringForDisplay(it) })
+        viewModelScope.launch {
+            val history: List<History> = withContext(ioDispatcher) {
+                calculatorRepository.getHistoryAll()
+            }
+            _calculateHistory.value = history.map { getStringForDisplay(it) }
         }
     }
 
