@@ -3,7 +3,7 @@ package edu.nextstep.camp.calculator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.dodobest.data.CalculatorRepository
+import com.github.dodobest.domain.CalculatorRepository
 import com.github.dodobest.data.ResultRecord
 import com.github.dodobest.domain.Calculator
 import com.github.dodobest.domain.Expression
