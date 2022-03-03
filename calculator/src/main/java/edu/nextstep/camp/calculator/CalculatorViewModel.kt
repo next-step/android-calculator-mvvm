@@ -29,8 +29,8 @@ class CalculatorViewModel(
     val calculateFailed: LiveData<Unit>
         get() = _calculateFailed
 
-    private val _calculateHistory: MutableLiveData<List<String>?> = SingleLiveEvent()
-    val calculateHistory: LiveData<List<String>?>
+    private val _calculateHistory: MutableLiveData<List<History>?> = SingleLiveEvent()
+    val calculateHistory: LiveData<List<History>?>
         get() = _calculateHistory
 
     fun addToExpression(operand: Int) {
@@ -66,14 +66,9 @@ class CalculatorViewModel(
 
     fun showCalculateHistory() {
         viewModelScope.launch {
-            val history: List<History> = withContext(ioDispatcher) {
+            _calculateHistory.value = withContext(ioDispatcher) {
                 calculatorRepository.getHistoryAll()
             }
-            _calculateHistory.value = history.map { getStringForDisplay(it) }
         }
-    }
-
-    private fun getStringForDisplay(history: History): String {
-        return "${history.formula}\n= ${history.calculateResult}"
     }
 }

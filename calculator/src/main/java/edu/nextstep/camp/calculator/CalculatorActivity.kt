@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import edu.nextstep.camp.calculator.data.CalculatorRepositoryProvider
+import edu.nextstep.camp.calculator.data.local.History
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 
 class CalculatorActivity : AppCompatActivity() {
@@ -27,9 +28,12 @@ class CalculatorActivity : AppCompatActivity() {
         viewModel.calculateHistory.observe(this) {
             it?.let {
                 AlertDialog.Builder(this)
-                    .setMessage(it.joinToString(separator = "\n\n"))
+                    .setMessage(it.joinToString(separator = "\n\n") { history ->  getStringForDisplay(history) })
                     .show()
             }
         }
+    }
+    private fun getStringForDisplay(history: History): String {
+        return "${history.formula}\n= ${history.calculateResult}"
     }
 }
