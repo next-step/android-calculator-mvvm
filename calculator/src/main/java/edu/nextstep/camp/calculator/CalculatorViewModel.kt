@@ -34,22 +34,22 @@ class CalculatorViewModel @Inject constructor(
     val onCalculationErrorEvent: LiveData<Event> = _onCalculationErrorEvent
 
     fun addToExpression(operand: Int) {
-        val expression = _expression.value ?: return
+        val expression = getExpression()
         _expression.value = expression + operand
     }
 
     fun addToExpression(operator: Operator) {
-        val expression = _expression.value ?: return
+        val expression = getExpression()
         _expression.value = expression + operator
     }
 
     fun removeLast() {
-        val expression = _expression.value ?: return
+        val expression = getExpression()
         _expression.value = expression.removeLast()
     }
 
     fun calculate() {
-        val expression = _expression.value ?: return
+        val expression = getExpression()
         val result = calculator.calculate(expression.toString())
         if (result == null) {
             _onCalculationErrorEvent.value = Event.CalculationErrorEvent
@@ -65,4 +65,6 @@ class CalculatorViewModel @Inject constructor(
         val isMemoryVisible = _isMemoryVisible.value ?: return
         _isMemoryVisible.value = !isMemoryVisible
     }
+
+    private fun getExpression(): Expression = _expression.value ?: Expression.EMPTY
 }
