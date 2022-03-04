@@ -3,16 +3,12 @@ package edu.nextstep.camp.calculator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.dodobest.domain.CalculatorRepository
-import com.github.dodobest.data.ResultRecord
-import com.github.dodobest.domain.Calculator
-import com.github.dodobest.domain.Expression
-import com.github.dodobest.domain.Operator
+import com.github.dodobest.domain.*
 
 class CalculatorViewModel(
     private var expression: Expression,
     private val calculator: Calculator,
-    private val calculatorRepository: CalculatorRepository<ResultRecord>
+    private val calculatorRepository: CalculatorRepository
 ) : ViewModel() {
     private var _statement = MutableLiveData(expression.toString())
         val statement: LiveData<String>

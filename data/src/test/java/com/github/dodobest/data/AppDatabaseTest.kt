@@ -39,7 +39,7 @@ class AppDatabaseTest {
         // given : "3+3", "6"을 가진 ResultRecord가 있을때
         val expression = "3+3"
         val result = "6"
-        val resultRecord: ResultRecord = TestUtil.createResultRecord(expression, result)
+        val resultRecord: ResultRecordEntity = TestUtil.createResultRecord(expression, result)
 
         // when : DB에 넣으면
         resultRecordDao.insertResultRecord(resultRecord)

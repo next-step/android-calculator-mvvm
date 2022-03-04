@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-@Database(entities = [ResultRecord::class], version = 1)
+@Database(entities = [ResultRecordEntity::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun resultRecordDao(): ResultRecordDao
 

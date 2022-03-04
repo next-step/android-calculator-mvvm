@@ -3,7 +3,7 @@ package edu.nextstep.camp.calculator
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.github.dodobest.data.ResultRecord
+import com.github.dodobest.domain.ResultRecord
 import edu.nextstep.camp.calculator.databinding.ItemResultBinding
 
 class ResultAdapter : RecyclerView.Adapter<ResultAdapterViewHolder>() {

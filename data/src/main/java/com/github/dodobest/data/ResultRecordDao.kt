@@ -8,17 +8,17 @@ import androidx.room.Query
 @Dao
 interface ResultRecordDao {
     @Query("SELECT * FROM result_record")
-    fun getAll(): MutableList<ResultRecord>
+    fun getAll(): List<ResultRecordEntity>
 
     @Query("SELECT * FROM result_record WHERE expression = :expression")
-    fun findResultRecordByExpression(expression: String): ResultRecord
+    fun findResultRecordByExpression(expression: String): ResultRecordEntity
 
     @Insert
-    fun insertResultRecords(vararg resultRecords: ResultRecord)
+    fun insertResultRecords(vararg resultRecords: ResultRecordEntity)
 
     @Insert
-    fun insertResultRecord(resultRecord: ResultRecord)
+    fun insertResultRecord(resultRecord: ResultRecordEntity)
 
     @Delete
-    fun delete(resultRecord: ResultRecord)
+    fun delete(resultRecord: ResultRecordEntity)
 }

@@ -1,6 +1,7 @@
 package edu.nextstep.camp.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.github.dodobest.data.ResultRecordEntity
 import com.github.dodobest.domain.CalculatorRepository
 import com.google.common.truth.Truth.assertThat
 import com.github.dodobest.domain.Calculator
