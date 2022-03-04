@@ -3,14 +3,23 @@ package edu.nextstep.camp.calculator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import edu.nextstep.camp.calculator.data.CalculateRepository
+import edu.nextstep.camp.calculator.data.local.History
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 import edu.nextstep.camp.calculator.util.SingleLiveEvent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CalculatorViewModel(
     private val calculator: Calculator = Calculator(),
-    initialExpression: Expression = Expression.EMPTY
+    initialExpression: Expression = Expression.EMPTY,
+    private val calculatorRepository: CalculateRepository,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
     private val _expression: MutableLiveData<Expression> = MutableLiveData(initialExpression)
     val expression: LiveData<Expression>
@@ -19,6 +28,10 @@ class CalculatorViewModel(
     private val _calculateFailed: MutableLiveData<Unit> = SingleLiveEvent()
     val calculateFailed: LiveData<Unit>
         get() = _calculateFailed
+
+    private val _calculateHistory: MutableLiveData<List<History>?> = SingleLiveEvent()
+    val calculateHistory: LiveData<List<History>?>
+        get() = _calculateHistory
 
     fun addToExpression(operand: Int) {
         val expression = _expression.value ?: Expression.EMPTY
@@ -38,10 +51,24 @@ class CalculatorViewModel(
                 return
             }
         _expression.value = Expression.EMPTY + calculateValue
+
+        viewModelScope.launch {
+            withContext(ioDispatcher) {
+                calculatorRepository.save(History(expression.toString(), calculateValue.toString()))
+            }
+        }
     }
 
     fun removeLast() {
         val expression = _expression.value ?: Expression.EMPTY
         _expression.value = expression.removeLast()
+    }
+
+    fun showCalculateHistory() {
+        viewModelScope.launch {
+            _calculateHistory.value = withContext(ioDispatcher) {
+                calculatorRepository.getHistoryAll()
+            }
+        }
     }
 }
