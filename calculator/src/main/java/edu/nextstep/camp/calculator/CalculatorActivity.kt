@@ -43,6 +43,10 @@ class CalculatorActivity : AppCompatActivity() {
             Toast.makeText(this, R.string.incomplete_expression, Toast.LENGTH_SHORT).show()
             it.consume()
         }
+
+        viewModel.expressionHistory.observe(this) {
+            adapter.submitList(it)
+        }
     }
 
     private fun initRecyclerView() {
