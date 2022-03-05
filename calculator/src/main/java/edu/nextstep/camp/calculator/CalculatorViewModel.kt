@@ -12,7 +12,6 @@ import edu.nextstep.camp.calculator.domain.Memories
 import edu.nextstep.camp.calculator.domain.Memory
 import edu.nextstep.camp.calculator.domain.MemoryRepository
 import edu.nextstep.camp.calculator.domain.Operator
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -56,7 +55,7 @@ class CalculatorViewModel @Inject constructor(
             return
         }
         _expression.value = Expression.EMPTY + result
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             memoryRepository.addMemory(Memory(expression, result))
         }
     }

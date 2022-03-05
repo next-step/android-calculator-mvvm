@@ -5,8 +5,10 @@ import edu.nextstep.camp.calculator.data.local.MemoryEntity
 import edu.nextstep.camp.calculator.domain.Memories
 import edu.nextstep.camp.calculator.domain.Memory
 import edu.nextstep.camp.calculator.domain.MemoryRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 internal class MemoryRepositoryImpl @Inject constructor(
@@ -16,7 +18,7 @@ internal class MemoryRepositoryImpl @Inject constructor(
         return memoryDao.getAll().map { Memories(it.map(MemoryEntity::toDomain)) }
     }
 
-    override suspend fun addMemory(memory: Memory) {
+    override suspend fun addMemory(memory: Memory) = withContext(Dispatchers.IO) {
         memoryDao.insert(MemoryEntity.from(memory))
     }
 }
