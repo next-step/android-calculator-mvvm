@@ -40,7 +40,7 @@ class CalculatorActivity : AppCompatActivity() {
         }
 
         viewModel.memoriesEvent.observe(this) { memories ->
-            if (memories != null) memoryAdapter.refreshMemories(memories)
+            if (memories.isNotEmpty()) memoryAdapter.refreshMemories(memories)
         }
     }
 

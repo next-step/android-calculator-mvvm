@@ -23,8 +23,8 @@ class CalculatorViewModel(
     private val _viewTypeEvent = SingleLiveEvent<CalculatorViewType>()
     val viewTypeEvent: LiveData<CalculatorViewType> get() = _viewTypeEvent
 
-    private val _memoriesEvent = SingleLiveEvent<List<Calculation>?>()
-    val memoriesEvent: LiveData<List<Calculation>?> get() = _memoriesEvent
+    private val _memoriesEvent = SingleLiveEvent<List<Calculation>>()
+    val memoriesEvent: LiveData<List<Calculation>> get() = _memoriesEvent
 
     private val currentExpression: Expression get() = _expressionEvent.value ?: Expression.EMPTY
     private val viewType: CalculatorViewType get() = _viewTypeEvent.value ?: ExpressionView
@@ -61,7 +61,7 @@ class CalculatorViewModel(
     }
 
     private fun getMemories() = viewModelScope.launch {
-        val memories = if (viewType is ExpressionView) repository.getAll() else null
+        val memories = if (viewType is ExpressionView) repository.getAll() else emptyList()
         _memoriesEvent.postValue(memories)
 
     }
