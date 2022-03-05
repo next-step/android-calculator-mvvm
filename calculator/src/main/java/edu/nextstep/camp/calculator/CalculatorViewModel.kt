@@ -12,7 +12,6 @@ import edu.nextstep.camp.calculator.domain.Memories
 import edu.nextstep.camp.calculator.domain.Memory
 import edu.nextstep.camp.calculator.domain.MemoryRepository
 import edu.nextstep.camp.calculator.domain.Operator
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,7 +20,7 @@ class CalculatorViewModel @Inject constructor(
     private val calculator: Calculator,
     private val memoryRepository: MemoryRepository
 ) : ViewModel() {
-    val memories: Flow<Memories> = memoryRepository.getMemories()
+    val memories: LiveData<Memories> = memoryRepository.getMemories().toLiveData()
 
     private val _isMemoryVisible = MutableLiveData(false)
     val isMemoryVisible: LiveData<Boolean> = _isMemoryVisible
