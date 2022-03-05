@@ -68,7 +68,7 @@ class CalculatorViewModel(
 
     }
 
-    fun historyListVisible() {
+    fun showAndHideHistoryList() {
         val isVisible = historyVisible.value ?: false
         _historyVisible.value = !isVisible
     }
