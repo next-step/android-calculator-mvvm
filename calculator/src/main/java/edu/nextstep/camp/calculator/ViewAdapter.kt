@@ -8,21 +8,28 @@ import androidx.recyclerview.widget.RecyclerView
 
 @BindingAdapter(value = ["setEnabledByViewType"])
 fun setEnabledByViewType(button: Button, viewType: CalculatorViewType?) {
-    button.isEnabled = if (viewType == null) true else viewType is ExpressionView
+    if (viewType == null) return
+    button.isEnabled = viewType is ExpressionView
 }
 
-@BindingAdapter(value = ["setVisibilityByViewType"])
-fun setVisibilityByViewType(textView: TextView, viewType: CalculatorViewType?) {
-    textView.visibility = viewType?.let {
-        if (it is ExpressionView) View.VISIBLE
-        else View.INVISIBLE
-    } ?: View.VISIBLE
+@BindingAdapter(value = ["setCalculatorVisibilityByViewType"])
+fun setCalculatorVisibilityByViewType(textView: TextView, viewType: CalculatorViewType?) {
+    if (viewType == null) {
+        textView.visibility = View.VISIBLE
+        return
+    }
+
+    textView.visibility = if (viewType is ExpressionView) View.VISIBLE
+    else View.INVISIBLE
 }
 
-@BindingAdapter(value = ["setVisibilityByViewType"])
-fun setVisibilityByViewType(recyclerView: RecyclerView, viewType: CalculatorViewType?) {
-    recyclerView.visibility = viewType?.let {
-        if (it is ExpressionView) View.INVISIBLE
-        else View.VISIBLE
-    } ?: View.INVISIBLE
+@BindingAdapter(value = ["setMemoryVisibilityByViewType"])
+fun setMemoryVisibilityByViewType(recyclerView: RecyclerView, viewType: CalculatorViewType?) {
+    if (viewType == null) {
+        recyclerView.visibility = View.INVISIBLE
+        return
+    }
+
+    recyclerView.visibility = if (viewType is ExpressionView) View.INVISIBLE
+    else View.VISIBLE
 }
