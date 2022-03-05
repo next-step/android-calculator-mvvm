@@ -42,7 +42,6 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:visibility="@{viewModel.historyVisible ? View.VISIBLE : View.INVISIBLE}"
-            app:historyList="@{viewModel.expressionHistory}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="@id/textView"
             app:layout_constraintEnd_toEndOf="@id/textView"
