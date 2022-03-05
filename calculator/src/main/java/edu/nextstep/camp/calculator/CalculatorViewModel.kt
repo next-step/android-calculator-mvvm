@@ -6,11 +6,13 @@ import androidx.lifecycle.ViewModel
 import edu.nextstep.camp.calculator.utils.Event
 import edu.nextstep.camp.calculator.utils.NonNullLiveData
 import edu.nextstep.camp.domain.calculator.Calculator
+import edu.nextstep.camp.domain.calculator.CalculatorRepository
 import edu.nextstep.camp.domain.calculator.Expression
 import edu.nextstep.camp.domain.calculator.Operator
 
 class CalculatorViewModel(
-    initialExpression: Expression = Expression.EMPTY
+    initialExpression: Expression = Expression.EMPTY,
+    repository: CalculatorRepository
 ) : ViewModel() {
 
     private val _expression = NonNullLiveData(initialExpression)

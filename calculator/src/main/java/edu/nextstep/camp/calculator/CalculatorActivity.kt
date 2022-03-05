@@ -7,7 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 
 class CalculatorActivity : AppCompatActivity() {
-    private val viewModel by viewModels<CalculatorViewModel>()
+    private val viewModel by viewModels<CalculatorViewModel> {
+        ViewModelFactory(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
