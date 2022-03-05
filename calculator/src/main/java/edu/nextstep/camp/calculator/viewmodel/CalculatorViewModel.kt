@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import edu.nextstep.camp.calculator.CalculatorViewType
 import edu.nextstep.camp.calculator.ExpressionView
+import edu.nextstep.camp.calculator.MemoryView
 import edu.nextstep.camp.calculator.SingleLiveEvent
 import edu.nextstep.camp.domain.*
 import kotlinx.coroutines.launch
@@ -56,13 +57,13 @@ class CalculatorViewModel(
     }
 
     fun toggleViewType() {
-        _viewTypeEvent.postValue(viewType.toggle())
+        _viewTypeEvent.value = viewType.toggle()
         getMemories()
     }
 
     private fun getMemories() = viewModelScope.launch {
-        val memories = if (viewType is ExpressionView) repository.getAll() else emptyList()
-        _memoriesEvent.postValue(memories)
+        val memories = if (viewType is MemoryView) repository.getAll() else emptyList()
+        _memoriesEvent.value = memories
 
     }
 
