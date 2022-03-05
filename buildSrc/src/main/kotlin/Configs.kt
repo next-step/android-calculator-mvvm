@@ -20,7 +20,8 @@ object Androidx {
 object Test {
     const val JUNIT4 = "junit:junit:4.13.2"
     const val TRUTH = "com.google.truth:truth:1.1.3"
-    const val MOCK = "io.mockk:mockk:1.12.2"
+    const val MOCKK = "io.mockk:mockk:1.12.2"
+    const val COROUTINES_TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0"
     const val EXT = "androidx.test.ext:junit:1.1.3"
     const val ESPRESSO = "androidx.test.espresso:espresso-core:3.4.0"
     const val CORE = "androidx.arch.core:core-testing:2.1.0"

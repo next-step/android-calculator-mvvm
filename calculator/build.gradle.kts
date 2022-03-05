@@ -66,7 +66,7 @@ dependencies {
         testRuntimeOnly(VINTAGE)
         testImplementation(JUNIT4)
         testImplementation(TRUTH)
-        testImplementation(MOCK)
+        testImplementation(MOCKK)
         testImplementation(JUPITER)
         testImplementation(CORE)
         testImplementation(COROUTINE)
