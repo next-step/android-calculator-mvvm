@@ -63,7 +63,7 @@ class CalculatorViewModel(
         val newHistory = History(expression, result.toString())
         viewModelScope.launch {
             historyDao.insert(newHistory)
-            _expressionHistory.postValue(historyDao.getAll())
+            _expressionHistory.value = historyDao.getAll()
         }
 
     }
