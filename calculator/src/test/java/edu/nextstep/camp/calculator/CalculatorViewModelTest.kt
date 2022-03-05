@@ -2,6 +2,7 @@ package edu.nextstep.camp.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
+import edu.nextstep.camp.calculator.viewmodel.CalculatorViewModel
 import edu.nextstep.camp.data.MemoryDao
 import edu.nextstep.camp.domain.Expression
 import edu.nextstep.camp.domain.Operator
