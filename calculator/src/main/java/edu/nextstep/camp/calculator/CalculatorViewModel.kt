@@ -52,10 +52,8 @@ class CalculatorViewModel(
             }
         _expression.value = Expression.EMPTY + calculateValue
 
-        viewModelScope.launch {
-            withContext(ioDispatcher) {
-                calculatorRepository.save(History(expression.toString(), calculateValue.toString()))
-            }
+        viewModelScope.launch(ioDispatcher) {
+            calculatorRepository.save(History(expression.toString(), calculateValue.toString()))
         }
     }
 
