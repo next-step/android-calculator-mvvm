@@ -23,6 +23,10 @@ class CalculatorViewModel(
     val incompleteExpressionEvent: LiveData<Event<Boolean>>
         get() = _incompleteExpressionEvent
 
+    private val _calculatorMemoryVisibility = NonNullLiveData(false)
+    val calculatorMemoryVisibility: LiveData<Boolean>
+        get() = _calculatorMemoryVisibility
+
     fun addToExpression(operand: Int) {
         _expression.value += operand
     }
@@ -43,5 +47,9 @@ class CalculatorViewModel(
             return
         }
         _incompleteExpressionEvent.value = Event(true)
+    }
+
+    fun toggleCalculatorMemory() {
+        _calculatorMemoryVisibility.value = !_calculatorMemoryVisibility.value
     }
 }
