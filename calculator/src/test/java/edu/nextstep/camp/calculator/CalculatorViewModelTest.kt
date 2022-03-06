@@ -128,4 +128,13 @@ class CalculatorViewModelTest {
         val actualEvent = viewModel.incompleteExpressionEvent.getOrAwaitValue()
         assertThat(actualEvent.peek()).isTrue()
     }
+
+    @Test
+    fun `계산 기록 버튼이 클릭되면, 계산 기록의 Visibility 가 true 가 된다`() {
+        // when :
+        viewModel.toggleCalculatorMemory()
+        // then :
+        val actualVisibility = viewModel.calculatorMemoryVisibility.getOrAwaitValue()
+        assertThat(actualVisibility).isTrue()
+    }
 }
