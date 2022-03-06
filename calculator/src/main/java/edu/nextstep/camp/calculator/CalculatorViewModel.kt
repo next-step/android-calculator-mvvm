@@ -29,8 +29,8 @@ class CalculatorViewModel(
     val calculateFailed: LiveData<Unit>
         get() = _calculateFailed
 
-    private val _calculateHistory: MutableLiveData<List<History>?> = SingleLiveEvent()
-    val calculateHistory: LiveData<List<History>?>
+    private val _calculateHistory: MutableLiveData<List<History>> = SingleLiveEvent()
+    val calculateHistory: LiveData<List<History>>
         get() = _calculateHistory
 
     fun addToExpression(operand: Int) {
