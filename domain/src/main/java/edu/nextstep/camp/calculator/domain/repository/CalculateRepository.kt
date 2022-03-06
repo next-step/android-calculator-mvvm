@@ -1,6 +1,4 @@
-package edu.nextstep.camp.calculator.data
-
-import edu.nextstep.camp.calculator.data.local.History
+package edu.nextstep.camp.calculator.domain.repository
 
 interface CalculateRepository {
     suspend fun getHistoryAll(): List<History>
