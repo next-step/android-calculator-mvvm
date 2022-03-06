@@ -7,12 +7,12 @@ internal class CalculatorRepositoryImpl(
     private val database: AppDatabase
 ) : CalculatorRepository {
     override fun addMemory(resultRecord: ResultRecord) {
-        database.resultRecordDao().insertResultRecord(ResultRecordMapper.mapperToResultRecordEntity(resultRecord))
+        database.resultRecordDao().insertResultRecord(resultRecord.toEntity())
     }
 
     override fun getMemories(): List<ResultRecord> {
         return database.resultRecordDao().getAll().map {
-            ResultRecordMapper.mapperToResultRecord(it)
+            it.toDomain()
         }
     }
 }
