@@ -1,21 +1,14 @@
 package edu.nextstep.camp.domain.calculator
 
 import com.google.common.truth.Truth.*
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class CalculatorTest {
-    private lateinit var calculator: Calculator
-
-    @BeforeEach
-    fun setUp() {
-        calculator = Calculator()
-    }
 
     @Test
     fun `더하기`() {
         // when
-        val actual = calculator.calculate("1 + 2")
+        val actual = Calculator.calculate("1 + 2")
 
         // then
         assertThat(actual).isEqualTo(3)
@@ -24,7 +17,7 @@ class CalculatorTest {
     @Test
     fun `빼기`() {
         // when
-        val actual = calculator.calculate("1 - 2")
+        val actual = Calculator.calculate("1 - 2")
 
         // then
         assertThat(actual).isEqualTo(-1)
@@ -33,7 +26,7 @@ class CalculatorTest {
     @Test
     fun `곱하기`() {
         // when
-        val actual = calculator.calculate("1 * 2")
+        val actual = Calculator.calculate("1 * 2")
 
         // then
         assertThat(actual).isEqualTo(2)
@@ -42,7 +35,7 @@ class CalculatorTest {
     @Test
     fun `나누기`() {
         // when
-        val actual = calculator.calculate("4 / 2")
+        val actual = Calculator.calculate("4 / 2")
 
         // then
         assertThat(actual).isEqualTo(2)
@@ -51,7 +44,7 @@ class CalculatorTest {
     @Test
     fun `수식이 아니면 계산 불가`() {
         // when
-        val actual = calculator.calculate("qwe")
+        val actual = Calculator.calculate("qwe")
 
         // then
         assertThat(actual).isNull()
@@ -60,7 +53,7 @@ class CalculatorTest {
     @Test
     fun `미완성된 수식이면 계산 불가`() {
         // when
-        val actual = calculator.calculate("1 +")
+        val actual = Calculator.calculate("1 +")
 
         // then
         assertThat(actual).isNull()
