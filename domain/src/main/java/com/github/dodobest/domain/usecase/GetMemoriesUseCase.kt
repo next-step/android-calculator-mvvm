@@ -4,7 +4,7 @@ import com.github.dodobest.domain.CalculatorRepository
 import com.github.dodobest.domain.ResultRecord
 
 class GetMemoriesUseCase(private val repository: CalculatorRepository) {
-    fun invoke() : List<ResultRecord> {
+    operator fun invoke() : List<ResultRecord> {
         return repository.getMemories()
     }
 }
