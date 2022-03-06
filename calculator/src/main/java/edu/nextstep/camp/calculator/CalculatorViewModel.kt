@@ -4,11 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.dodobest.domain.*
+import com.github.dodobest.domain.usecase.AddMemoryUseCase
+import com.github.dodobest.domain.usecase.GetMemoriesUseCase
 
 class CalculatorViewModel(
     private var expression: Expression,
     private val calculator: Calculator,
-    private val calculatorRepository: CalculatorRepository
+    private val addMemoryUseCase: AddMemoryUseCase,
+    private val getMemoriesUseCase: GetMemoriesUseCase,
 ) : ViewModel() {
     private var _statement = MutableLiveData(expression.toString())
         val statement: LiveData<String>
@@ -27,7 +30,7 @@ class CalculatorViewModel(
             get() = _isMemoryVisible
 
     init {
-        _calculationMemories.value = calculatorRepository.getMemories()
+        _calculationMemories.value = getMemoriesUseCase()
     }
 
     fun addToExpression(operand: Int) {
@@ -67,8 +70,8 @@ class CalculatorViewModel(
         }
 
         val newMemory = ResultRecord(statement.value!!, "= $calcResultValue")
-        calculatorRepository.addMemory(newMemory)
-        _calculationMemories.value = calculatorRepository.getMemories()
+        addMemoryUseCase(newMemory)
+        _calculationMemories.value = getMemoriesUseCase()
 
         expression = Expression(listOf(calcResultValue))
         _statement.value = expression.toString()

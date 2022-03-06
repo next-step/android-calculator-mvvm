@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.github.dodobest.data.Injector
 import com.github.dodobest.domain.Calculator
 import com.github.dodobest.domain.Expression
+import com.github.dodobest.domain.usecase.AddMemoryUseCase
+import com.github.dodobest.domain.usecase.GetMemoriesUseCase
 
 class CalculatorViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
@@ -20,6 +22,8 @@ class CalculatorViewModelFactory(private val context: Context) : ViewModelProvid
         val expression = Expression()
         val calculator = Calculator()
         val calculatorRepository = Injector.provideCalculatorRepository(context)
-        return CalculatorViewModel(expression, calculator, calculatorRepository)
+        val addMemoryUseCase = AddMemoryUseCase(calculatorRepository)
+        val getMemoryUseCase = GetMemoriesUseCase(calculatorRepository)
+        return CalculatorViewModel(expression, calculator, addMemoryUseCase, getMemoryUseCase)
     }
 }
