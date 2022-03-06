@@ -5,4 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface CalculatorRepository {
     fun getAllRecord(): Flow<List<CalculatorRecord>>
+    suspend fun addRecord(record: CalculatorRecord)
 }

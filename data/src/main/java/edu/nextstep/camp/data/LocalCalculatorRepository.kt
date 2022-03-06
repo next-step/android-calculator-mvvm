@@ -20,7 +20,7 @@ class LocalCalculatorRepository private constructor(
         .map { records -> records.toListOfDomain() }
         .flowOn(ioDispatcher)
 
-    suspend fun addRecord(record: CalculatorRecord) = withContext(ioDispatcher) {
+    override suspend fun addRecord(record: CalculatorRecord) = withContext(ioDispatcher) {
         val recordEntity = record.let {
             CalculatorRecordEntity(expression = it.expression, result = it.result)
         }
