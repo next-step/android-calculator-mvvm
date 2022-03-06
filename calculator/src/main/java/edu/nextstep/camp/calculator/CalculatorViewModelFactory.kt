@@ -2,9 +2,9 @@ package edu.nextstep.camp.calculator
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import edu.nextstep.camp.calculator.data.CalculateRepository
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
+import edu.nextstep.camp.calculator.domain.repository.CalculateRepository
 
 class CalculatorViewModelFactory(
     private val calculator: Calculator = Calculator(),

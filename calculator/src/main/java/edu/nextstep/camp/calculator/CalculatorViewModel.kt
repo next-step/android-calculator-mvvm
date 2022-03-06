@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import edu.nextstep.camp.calculator.data.CalculateRepository
-import edu.nextstep.camp.calculator.data.local.History
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
+import edu.nextstep.camp.calculator.domain.repository.CalculateRepository
+import edu.nextstep.camp.calculator.domain.repository.History
 import edu.nextstep.camp.calculator.util.SingleLiveEvent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -50,10 +50,11 @@ class CalculatorViewModel(
                 _calculateFailed.value = Unit
                 return
             }
-        _expression.value = Expression.EMPTY + calculateValue
+        val calculateExpression = Expression.EMPTY + calculateValue
 
+        _expression.value = calculateExpression
         viewModelScope.launch(ioDispatcher) {
-            calculatorRepository.save(History(expression.toString(), calculateValue.toString()))
+            calculatorRepository.save(History(expression, calculateExpression))
         }
     }
 

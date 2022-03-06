@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import edu.nextstep.camp.calculator.data.CalculatorRepositoryProvider
-import edu.nextstep.camp.calculator.data.local.History
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
+import edu.nextstep.camp.calculator.domain.repository.History
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
@@ -50,6 +50,6 @@ class CalculatorActivity : AppCompatActivity() {
     }
 
     private fun getStringForDisplay(history: History): String {
-        return "${history.formula}\n= ${history.calculateResult}"
+        return "${history.expression}\n= ${history.result}"
     }
 }
