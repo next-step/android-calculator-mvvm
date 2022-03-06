@@ -1,5 +1,6 @@
 package com.github.dodobest.data
 
+import com.github.dodobest.data.util.toEntity
 import com.github.dodobest.domain.CalculatorRepository
 import com.github.dodobest.domain.ResultRecord
 

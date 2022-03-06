@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import com.github.dodobest.data.util.TestUtil
 import org.hamcrest.core.IsEqual.equalTo
 import org.junit.After
 import org.junit.Assert.assertThat

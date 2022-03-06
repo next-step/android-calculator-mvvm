@@ -1,6 +1,8 @@
-package com.github.dodobest.data
+package com.github.dodobest.data.util
 
 import android.content.Context
+import com.github.dodobest.data.AppDatabase
+import com.github.dodobest.data.CalculatorRepositoryImpl
 import com.github.dodobest.domain.CalculatorRepository
 
 object Injector {
