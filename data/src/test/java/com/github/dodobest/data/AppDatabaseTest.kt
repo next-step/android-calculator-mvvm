@@ -5,9 +5,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.github.dodobest.data.util.TestUtil
-import org.hamcrest.core.IsEqual.equalTo
+import com.google.common.truth.Truth.assertThat
 import org.junit.After
-import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -47,6 +46,6 @@ class AppDatabaseTest {
 
         // then : "3+3", "6"을 가진 ResultRecord가 저장되어야 한다
         val byExpression = resultRecordDao.findResultRecordByExpression(expression)
-        assertThat(byExpression, equalTo(resultRecord))
+        assertThat(byExpression).isEqualTo(resultRecord)
     }
 }
