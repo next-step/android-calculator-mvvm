@@ -1,11 +1,12 @@
 package edu.nextstep.camp.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.github.dodobest.data.ResultRecordEntity
 import com.github.dodobest.domain.CalculatorRepository
 import com.google.common.truth.Truth.assertThat
 import com.github.dodobest.domain.Calculator
 import com.github.dodobest.domain.Expression
+import com.github.dodobest.domain.usecase.AddMemoryUseCase
+import com.github.dodobest.domain.usecase.GetMemoriesUseCase
 import io.mockk.mockk
 import org.junit.Before
 import org.junit.Rule
@@ -19,13 +20,17 @@ class CalculatorViewModelTest {
     lateinit var expression: Expression
     lateinit var calculator: Calculator
     lateinit var calculatorRepository: CalculatorRepository
+    lateinit var addMemoryUseCase: AddMemoryUseCase
+    lateinit var getMemoryUseCase: GetMemoriesUseCase
 
     @Before
     fun setUp() {
         expression = Expression()
         calculator = Calculator()
-        calculatorRepository = mockk()
-        viewModel = CalculatorViewModel(expression, calculator, calculatorRepository)
+        calculatorRepository = mockk(relaxed = true)
+        addMemoryUseCase = AddMemoryUseCase(calculatorRepository)
+        getMemoryUseCase = GetMemoriesUseCase(calculatorRepository)
+        viewModel = CalculatorViewModel(expression, calculator, addMemoryUseCase, getMemoryUseCase)
     }
 
     @Test
