@@ -10,8 +10,6 @@ import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 import edu.nextstep.camp.calculator.util.Event
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
