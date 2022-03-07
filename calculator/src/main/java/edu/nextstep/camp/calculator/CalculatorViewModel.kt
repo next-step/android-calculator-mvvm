@@ -63,7 +63,7 @@ class CalculatorViewModel(
             return
         }
         val newMemories = CalculationMemory(expression.toString(), result.toString())
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch {
             calculatorRepository.insertCalculationMemory(newMemories)
             _calculationMemories.postValue(calculatorRepository.getCalculationMemoryAll())
         }
