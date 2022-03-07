@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class CalculatorHisotry(
+data class CalculatorHistory(
     val expression: String?,
     val result: String?,
     @PrimaryKey(autoGenerate = true)
