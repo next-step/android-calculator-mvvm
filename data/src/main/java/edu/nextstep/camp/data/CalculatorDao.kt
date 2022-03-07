@@ -7,9 +7,9 @@ import androidx.room.Query
 @Dao
 interface CalculatorDao {
 
-    @Query("SELECT * FROM calculatorHisotry")
-    fun getCalculatorHisotry(): List<CalculatorHisotry>
+    @Query("SELECT * FROM calculatorHistory")
+    fun getCalculatorHisotry(): List<CalculatorHistory>
 
     @Insert
-    fun insertCalculatorHisotry(calculatorHisotry: CalculatorHisotry)
+    fun insertCalculatorHisotry(calculatorHistory: CalculatorHistory)
 }
