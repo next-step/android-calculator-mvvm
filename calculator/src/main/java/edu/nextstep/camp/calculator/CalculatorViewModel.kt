@@ -3,6 +3,7 @@ package edu.nextstep.camp.calculator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import edu.nextstep.camp.calculator.data.CalculationMemory
 import edu.nextstep.camp.calculator.data.repository.CalculatorRepository
 import edu.nextstep.camp.calculator.domain.Calculator
@@ -33,7 +34,7 @@ class CalculatorViewModel(
         get() = _calculationMemories
 
     init {
-        CoroutineScope(Dispatchers.IO).launch {
+        viewModelScope.launch {
             _calculationMemories.postValue(calculatorRepository.getCalculationMemoryAll())
         }
     }
