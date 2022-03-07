@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'de.mannodermaus.android-junit5'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -51,6 +52,10 @@ dependencies {
     kapt 'androidx.room:room-compiler:2.4.2'
     implementation 'androidx.room:room-ktx:2.4.2'
 
+    //hilt
+    implementation "com.google.dagger:hilt-android:2.31-alpha"
+    kapt "com.google.dagger:hilt-android-compiler:2.28-alpha"
+
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
     testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.8.2' // junit4 지원
     testImplementation 'junit:junit:4.13.2'
@@ -63,4 +68,5 @@ dependencies {
     androidTestImplementation "org.junit.jupiter:junit-jupiter-api:5.8.2"
     androidTestImplementation "de.mannodermaus.junit5:android-test-core:1.2.2"
     androidTestRuntimeOnly "de.mannodermaus.junit5:android-test-runner:1.2.2"
+
 }
