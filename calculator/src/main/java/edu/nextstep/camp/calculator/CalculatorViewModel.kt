@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import edu.nextstep.camp.calculator.data.CalculationMemory
-import edu.nextstep.camp.calculator.data.CalculatorDao
+import edu.nextstep.camp.calculator.data.repository.CalculatorRepository
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
     private val calculator: Calculator,
-    private val calculatorDao: CalculatorDao
+    private val calculatorRepository: CalculatorRepository
 ) : ViewModel() {
     private var _expression = MutableLiveData(Expression.EMPTY)
     val expression: LiveData<Expression> = _expression
@@ -34,7 +34,7 @@ class CalculatorViewModel(
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
-            _calculationMemories.postValue(calculatorDao.getCalculationMemoryAll())
+            _calculationMemories.postValue(calculatorRepository.getCalculationMemoryAll())
         }
     }
 
@@ -63,8 +63,8 @@ class CalculatorViewModel(
         }
         val newMemories = CalculationMemory(expression.toString(), result.toString())
         CoroutineScope(Dispatchers.IO).launch {
-            calculatorDao.insertCalculationMemory(newMemories)
-            _calculationMemories.postValue(calculatorDao.getCalculationMemoryAll())
+            calculatorRepository.insertCalculationMemory(newMemories)
+            _calculationMemories.postValue(calculatorRepository.getCalculationMemoryAll())
         }
 
         _expression.value = Expression(listOf(result))

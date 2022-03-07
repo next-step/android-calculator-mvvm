@@ -6,16 +6,16 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(entities = [CalculationMemory::class], version = 1)
-abstract class AppDataBase : RoomDatabase() {
+internal abstract class CalculatorDatabase : RoomDatabase() {
     abstract fun calculatorDao(): CalculatorDao
 
     companion object {
-        private var instance: AppDataBase? = null
+        private var instance: CalculatorDatabase? = null
 
-        fun getInstance(context: Context): AppDataBase {
+        fun getInstance(context: Context): CalculatorDatabase {
             return instance ?: Room.databaseBuilder(
                 context,
-                AppDataBase::class.java, "calculator_database"
+                CalculatorDatabase::class.java, "calculator_database"
             ).build()
         }
     }
