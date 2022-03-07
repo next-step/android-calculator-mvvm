@@ -25,6 +25,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import util.ExpressionUtil.toExpression
+import util.HistoryUtil
 
 
 @RunWith(JUnitParamsRunner::class)
@@ -187,9 +188,9 @@ class CalculatorViewModelTest {
     @Test
     fun `저장된_계산한_결과들이_정상적으로_조회된다`() {
         val savedHistory = listOf(
-            History("1 + 1 - 1 * 8".toExpression(), "8".toExpression()),
-            History("5 - 1 * 12".toExpression(), "48".toExpression()),
-            History("1 + 1 / 1 * 8".toExpression(), "16".toExpression()),
+            HistoryUtil.historyOf("1 + 1 - 1 * 8", "8"),
+            HistoryUtil.historyOf("5 - 1 * 12", "48"),
+            HistoryUtil.historyOf("1 + 1 / 1 * 8", "16"),
         )
         val viewModel = CalculatorViewModel(
             calculator = Calculator(),
