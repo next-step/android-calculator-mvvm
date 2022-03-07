@@ -11,5 +11,5 @@ internal interface MemoryDao {
     fun getAll(): Flow<List<MemoryEntity>>
 
     @Insert
-    fun insert(memory: MemoryEntity)
+    suspend fun insert(memory: MemoryEntity)
 }

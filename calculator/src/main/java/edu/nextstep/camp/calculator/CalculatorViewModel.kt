@@ -12,8 +12,6 @@ import edu.nextstep.camp.calculator.domain.Memories
 import edu.nextstep.camp.calculator.domain.Memory
 import edu.nextstep.camp.calculator.domain.MemoryRepository
 import edu.nextstep.camp.calculator.domain.Operator
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,7 +20,7 @@ class CalculatorViewModel @Inject constructor(
     private val calculator: Calculator,
     private val memoryRepository: MemoryRepository
 ) : ViewModel() {
-    val memories: Flow<Memories> = memoryRepository.getMemories()
+    val memories: LiveData<Memories> = memoryRepository.getMemories().toLiveData()
 
     private val _isMemoryVisible = MutableLiveData(false)
     val isMemoryVisible: LiveData<Boolean> = _isMemoryVisible
@@ -34,29 +32,29 @@ class CalculatorViewModel @Inject constructor(
     val onCalculationErrorEvent: LiveData<Event> = _onCalculationErrorEvent
 
     fun addToExpression(operand: Int) {
-        val expression = _expression.value ?: return
+        val expression = getExpression()
         _expression.value = expression + operand
     }
 
     fun addToExpression(operator: Operator) {
-        val expression = _expression.value ?: return
+        val expression = getExpression()
         _expression.value = expression + operator
     }
 
     fun removeLast() {
-        val expression = _expression.value ?: return
+        val expression = getExpression()
         _expression.value = expression.removeLast()
     }
 
     fun calculate() {
-        val expression = _expression.value ?: return
+        val expression = getExpression()
         val result = calculator.calculate(expression.toString())
         if (result == null) {
             _onCalculationErrorEvent.value = Event.CalculationErrorEvent
             return
         }
         _expression.value = Expression.EMPTY + result
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             memoryRepository.addMemory(Memory(expression, result))
         }
     }
@@ -65,4 +63,6 @@ class CalculatorViewModel @Inject constructor(
         val isMemoryVisible = _isMemoryVisible.value ?: return
         _isMemoryVisible.value = !isMemoryVisible
     }
+
+    private fun getExpression(): Expression = _expression.value ?: Expression.EMPTY
 }

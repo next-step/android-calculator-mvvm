@@ -56,7 +56,9 @@ dependencies {
         implementation(APP_COMPAT)
         implementation(CONSTRAINTLAYOUT)
         implementation(FRAGMENT)
-        implementation(LIFECYCLE)
+    }
+    LifeCycle.run {
+        implementation(LIVEDATA)
     }
     DaggerHiltConfig.run {
         kapt(COMPILER)
@@ -66,7 +68,7 @@ dependencies {
         testRuntimeOnly(VINTAGE)
         testImplementation(JUNIT4)
         testImplementation(TRUTH)
-        testImplementation(MOCK)
+        testImplementation(MOCKK)
         testImplementation(JUPITER)
         testImplementation(CORE)
         testImplementation(COROUTINE)

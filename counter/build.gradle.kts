@@ -52,7 +52,7 @@ dependencies {
     Test.run {
         testImplementation(JUNIT4)
         testImplementation(TRUTH)
-        testImplementation(MOCK)
+        testImplementation(MOCKK)
         testImplementation(CORE)
         androidTestImplementation(EXT)
         androidTestImplementation(ESPRESSO)

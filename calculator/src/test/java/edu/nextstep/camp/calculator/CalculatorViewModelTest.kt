@@ -4,10 +4,11 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
-import edu.nextstep.camp.calculator.domain.Memories
 import edu.nextstep.camp.calculator.domain.Memory
+import edu.nextstep.camp.calculator.domain.MemoryRepository
 import edu.nextstep.camp.calculator.domain.Operator
-import kotlinx.coroutines.flow.first
+import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
@@ -17,13 +18,17 @@ internal class CalculatorViewModelTest {
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
+    @get:Rule
+    val coroutineRule = CoroutineRule()
+
     private lateinit var viewModel: CalculatorViewModel
+    private val memoryRepository: MemoryRepository = mockk(relaxed = true)
 
     @Before
     fun setup() {
         viewModel = CalculatorViewModel(
             calculator = Calculator(),
-            memoryRepository = MemoryRepositoryMocked()
+            memoryRepository = memoryRepository
         )
     }
 
@@ -204,9 +209,8 @@ internal class CalculatorViewModelTest {
         viewModel.calculate()
 
         // then
-        val actual = viewModel.memories.first()
-        val expected = Memories(listOf(Memory(Expression(listOf(3, Operator.Plus, 2)), 5)))
-        assertThat(actual).isEqualTo(expected)
+        val expected = Memory(Expression(listOf(3, Operator.Plus, 2)), 5)
+        verify { runBlocking { memoryRepository.addMemory(expected) } }
     }
 
     @Test

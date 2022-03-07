@@ -38,7 +38,8 @@ dependencies {
     }
     Test.run {
         testRuntimeOnly(VINTAGE)
-        testImplementation(MOCK)
+        testImplementation(MOCKK)
+        testImplementation(COROUTINES_TEST)
         testImplementation(CORE)
         testImplementation(TRUTH)
         testImplementation(JUNIT4)
