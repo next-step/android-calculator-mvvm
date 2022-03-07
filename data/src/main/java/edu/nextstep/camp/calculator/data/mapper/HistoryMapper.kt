@@ -6,7 +6,7 @@ import  edu.nextstep.camp.calculator.data.local.History as LocalHistory
 
 internal object HistoryMapper {
     fun History.toLocalData() =
-        edu.nextstep.camp.calculator.data.local.History(
+        LocalHistory(
             this.expression.toString(),
             this.result.toString()
         )
