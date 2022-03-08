@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
-import edu.nextstep.camp.data.CalculatorDatabase
+import edu.nextstep.camp.data.injector.Injector
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
@@ -50,7 +50,7 @@ class CalculatorActivity : AppCompatActivity() {
 
         private fun createMainViewModel(): CalculatorViewModel {
             return CalculatorViewModel(
-                calculatorDao = CalculatorDatabase.getInstance(context).calculatorDao()
+                calculatorRepository = Injector.provideSCalculatorRepository(context)
             )
         }
     }
