@@ -7,9 +7,8 @@ import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Memory
 import edu.nextstep.camp.calculator.domain.MemoryRepository
 import edu.nextstep.camp.calculator.domain.Operator
+import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
-import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -22,10 +21,11 @@ internal class CalculatorViewModelTest {
     val coroutineRule = CoroutineRule()
 
     private lateinit var viewModel: CalculatorViewModel
-    private val memoryRepository: MemoryRepository = mockk(relaxed = true)
+    private lateinit var memoryRepository: MemoryRepository
 
     @Before
     fun setup() {
+        memoryRepository = mockk(relaxed = true)
         viewModel = CalculatorViewModel(
             calculator = Calculator(),
             memoryRepository = memoryRepository
@@ -199,7 +199,7 @@ internal class CalculatorViewModelTest {
     }
 
     @Test
-    fun `수식이 '3 + 2'일 때, 계산하면, 계산기록에 '3 + 2 = 5'가 추가되어야 한다`() = runBlocking {
+    fun `수식이 '3 + 2'일 때, 계산하면, 계산기록에 '3 + 2 = 5'가 추가되어야 한다`() {
         // given
         viewModel.addToExpression(3)
         viewModel.addToExpression(Operator.Plus)
@@ -210,7 +210,7 @@ internal class CalculatorViewModelTest {
 
         // then
         val expected = Memory(Expression(listOf(3, Operator.Plus, 2)), 5)
-        verify { runBlocking { memoryRepository.addMemory(expected) } }
+        coVerify { memoryRepository.addMemory(expected) }
     }
 
     @Test
