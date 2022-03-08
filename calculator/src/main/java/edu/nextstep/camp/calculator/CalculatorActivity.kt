@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CalculatorActivity : AppCompatActivity() {
@@ -22,12 +25,20 @@ class CalculatorActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         binding.recyclerView.adapter = memoriesAdapter
 
-        viewModel.onCalculationErrorEvent.observe(this) {
-            Toast.makeText(this, R.string.incomplete_expression, Toast.LENGTH_SHORT).show()
+        lifecycleScope.launch {
+            viewModel.onCalculationErrorEvent.collect {
+                toastCalculationError()
+            }
         }
 
-        viewModel.memories.observe(this) {
-            memoriesAdapter.submitList(it)
+        lifecycleScope.launch {
+            viewModel.memories.collect {
+                memoriesAdapter.submitList(it)
+            }
         }
+    }
+
+    private fun toastCalculationError() {
+        Toast.makeText(this, R.string.incomplete_expression, Toast.LENGTH_SHORT).show()
     }
 }
