@@ -3,22 +3,23 @@ package edu.nextstep.camp.calculator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import edu.nextstep.camp.calculator.domain.Calculator
-import edu.nextstep.camp.calculator.domain.Event
-import edu.nextstep.camp.calculator.domain.Expression
-import edu.nextstep.camp.calculator.domain.Operator
+import com.github.dodobest.domain.*
+import com.github.dodobest.domain.usecase.AddMemoryUseCase
+import com.github.dodobest.domain.usecase.GetMemoriesUseCase
 
 class CalculatorViewModel(
     private var expression: Expression,
-    private var calculator: Calculator
+    private val calculator: Calculator,
+    private val addMemoryUseCase: AddMemoryUseCase,
+    private val getMemoriesUseCase: GetMemoriesUseCase,
 ) : ViewModel() {
     private var _statement = MutableLiveData(expression.toString())
         val statement: LiveData<String>
             get() = _statement
 
-    private val _result = MutableLiveData<Event<Int?>>()
-        val result: LiveData<Event<Int?>>
-            get() = _result
+    private val _calculationMemories = MutableLiveData<List<ResultRecord>>(emptyList())
+        val calculationMemories: LiveData<List<ResultRecord>>
+            get() = _calculationMemories
 
     private val _showErrorMessage = MutableLiveData<Event<Unit>>()
         val showErrorMessage: LiveData<Event<Unit>>
@@ -27,6 +28,10 @@ class CalculatorViewModel(
     private val _isMemoryVisible = MutableLiveData(false)
         val isMemoryVisible: LiveData<Boolean>
             get() = _isMemoryVisible
+
+    init {
+        _calculationMemories.value = getMemoriesUseCase()
+    }
 
     fun addToExpression(operand: Int) {
         if (isMemoryVisible.value == true) {
@@ -64,7 +69,9 @@ class CalculatorViewModel(
             return
         }
 
-        _result.value = Event(calcResultValue)
+        val newMemory = ResultRecord(statement.value!!, "= $calcResultValue")
+        addMemoryUseCase(newMemory)
+        _calculationMemories.value = getMemoriesUseCase()
 
         expression = Expression(listOf(calcResultValue))
         _statement.value = expression.toString()

@@ -3,8 +3,11 @@ package edu.nextstep.camp.calculator
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import edu.nextstep.camp.calculator.domain.Calculator
-import edu.nextstep.camp.calculator.domain.Expression
+import com.github.dodobest.data.util.Injector
+import com.github.dodobest.domain.Calculator
+import com.github.dodobest.domain.Expression
+import com.github.dodobest.domain.usecase.AddMemoryUseCase
+import com.github.dodobest.domain.usecase.GetMemoriesUseCase
 
 class CalculatorViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
@@ -18,6 +21,9 @@ class CalculatorViewModelFactory(private val context: Context) : ViewModelProvid
     private fun createCalculatorViewModel(): CalculatorViewModel {
         val expression = Expression()
         val calculator = Calculator()
-        return CalculatorViewModel(expression, calculator)
+        val calculatorRepository = Injector.provideCalculatorRepository(context)
+        val addMemoryUseCase = AddMemoryUseCase(calculatorRepository)
+        val getMemoryUseCase = GetMemoriesUseCase(calculatorRepository)
+        return CalculatorViewModel(expression, calculator, addMemoryUseCase, getMemoryUseCase)
     }
 }

@@ -1,4 +1,4 @@
-package edu.nextstep.camp.calculator.data
+package com.github.dodobest.data
 
 import android.content.Context
 import androidx.room.Database
@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-@Database(entities = [ResultRecord::class], version = 1)
+@Database(entities = [ResultRecordEntity::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun resultRecordDao(): ResultRecordDao
 
@@ -20,7 +20,8 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "resultRecord-db"
-                ).allowMainThreadQueries().build()
+                ).fallbackToDestructiveMigration()
+                    .allowMainThreadQueries().build()
             }
         }
     }
