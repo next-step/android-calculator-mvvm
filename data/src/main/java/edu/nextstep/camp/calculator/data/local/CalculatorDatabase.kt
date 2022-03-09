@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
 private const val DATABASE_NAME = "calculator.db"
 
 @Database(version = 1, entities = [History::class])
-abstract class CalculatorDatabase : RoomDatabase() {
+internal abstract class CalculatorDatabase : RoomDatabase() {
     abstract fun getHistoryDao(): HistoryDao
 
     companion object {

@@ -2,11 +2,11 @@ package edu.nextstep.camp.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
-import edu.nextstep.camp.calculator.data.CalculateRepository
-import edu.nextstep.camp.calculator.data.local.History
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
+import edu.nextstep.camp.calculator.domain.repository.CalculateRepository
+import edu.nextstep.camp.calculator.domain.repository.History
 import edu.nextstep.camp.calculator.util.getOrAwaitValue
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -24,6 +24,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import util.ExpressionUtil.toExpression
+import util.HistoryUtil
 
 
 @RunWith(JUnitParamsRunner::class)
@@ -57,7 +59,7 @@ class CalculatorViewModelTest {
     @TestCaseName("입력된 상태가 {0}일 때, 피연산자 {1} 버튼을 누르면 화면에 {2} 화면에 보여야 한다")
     fun `피연산자 입력 테스트`(initialString: String, operand: Int, expected: String) {
         val viewModel = CalculatorViewModel(calculator = Calculator(),
-            initialExpression = getInitialExpression(initialString),
+            initialExpression = initialString.toExpression(),
             defaultRepository
         )
 
@@ -81,7 +83,7 @@ class CalculatorViewModelTest {
     fun `연산자 입력 테스트`(initialString: String, operator: String, expected: String) {
         val viewModel = CalculatorViewModel(
             calculator = Calculator(),
-            initialExpression = getInitialExpression(initialString),
+            initialExpression = initialString.toExpression(),
             defaultRepository
         )
 
@@ -154,7 +156,7 @@ class CalculatorViewModelTest {
     fun `정상적인 수식이 있을 때 계산 시 계산 테스트`(initialString: String, expected: String) {
         val viewModel = CalculatorViewModel(
             calculator = Calculator(),
-            initialExpression = getInitialExpression(initialString),
+            initialExpression = initialString.toExpression(),
             calculatorRepository = defaultRepository
         )
 
@@ -181,26 +183,14 @@ class CalculatorViewModelTest {
         assertThat(displayExpression.toString()).isEqualTo("1 +")
     }
 
-    private fun getInitialExpression(initialString: String): Expression {
-        if(initialString.isEmpty()) return Expression.EMPTY
-        val splitString = initialString.split(" ")
-        val expressionParam: List<Any> = splitString.mapIndexed { index, s ->
-            return@mapIndexed if(index % 2 == 0) {
-                s.toInt()
-            } else {
-                Operator.of(s) as Any
-            }
-        }
-        return Expression(expressionParam)
-    }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `저장된_계산한_결과들이_정상적으로_조회된다`() {
         val savedHistory = listOf(
-            History(1,"1 + 1 - 1 * 8", "8"),
-            History(2,"5 - 1 * 12", "48"),
-            History(3,"1 + 1 / 1 * 8", "16"),
+            HistoryUtil.historyOf("1 + 1 - 1 * 8", "8"),
+            HistoryUtil.historyOf("5 - 1 * 12", "48"),
+            HistoryUtil.historyOf("1 + 1 / 1 * 8", "16"),
         )
         val viewModel = CalculatorViewModel(
             calculator = Calculator(),
@@ -221,7 +211,7 @@ class CalculatorViewModelTest {
         val initialString = "1 + 2 + 312 - 10 * 2"
         val viewModel = CalculatorViewModel(
             calculator = Calculator(),
-            initialExpression = getInitialExpression(initialString),
+            initialExpression = initialString.toExpression(),
             calculatorRepository = defaultRepository,
             ioDispatcher = testDispatcher
         )
@@ -231,7 +221,7 @@ class CalculatorViewModelTest {
         viewModel.calculate()
         val actual = saveParamSlot.captured
 
-        assertThat(actual.formula).isEqualTo(initialString)
-        assertThat(actual.calculateResult).isEqualTo("610")
+        assertThat(actual.expression.toString()).isEqualTo(initialString)
+        assertThat(actual.result.toString()).isEqualTo("610")
     }
 }

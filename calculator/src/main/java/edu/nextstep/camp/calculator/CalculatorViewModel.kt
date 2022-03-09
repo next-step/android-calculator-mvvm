@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import edu.nextstep.camp.calculator.data.CalculateRepository
-import edu.nextstep.camp.calculator.data.local.History
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
+import edu.nextstep.camp.calculator.domain.repository.CalculateRepository
+import edu.nextstep.camp.calculator.domain.repository.History
 import edu.nextstep.camp.calculator.util.SingleLiveEvent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -29,8 +29,8 @@ class CalculatorViewModel(
     val calculateFailed: LiveData<Unit>
         get() = _calculateFailed
 
-    private val _calculateHistory: MutableLiveData<List<History>?> = SingleLiveEvent()
-    val calculateHistory: LiveData<List<History>?>
+    private val _calculateHistory: MutableLiveData<List<History>> = SingleLiveEvent()
+    val calculateHistory: LiveData<List<History>>
         get() = _calculateHistory
 
     fun addToExpression(operand: Int) {
@@ -50,12 +50,11 @@ class CalculatorViewModel(
                 _calculateFailed.value = Unit
                 return
             }
-        _expression.value = Expression.EMPTY + calculateValue
+        val calculateExpression = Expression.EMPTY + calculateValue
 
-        viewModelScope.launch {
-            withContext(ioDispatcher) {
-                calculatorRepository.save(History(expression.toString(), calculateValue.toString()))
-            }
+        _expression.value = calculateExpression
+        viewModelScope.launch(ioDispatcher) {
+            calculatorRepository.save(History(expression, calculateExpression))
         }
     }
 

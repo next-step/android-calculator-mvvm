@@ -7,14 +7,16 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import edu.nextstep.camp.calculator.data.CalculateRepository
-import edu.nextstep.camp.calculator.data.local.History
+import edu.nextstep.camp.calculator.domain.Expression
+import edu.nextstep.camp.calculator.domain.repository.CalculateRepository
+import edu.nextstep.camp.calculator.domain.repository.History
 import io.mockk.coEvery
 import io.mockk.mockk
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import util.ExpressionUtil.toExpression
 
 
 @RunWith(AndroidJUnit4::class)
@@ -24,9 +26,9 @@ class CalculatorActivityTest {
     private lateinit var calculateRepository: CalculateRepository
 
     private val savedHistory = listOf(
-        History(1, "1 + 2 - 1", "2"),
-        History(1, "1 + 3 - 1", "1"),
-        History(1, "1 + 5 * 2", "12"),
+        History(Expression(listOf("1 + 2 - 1")), Expression()),
+        History( "1 + 3 - 1".toExpression(), "1".toExpression()),
+        History( "1 + 5 * 2".toExpression(), "12".toExpression()),
     )
 
     @Before
@@ -57,6 +59,6 @@ class CalculatorActivityTest {
     }
 
     private fun getStringForDisplay(history: History): String {
-        return "${history.formula}\n= ${history.calculateResult}"
+        return "${history.expression}\n= ${history.result}"
     }
 }
