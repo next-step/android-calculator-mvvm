@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import edu.nextstep.camp.calculator.adapter.CalculationMemoryAdapter
-import edu.nextstep.camp.calculator.data.AppDataBase
+import edu.nextstep.camp.calculator.data.repository.Injector
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 import edu.nextstep.camp.calculator.domain.Calculator
 
@@ -26,7 +26,7 @@ class CalculatorActivity : AppCompatActivity() {
 
         initRecyclerView()
         showMessage()
-        getCalculationMemory()
+        initCalculationMemory()
     }
 
     private fun initRecyclerView() {
@@ -41,7 +41,7 @@ class CalculatorActivity : AppCompatActivity() {
         }
     }
 
-    private fun getCalculationMemory() {
+    private fun initCalculationMemory() {
         viewModel.calculationMemories.observe(this) {
             calculationMemoryAdapter.submitList(it)
         }
@@ -57,7 +57,7 @@ class CalculatorActivity : AppCompatActivity() {
         }
 
         private fun createMainViewModel(): CalculatorViewModel {
-            return CalculatorViewModel(calculator = Calculator(), calculatorDao =  AppDataBase.getInstance(context).calculatorDao())
+            return CalculatorViewModel(calculator = Calculator(), calculatorRepository =  Injector.provideSampleRepository(context))
         }
     }
 }

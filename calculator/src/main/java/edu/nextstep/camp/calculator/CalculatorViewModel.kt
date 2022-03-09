@@ -3,19 +3,18 @@ package edu.nextstep.camp.calculator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import edu.nextstep.camp.calculator.data.CalculationMemory
-import edu.nextstep.camp.calculator.data.CalculatorDao
+import edu.nextstep.camp.calculator.data.repository.CalculatorRepository
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 import edu.nextstep.camp.calculator.util.Event
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
     private val calculator: Calculator,
-    private val calculatorDao: CalculatorDao
+    private val calculatorRepository: CalculatorRepository
 ) : ViewModel() {
     private var _expression = MutableLiveData(Expression.EMPTY)
     val expression: LiveData<Expression> = _expression
@@ -33,8 +32,8 @@ class CalculatorViewModel(
         get() = _calculationMemories
 
     init {
-        CoroutineScope(Dispatchers.IO).launch {
-            _calculationMemories.postValue(calculatorDao.getCalculationMemoryAll())
+        viewModelScope.launch {
+            _calculationMemories.postValue(calculatorRepository.getCalculationMemoryAll())
         }
     }
 
@@ -62,9 +61,9 @@ class CalculatorViewModel(
             return
         }
         val newMemories = CalculationMemory(expression.toString(), result.toString())
-        CoroutineScope(Dispatchers.IO).launch {
-            calculatorDao.insertCalculationMemory(newMemories)
-            _calculationMemories.postValue(calculatorDao.getCalculationMemoryAll())
+        viewModelScope.launch {
+            calculatorRepository.insertCalculationMemory(newMemories)
+            _calculationMemories.postValue(calculatorRepository.getCalculationMemoryAll())
         }
 
         _expression.value = Expression(listOf(result))
