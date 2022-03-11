@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -25,20 +26,23 @@ class CalculatorActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         binding.recyclerView.adapter = memoriesAdapter
 
-        lifecycleScope.launch {
-            viewModel.onCalculationErrorEvent.collect {
-                toastCalculationError()
-            }
-        }
-
-        lifecycleScope.launch {
-            viewModel.memories.collect {
-                memoriesAdapter.submitList(it)
-            }
-        }
+        setupCalculationError()
+        setupMemories()
     }
 
     private fun toastCalculationError() {
         Toast.makeText(this, R.string.incomplete_expression, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun setupCalculationError(): Job = lifecycleScope.launch {
+        viewModel.onCalculationErrorEvent.collect {
+            toastCalculationError()
+        }
+    }
+
+    private fun setupMemories(): Job = lifecycleScope.launch {
+        viewModel.memories.collect {
+            memoriesAdapter.submitList(it)
+        }
     }
 }
