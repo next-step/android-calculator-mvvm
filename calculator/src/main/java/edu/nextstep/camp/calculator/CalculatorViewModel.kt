@@ -11,11 +11,11 @@ import edu.nextstep.camp.calculator.domain.MemoryRepository
 import edu.nextstep.camp.calculator.domain.Operator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,10 +29,12 @@ class CalculatorViewModel @Inject constructor(
     val isMemoryVisible: StateFlow<Boolean> = _isMemoryVisible
 
     private val _expression = MutableStateFlow(Expression.EMPTY)
-    val text: StateFlow<String> = runBlocking {
-        _expression.map { it.toString() }
-            .stateIn(scope = viewModelScope)
-    }
+    val text: StateFlow<String> = _expression.map { it.toString() }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = ""
+        )
 
     private val _onCalculationErrorEvent = MutableStateFlow<Event>(Event.CalculationErrorEvent)
     val onCalculationErrorEvent: StateFlow<Event> = _onCalculationErrorEvent
