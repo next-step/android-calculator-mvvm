@@ -12,8 +12,10 @@ import edu.nextstep.camp.calculator.domain.Operator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,19 +29,13 @@ class CalculatorViewModel @Inject constructor(
     val isMemoryVisible: StateFlow<Boolean> = _isMemoryVisible
 
     private val _expression = MutableStateFlow(Expression.EMPTY)
-    private val _text = MutableStateFlow("")
-    val text: StateFlow<String> = _text.asStateFlow()
+    val text: StateFlow<String> = runBlocking {
+        _expression.map { it.toString() }
+            .stateIn(scope = viewModelScope)
+    }
 
     private val _onCalculationErrorEvent = MutableStateFlow<Event>(Event.CalculationErrorEvent)
     val onCalculationErrorEvent: StateFlow<Event> = _onCalculationErrorEvent
-
-    init {
-        viewModelScope.launch {
-            _expression.collect {
-                _text.value = _expression.value.toString()
-            }
-        }
-    }
 
     fun addToExpression(operand: Int) {
         val expression = _expression.value
