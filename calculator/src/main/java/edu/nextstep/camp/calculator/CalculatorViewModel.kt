@@ -4,17 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import edu.nextstep.camp.calculator.data.History
-import edu.nextstep.camp.calculator.data.HistoryDao
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
+import edu.nextstep.camp.calculator.domain.HistoryRepository
 import edu.nextstep.camp.calculator.domain.Operator
+import edu.nextstep.camp.calculator.domain.model.Memory
 import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
     private val calculator: Calculator = Calculator(),
     expression: Expression = Expression.EMPTY,
-    private val historyDao: HistoryDao
+    private val historyRepository: HistoryRepository
 ) : ViewModel() {
 
     private val _expression = MutableLiveData<Expression>(expression)
@@ -29,13 +29,13 @@ class CalculatorViewModel(
     val historyVisible: LiveData<Boolean>
         get() = _historyVisible
 
-    private val _expressionHistory = MutableLiveData<List<History>>(emptyList())
-    val expressionHistory: LiveData<List<History>>
+    private val _expressionHistory = MutableLiveData<List<Memory>>(emptyList())
+    val expressionHistory: LiveData<List<Memory>>
         get() = _expressionHistory
 
     init {
         viewModelScope.launch {
-            _expressionHistory.postValue(historyDao.getAll())
+            _expressionHistory.value = historyRepository.getAll()
         }
     }
 
@@ -60,10 +60,10 @@ class CalculatorViewModel(
         }
         _expression.value = Expression.EMPTY + result
 
-        val newHistory = History(expression, result.toString())
+        val newHistory = Memory(expression, result.toString())
         viewModelScope.launch {
-            historyDao.insert(newHistory)
-            _expressionHistory.value = historyDao.getAll()
+            historyRepository.insert(newHistory)
+            _expressionHistory.value = historyRepository.getAll()
         }
 
     }

@@ -7,7 +7,7 @@
 
         <variable
             name="model"
-            type="edu.nextstep.camp.calculator.data.History" />
+            type="edu.nextstep.camp.calculator.domain.model.Memory" />
 
     </data>
 
