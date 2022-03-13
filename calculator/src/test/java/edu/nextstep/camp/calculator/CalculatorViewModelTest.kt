@@ -4,7 +4,11 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.google.common.truth.Truth.assertThat
+import edu.nextstep.camp.calculator.domain.Calculator
+import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
+import edu.nextstep.camp.calculator.domain.model.Memory
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -15,13 +19,27 @@ import java.util.concurrent.TimeoutException
 
 class CalculatorViewModelTest {
     private lateinit var viewModel: CalculatorViewModel
+    private lateinit var fakeRepository: FakeRepository
+
+
+    @ExperimentalCoroutinesApi
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
 
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
+
     @Before
     fun setUp() {
-        viewModel = CalculatorViewModel()
+        val memory1 = Memory("1 + 2", "3")
+
+        fakeRepository = FakeRepository(memory1)
+
+        viewModel = CalculatorViewModel(
+            calculator = Calculator(),
+            historyRepository = fakeRepository
+        )
     }
 
     @Test
@@ -48,6 +66,7 @@ class CalculatorViewModelTest {
         val expected = "0 + 1"
         var expression = viewModel.expression.getOrAwaitValue().toString()
         assertThat(expression).isEqualTo(expected)
+
     }
 
     @Test
@@ -101,6 +120,38 @@ class CalculatorViewModelTest {
         val expected = "3"
         var expression = viewModel.expression.getOrAwaitValue().toString()
         assertThat(expression).isEqualTo(expected)
+    }
+
+    @Test
+    fun `계산 히스토리 내역이 보이지 않을 때 히스토리 내역 버튼을 누르면 보여야 한다`() {
+        // given
+
+        // when
+        viewModel.showAndHideHistoryList()
+
+        // then
+        val historyVisible = viewModel.memoryVisible.getOrAwaitValue()
+        assertThat(historyVisible).isTrue()
+    }
+
+    @Test
+    fun `수식을 계산을 하면 히스토리에 저장 되고 이전 계산 기록들을 가져올수 있어야 한다`() {
+        // given
+       viewModel = CalculatorViewModel(
+           calculator = Calculator(),
+           Expression(listOf("2 + 3")),
+           historyRepository = fakeRepository
+       )
+        // when
+        viewModel.calculate()
+
+        // then
+        val expected = listOf(
+            Memory("1 + 2", "3"),
+            Memory("2 + 3", "5")
+        ).joinToString()
+        val history = viewModel.expressionMemory.getOrAwaitValue().joinToString()
+        assertThat(history).isEqualTo(expected)
     }
 
 

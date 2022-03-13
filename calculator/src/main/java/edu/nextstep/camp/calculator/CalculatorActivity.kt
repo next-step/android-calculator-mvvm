@@ -6,7 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import edu.nextstep.camp.calculator.data.HistoryDatabase
+import edu.nextstep.camp.calculator.data.di.Injector
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 
 class CalculatorActivity : AppCompatActivity() {
@@ -16,7 +16,7 @@ class CalculatorActivity : AppCompatActivity() {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return CalculatorViewModel(
-                    historyDao = HistoryDatabase.getInstance(this@CalculatorActivity).historyDao()
+                    historyRepository = Injector.provideMemoryRepository(this@CalculatorActivity)
                 ) as T
             }
 
@@ -44,7 +44,7 @@ class CalculatorActivity : AppCompatActivity() {
             it.consume()
         }
 
-        viewModel.expressionHistory.observe(this) {
+        viewModel.expressionMemory.observe(this) {
             adapter.submitList(it)
         }
     }

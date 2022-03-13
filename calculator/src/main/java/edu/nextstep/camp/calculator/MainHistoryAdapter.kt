@@ -3,11 +3,11 @@ package edu.nextstep.camp.calculator
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
-import edu.nextstep.camp.calculator.data.History
 import edu.nextstep.camp.calculator.databinding.ItemResultBinding
+import edu.nextstep.camp.calculator.domain.model.Memory
 
 class MainHistoryAdapter :
-    ListAdapter<History, MainHistoryViewHolder>(HistoryDiffUtilCallback()) {
+    ListAdapter<Memory, MainHistoryViewHolder>(HistoryDiffUtilCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHistoryViewHolder {
         return MainHistoryViewHolder(
