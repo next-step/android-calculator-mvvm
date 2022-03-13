@@ -25,17 +25,17 @@ class CalculatorViewModel(
     val expressionError: LiveData<Event<Unit>>
         get() = _expressionError
 
-    private val _historyVisible = MutableLiveData<Boolean>(false)
-    val historyVisible: LiveData<Boolean>
-        get() = _historyVisible
+    private val _memoryVisible = MutableLiveData<Boolean>(false)
+    val memoryVisible: LiveData<Boolean>
+        get() = _memoryVisible
 
-    private val _expressionHistory = MutableLiveData<List<Memory>>(emptyList())
-    val expressionHistory: LiveData<List<Memory>>
-        get() = _expressionHistory
+    private val _expressionMemory = MutableLiveData<List<Memory>>(emptyList())
+    val expressionMemory: LiveData<List<Memory>>
+        get() = _expressionMemory
 
     init {
         viewModelScope.launch {
-            _expressionHistory.value = historyRepository.getAll()
+            _expressionMemory.value = historyRepository.getAll()
         }
     }
 
@@ -63,13 +63,13 @@ class CalculatorViewModel(
         val newHistory = Memory(expression, result.toString())
         viewModelScope.launch {
             historyRepository.insert(newHistory)
-            _expressionHistory.value = historyRepository.getAll()
+            _expressionMemory.value = historyRepository.getAll()
         }
 
     }
 
     fun showAndHideHistoryList() {
-        val isVisible = historyVisible.value ?: false
-        _historyVisible.value = !isVisible
+        val isVisible = memoryVisible.value ?: false
+        _memoryVisible.value = !isVisible
     }
 }

@@ -44,7 +44,7 @@ class CalculatorActivity : AppCompatActivity() {
             it.consume()
         }
 
-        viewModel.expressionHistory.observe(this) {
+        viewModel.expressionMemory.observe(this) {
             adapter.submitList(it)
         }
     }
