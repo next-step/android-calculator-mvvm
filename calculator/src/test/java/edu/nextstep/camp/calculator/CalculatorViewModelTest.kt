@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.google.common.truth.Truth.assertThat
 import edu.nextstep.camp.calculator.domain.Calculator
+import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 import edu.nextstep.camp.calculator.domain.model.Memory
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -31,9 +32,9 @@ class CalculatorViewModelTest {
 
     @Before
     fun setUp() {
-        fakeRepository = FakeRepository()
         val memory1 = Memory("1 + 2", "3")
-        fakeRepository.addMemory(memory1)
+
+        fakeRepository = FakeRepository(memory1)
 
         viewModel = CalculatorViewModel(
             calculator = Calculator(),
@@ -129,25 +130,27 @@ class CalculatorViewModelTest {
         viewModel.showAndHideHistoryList()
 
         // then
-        val historyVisible = viewModel.historyVisible.getOrAwaitValue()
+        val historyVisible = viewModel.memoryVisible.getOrAwaitValue()
         assertThat(historyVisible).isTrue()
     }
 
     @Test
     fun `수식을 계산을 하면 히스토리에 저장 되고 이전 계산 기록들을 가져올수 있어야 한다`() {
         // given
-        viewModel.addToExpression(2)
-        viewModel.addToExpression(Operator.Plus)
-        viewModel.addToExpression(3)
-
+       viewModel = CalculatorViewModel(
+           calculator = Calculator(),
+           Expression(listOf("2 + 3")),
+           historyRepository = fakeRepository
+       )
         // when
         viewModel.calculate()
 
         // then
-        val memory1 = Memory("1 + 2", "3")
-        val memory2 = Memory("2 + 3", "5")
-        val expected = listOf(memory1, memory2).joinToString()
-        val history = viewModel.expressionHistory.getOrAwaitValue().joinToString()
+        val expected = listOf(
+            Memory("1 + 2", "3"),
+            Memory("2 + 3", "5")
+        ).joinToString()
+        val history = viewModel.expressionMemory.getOrAwaitValue().joinToString()
         assertThat(history).isEqualTo(expected)
     }
 
