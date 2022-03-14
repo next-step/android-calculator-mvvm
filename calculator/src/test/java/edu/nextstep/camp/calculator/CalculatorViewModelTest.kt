@@ -7,9 +7,8 @@ import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Memory
 import edu.nextstep.camp.calculator.domain.MemoryRepository
 import edu.nextstep.camp.calculator.domain.Operator
+import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
-import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -22,10 +21,11 @@ internal class CalculatorViewModelTest {
     val coroutineRule = CoroutineRule()
 
     private lateinit var viewModel: CalculatorViewModel
-    private val memoryRepository: MemoryRepository = mockk(relaxed = true)
+    private lateinit var memoryRepository: MemoryRepository
 
     @Before
     fun setup() {
+        memoryRepository = mockk(relaxed = true)
         viewModel = CalculatorViewModel(
             calculator = Calculator(),
             memoryRepository = memoryRepository
@@ -41,7 +41,7 @@ internal class CalculatorViewModelTest {
         viewModel.addToExpression(1)
 
         // then
-        val actual = viewModel.text.getOrAwaitValue()
+        val actual = viewModel.text.value
         assertThat(actual).isEqualTo("1")
     }
 
@@ -55,7 +55,7 @@ internal class CalculatorViewModelTest {
         viewModel.addToExpression(1)
 
         // then
-        val actual = viewModel.text.getOrAwaitValue()
+        val actual = viewModel.text.value
         assertThat(actual).isEqualTo("5 + 1")
     }
 
@@ -70,7 +70,7 @@ internal class CalculatorViewModelTest {
         viewModel.addToExpression(9)
 
         // then
-        val actual = viewModel.text.getOrAwaitValue()
+        val actual = viewModel.text.value
         assertThat(actual).isEqualTo("89")
     }
 
@@ -82,7 +82,7 @@ internal class CalculatorViewModelTest {
         viewModel.addToExpression(Operator.Plus)
 
         // then
-        val actual = viewModel.text.getOrAwaitValue()
+        val actual = viewModel.text.value
         assertThat(actual).isEqualTo("")
     }
 
@@ -98,7 +98,7 @@ internal class CalculatorViewModelTest {
         viewModel.addToExpression(Operator.Plus)
 
         // then
-        val actual = viewModel.text.getOrAwaitValue()
+        val actual = viewModel.text.value
         assertThat(actual).isEqualTo("1 +")
     }
 
@@ -112,7 +112,7 @@ internal class CalculatorViewModelTest {
         viewModel.addToExpression(Operator.Minus)
 
         // then
-        val actual = viewModel.text.getOrAwaitValue()
+        val actual = viewModel.text.value
         assertThat(actual).isEqualTo("1 -")
     }
 
@@ -124,7 +124,7 @@ internal class CalculatorViewModelTest {
         viewModel.removeLast()
 
         // then
-        val actual = viewModel.text.getOrAwaitValue()
+        val actual = viewModel.text.value
         assertThat(actual).isEqualTo("")
     }
 
@@ -141,28 +141,28 @@ internal class CalculatorViewModelTest {
         viewModel.removeLast()
 
         // then
-        val actual = viewModel.text.getOrAwaitValue()
+        val actual = viewModel.text.value
         assertThat(actual).isEqualTo("32 +")
 
         // when
         viewModel.removeLast()
         // then
-        assertThat(viewModel.text.getOrAwaitValue()).isEqualTo("32")
+        assertThat(viewModel.text.value).isEqualTo("32")
 
         // when
         viewModel.removeLast()
         // then
-        assertThat(viewModel.text.getOrAwaitValue()).isEqualTo("3")
+        assertThat(viewModel.text.value).isEqualTo("3")
 
         // when
         viewModel.removeLast()
         // then
-        assertThat(viewModel.text.getOrAwaitValue()).isEqualTo("")
+        assertThat(viewModel.text.value).isEqualTo("")
 
         // when
         viewModel.removeLast()
         // then
-        assertThat(viewModel.text.getOrAwaitValue()).isEqualTo("")
+        assertThat(viewModel.text.value).isEqualTo("")
     }
 
     // 입력된 수신이 완전할 때, 사용자가 = 버튼을 누르면 입력된 수식의 결과가 화면에 보여야 한다.
@@ -178,7 +178,7 @@ internal class CalculatorViewModelTest {
         viewModel.calculate()
 
         // then
-        val actual = viewModel.text.getOrAwaitValue()
+        val actual = viewModel.text.value
         assertThat(actual).isEqualTo("5")
     }
 
@@ -194,12 +194,12 @@ internal class CalculatorViewModelTest {
         viewModel.calculate()
 
         // then
-        val actual = viewModel.onCalculationErrorEvent.getOrAwaitValue()
+        val actual = viewModel.onCalculationErrorEvent.value
         assertThat(actual).isEqualTo(Event.CalculationErrorEvent)
     }
 
     @Test
-    fun `수식이 '3 + 2'일 때, 계산하면, 계산기록에 '3 + 2 = 5'가 추가되어야 한다`() = runBlocking {
+    fun `수식이 '3 + 2'일 때, 계산하면, 계산기록에 '3 + 2 = 5'가 추가되어야 한다`() {
         // given
         viewModel.addToExpression(3)
         viewModel.addToExpression(Operator.Plus)
@@ -210,7 +210,7 @@ internal class CalculatorViewModelTest {
 
         // then
         val expected = Memory(Expression(listOf(3, Operator.Plus, 2)), 5)
-        verify { runBlocking { memoryRepository.addMemory(expected) } }
+        coVerify { memoryRepository.addMemory(expected) }
     }
 
     @Test
@@ -219,7 +219,7 @@ internal class CalculatorViewModelTest {
         viewModel.toggleMemory()
 
         // then
-        val actual = viewModel.isMemoryVisible.getOrAwaitValue()
+        val actual = viewModel.isMemoryVisible.value
         assertThat(actual).isTrue()
     }
 
@@ -232,7 +232,7 @@ internal class CalculatorViewModelTest {
         viewModel.toggleMemory()
 
         // then
-        val actual = viewModel.isMemoryVisible.getOrAwaitValue()
+        val actual = viewModel.isMemoryVisible.value
         assertThat(actual).isFalse()
     }
 }

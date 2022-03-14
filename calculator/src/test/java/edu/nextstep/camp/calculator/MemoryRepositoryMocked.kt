@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal class MemoryRepositoryMocked(
-    private var memories: Memories = Memories()
+    private var memories: Memories = Memories(emptyList())
 ) : MemoryRepository {
     private val _state = MutableStateFlow(memories)
 

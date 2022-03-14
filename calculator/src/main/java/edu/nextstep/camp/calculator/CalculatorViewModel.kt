@@ -1,8 +1,5 @@
 package edu.nextstep.camp.calculator
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,6 +9,12 @@ import edu.nextstep.camp.calculator.domain.Memories
 import edu.nextstep.camp.calculator.domain.Memory
 import edu.nextstep.camp.calculator.domain.MemoryRepository
 import edu.nextstep.camp.calculator.domain.Operator
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,34 +23,39 @@ class CalculatorViewModel @Inject constructor(
     private val calculator: Calculator,
     private val memoryRepository: MemoryRepository
 ) : ViewModel() {
-    val memories: LiveData<Memories> = memoryRepository.getMemories().toLiveData()
+    val memories: Flow<Memories> = memoryRepository.getMemories()
 
-    private val _isMemoryVisible = MutableLiveData(false)
-    val isMemoryVisible: LiveData<Boolean> = _isMemoryVisible
+    private val _isMemoryVisible = MutableStateFlow(false)
+    val isMemoryVisible: StateFlow<Boolean> = _isMemoryVisible
 
-    private val _expression = MutableLiveData(Expression.EMPTY)
-    val text: LiveData<String> = Transformations.map(_expression) { it.toString() }
+    private val _expression = MutableStateFlow(Expression.EMPTY)
+    val text: StateFlow<String> = _expression.map { it.toString() }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = ""
+        )
 
-    private val _onCalculationErrorEvent = MutableLiveData<Event>()
-    val onCalculationErrorEvent: LiveData<Event> = _onCalculationErrorEvent
+    private val _onCalculationErrorEvent = MutableStateFlow<Event>(Event.CalculationErrorEvent)
+    val onCalculationErrorEvent: StateFlow<Event> = _onCalculationErrorEvent
 
     fun addToExpression(operand: Int) {
-        val expression = getExpression()
+        val expression = _expression.value
         _expression.value = expression + operand
     }
 
     fun addToExpression(operator: Operator) {
-        val expression = getExpression()
+        val expression = _expression.value
         _expression.value = expression + operator
     }
 
     fun removeLast() {
-        val expression = getExpression()
+        val expression = _expression.value
         _expression.value = expression.removeLast()
     }
 
     fun calculate() {
-        val expression = getExpression()
+        val expression = _expression.value
         val result = calculator.calculate(expression.toString())
         if (result == null) {
             _onCalculationErrorEvent.value = Event.CalculationErrorEvent
@@ -60,9 +68,7 @@ class CalculatorViewModel @Inject constructor(
     }
 
     fun toggleMemory() {
-        val isMemoryVisible = _isMemoryVisible.value ?: return
+        val isMemoryVisible = _isMemoryVisible.value
         _isMemoryVisible.value = !isMemoryVisible
     }
-
-    private fun getExpression(): Expression = _expression.value ?: Expression.EMPTY
 }
