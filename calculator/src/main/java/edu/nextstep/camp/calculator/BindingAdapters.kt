@@ -5,5 +5,5 @@ import androidx.databinding.BindingAdapter
 
 @BindingAdapter("visible")
 fun setVisible(view: View, isVisible: Boolean) {
-    view.visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
+    view.visibility = if (isVisible) View.VISIBLE else View.GONE
 }
