@@ -3,6 +3,7 @@ package edu.nextstep.camp.calculator
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import edu.nextstep.camp.domain.CalculatorRepository
+import edu.nextstep.camp.domain.Operator
 import io.mockk.mockk
 import org.junit.Before
 import org.junit.Rule
@@ -39,7 +40,7 @@ internal class CalculatorViewModelTest {
         viewModel.addToExpression(5)
 
         //when
-        viewModel.addToExpression(edu.nextstep.camp.domain.Operator.Plus)
+        viewModel.addToExpression(Operator.Plus)
 
         //then
         val acturl: String = viewModel.text.getOrAwaitValue().toString()
@@ -61,7 +62,7 @@ internal class CalculatorViewModelTest {
     fun `수식에 피연산자가 없을 때, 0 ~ 9가 추가되면 수식은 0 ~ 9여야 한다 2`() {
         //given
         viewModel.addToExpression(5)
-        viewModel.addToExpression(edu.nextstep.camp.domain.Operator.Plus)
+        viewModel.addToExpression(Operator.Plus)
 
         //when
         viewModel.addToExpression(1)
@@ -88,7 +89,7 @@ internal class CalculatorViewModelTest {
     fun `수식에 피연산자가 없을 때, +, -, ×, ÷ 를 추가하면 수식은 변화가 없어야 한다`() {
 
         //when
-        viewModel.addToExpression(edu.nextstep.camp.domain.Operator.Plus)
+        viewModel.addToExpression(Operator.Plus)
 
         //then
         val acturl: String = viewModel.text.getOrAwaitValue().toString()
@@ -100,10 +101,10 @@ internal class CalculatorViewModelTest {
 
         //given
         viewModel.addToExpression(1)
-        viewModel.addToExpression(edu.nextstep.camp.domain.Operator.Plus)
+        viewModel.addToExpression(Operator.Plus)
 
         //when
-        viewModel.addToExpression(edu.nextstep.camp.domain.Operator.Minus)
+        viewModel.addToExpression(Operator.Minus)
 
         //then
         val acturl: String = viewModel.text.getOrAwaitValue().toString()
@@ -126,7 +127,7 @@ internal class CalculatorViewModelTest {
 
         //given
         viewModel.addToExpression(32)
-        viewModel.addToExpression(edu.nextstep.camp.domain.Operator.Plus)
+        viewModel.addToExpression(Operator.Plus)
         viewModel.addToExpression(1)
 
         //when
@@ -142,7 +143,7 @@ internal class CalculatorViewModelTest {
 
         //given
         viewModel.addToExpression(3)
-        viewModel.addToExpression(edu.nextstep.camp.domain.Operator.Plus)
+        viewModel.addToExpression(Operator.Plus)
         viewModel.addToExpression(2)
 
         //when
