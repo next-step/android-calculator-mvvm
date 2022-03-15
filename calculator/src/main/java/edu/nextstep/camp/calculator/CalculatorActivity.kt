@@ -50,7 +50,7 @@ class CalculatorActivity : AppCompatActivity() {
 
         private fun createMainViewModel(): CalculatorViewModel {
             return CalculatorViewModel(
-                calculatorRepository = Injector.provideSCalculatorRepository(context)
+                calculatorRepository = Injector.providesCalculatorRepository(context)
             )
         }
     }

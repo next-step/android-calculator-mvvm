@@ -6,7 +6,7 @@ import edu.nextstep.camp.data.CalculatorRepositoryImpl
 import edu.nextstep.camp.domain.CalculatorRepository
 
 object Injector {
-    fun provideSCalculatorRepository(context: Context): CalculatorRepository {
+    fun providesCalculatorRepository(context: Context): CalculatorRepository {
         return CalculatorRepositoryImpl( calculatorDao = CalculatorDatabase.getInstance(context).calculatorDao())
     }
 }
