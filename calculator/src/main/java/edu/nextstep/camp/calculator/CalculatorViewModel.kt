@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import edu.nextstep.camp.domain.CalculatorHistoryData
+import edu.nextstep.camp.domain.CalculatorHistory
 import edu.nextstep.camp.domain.CalculatorRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,8 +23,8 @@ class CalculatorViewModel(private val calculatorRepository: CalculatorRepository
     private val _isVisibleHistoryList = MutableLiveData(false)
     val isVisibleHistoryList: LiveData<Boolean> = _isVisibleHistoryList
 
-    private val _historyList = MutableLiveData<List<CalculatorHistoryData>>(emptyList())
-    val historyList: LiveData<List<CalculatorHistoryData>> = _historyList
+    private val _historyList = MutableLiveData<List<CalculatorHistory>>(emptyList())
+    val historyList: LiveData<List<CalculatorHistory>> = _historyList
 
 
     fun addToExpression(operand: Int) {
@@ -50,7 +50,7 @@ class CalculatorViewModel(private val calculatorRepository: CalculatorRepository
         }
         _text.value = result.toString()
 
-        val newHistory = CalculatorHistoryData(expression.toString(), result.toString())
+        val newHistory = CalculatorHistory(expression.toString(), result.toString())
         viewModelScope.launch(Dispatchers.IO) {
             calculatorRepository.addHistory(newHistory)
 

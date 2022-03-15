@@ -2,7 +2,7 @@ package edu.nextstep.camp.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import edu.nextstep.camp.domain.CalculatorHistoryData
+import edu.nextstep.camp.domain.CalculatorHistory
 
 @Entity
 data class CalculatorHistoryEntity(
@@ -12,7 +12,7 @@ data class CalculatorHistoryEntity(
     var id: Int = 0
 )
 
-fun CalculatorHistoryEntity.toDomain(): CalculatorHistoryData= CalculatorHistoryData(
+fun CalculatorHistoryEntity.toDomain(): CalculatorHistory= CalculatorHistory(
     this.expression,
     this.result
 )

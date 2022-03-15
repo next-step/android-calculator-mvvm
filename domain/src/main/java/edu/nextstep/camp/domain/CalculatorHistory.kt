@@ -1,6 +1,6 @@
 package edu.nextstep.camp.domain
 
-data class CalculatorHistoryData(
+data class CalculatorHistory(
     val expression: String,
     val result: String
 )
