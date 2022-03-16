@@ -5,11 +5,12 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
-import edu.nextstep.camp.domain.Operator
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
     private val calculatorViewModel: CalculatorViewModel by viewModels { ViewModelFactory(this) }
+
+    private val historyAdapter = HistoryAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,6 +19,7 @@ class CalculatorActivity : AppCompatActivity() {
 
         initViewModel()
         initObserve()
+        initView()
     }
 
     private fun initViewModel() {
@@ -32,5 +34,14 @@ class CalculatorActivity : AppCompatActivity() {
                     .show()
             }
         }
+
+        calculatorViewModel.historyDataList.observe(this) {
+            historyAdapter.submitList(it)
+        }
     }
+
+    private fun initView() {
+        binding.recyclerView.adapter = historyAdapter
+    }
+
 }

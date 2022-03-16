@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import edu.nextstep.camp.domain.Calculator
+import nextstep.edu.data.Injector
 
 class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
@@ -14,7 +15,10 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
         } as T
     }
 
-    private fun createCalculatorViewModel(calculator: Calculator = Calculator()): CalculatorViewModel {
-        return CalculatorViewModel(calculator)
+    private fun createCalculatorViewModel(): CalculatorViewModel {
+        return CalculatorViewModel(
+            Calculator(),
+            Injector.provideHistoryRepository(context)
+        )
     }
 }
