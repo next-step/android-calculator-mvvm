@@ -1,10 +1,14 @@
 package edu.nextstep.camp.calculator
 
+import android.app.Instrumentation
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import edu.nextstep.camp.domain.Calculator
 import edu.nextstep.camp.domain.Expression
 import edu.nextstep.camp.domain.Operator
+import io.mockk.mockk
+import nextstep.edu.data.CalculationHistoryRepository
+import nextstep.edu.data.History
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -15,10 +19,12 @@ internal class CalculatorViewModelTest {
     val instantExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var viewModel: CalculatorViewModel
+    private lateinit var calculationHistoryRepository: CalculationHistoryRepository
 
     @Before
     fun setUp() {
-        viewModel = CalculatorViewModel(Calculator())
+        calculationHistoryRepository = mockk(relaxed = true)
+        viewModel = CalculatorViewModel(Calculator(), calculationHistoryRepository)
     }
 
     @Test
@@ -120,4 +126,19 @@ internal class CalculatorViewModelTest {
             .isEqualTo(true)
     }
 
+    @Test
+    fun `계산기 텍스트뷰에 완전한 수식이 있을때, = 버튼을 누르면 계산 기록이 저장되어야 한다`() {
+        // given : 완전한 수식 '18*10'이 있을때
+        viewModel.addToExpression(18)
+        viewModel.addToExpression(Operator.Multiply)
+        viewModel.addToExpression(10)
+
+        // when : '=' 버튼을 누르면
+        viewModel.calculate()
+
+        // then : 계산기록이 저장 되어야 한다.
+        val history = History("18*10", 180)
+
+        assertThat(viewModel.historyDataList.getOrAwaitValue()).isEqualTo(history)
+    }
 }

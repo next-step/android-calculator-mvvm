@@ -1,6 +1,6 @@
 package nextstep.edu.data
 
-interface CalculatorRepository {
+interface CalculationHistoryRepository {
     fun addHistory(history: History)
     fun getHistoryList() : List<History>
 }

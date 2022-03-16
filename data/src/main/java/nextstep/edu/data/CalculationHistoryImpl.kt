@@ -1,8 +1,8 @@
 package nextstep.edu.data
 
-class CalculationHistoryImpl(
+internal class CalculationHistoryImpl(
     private val historyDao: HistoryDao
-) : CalculatorRepository {
+) : CalculationHistoryRepository {
     override fun addHistory(history: History) {
         historyDao.insertHistory(history)
     }

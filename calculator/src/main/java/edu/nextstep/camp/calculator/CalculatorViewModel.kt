@@ -6,11 +6,12 @@ import androidx.lifecycle.ViewModel
 import edu.nextstep.camp.domain.Calculator
 import edu.nextstep.camp.domain.Expression
 import edu.nextstep.camp.domain.Operator
-import nextstep.edu.data.CalculatorRepository
+import nextstep.edu.data.CalculationHistoryRepository
+import nextstep.edu.data.History
 
 class CalculatorViewModel(
     private val calculator: Calculator = Calculator(),
-    private val calculatorRepository: CalculatorRepository
+    private val calculatorRepository: CalculationHistoryRepository
 ) : ViewModel() {
 
     private val _expression = MutableLiveData(Expression.EMPTY)
@@ -25,10 +26,7 @@ class CalculatorViewModel(
     val isHistoryVisibility: LiveData<Boolean>
         get() = _isHistoryVisibility
 
-    private val _historyDataList = MutableLiveData<List<nextstep.edu.data.History>>()
-    val historyDataList: MutableLiveData<List<nextstep.edu.data.History>>
-        get() = _historyDataList
-
+    val historyDataList = MutableLiveData(calculatorRepository.getHistoryList())
 
     fun addToExpression(operand: Int) {
         _expression.value = expression.value?.plus(operand)
@@ -50,7 +48,7 @@ class CalculatorViewModel(
             return
         }
 
-        val newHistory = nextstep.edu.data.History(rawExpression, result)
+        val newHistory = History(rawExpression, result)
         saveHistory(newHistory)
 
         _expression.value = Expression(listOf(result))
@@ -60,10 +58,9 @@ class CalculatorViewModel(
         _isHistoryVisibility.value = isHistoryVisibility.value?.not()
     }
 
-    private fun saveHistory(newHistory: nextstep.edu.data.History) {
+    private fun saveHistory(newHistory: History) {
         val thread = Thread {
             calculatorRepository.addHistory(newHistory)
-            _historyDataList.postValue(calculatorRepository.getHistoryList())
         }
         thread.start()
     }

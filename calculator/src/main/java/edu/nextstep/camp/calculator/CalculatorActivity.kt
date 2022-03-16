@@ -10,7 +10,7 @@ class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
     private val calculatorViewModel: CalculatorViewModel by viewModels { ViewModelFactory(this) }
 
-    private val historyAdapter by lazy { HistoryAdapter() }
+    private val historyAdapter = HistoryAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -3,9 +3,8 @@ package edu.nextstep.camp.calculator
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import nextstep.edu.data.HistoryDatabase
 import edu.nextstep.camp.domain.Calculator
-import nextstep.edu.data.CalculationHistoryImpl
+import nextstep.edu.data.Injector
 
 class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
@@ -17,8 +16,9 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
     }
 
     private fun createCalculatorViewModel(): CalculatorViewModel {
-        return CalculatorViewModel(Calculator(),
-            CalculationHistoryImpl(HistoryDatabase.getInstance(context).historyDao())
+        return CalculatorViewModel(
+            Calculator(),
+            Injector.provideHistoryRepository(context)
         )
     }
 }
