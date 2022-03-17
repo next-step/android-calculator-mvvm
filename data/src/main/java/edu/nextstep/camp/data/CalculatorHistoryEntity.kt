@@ -10,5 +10,11 @@ internal data class CalculatorHistoryEntity(
     val result: String,
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
-)
+) {
+    fun toDomain(): CalculatorHistory =
+        CalculatorHistory(
+            expression = expression,
+            result = result
+        )
+}
 
