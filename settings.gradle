@@ -2,3 +2,4 @@ include ':calculator'
 include ':counter'
 rootProject.name = "AndroidCalculator"
 include ':data'
+include ':domain'

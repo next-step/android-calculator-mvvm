@@ -6,9 +6,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import edu.nextstep.camp.calculator.databinding.ItemResultBinding
-import edu.nextstep.camp.data.CalculatorHisotry
+import edu.nextstep.camp.domain.CalculatorHistory
 
-class CalculatorHistoryAdapter : ListAdapter<CalculatorHisotry, CalculatorHistoryAdapter.HistoryViewHolder>(diffUtil) {
+class CalculatorHistoryAdapter : ListAdapter<CalculatorHistory, CalculatorHistoryAdapter.HistoryViewHolder>(diffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
         val binding = ItemResultBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -16,7 +16,7 @@ class CalculatorHistoryAdapter : ListAdapter<CalculatorHisotry, CalculatorHistor
     }
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
-            val data = getItem(position) as CalculatorHisotry
+            val data = getItem(position) as CalculatorHistory
             holder.bind(data)
 
     }
@@ -25,7 +25,7 @@ class CalculatorHistoryAdapter : ListAdapter<CalculatorHisotry, CalculatorHistor
     class HistoryViewHolder(private val binding: ItemResultBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(calculatorHistoryList: CalculatorHisotry) {
+        fun bind(calculatorHistoryList: CalculatorHistory) {
             binding.tvExpression.text = calculatorHistoryList.expression
             binding.tvResult.text = calculatorHistoryList.result
         }
@@ -33,11 +33,11 @@ class CalculatorHistoryAdapter : ListAdapter<CalculatorHisotry, CalculatorHistor
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<CalculatorHisotry>() {
-            override fun areItemsTheSame(oldItem: CalculatorHisotry, newItem: CalculatorHisotry) =
+        val diffUtil = object : DiffUtil.ItemCallback<CalculatorHistory>() {
+            override fun areItemsTheSame(oldItem: CalculatorHistory, newItem: CalculatorHistory) =
                 oldItem.hashCode() == newItem.hashCode()
 
-            override fun areContentsTheSame(oldItem: CalculatorHisotry, newItem: CalculatorHisotry) =
+            override fun areContentsTheSame(oldItem: CalculatorHistory, newItem: CalculatorHistory) =
                 oldItem == newItem
 
 
