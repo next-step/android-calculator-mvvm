@@ -27,6 +27,7 @@ internal class CounterViewModelTest {
     @Test
     fun `DOWN 버튼을 클릭하면 숫자가 1 감소해야 한다`() {
         // given
+        viewModel.increase()
         val givenCount = viewModel.count.getOrAwaitValue()
 
         // when
@@ -34,5 +35,15 @@ internal class CounterViewModelTest {
 
         // then
         assertThat(viewModel.count.getOrAwaitValue()).isEqualTo(givenCount - 1)
+    }
+
+    @Test
+    fun `숫자가 0일 때, DOWN 버튼을 클릭하면 0 이하로 내릴 수 없습니다 토스트 메시지가 보여야 한다`() {
+
+        // when
+        viewModel.decrease()
+
+        // then
+        assertThat(viewModel.countFailed.getOrAwaitValue()).isEqualTo(true)
     }
 }
