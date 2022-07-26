@@ -12,6 +12,8 @@ class MainViewModel : ViewModel() {
     val count: LiveData<Int>
         get() = _count
 
+    val toastEvent = SingleLiveEvent<Event<Unit>>()
+
     fun increment() {
         val originalCount = count.value ?: 0
         _count.value = originalCount + 1
@@ -19,6 +21,10 @@ class MainViewModel : ViewModel() {
 
     fun decrement() {
         val originalCount = count.value ?: 0
-        _count.value = originalCount - 1
+        if (originalCount > 0) {
+            _count.value = originalCount - 1
+        } else {
+            toastEvent.call()
+        }
     }
 }
