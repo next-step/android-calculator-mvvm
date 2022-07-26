@@ -14,6 +14,10 @@ class CounterViewModel : ViewModel() {
         _count.value = _count.value?.plus(COUNT_UNIT)
     }
 
+    fun decrease() {
+        _count.value = _count.value?.minus(COUNT_UNIT)
+    }
+
     companion object {
         private const val COUNT_UNIT = 1
     }

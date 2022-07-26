@@ -23,4 +23,16 @@ internal class CounterViewModelTest {
         // then
         assertThat(viewModel.count.getOrAwaitValue()).isEqualTo(givenCount + 1)
     }
+
+    @Test
+    fun `DOWN 버튼을 클릭하면 숫자가 1 감소해야 한다`() {
+        // given
+        val givenCount = viewModel.count.getOrAwaitValue()
+
+        // when
+        viewModel.decrease()
+
+        // then
+        assertThat(viewModel.count.getOrAwaitValue()).isEqualTo(givenCount - 1)
+    }
 }
