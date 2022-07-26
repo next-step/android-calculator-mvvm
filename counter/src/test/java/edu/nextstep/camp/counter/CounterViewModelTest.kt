@@ -13,7 +13,7 @@ class CounterViewModelTest {
     private val viewModel = CounterViewModel()
 
     @Test
-    fun increment() {
+    fun `숫자를 1 증가시킬 수 있다`() {
         // when
         viewModel.increment()
 
@@ -23,7 +23,7 @@ class CounterViewModelTest {
     }
 
     @Test
-    fun decrement() {
+    fun `숫자를 1 감소시킬 수 있다`() {
         // given 2
         viewModel.increment()
         viewModel.increment()
@@ -37,7 +37,7 @@ class CounterViewModelTest {
     }
 
     @Test
-    fun `decrement at zero is not allowed`() {
+    fun `0 일 때 숫자를 감소시킬 수 없다`() {
         // when
         viewModel.decrement()
 
