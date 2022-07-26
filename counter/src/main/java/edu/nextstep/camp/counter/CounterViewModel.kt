@@ -6,23 +6,23 @@ import androidx.lifecycle.ViewModel
 
 class CounterViewModel : ViewModel() {
 
-    private val _count = MutableLiveData(0)
-    val count: LiveData<Int>
-        get() = _count
+    private val _counter = MutableLiveData(0)
+    val counter: LiveData<Int>
+        get() = _counter
 
     private val _countFailed = SingleLiveEvent<Boolean>()
     val countFailed: LiveData<Boolean>
         get() = _countFailed
 
     fun increase() {
-        _count.value = _count.value?.plus(COUNT_UNIT)
+        _counter.value = _counter.value?.plus(COUNT_UNIT)
     }
 
     fun decrease() {
-        if (count.value == MIN_COUNT) {
+        if (counter.value == MIN_COUNT) {
             _countFailed.value = true
         } else {
-            _count.value = _count.value?.minus(COUNT_UNIT)
+            _counter.value = _counter.value?.minus(COUNT_UNIT)
         }
     }
 

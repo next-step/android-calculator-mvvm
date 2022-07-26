@@ -15,26 +15,26 @@ internal class CounterViewModelTest {
     @Test
     fun `UP 버튼을 클릭하면 숫자가 1 증가해야 한다`() {
         // given
-        val givenCount = viewModel.count.getOrAwaitValue()
+        val givenCount = viewModel.counter.getOrAwaitValue()
 
         // when
         viewModel.increase()
 
         // then
-        assertThat(viewModel.count.getOrAwaitValue()).isEqualTo(givenCount + 1)
+        assertThat(viewModel.counter.getOrAwaitValue()).isEqualTo(givenCount + 1)
     }
 
     @Test
     fun `DOWN 버튼을 클릭하면 숫자가 1 감소해야 한다`() {
         // given
         viewModel.increase()
-        val givenCount = viewModel.count.getOrAwaitValue()
+        val givenCount = viewModel.counter.getOrAwaitValue()
 
         // when
         viewModel.decrease()
 
         // then
-        assertThat(viewModel.count.getOrAwaitValue()).isEqualTo(givenCount - 1)
+        assertThat(viewModel.counter.getOrAwaitValue()).isEqualTo(givenCount - 1)
     }
 
     @Test
