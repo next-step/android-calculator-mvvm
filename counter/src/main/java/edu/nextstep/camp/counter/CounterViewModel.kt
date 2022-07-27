@@ -6,11 +6,14 @@ import androidx.lifecycle.ViewModel
 
 class CounterViewModel(initialValue: Int? = null) : ViewModel() {
 
-    private val _liveNumber = MutableLiveData(initialValue ?: 0)
+    private var number = initialValue ?: 0
+
+    private val _liveNumber = MutableLiveData(number)
     val liveNumber: LiveData<Int>
         get() = _liveNumber
 
     fun increase() {
-        // TODO
+        number += 1
+        _liveNumber.value = number
     }
 }
