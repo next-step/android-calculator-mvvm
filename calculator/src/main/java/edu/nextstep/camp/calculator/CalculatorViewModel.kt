@@ -8,8 +8,11 @@ import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 
 class CalculatorViewModel : ViewModel() {
-
     private var expression = Expression.EMPTY
+        set(value) {
+            field = value
+            displayExpression()
+        }
     private val calculator = Calculator()
 
     private val _display: MutableLiveData<String> = MutableLiveData()
@@ -20,28 +23,26 @@ class CalculatorViewModel : ViewModel() {
 
     fun addOperand(operand: Int) {
         expression += operand
-        _display.value = expression.toString()
     }
 
     fun addOperator(operator: Operator) {
         expression += operator
-        _display.value = expression.toString()
     }
 
     fun removeLast() {
         expression = expression.removeLast()
-        _display.value = expression.toString()
     }
 
     fun calculate() {
         val result = calculator.calculate(expression.toString())
-
         if (result == null) {
             _event.value = Event(ViewEvent.IncompleteExpressionError)
             return
         }
-
         expression = Expression.EMPTY + result
+    }
+
+    private fun displayExpression() {
         _display.value = expression.toString()
     }
 
