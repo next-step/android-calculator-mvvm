@@ -37,4 +37,19 @@ class CounterViewModelTest {
         val actual = viewModel.liveNumber.getOrAwaitValue()
         assertThat(actual).isEqualTo(2)
     }
+
+    @Test
+    fun decrease_failOnNegative() {
+        // given
+        viewModel = CounterViewModel(0)
+
+        // when
+        viewModel.decrease()
+
+        // then
+        val actual = viewModel.liveNumber.getOrAwaitValue()
+        assertThat(actual).isEqualTo(0)
+        val event = viewModel.liveEvent.getOrAwaitValue()
+        assertThat(event).isEqualTo(CounterEvent.ShowNegativeError)
+    }
 }

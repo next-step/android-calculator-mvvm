@@ -12,6 +12,10 @@ class CounterViewModel(initialValue: Int? = null) : ViewModel() {
     val liveNumber: LiveData<Int>
         get() = _liveNumber
 
+    private val _liveEvent = SingleLiveEvent<CounterEvent>()
+    val liveEvent: LiveData<CounterEvent>
+        get() = _liveEvent
+
     fun increase() {
         number += 1
         _liveNumber.value = number
