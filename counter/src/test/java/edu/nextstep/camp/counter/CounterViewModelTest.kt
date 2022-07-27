@@ -49,7 +49,7 @@ class CounterViewModelTest {
         // then
         val actual = viewModel.liveNumber.getOrAwaitValue()
         assertThat(actual).isEqualTo(0)
-        val event = viewModel.liveEvent.getOrAwaitValue()
+        val event = viewModel.liveEvent.getOrAwaitValue().consume()
         assertThat(event).isEqualTo(CounterEvent.ShowNegativeError)
     }
 }

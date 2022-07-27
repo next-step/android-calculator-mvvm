@@ -12,8 +12,8 @@ class CounterViewModel(initialValue: Int? = null) : ViewModel() {
     val liveNumber: LiveData<Int>
         get() = _liveNumber
 
-    private val _liveEvent = SingleLiveEvent<CounterEvent>()
-    val liveEvent: LiveData<CounterEvent>
+    private val _liveEvent = SingleLiveEvent<Event<CounterEvent>>()
+    val liveEvent: LiveData<Event<CounterEvent>>
         get() = _liveEvent
 
     fun increase() {
@@ -25,7 +25,7 @@ class CounterViewModel(initialValue: Int? = null) : ViewModel() {
         if (number > 0) {
             number -= 1
         } else {
-            _liveEvent.value = CounterEvent.ShowNegativeError
+            _liveEvent.value = Event(CounterEvent.ShowNegativeError)
         }
 
         _liveNumber.value = number
