@@ -24,4 +24,17 @@ class CounterViewModelTest {
         val actual = viewModel.liveNumber.getOrAwaitValue()
         assertThat(actual).isEqualTo(1)
     }
+
+    @Test
+    fun decrease() {
+        // given
+        viewModel = CounterViewModel(3)
+
+        // when
+        viewModel.decrease()
+
+        // then
+        val actual = viewModel.liveNumber.getOrAwaitValue()
+        assertThat(actual).isEqualTo(2)
+    }
 }
