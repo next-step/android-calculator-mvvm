@@ -12,19 +12,20 @@ class CounterViewModel : ViewModel() {
     val event: LiveData<Event<ViewEvent>> = _event
 
     fun increment() {
-        val cur = _counter.value ?: 0
-        _counter.value = cur + 1
+        _counter.value = getCurrentCount() + 1
     }
 
     fun decrement() {
-        val cur = _counter.value ?: 0
-
-        if (cur == 0) {
+        val currentCount = getCurrentCount()
+        if (currentCount == 0) {
             _event.value = Event(ViewEvent.FailDecrement("0 이하로 내릴 수 없습니다"))
             return
         }
+        _counter.value = currentCount - 1
+    }
 
-        _counter.value = cur - 1
+    private fun getCurrentCount(): Int {
+        return _counter.value ?: 0
     }
 
     sealed class ViewEvent private constructor() {
