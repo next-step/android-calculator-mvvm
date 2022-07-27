@@ -1,11 +1,36 @@
 package edu.nextstep.camp.counter
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import edu.nextstep.camp.counter.databinding.ActivityCounterBinding
 
 class CounterActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityCounterBinding
+    private val viewModel: CounterViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_counter)
+        binding = ActivityCounterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+
+        observeEvent()
+    }
+
+    private fun observeEvent() {
+        viewModel.liveEvent.observe(this) {
+            it.consume()?.let { event ->
+                when (event) {
+                    CounterEvent.ShowNegativeError -> {
+                        Toast.makeText(this, getString(R.string.toast_noNegative), Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
     }
 }
