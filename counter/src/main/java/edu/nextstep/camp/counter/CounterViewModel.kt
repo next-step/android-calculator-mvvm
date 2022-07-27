@@ -18,6 +18,7 @@ class CounterViewModel(initialValue: Int? = null) : ViewModel() {
     }
 
     fun decrease() {
-        TODO("Not yet implemented")
+        number -= 1
+        _liveNumber.value = number
     }
 }
