@@ -22,7 +22,12 @@ class CounterViewModel(initialValue: Int? = null) : ViewModel() {
     }
 
     fun decrease() {
-        number -= 1
+        if (number > 0) {
+            number -= 1
+        } else {
+            _liveEvent.value = CounterEvent.ShowNegativeError
+        }
+
         _liveNumber.value = number
     }
 }
