@@ -18,24 +18,11 @@ class CalculatorViewModel : ViewModel() {
     private val _sideEffect : MutableLiveData<Event<SideEffect>> = MutableLiveData(Event(SideEffect.None))
     val sideEffect = _sideEffect as LiveData<Event<SideEffect>>
 
-    fun toggleExpressionInput(view: View) {
-        view as Button
-        if (view.text.isDigitsOnly()) {
-            addToExpression(Integer.parseInt(view.text.toString()))
-        } else {
-            Operator.of(view.text.toString())?.let {
-                addToExpression(it)
-            } ?: run {
-                _sideEffect.value = Event(SideEffect.UnknownError)
-            }
-        }
-    }
-
-    private fun addToExpression(operand: Int) {
+    fun addToExpression(operand: Int) {
         _expression.value = getExpressionValue() + operand
     }
 
-    private fun addToExpression(operator: Operator) {
+    fun addToExpression(operator: Operator) {
         _expression.value = getExpressionValue() + operator
     }
 
