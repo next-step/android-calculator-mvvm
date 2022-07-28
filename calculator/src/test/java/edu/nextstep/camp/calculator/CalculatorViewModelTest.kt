@@ -129,4 +129,27 @@ class CalculatorViewModelTest {
         assertThat(actual).isInstanceOf(CalculatorViewModel.ViewEvent.IncompleteExpressionError::class.java)
     }
 
+    @Test
+    fun `계산 기록 화면이 안 보일 때, 토글하면 보인다`() {
+        // when
+        viewModel.toggleExpressionHistory()
+
+        // then
+        val actual = viewModel.hasExpressionHistoryOpen.getOrAwaitValue()
+        assertThat(actual).isTrue()
+    }
+
+    @Test
+    fun `계산 기록 화면이 보일 때, 토글하면 안보인다`() {
+        // given 보이는 상태
+        viewModel.toggleExpressionHistory()
+
+        // when
+        viewModel.toggleExpressionHistory()
+
+        // then
+        val actual = viewModel.hasExpressionHistoryOpen.getOrAwaitValue()
+        assertThat(actual).isFalse()
+    }
+
 }

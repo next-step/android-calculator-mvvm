@@ -18,6 +18,9 @@ class CalculatorViewModel : ViewModel() {
     private val _display: MutableLiveData<String> = MutableLiveData()
     val display: LiveData<String> = _display
 
+    private val _hasExpressionHistoryOpen: MutableLiveData<Boolean> = MutableLiveData(false)
+    val hasExpressionHistoryOpen: LiveData<Boolean> = _hasExpressionHistoryOpen
+
     private val _viewEvent: SingleLiveEvent<ViewEvent> = SingleLiveEvent()
     val viewEvent: LiveData<ViewEvent> = _viewEvent
 
@@ -40,6 +43,19 @@ class CalculatorViewModel : ViewModel() {
             return
         }
         expression = Expression.EMPTY + result
+    }
+
+    fun toggleExpressionHistory() {
+        if (hasExpressionHistoryOpen.value == true) closeExpressionHistory()
+        else openExpressionHistory()
+    }
+
+    private fun closeExpressionHistory() {
+        _hasExpressionHistoryOpen.value = false
+    }
+
+    private fun openExpressionHistory() {
+        _hasExpressionHistoryOpen.value = true
     }
 
     private fun refreshDisplay() {
