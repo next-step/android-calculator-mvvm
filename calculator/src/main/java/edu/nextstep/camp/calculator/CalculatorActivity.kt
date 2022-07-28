@@ -41,4 +41,9 @@ class CalculatorActivity : AppCompatActivity() {
                 Toast.makeText(this, R.string.incomplete_expression, Toast.LENGTH_SHORT).show()
         }
     }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.save()
+    }
 }

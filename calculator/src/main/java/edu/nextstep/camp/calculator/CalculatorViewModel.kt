@@ -3,12 +3,18 @@ package edu.nextstep.camp.calculator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import edu.nextstep.camp.calculator.data.RoomExpressionHistoryRepository
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.ExpressionHistoryItem
 import edu.nextstep.camp.calculator.domain.Operator
+import kotlinx.coroutines.launch
 
-class CalculatorViewModel : ViewModel() {
+class CalculatorViewModel(
+    private val expressionHistoryRepository: RoomExpressionHistoryRepository =
+        CalculatorApp.INSTANCE.expressionHistoryRepository
+) : ViewModel() {
     private var expression = Expression.EMPTY
         set(value) {
             field = value
@@ -28,6 +34,12 @@ class CalculatorViewModel : ViewModel() {
 
     private val _viewEvent: SingleLiveEvent<ViewEvent> = SingleLiveEvent()
     val viewEvent: LiveData<ViewEvent> = _viewEvent
+
+    init {
+        viewModelScope.launch {
+            _expressionHistories.value = expressionHistoryRepository.getAll()
+        }
+    }
 
     fun addOperand(operand: Int) {
         expression += operand
@@ -54,6 +66,16 @@ class CalculatorViewModel : ViewModel() {
     fun toggleExpressionHistory() {
         if (hasExpressionHistoryOpen.value == true) closeExpressionHistory()
         else openExpressionHistory()
+    }
+
+    fun save() {
+        viewModelScope.launch {
+            expressionHistories.value?.let { expressionHistoryRepository.addAll(it) }
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
     }
 
     private fun addExpressionHistoryItem(expression: Expression, result: Int) {
