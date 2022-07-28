@@ -16,4 +16,6 @@
     <string name="calculator_multiply">×</string>
     <string name="calculator_divide">÷</string>
     <string name="incomplete_expression">완성되지 않은 수식입니다.</string>
+    <string name="unknown_error">알수없는 오류가 발생했습니다.</string>
+    <string name="divide_by_zero">0으로 나눌수 없습니다.</string>
 </resources>
