@@ -1,36 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    tools:context=".CounterActivity"
-    >
+<layout>
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        tools:text="11"
-        />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:context=".CounterActivity">
 
-    <Button
-        android:id="@+id/buttonUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Up"
-        tools:ignore="HardcodedText"
-        />
+        <Button
+            android:id="@+id/buttonUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Up"
+            android:onClick="@{() -> viewModel.onEvent(CounterViewEvent.Up.INSTANCE)}"
+            tools:ignore="HardcodedText" />
 
-    <Button
-        android:id="@+id/buttonDown"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Down"
-        tools:ignore="HardcodedText"
-        />
-</LinearLayout>
+        <Button
+            android:id="@+id/buttonDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Down"
+            android:onClick="@{() -> viewModel.onEvent(CounterViewEvent.Down.INSTANCE)}"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            tools:text="11" />
+    </LinearLayout>
+
+    <data>
+
+        <import type="edu.nextstep.camp.counter.CounterViewEvent"/>
+        <import type="edu.nextstep.camp.counter.CounterViewEvent.Down"/>
+        <import type="edu.nextstep.camp.counter.CounterViewEvent.Up"/>
+
+        <variable
+            name="viewModel"
+            type="edu.nextstep.camp.counter.CounterViewModel" />
+    </data>
+</layout>
