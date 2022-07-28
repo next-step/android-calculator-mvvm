@@ -16,9 +16,7 @@ class CalculatorActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-        viewModel.event.observe(this) { event ->
-            event.consume()?.let { handleViewEvent(it) }
-        }
+        viewModel.viewEvent.observe(this) { handleViewEvent(it) }
     }
 
     private fun handleViewEvent(viewEvent: ViewEvent) {

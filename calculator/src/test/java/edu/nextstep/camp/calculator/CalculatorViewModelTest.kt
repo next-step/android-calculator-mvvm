@@ -125,7 +125,7 @@ class CalculatorViewModelTest {
         viewModel.calculate()
 
         // then
-        val actual = viewModel.event.getOrAwaitValue().consume()
+        val actual = viewModel.viewEvent.getOrAwaitValue()
         assertThat(actual).isInstanceOf(CalculatorViewModel.ViewEvent.IncompleteExpressionError::class.java)
     }
 

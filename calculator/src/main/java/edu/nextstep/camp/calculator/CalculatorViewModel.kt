@@ -18,8 +18,8 @@ class CalculatorViewModel : ViewModel() {
     private val _display: MutableLiveData<String> = MutableLiveData()
     val display: LiveData<String> = _display
 
-    private val _event: MutableLiveData<Event<ViewEvent>> = MutableLiveData()
-    val event: LiveData<Event<ViewEvent>> = _event
+    private val _viewEvent: SingleLiveEvent<ViewEvent> = SingleLiveEvent()
+    val viewEvent: LiveData<ViewEvent> = _viewEvent
 
     fun addOperand(operand: Int) {
         expression += operand
@@ -36,7 +36,7 @@ class CalculatorViewModel : ViewModel() {
     fun calculate() {
         val result = calculator.calculate(expression.toString())
         if (result == null) {
-            _event.value = Event(ViewEvent.IncompleteExpressionError)
+            _viewEvent.value = ViewEvent.IncompleteExpressionError
             return
         }
         expression = Expression.EMPTY + result
