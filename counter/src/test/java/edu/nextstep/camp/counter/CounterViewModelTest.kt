@@ -67,7 +67,7 @@ class CounterViewModelTest {
 
         // then 0미만으로 내릴 수 없음 event를 전달 한다
         val expected = CAN_NOT_DECREASE_COUNT_UNDER_0
-        val actual = viewModel.countEvent.getOrAwaitValue()
+        val actual = viewModel.countEvent.getOrAwaitValue().consume()
         assertThat(actual).isEqualTo(expected)
     }
 

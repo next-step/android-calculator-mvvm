@@ -10,8 +10,8 @@ class CounterViewModel(private var countValue: Int = 0) : ViewModel() {
     val count: LiveData<Int>
         get() = _count
 
-    private val _countEvent = SingleLiveEvent<CounterEvent>()
-    val countEvent: LiveData<CounterEvent>
+    private val _countEvent = SingleLiveEvent<Event<CounterEvent>>()
+    val countEvent: LiveData<Event<CounterEvent>>
         get() = _countEvent
 
     fun increaseCount() {
@@ -21,7 +21,7 @@ class CounterViewModel(private var countValue: Int = 0) : ViewModel() {
 
     fun decreaseCount() {
         if (countValue == 0) {
-            _countEvent.value = CAN_NOT_DECREASE_COUNT_UNDER_0
+            _countEvent.value = Event(CAN_NOT_DECREASE_COUNT_UNDER_0)
             return
         }
         countValue--

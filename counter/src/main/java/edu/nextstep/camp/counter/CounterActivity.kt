@@ -26,7 +26,7 @@ class CounterActivity : AppCompatActivity() {
 
     private fun observeViewModel() {
         viewModel.countEvent.observe(this) {
-            it?.let(::showToastWithCounterEvent)
+            it.consume()?.let(::showToastWithCounterEvent)
         }
     }
 
