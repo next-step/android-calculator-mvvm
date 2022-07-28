@@ -8,9 +8,9 @@ class RoomExpressionHistoryRepository(
     private val expressionHistoryDao: ExpressionHistoryDao,
     private val ioDispatcher: CoroutineDispatcher
 ) {
-    suspend fun addAll(expressionHistoryItem: List<ExpressionHistoryItem>) {
+    suspend fun setAll(expressionHistoryItem: List<ExpressionHistoryItem>) {
         withContext(ioDispatcher) {
-            expressionHistoryDao.insert(expressionHistoryItem.map { it.toEntry() })
+            expressionHistoryDao.setAll(expressionHistoryItem.map { it.toEntry() })
         }
     }
 

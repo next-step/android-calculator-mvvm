@@ -70,7 +70,7 @@ class CalculatorViewModel(
 
     fun save() {
         viewModelScope.launch {
-            expressionHistories.value?.let { expressionHistoryRepository.addAll(it) }
+            expressionHistories.value?.let { expressionHistoryRepository.setAll(it) }
         }
     }
 

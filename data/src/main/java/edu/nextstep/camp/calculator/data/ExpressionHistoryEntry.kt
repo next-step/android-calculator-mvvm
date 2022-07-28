@@ -3,12 +3,14 @@ package edu.nextstep.camp.calculator.data
 import android.content.Context
 import androidx.room.Dao
 import androidx.room.Database
+import androidx.room.Delete
 import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.Transaction
 import edu.nextstep.camp.calculator.domain.ExpressionHistoryItem
 
 @Entity
@@ -25,12 +27,21 @@ fun ExpressionHistoryEntry.toExpressionHistoryItem() =
     ExpressionHistoryItem(rawExpression, result)
 
 @Dao
-interface ExpressionHistoryDao {
+abstract class ExpressionHistoryDao {
     @Query("SELECT * FROM expressionhistoryentry")
-    fun getAll(): List<ExpressionHistoryEntry>
+    abstract fun getAll(): List<ExpressionHistoryEntry>
 
     @Insert
-    fun insert(entities: List<ExpressionHistoryEntry>)
+    abstract fun insert(entities: List<ExpressionHistoryEntry>)
+
+    @Query("DELETE FROM expressionhistoryentry")
+    abstract fun deleteAll()
+
+    @Transaction
+    open fun setAll(entities: List<ExpressionHistoryEntry>) {
+        deleteAll()
+        insert(entities)
+    }
 }
 
 @Database(entities = [ExpressionHistoryEntry::class], version = 1)
