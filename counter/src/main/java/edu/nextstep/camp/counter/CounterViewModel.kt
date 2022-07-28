@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class CounterViewModel(initialValue: Int? = null) : ViewModel() {
+class CounterViewModel(initialValue: Int = 0) : ViewModel() {
 
-    private var number = initialValue ?: 0
+    private var number = initialValue
 
     private val _liveNumber = MutableLiveData(number)
     val liveNumber: LiveData<Int>
@@ -24,10 +24,9 @@ class CounterViewModel(initialValue: Int? = null) : ViewModel() {
     fun decrease() {
         if (number > 0) {
             number -= 1
+            _liveNumber.value = number
         } else {
             _liveEvent.value = Event(CounterEvent.ShowNegativeError)
         }
-
-        _liveNumber.value = number
     }
 }
