@@ -23,7 +23,7 @@ class CounterActivity : AppCompatActivity() {
     }
 
     private fun observeEvent() {
-        viewModel.liveEvent.observe(this) {
+        viewModel.event.observe(this) {
             val event = it.consume()
             if (event != null) {
                 when (event) {

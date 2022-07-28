@@ -21,7 +21,7 @@ class CounterViewModelTest {
         viewModel.increase()
 
         // then
-        val actual = viewModel.liveNumber.getOrAwaitValue()
+        val actual = viewModel.number.getOrAwaitValue()
         assertThat(actual).isEqualTo(1)
     }
 
@@ -34,7 +34,7 @@ class CounterViewModelTest {
         viewModel.decrease()
 
         // then
-        val actual = viewModel.liveNumber.getOrAwaitValue()
+        val actual = viewModel.number.getOrAwaitValue()
         assertThat(actual).isEqualTo(2)
     }
 
@@ -47,9 +47,9 @@ class CounterViewModelTest {
         viewModel.decrease()
 
         // then
-        val actual = viewModel.liveNumber.getOrAwaitValue()
+        val actual = viewModel.number.getOrAwaitValue()
         assertThat(actual).isEqualTo(0)
-        val event = viewModel.liveEvent.getOrAwaitValue().consume()
+        val event = viewModel.event.getOrAwaitValue().consume()
         assertThat(event).isEqualTo(CounterEvent.ShowNegativeError)
     }
 }
