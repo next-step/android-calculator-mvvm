@@ -24,7 +24,8 @@ class CounterActivity : AppCompatActivity() {
 
     private fun observeEvent() {
         viewModel.liveEvent.observe(this) {
-            it.consume()?.let { event ->
+            val event = it.consume()
+            if (event != null) {
                 when (event) {
                     CounterEvent.ShowNegativeError -> {
                         Toast.makeText(this, getString(R.string.toast_noNegative), Toast.LENGTH_SHORT).show()
