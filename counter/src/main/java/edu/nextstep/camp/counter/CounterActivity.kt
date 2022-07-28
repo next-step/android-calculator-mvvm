@@ -18,7 +18,7 @@ class CounterActivity : AppCompatActivity() {
 
         binding.apply {
             lifecycleOwner = this@CounterActivity
-            vm = viewModel
+            viewModel = viewModel
         }
 
         viewModel.sideEffect.observe(this) { event ->
