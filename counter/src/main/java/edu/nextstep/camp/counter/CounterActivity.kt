@@ -28,7 +28,7 @@ class CounterActivity : AppCompatActivity() {
             if (event != null) {
                 when (event) {
                     CounterEvent.ShowNegativeError -> {
-                        Toast.makeText(this, getString(R.string.toast_noNegative), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, getString(R.string.toast_no_negative), Toast.LENGTH_SHORT).show()
                     }
                 }
             }
