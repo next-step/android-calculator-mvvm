@@ -20,6 +20,8 @@ class CalculatorActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
+        viewModel.init()
+
         initRecyclerView()
 
         viewModel.viewEvent.observe(this) { handleViewEvent(it) }

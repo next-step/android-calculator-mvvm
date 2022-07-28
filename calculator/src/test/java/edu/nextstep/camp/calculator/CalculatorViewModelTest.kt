@@ -4,6 +4,7 @@ import com.google.common.truth.Truth.assertThat
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.ExpressionHistoryItem
 import edu.nextstep.camp.calculator.domain.Operator
+import io.mockk.mockk
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
 import org.junit.jupiter.params.ParameterizedTest
@@ -15,7 +16,7 @@ class CalculatorViewModelTest {
     @RegisterExtension
     val instantTaskExecutorExtension = InstantTaskExecutorExtension()
 
-    private val viewModel = CalculatorViewModel()
+    private val viewModel = CalculatorViewModel(mockk())
 
     @Test
     fun `입력된 피연산자가 없을 때, 숫자가 입력되면 숫자가 추가된다`() {

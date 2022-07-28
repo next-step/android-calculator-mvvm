@@ -8,11 +8,12 @@ import edu.nextstep.camp.calculator.data.RoomExpressionHistoryRepository
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.ExpressionHistoryItem
+import edu.nextstep.camp.calculator.domain.ExpressionHistoryRepository
 import edu.nextstep.camp.calculator.domain.Operator
 import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
-    private val expressionHistoryRepository: RoomExpressionHistoryRepository =
+    private val expressionHistoryRepository: ExpressionHistoryRepository =
         CalculatorApp.INSTANCE.expressionHistoryRepository
 ) : ViewModel() {
     private var expression = Expression.EMPTY
@@ -35,7 +36,7 @@ class CalculatorViewModel(
     private val _viewEvent: SingleLiveEvent<ViewEvent> = SingleLiveEvent()
     val viewEvent: LiveData<ViewEvent> = _viewEvent
 
-    init {
+    fun init() {
         viewModelScope.launch {
             _expressionHistories.value = expressionHistoryRepository.getAll()
         }
