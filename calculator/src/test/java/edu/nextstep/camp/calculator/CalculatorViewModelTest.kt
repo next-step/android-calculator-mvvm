@@ -1,6 +1,8 @@
 package edu.nextstep.camp.calculator
 
 import com.google.common.truth.Truth.assertThat
+import edu.nextstep.camp.calculator.domain.Expression
+import edu.nextstep.camp.calculator.domain.ExpressionHistoryItem
 import edu.nextstep.camp.calculator.domain.Operator
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
@@ -152,4 +154,21 @@ class CalculatorViewModelTest {
         assertThat(actual).isFalse()
     }
 
+    @Test
+    fun `계산에 성공할 때, 계산 기록한다`() {
+        // given
+        viewModel.addOperand(3)
+        viewModel.addOperator(Operator.Minus)
+        viewModel.addOperand(7)
+
+        // when
+        viewModel.calculate()
+
+        // then
+        val actual = viewModel.expressionHistories.getOrAwaitValue()
+        val expected = listOf(
+            ExpressionHistoryItem("3 - 7", -4)
+        )
+        assertThat(actual).isEqualTo(expected)
+    }
 }
