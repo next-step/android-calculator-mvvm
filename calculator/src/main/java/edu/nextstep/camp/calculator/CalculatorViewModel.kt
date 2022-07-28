@@ -11,7 +11,7 @@ class CalculatorViewModel : ViewModel() {
     private var expression = Expression.EMPTY
         set(value) {
             field = value
-            displayExpression()
+            refreshDisplay()
         }
     private val calculator = Calculator()
 
@@ -42,7 +42,7 @@ class CalculatorViewModel : ViewModel() {
         expression = Expression.EMPTY + result
     }
 
-    private fun displayExpression() {
+    private fun refreshDisplay() {
         _display.value = expression.toString()
     }
 
