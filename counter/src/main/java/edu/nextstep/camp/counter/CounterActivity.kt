@@ -8,7 +8,7 @@ import edu.nextstep.camp.counter.databinding.ActivityCounterBinding
 
 class CounterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCounterBinding
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel: CounterViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
