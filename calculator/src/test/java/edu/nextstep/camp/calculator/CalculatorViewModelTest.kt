@@ -52,8 +52,18 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(2)
         viewModel.addToExpression(Operator.Plus)
         viewModel.addToExpression(2)
+
         viewModel.calculate()
 
         assertThat(viewModel.expression.value.toString()).isEqualTo("4")
+    }
+
+    @Test
+    fun `계산식이 정확하지 않으면 토스트를 보낸다`() {
+        viewModel.addToExpression(2)
+        viewModel.addToExpression(Operator.Plus)
+        viewModel.calculate()
+
+        assertThat(viewModel.incompleteExpressionErrorEvent.value).isEqualTo(CalculatorViewModel.ExpressionError.ERROR)
     }
 }

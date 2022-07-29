@@ -19,7 +19,8 @@ class CalculatorActivity : AppCompatActivity() {
         binding.viewModel = viewModel
 
         viewModel.incompleteExpressionErrorEvent.observe(this) {
-            showIncompleteExpressionError()
+            if (it == CalculatorViewModel.ExpressionError.ERROR)
+                showIncompleteExpressionError()
         }
     }
 
