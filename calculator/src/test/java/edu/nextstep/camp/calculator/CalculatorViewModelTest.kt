@@ -50,6 +50,18 @@ class CalculatorViewModelTest {
         assertShowing("")
     }
 
+    @Test
+    fun `계산이 실행되면 계산기에 의해 계산되고 결과를 화면에 보여줘야 한다`() {
+        // given
+        viewModel = CalculatorViewModel(expression = Expression(listOf(1, Operator.Plus, 2)))
+
+        // when
+        viewModel.calculate()
+
+        // then
+        assertShowing("3")
+    }
+
     private fun assertShowing(expected: String) {
         val actual = viewModel.showingExpression.getOrAwaitValue()
         assertThat(actual).isEqualTo(expected)

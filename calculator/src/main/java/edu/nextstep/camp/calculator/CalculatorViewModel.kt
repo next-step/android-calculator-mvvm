@@ -32,6 +32,11 @@ class CalculatorViewModel(
     }
 
     fun calculate() {
-        TODO()
+        val result = calculator.calculate(expression.toString())
+
+        if (result != null) {
+            expression = Expression(listOf(result))
+            _showingExpression.value = expression.toString()
+        }
     }
 }
