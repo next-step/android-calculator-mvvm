@@ -7,7 +7,7 @@ import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 
-class CalculatorViewModel : ViewModel() {
+class CalculatorViewModel(private val initExpression: Expression = Expression.EMPTY) : ViewModel() {
     private val calculator = Calculator()
 
     private val _expression = MutableLiveData<Expression>()
@@ -18,7 +18,7 @@ class CalculatorViewModel : ViewModel() {
     val errorEvent: LiveData<Event>
         get() = _errorEvent
 
-    private fun getExpressionValue() = _expression.value ?: Expression.EMPTY
+    private fun getExpressionValue() = _expression.value ?: initExpression
 
     fun addToExpression(operand: Int) {
         _expression.value = getExpressionValue() + operand
@@ -33,7 +33,7 @@ class CalculatorViewModel : ViewModel() {
     }
 
     fun calculate() {
-        val result = calculator.calculate(expression.value.toString())
+        val result = calculator.calculate(getExpressionValue().toString())
         if (result == null) {
             _errorEvent.value = Event.CalculatorError
         } else {
