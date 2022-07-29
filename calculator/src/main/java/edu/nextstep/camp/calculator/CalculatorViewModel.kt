@@ -1,37 +1,36 @@
 package edu.nextstep.camp.calculator
 
+import androidx.lifecycle.ViewModel
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 
-class CalculatorPresenter(
-    private val view: CalculatorContract.View
-) : CalculatorContract.Presenter {
+class CalculatorViewModel : ViewModel() {
     private val calculator = Calculator()
     private var expression = Expression.EMPTY
 
-    override fun addToExpression(operand: Int) {
+    fun addToExpression(operand: Int) {
         expression += operand
-        view.showExpression(expression)
+//        view.showExpression(expression)
     }
 
-    override fun addToExpression(operator: Operator) {
+    fun addToExpression(operator: Operator) {
         expression += operator
-        view.showExpression(expression)
+//        view.showExpression(expression)
     }
 
-    override fun removeLast() {
+    fun removeLast() {
         expression = expression.removeLast()
-        view.showExpression(expression)
+//        view.showExpression(expression)
     }
 
-    override fun calculate() {
+    fun calculate() {
         val result = calculator.calculate(expression.toString())
         if (result == null) {
-            view.showIncompleteExpressionError()
+//            view.showIncompleteExpressionError()
         } else {
             expression = Expression(listOf(result))
-            view.showResult(result)
+//            view.showResult(result)
         }
     }
 }
