@@ -23,8 +23,7 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(1)
 
         // then
-        val actual = viewModel.showingExpression.getOrAwaitValue()
-        assertThat(actual).isEqualTo("1")
+        assertShowing("1")
     }
 
     @Test
@@ -36,7 +35,23 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(Operator.Plus)
 
         // then
+        assertShowing("1 +")
+    }
+
+    @Test
+    fun `지우기가 실행되면 수식의 마지막이 지워지고 변경된 수식을 보여줘야 한다`() {
+        // given
+        viewModel = CalculatorViewModel(expression = Expression(listOf(1)))
+
+        // when
+        viewModel.removeLast()
+
+        // then
+        assertShowing("")
+    }
+
+    private fun assertShowing(expected: String) {
         val actual = viewModel.showingExpression.getOrAwaitValue()
-        assertThat(actual).isEqualTo("1 +")
+        assertThat(actual).isEqualTo(expected)
     }
 }
