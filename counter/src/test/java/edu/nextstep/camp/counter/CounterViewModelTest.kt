@@ -20,35 +20,31 @@ class CounterViewModelTest {
     }
 
     @Test
-    fun `up button을 누르면 count가 올라간다`() {
-        //given
-        val original = viewModel.count.value
-
+    fun `0에서 up button을 누르면 count가 1로 올라간다`() {
         //when
         viewModel.increment()
         val actual = viewModel.count.value
 
         //then
-        assertThat(actual).isEqualTo(original?.plus(1))
+        assertThat(actual).isEqualTo(1)
     }
 
     @Test
-    fun `down button을 누르면 count가 내려간다`() {
+    fun `2에서 down button을 누르면 count가 1로 내려간다`() {
         //given
         viewModel.increment()
         viewModel.increment()
-        val original = viewModel.count.value
 
         //when
         viewModel.decrement()
         val actual = viewModel.count.value
 
         //then
-        assertThat(actual).isEqualTo(original?.minus(1))
+        assertThat(actual).isEqualTo(1)
     }
 
     @Test
-    fun `down button을 눌렀을 때, count가 음수가 되면, 내려가지 않는다`() {
+    fun `0에서 down button을 눌렀을 때, count가 음수가 되면, 내려가지 않는다`() {
         //when
         val original = viewModel.count.value
         viewModel.decrement()
@@ -59,7 +55,7 @@ class CounterViewModelTest {
     }
 
     @Test
-    fun `down button을 눌렀을 때, count가 음수가 되면, 메세지를 업데이트 한다`() {
+    fun `0에서 down button을 눌렀을 때, count가 음수가 되면, 메세지를 업데이트 한다`() {
         //given
         val ERROR_MESSAGE = "0 이하로 내릴 수 없습니다."
 
