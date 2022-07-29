@@ -22,7 +22,7 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `입력된_피연사자가 없을때 사용자가 피연산자 0 버튼을 누르면 화면에 해당 숫자가 보여야 한다`() {
+    fun `0을 빈 수식에 추가하면 0이 나온다`() {
         //when
         viewModel.addOperandToExpression(0)
         val actual = viewModel.result.value.toString()
@@ -31,7 +31,7 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `입력된 피연산자 8이 입력되어 있을 때 9를 입력하면 89가 보여야 한다`() {
+    fun `수식에 8이 있을 때 9를 추가하면 89가 된다`() {
         //given
         viewModel.addOperandToExpression(8)
 
@@ -44,7 +44,7 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `입력된 피연산자가 없을 때 사용자가 연산자 +를 누르면 화면에 아무런 변화가 없어야 한다`() {
+    fun `수식이 없을 때 연산자 +를 수식에 추가하면 추가되지 않는다`() {
         //when
         viewModel.addOperatorToExpression(Operator.Plus)
         val actual = viewModel.result.value.toString()
@@ -54,7 +54,7 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `1에서 연산자 +를 클릭하고 사용자가 연산자 -를 누르면 해당 기호로 변해야 한다`() {
+    fun `1에서 연산자 +를 추가하고 연산자 -를 추가하면 해당 기호로 변경된다`() {
         //given
         viewModel.addOperandToExpression(1)
         viewModel.addOperatorToExpression(Operator.Plus)
@@ -68,7 +68,7 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `입력된 수식이 없을때, 사용자가 지우기 버튼을 누르면 아무런 변화가 없어야 한다`() {
+    fun `빈 수식일 때, 수식의 마지막을 제거하려하면 아무런 변화가 없다`() {
         //when
         viewModel.deleteExpression()
         val actual = viewModel.result.value.toString()
@@ -78,7 +78,7 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `32 + 1 이라는 수식이 있을 때, 사용자가 지우기 버튼을 2번 연속 누르면 마지막으로 입력된 피연산자 1과 연산자 +가 지워져야 한다`() {
+    fun `32 + 1 이라는 수식이 있을 때, 수식의 마지막을 2번 연속 지우면 마지막으로 추가된 피연산자 1과 연산자 +가 제거됐어야 한다`() {
         //given
         val expression = Expression(listOf(32,Operator.Plus,1))
         viewModel.expression = expression
@@ -93,7 +93,7 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `3 + 2 라는 완전한 수식이 있을 때 = 버튼을 누르면 계산 결과가 도출된다`() {
+    fun `3 + 2 라는 완전한 수식이 있을 때, 계산하면 계산 결과가 도출된다`() {
         //given
         val expression = Expression(listOf(3, Operator.Plus, 2))
         viewModel.expression = expression
@@ -107,7 +107,7 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `3 + 라는 불완전한 수식일 때, =을 누르면 완성되지 않은 수식 error을 발생한다`() {
+    fun `3 + 라는 불완전한 수식일 때, 계산하려 하면 완성되지 않은 수식이라는 error을 발생한다`() {
         //given
         viewModel.addOperandToExpression(3)
         viewModel.addOperatorToExpression(Operator.Plus)
