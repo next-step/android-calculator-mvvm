@@ -17,14 +17,7 @@ class CalculatorActivity : AppCompatActivity() {
         binding = ActivityCalculatorBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.viewModel = viewModel
-    }
-
-    fun showExpression(expression: Expression) {
-        binding.textView.text = expression.toString()
-    }
-
-    fun showResult(result: Int) {
-        binding.textView.text = result.toString()
+        binding.lifecycleOwner = this
     }
 
     fun showIncompleteExpressionError() {

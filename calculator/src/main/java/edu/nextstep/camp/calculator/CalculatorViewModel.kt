@@ -1,5 +1,7 @@
 package edu.nextstep.camp.calculator
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
@@ -9,19 +11,23 @@ class CalculatorViewModel : ViewModel() {
     private val calculator = Calculator()
     private var expression = Expression.EMPTY
 
+    private val _calculatorText = MutableLiveData("")
+    val calculatorText: LiveData<String>
+        get() = _calculatorText
+
     fun addToExpression(operand: Int) {
         expression += operand
-//        view.showExpression(expression)
+        updateCalculatorText(expression.toString())
     }
 
     fun addToExpression(operator: Operator) {
         expression += operator
-//        view.showExpression(expression)
+        updateCalculatorText(expression.toString())
     }
 
     fun removeLast() {
         expression = expression.removeLast()
-//        view.showExpression(expression)
+        updateCalculatorText(expression.toString())
     }
 
     fun calculate() {
@@ -30,7 +36,11 @@ class CalculatorViewModel : ViewModel() {
 //            view.showIncompleteExpressionError()
         } else {
             expression = Expression(listOf(result))
-//            view.showResult(result)
+            updateCalculatorText(expression.toString())
         }
+    }
+
+    private fun updateCalculatorText(text: String) {
+        _calculatorText.value = text
     }
 }
