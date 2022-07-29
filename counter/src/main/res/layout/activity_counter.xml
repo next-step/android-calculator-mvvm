@@ -5,7 +5,7 @@
 
     <data>
         <variable
-            name="vm"
+            name="viewModel"
             type="edu.nextstep.camp.counter.CounterViewModel" />
     </data>
 
@@ -24,7 +24,7 @@
             android:textColor="@color/black"
             android:textSize="24sp"
             tools:text="11"
-            android:text="@{String.valueOf(vm.counter)}"
+            android:text="@{String.valueOf(viewModel.counter)}"
             />
 
         <Button
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:text="Up"
             tools:ignore="HardcodedText"
-            android:onClick="@{() -> vm.increase()}"
+            android:onClick="@{() -> viewModel.increase()}"
             />
 
         <Button
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:text="Down"
             tools:ignore="HardcodedText"
-            android:onClick="@{() -> vm.decrease()}"
+            android:onClick="@{() -> viewModel.decrease()}"
             />
     </LinearLayout>
 

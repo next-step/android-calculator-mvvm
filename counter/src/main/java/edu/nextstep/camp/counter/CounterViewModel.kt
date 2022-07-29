@@ -13,16 +13,18 @@ class CounterViewModel : ViewModel() {
 
 
     fun increase() {
-        _counter.value = _counter.value?.plus(1)
+        _counter.value = getCounterValue() + 1
     }
 
     fun decrease() {
-        if (_counter.value == 0) {
+        if (getCounterValue() == 0) {
             _sideEffect.value = Event(SideEffect.NegativeCounter)
             return
         }
-        _counter.value = _counter.value?.minus(1)
+        _counter.value = getCounterValue() - 1
     }
+
+    private fun getCounterValue() = _counter.value ?: 0
 
     sealed class SideEffect {
         object NegativeCounter : SideEffect()
