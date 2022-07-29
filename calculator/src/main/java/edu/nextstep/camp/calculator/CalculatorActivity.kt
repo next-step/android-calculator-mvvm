@@ -18,9 +18,13 @@ class CalculatorActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+
+        viewModel.showIncompleteExpressionError.observe(this) {
+            showIncompleteExpressionError()
+        }
     }
 
-    fun showIncompleteExpressionError() {
+    private fun showIncompleteExpressionError() {
         Toast.makeText(this, R.string.incomplete_expression, Toast.LENGTH_SHORT).show()
     }
 }

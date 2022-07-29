@@ -15,6 +15,10 @@ class CalculatorViewModel : ViewModel() {
     val calculatorText: LiveData<String>
         get() = _calculatorText
 
+    private val _showIncompleteExpressionError = MutableLiveData<Unit>()
+    val showIncompleteExpressionError: LiveData<Unit>
+        get() = _showIncompleteExpressionError
+
     fun addToExpression(operand: Int) {
         expression += operand
         updateCalculatorText(expression.toString())
@@ -33,7 +37,7 @@ class CalculatorViewModel : ViewModel() {
     fun calculate() {
         val result = calculator.calculate(expression.toString())
         if (result == null) {
-//            view.showIncompleteExpressionError()
+            _showIncompleteExpressionError.value = Unit
         } else {
             expression = Expression(listOf(result))
             updateCalculatorText(expression.toString())
