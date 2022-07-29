@@ -2,13 +2,13 @@ package edu.nextstep.camp.calculator
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import edu.nextstep.camp.calculator.domain.Calculator
-import edu.nextstep.camp.calculator.domain.Expression
-import edu.nextstep.camp.calculator.domain.Operator
+import edu.nextstep.camp.domain.Calculator
+import edu.nextstep.camp.domain.Expression
+import edu.nextstep.camp.domain.Operator
 
 class CalculatorViewModel : ViewModel() {
-    private val calculator = Calculator()
-    private var expression = Expression.EMPTY
+    private val calculator = edu.nextstep.camp.domain.Calculator()
+    private var expression = edu.nextstep.camp.domain.Expression.EMPTY
 
     private val _result = SingleLiveEvent<String>()
     val result: LiveData<String>
@@ -23,7 +23,7 @@ class CalculatorViewModel : ViewModel() {
         _result.value = expression.toString()
     }
 
-    fun clickOperatorButton(operator: Operator) {
+    fun clickOperatorButton(operator: edu.nextstep.camp.domain.Operator) {
         expression += operator
         _result.value = expression.toString()
     }
@@ -38,7 +38,7 @@ class CalculatorViewModel : ViewModel() {
         if (result == null) {
             _error.value = CalculatorErrorEvent.IncompleteExpressionError
         } else {
-            expression = Expression(listOf(result))
+            expression = edu.nextstep.camp.domain.Expression(listOf(result))
             _result.value = expression.toString()
         }
     }

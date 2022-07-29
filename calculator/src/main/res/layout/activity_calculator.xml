@@ -6,7 +6,7 @@
             name="viewModel"
             type="edu.nextstep.camp.calculator.CalculatorViewModel" />
 
-        <import type="edu.nextstep.camp.calculator.domain.Operator"/>
+        <import type="edu.nextstep.camp.domain.Operator"/>
     </data>
 
 

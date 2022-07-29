@@ -5,11 +5,11 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class CalculatorTest {
-    private lateinit var calculator: Calculator
+    private lateinit var calculator: edu.nextstep.camp.domain.Calculator
 
     @BeforeEach
     fun setUp() {
-        calculator = Calculator()
+        calculator = edu.nextstep.camp.domain.Calculator()
     }
 
     @Test

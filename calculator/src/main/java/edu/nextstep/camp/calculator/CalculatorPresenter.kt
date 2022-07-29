@@ -1,21 +1,21 @@
 package edu.nextstep.camp.calculator
 
-import edu.nextstep.camp.calculator.domain.Calculator
-import edu.nextstep.camp.calculator.domain.Expression
-import edu.nextstep.camp.calculator.domain.Operator
+import edu.nextstep.camp.domain.Calculator
+import edu.nextstep.camp.domain.Expression
+import edu.nextstep.camp.domain.Operator
 
 class CalculatorPresenter(
     private val view: CalculatorContract.View
 ) : CalculatorContract.Presenter {
-    private val calculator = Calculator()
-    private var expression = Expression.EMPTY
+    private val calculator = edu.nextstep.camp.domain.Calculator()
+    private var expression = edu.nextstep.camp.domain.Expression.EMPTY
 
     override fun addToExpression(operand: Int) {
         expression += operand
         view.showExpression(expression)
     }
 
-    override fun addToExpression(operator: Operator) {
+    override fun addToExpression(operator: edu.nextstep.camp.domain.Operator) {
         expression += operator
         view.showExpression(expression)
     }
@@ -30,7 +30,7 @@ class CalculatorPresenter(
         if (result == null) {
             view.showIncompleteExpressionError()
         } else {
-            expression = Expression(listOf(result))
+            expression = edu.nextstep.camp.domain.Expression(listOf(result))
             view.showResult(result)
         }
     }
