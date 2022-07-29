@@ -8,8 +8,7 @@ import edu.nextstep.camp.domain.counter.Counter
 class CounterViewModel(private var counter: Counter = Counter()) : ViewModel() {
 
     private val _onViewState = MutableLiveData<Event<CounterViewState>>()
-    val onViewState: LiveData<Event<CounterViewState>>
-        get() = _onViewState
+    val onViewState: LiveData<Event<CounterViewState>> get() = _onViewState
 
     init {
         sendViewState(CounterViewState.EMPTY)

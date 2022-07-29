@@ -1,4 +1,4 @@
-package edu.nextstep.camp.calculator.domain
+package edu.nextstep.camp.domain.calculator
 
 enum class Operator(
     val sign: String,
@@ -9,9 +9,11 @@ enum class Operator(
     Multiply("*", { x, y -> x * y }),
     Divide("/", { x, y -> x / y });
 
+    override fun toString(): String = sign
+
     companion object {
-        fun of(sign: String): Operator? {
-            return values().find { it.sign == sign }
+        fun of(sign: String): Operator {
+            return values().find { it.sign == sign } ?: throw IllegalArgumentException("wrong operator")
         }
     }
 }

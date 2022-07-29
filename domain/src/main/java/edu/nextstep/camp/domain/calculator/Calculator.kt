@@ -1,4 +1,4 @@
-package edu.nextstep.camp.calculator.domain
+package edu.nextstep.camp.domain.calculator
 
 class Calculator {
     fun calculate(rawExpression: String): Int? {
@@ -9,9 +9,11 @@ class Calculator {
 
         var acc = values[0].toIntOrNull() ?: return null
         for (i in 1..values.lastIndex step 2) {
-            val operator = Operator.of(values[i]) ?: return null
+            val operator = Operator.of(values[i])
             val secondOperand = values[i + 1].toIntOrNull() ?: return null
-            acc = operator.operation(acc, secondOperand)
+            runCatching { operator.operation(acc, secondOperand) }
+                .onSuccess { acc = it }
+                .onFailure { return null }
         }
         return acc
     }
