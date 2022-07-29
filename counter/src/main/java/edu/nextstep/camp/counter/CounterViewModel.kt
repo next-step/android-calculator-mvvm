@@ -7,8 +7,8 @@ import edu.nextstep.camp.domain.counter.Counter
 
 class CounterViewModel(private var counter: Counter = Counter()) : ViewModel() {
 
-    private val _onViewState = MutableLiveData<Event<Any>>()
-    val onViewState: LiveData<Event<Any>>
+    private val _onViewState = MutableLiveData<Event<CounterViewState>>()
+    val onViewState: LiveData<Event<CounterViewState>>
         get() = _onViewState
 
     init {
@@ -35,7 +35,7 @@ class CounterViewModel(private var counter: Counter = Counter()) : ViewModel() {
             .onFailure { sendViewState(CounterViewState.ZeroDownError) }
     }
 
-    private fun sendViewState(content: Any) {
+    private fun sendViewState(content: CounterViewState) {
         _onViewState.postValue(Event(content))
     }
 }
