@@ -16,6 +16,9 @@ class CalculatorViewModel(
     val showingExpression: LiveData<String>
         get() = _showingExpression
 
+    private val _calculatorError = SingleLiveEvent<Event<Unit>>()
+    val calculatorError: LiveData<Event<Unit>> = _calculatorError
+
     fun addToExpression(operand: Int) {
         expression += operand
         _showingExpression.value = expression.toString()
@@ -37,6 +40,8 @@ class CalculatorViewModel(
         if (result != null) {
             expression = Expression(listOf(result))
             _showingExpression.value = expression.toString()
+        } else {
+            _calculatorError.value = Event(Unit)
         }
     }
 }

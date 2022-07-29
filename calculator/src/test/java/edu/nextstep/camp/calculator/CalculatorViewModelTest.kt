@@ -62,6 +62,19 @@ class CalculatorViewModelTest {
         assertShowing("3")
     }
 
+    @Test
+    fun `완성되지 않은 수식에 대한 계산이 실행되면 오류를 화면에 표시한다`() {
+        // given
+        viewModel = CalculatorViewModel(expression = Expression(listOf(1, Operator.Plus)))
+
+        // when
+        viewModel.calculate()
+
+        // then
+        val actual = viewModel.calculatorError.getOrAwaitValue().consume()
+        assertThat(actual).isEqualTo(Unit)
+    }
+
     private fun assertShowing(expected: String) {
         val actual = viewModel.showingExpression.getOrAwaitValue()
         assertThat(actual).isEqualTo(expected)
