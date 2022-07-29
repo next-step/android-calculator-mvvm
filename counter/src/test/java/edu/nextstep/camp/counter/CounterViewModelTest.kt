@@ -2,7 +2,6 @@ package edu.nextstep.camp.counter
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
-import io.mockk.verify
 import org.junit.Rule
 import org.junit.Test
 
