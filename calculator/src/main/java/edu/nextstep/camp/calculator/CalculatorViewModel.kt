@@ -16,6 +16,8 @@ class CalculatorViewModel : ViewModel() {
     val expression: LiveData<Expression>
         get() = _expression
 
+    val incompleteExpressionErrorEvent = SingleLiveEvent<Event<Unit>>()
+
     fun addToExpression(operand: Int) {
         _expression.postValue(_expression.value?.plus(operand))
     }
@@ -31,7 +33,7 @@ class CalculatorViewModel : ViewModel() {
     fun calculate() {
         val result = calculator.calculate(_expression.value.toString())
         if (result == null) {
-            //view.showIncompleteExpressionError()
+            incompleteExpressionErrorEvent.call()
         } else {
             _expression.postValue(Expression(listOf(result)))
         }
