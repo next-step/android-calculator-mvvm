@@ -13,4 +13,9 @@ class CounterViewModel: ViewModel() {
         val originCount = _count.value ?: 0
         _count.value = originCount + 1
     }
+
+    fun downCount() {
+        val originCount = _count.value ?: 0
+        _count.value = originCount - 1
+    }
 }
