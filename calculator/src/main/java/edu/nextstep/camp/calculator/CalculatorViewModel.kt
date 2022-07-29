@@ -22,7 +22,8 @@ class CalculatorViewModel(
     }
 
     fun addToExpression(operator: Operator) {
-        TODO()
+        expression += operator
+        _showingExpression.value = expression.toString()
     }
 
     fun removeLast() {
