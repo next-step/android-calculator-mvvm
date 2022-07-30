@@ -27,7 +27,10 @@ class CounterActivity : AppCompatActivity() {
                 when (this) {
                     is CounterViewState.Counted -> updateCountedNumber("$counteredNumber")
                     is CounterViewState.EMPTY -> updateCountedNumber("")
-                    is CounterViewState.ZeroDownError -> showZeroDownError()
+                    is CounterViewState.ZeroDownError -> {
+                        updateCountedNumber("0")
+                        showZeroDownError()
+                    }
                 }
             }
         }
