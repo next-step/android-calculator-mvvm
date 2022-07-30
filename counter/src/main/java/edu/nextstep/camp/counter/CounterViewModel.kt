@@ -24,12 +24,10 @@ class CounterViewModel : ViewModel() {
 
     fun decrement() {
         val originalCount = count.value ?: 0
-
         if (originalCount <= 0) {
             _errorEvent.call()
             return
         }
-
         _count.value = originalCount - 1
     }
 
