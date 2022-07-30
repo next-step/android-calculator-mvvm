@@ -10,9 +10,11 @@ import edu.nextstep.camp.calculator.domain.Operator
 /**
  * Created by link.js on 2022. 07. 28..
  */
-class CalculatorViewModel : ViewModel() {
-    private val calculator = Calculator()
-    private var _expression = MutableLiveData(Expression.EMPTY)
+class CalculatorViewModel(
+    private val calculator: Calculator = Calculator(),
+    initExpression: Expression = Expression.EMPTY,
+) : ViewModel() {
+    private var _expression = MutableLiveData(initExpression)
     val expression: LiveData<Expression>
         get() = _expression
 
