@@ -21,7 +21,6 @@ class CalculatorViewModelTest {
     @Before
     fun setUp() {
         viewModel = CalculatorViewModel()
-        viewModel.expression.observeForever {}
     }
 
     @Test
