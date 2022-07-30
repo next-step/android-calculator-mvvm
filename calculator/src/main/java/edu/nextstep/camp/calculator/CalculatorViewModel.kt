@@ -23,15 +23,15 @@ class CalculatorViewModel(
         get() = _incompleteExpressionErrorEvent
 
     fun addToExpression(operand: Int) {
-        _expression.postValue(_expression.value?.plus(operand))
+        _expression.value = _expression.value?.plus(operand)
     }
 
     fun addToExpression(operator: Operator) {
-        _expression.postValue(_expression.value?.plus(operator))
+        _expression.value = _expression.value?.plus(operator)
     }
 
     fun removeLast() {
-        _expression.postValue(_expression.value?.removeLast())
+        _expression.value = _expression.value?.removeLast()
     }
 
     fun calculate() {
@@ -39,7 +39,7 @@ class CalculatorViewModel(
         if (result == null) {
             _incompleteExpressionErrorEvent.value = ExpressionError.ERROR
         } else {
-            _expression.postValue(Expression(listOf(result)))
+            _expression.value = Expression(listOf(result))
         }
     }
 
