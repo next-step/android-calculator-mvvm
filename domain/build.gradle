@@ -1,0 +1,17 @@
+plugins {
+    id 'java-library'
+    id 'org.jetbrains.kotlin.jvm'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.7.1' // junit4 지원
+    testImplementation 'com.google.truth:truth:1.1.2'
+    testImplementation 'io.mockk:mockk:1.10.6'
+    testImplementation 'junit:junit:4.13.2'
+}
