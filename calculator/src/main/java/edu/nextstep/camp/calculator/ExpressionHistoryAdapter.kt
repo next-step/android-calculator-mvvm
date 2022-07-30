@@ -32,8 +32,7 @@ class ExpressionHistoryAdapter : RecyclerView.Adapter<ExpressionHistoryAdapter.V
         private val binding = ItemResultBinding.bind(view)
 
         fun bind(item: ExpressionHistoryItem) {
-            binding.tvExpression.text = item.rawExpression
-            binding.tvResult.text = "= ${item.result}"
+            binding.item = item
         }
     }
 }
