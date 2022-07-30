@@ -35,12 +35,6 @@ class CalculatorViewModel(
     private val _viewEvent: SingleLiveEvent<ViewEvent> = SingleLiveEvent()
     val viewEvent: LiveData<ViewEvent> = _viewEvent
 
-    fun init() {
-        viewModelScope.launch {
-            _expressionHistories.value = expressionHistoryRepository.getAll()
-        }
-    }
-
     fun addOperand(operand: Int) {
         expression += operand
     }
@@ -68,7 +62,13 @@ class CalculatorViewModel(
         else openExpressionHistory()
     }
 
-    fun save() {
+    fun loadExpressionHistories() {
+        viewModelScope.launch {
+            _expressionHistories.value = expressionHistoryRepository.getAll()
+        }
+    }
+
+    fun saveExpressionHistories() {
         viewModelScope.launch {
             expressionHistories.value?.let { expressionHistoryRepository.setAll(it) }
         }

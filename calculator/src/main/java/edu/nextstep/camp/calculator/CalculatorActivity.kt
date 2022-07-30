@@ -20,7 +20,7 @@ class CalculatorActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        viewModel.init()
+        viewModel.loadExpressionHistories()
 
         initRecyclerView()
 
@@ -46,6 +46,6 @@ class CalculatorActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        viewModel.save()
+        viewModel.saveExpressionHistories()
     }
 }
