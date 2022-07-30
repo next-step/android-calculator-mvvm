@@ -63,6 +63,7 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(Operator.Plus)
         viewModel.calculate()
 
-        assertThat(viewModel.incompleteExpressionErrorEvent.value).isEqualTo(CalculatorViewModel.ExpressionError.ERROR)
+        val actual = viewModel.calculateErrorEvent.value?.consume()
+        assertThat(actual).isInstanceOf(CalculatorViewModel.CalculateError.ExpressionError::class.java)
     }
 }

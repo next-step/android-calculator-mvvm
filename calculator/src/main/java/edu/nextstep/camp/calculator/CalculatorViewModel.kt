@@ -18,9 +18,9 @@ class CalculatorViewModel(
     val expression: LiveData<Expression>
         get() = _expression
 
-    private var _incompleteExpressionErrorEvent = MutableLiveData(ExpressionError.NONE)
-    val incompleteExpressionErrorEvent: LiveData<ExpressionError>
-        get() = _incompleteExpressionErrorEvent
+    private var _calculateErrorEvent = MutableLiveData<Event<CalculateError>>()
+    val calculateErrorEvent: LiveData<Event<CalculateError>>
+        get() = _calculateErrorEvent
 
     private fun getExpressionValue() = expression.value ?: Expression.EMPTY
 
@@ -39,13 +39,13 @@ class CalculatorViewModel(
     fun calculate() {
         val result = calculator.calculate(_expression.value.toString())
         if (result == null) {
-            _incompleteExpressionErrorEvent.value = ExpressionError.ERROR
+            _calculateErrorEvent.value = Event(CalculateError.ExpressionError)
         } else {
             _expression.value = Expression(listOf(result))
         }
     }
 
-    enum class ExpressionError {
-        NONE, ERROR
+    sealed class CalculateError {
+        object ExpressionError : CalculateError()
     }
 }
