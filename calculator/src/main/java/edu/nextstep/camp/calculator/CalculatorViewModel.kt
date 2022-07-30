@@ -12,10 +12,10 @@ class CalculatorViewModel(
     private var expression: Expression = Expression.EMPTY,
 ) : ViewModel() {
     private val calculator = Calculator()
+
     val calculateHistories: LiveData<List<CalculateHistory>>
         get() = _calculateHistories
     private val _calculateHistories = MutableLiveData<List<CalculateHistory>>()
-
     private val _calculatorText = MutableLiveData("")
     val calculatorText: LiveData<String>
         get() = _calculatorText
