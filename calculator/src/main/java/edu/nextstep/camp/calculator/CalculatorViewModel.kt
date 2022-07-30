@@ -22,16 +22,18 @@ class CalculatorViewModel(
     val incompleteExpressionErrorEvent: LiveData<ExpressionError>
         get() = _incompleteExpressionErrorEvent
 
+    private fun getExpressionValue() = expression.value ?: Expression.EMPTY
+
     fun addToExpression(operand: Int) {
-        _expression.value = _expression.value?.plus(operand)
+        _expression.value = getExpressionValue().plus(operand)
     }
 
     fun addToExpression(operator: Operator) {
-        _expression.value = _expression.value?.plus(operator)
+        _expression.value = getExpressionValue().plus(operator)
     }
 
     fun removeLast() {
-        _expression.value = _expression.value?.removeLast()
+        _expression.value = getExpressionValue().removeLast()
     }
 
     fun calculate() {
