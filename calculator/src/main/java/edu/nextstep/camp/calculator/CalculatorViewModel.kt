@@ -11,15 +11,15 @@ import edu.nextstep.camp.calculator.domain.Operator
  * CalculatorActivity에 대한 viewModel
  * Created by jeongjinhong on 2022. 07. 30..
  */
-class CalculatorViewModel : ViewModel() {
+class CalculatorViewModel(
+    private val calculator: Calculator = Calculator(),
+    private var _expression: MutableLiveData<Expression> = MutableLiveData(Expression.EMPTY),
+    private var _errorEvent: MutableLiveData<Event<ErrorEvent>> = MutableLiveData(Event(ErrorEvent.NORMAL))
+) : ViewModel() {
 
-    private val calculator = Calculator()
-
-    private var _expression = MutableLiveData(Expression.EMPTY)
     val expression: LiveData<Expression>
         get() = _expression
 
-    private var _errorEvent = MutableLiveData(Event(ErrorEvent.NORMAL))
     val errorEvent: LiveData<Event<ErrorEvent>>
         get() = _errorEvent
 
