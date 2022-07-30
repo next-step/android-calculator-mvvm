@@ -13,37 +13,37 @@ import androidx.room.Transaction
 import edu.nextstep.camp.calculator.domain.ExpressionHistory
 
 @Entity
-data class ExpressionHistoryEntry(
+data class ExpressionHistoryEntity(
     val rawExpression: String,
     val result: Int,
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
 )
 
 fun ExpressionHistory.toEntry() =
-    ExpressionHistoryEntry(rawExpression, result)
+    ExpressionHistoryEntity(rawExpression, result)
 
-fun ExpressionHistoryEntry.toExpressionHistoryItem() =
+fun ExpressionHistoryEntity.toExpressionHistoryItem() =
     ExpressionHistory(rawExpression, result)
 
 @Dao
 abstract class ExpressionHistoryDao {
-    @Query("SELECT * FROM expressionhistoryentry")
-    abstract fun getAll(): List<ExpressionHistoryEntry>
+    @Query("SELECT * FROM expressionhistoryentity")
+    abstract fun getAll(): List<ExpressionHistoryEntity>
 
     @Insert
-    abstract fun insert(entities: List<ExpressionHistoryEntry>)
+    abstract fun insert(entities: List<ExpressionHistoryEntity>)
 
-    @Query("DELETE FROM expressionhistoryentry")
+    @Query("DELETE FROM expressionhistoryentity")
     abstract fun deleteAll()
 
     @Transaction
-    open fun setAll(entities: List<ExpressionHistoryEntry>) {
+    open fun setAll(entities: List<ExpressionHistoryEntity>) {
         deleteAll()
         insert(entities)
     }
 }
 
-@Database(entities = [ExpressionHistoryEntry::class], version = 1)
+@Database(entities = [ExpressionHistoryEntity::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun expressionHistoryDao(): ExpressionHistoryDao
 
@@ -55,7 +55,7 @@ abstract class AppDatabase : RoomDatabase() {
                 context,
                 AppDatabase::class.java,
                 NAME
-            ).build()
+            ).fallbackToDestructiveMigration().build()
         }
     }
 }
