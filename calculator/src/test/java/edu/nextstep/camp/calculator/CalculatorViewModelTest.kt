@@ -81,12 +81,12 @@ class CalculatorViewModelTest {
     fun `32 + 1 이라는 수식이 있을 때, 수식의 마지막을 2번 연속 지우면 마지막으로 추가된 피연산자 1과 연산자 +가 제거됐어야 한다`() {
         //given
         val expression = Expression(listOf(32,Operator.Plus,1))
-        viewModel.expression = expression
+        val viewModelWithExpression = CalculatorViewModel(expression)
 
         //when
-        viewModel.deleteExpression()
-        viewModel.deleteExpression()
-        val actual = viewModel.result.value.toString()
+        viewModelWithExpression.deleteExpression()
+        viewModelWithExpression.deleteExpression()
+        val actual = viewModelWithExpression.result.value.toString()
 
         //then
         assertThat(actual).isEqualTo("32")
@@ -96,11 +96,11 @@ class CalculatorViewModelTest {
     fun `3 + 2 라는 완전한 수식이 있을 때, 계산하면 계산 결과가 도출된다`() {
         //given
         val expression = Expression(listOf(3, Operator.Plus, 2))
-        viewModel.expression = expression
+        val viewModelWithExpression = CalculatorViewModel(expression)
 
         //when
-        viewModel.calculateExpression()
-        val actual = viewModel.result.value.toString()
+        viewModelWithExpression.calculateExpression()
+        val actual = viewModelWithExpression.result.value.toString()
 
         //then
         assertThat(actual).isEqualTo("5")
