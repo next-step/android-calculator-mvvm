@@ -137,7 +137,7 @@ class CalculatorViewModelTest {
         viewModel.toggleExpressionHistory()
 
         // then
-        val actual = viewModel.hasExpressionHistoryOpen.getOrAwaitValue()
+        val actual = viewModel.isExpressionHistoryOpen.getOrAwaitValue()
         assertThat(actual).isTrue()
     }
 
@@ -150,7 +150,7 @@ class CalculatorViewModelTest {
         viewModel.toggleExpressionHistory()
 
         // then
-        val actual = viewModel.hasExpressionHistoryOpen.getOrAwaitValue()
+        val actual = viewModel.isExpressionHistoryOpen.getOrAwaitValue()
         assertThat(actual).isFalse()
     }
 

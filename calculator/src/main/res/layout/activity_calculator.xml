@@ -38,7 +38,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/white"
-            app:isVisible="@{viewModel.hasExpressionHistoryOpen}"
+            app:isVisible="@{viewModel.isExpressionHistoryOpen}"
             app:layout_constraintBottom_toBottomOf="@id/textView"
             app:layout_constraintEnd_toEndOf="@id/textView"
             app:layout_constraintStart_toStartOf="@id/textView"
