@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 /**
  * Created by link.js on 2022. 07. 26..
  */
-class MainViewModel : ViewModel() {
-    private val _count = MutableLiveData(0)
+class CounterViewModel(initCount: Int = 0) : ViewModel() {
+    private val _count = MutableLiveData(initCount)
     val count: LiveData<Int>
         get() = _count
 
