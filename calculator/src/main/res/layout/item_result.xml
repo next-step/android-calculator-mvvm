@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="edu.nextstep.camp.calculator.domain.ExpressionHistoryItem" />
+            type="edu.nextstep.camp.calculator.domain.ExpressionHistory" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

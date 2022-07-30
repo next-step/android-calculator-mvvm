@@ -1,6 +1,6 @@
 package edu.nextstep.camp.calculator.domain
 
-data class ExpressionHistoryItem(
+data class ExpressionHistory(
     val rawExpression: String,
     val result: Int
 )

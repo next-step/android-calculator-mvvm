@@ -1,8 +1,7 @@
 package edu.nextstep.camp.calculator
 
 import com.google.common.truth.Truth.assertThat
-import edu.nextstep.camp.calculator.domain.Expression
-import edu.nextstep.camp.calculator.domain.ExpressionHistoryItem
+import edu.nextstep.camp.calculator.domain.ExpressionHistory
 import edu.nextstep.camp.calculator.domain.Operator
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
@@ -168,7 +167,7 @@ class CalculatorViewModelTest {
         // then
         val actual = viewModel.expressionHistories.getOrAwaitValue()
         val expected = listOf(
-            ExpressionHistoryItem("3 - 7", -4)
+            ExpressionHistory("3 - 7", -4)
         )
         assertThat(actual).isEqualTo(expected)
     }

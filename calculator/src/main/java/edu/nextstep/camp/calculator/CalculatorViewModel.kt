@@ -4,10 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import edu.nextstep.camp.calculator.data.RoomExpressionHistoryRepository
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
-import edu.nextstep.camp.calculator.domain.ExpressionHistoryItem
+import edu.nextstep.camp.calculator.domain.ExpressionHistory
 import edu.nextstep.camp.calculator.domain.ExpressionHistoryRepository
 import edu.nextstep.camp.calculator.domain.Operator
 import kotlinx.coroutines.launch
@@ -29,9 +28,9 @@ class CalculatorViewModel(
     private val _hasExpressionHistoryOpen: MutableLiveData<Boolean> = MutableLiveData(false)
     val hasExpressionHistoryOpen: LiveData<Boolean> = _hasExpressionHistoryOpen
 
-    private val _expressionHistories: MutableLiveData<List<ExpressionHistoryItem>> =
+    private val _expressionHistories: MutableLiveData<List<ExpressionHistory>> =
         MutableLiveData(emptyList())
-    val expressionHistories: LiveData<List<ExpressionHistoryItem>> = _expressionHistories
+    val expressionHistories: LiveData<List<ExpressionHistory>> = _expressionHistories
 
     private val _viewEvent: SingleLiveEvent<ViewEvent> = SingleLiveEvent()
     val viewEvent: LiveData<ViewEvent> = _viewEvent
@@ -80,7 +79,7 @@ class CalculatorViewModel(
     }
 
     private fun addExpressionHistoryItem(expression: Expression, result: Int) {
-        val historyItem = ExpressionHistoryItem(expression.toString(), result)
+        val historyItem = ExpressionHistory(expression.toString(), result)
         _expressionHistories.value = _expressionHistories.value.orEmpty() + historyItem
     }
 
