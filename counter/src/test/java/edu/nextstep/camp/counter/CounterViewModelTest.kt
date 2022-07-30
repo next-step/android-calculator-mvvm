@@ -34,12 +34,12 @@ class CounterViewModelTest {
     }
 
     @Test
-    fun `0일 때, DOWN 버튼을 클릭하면 0 이하로 내릴 수 없습니다 토스트 메시지가 보여야 한다`() {
+    fun `0일 때, DOWN 버튼을 클릭하면 오류 메시지 이벤트가 발생한다`() {
         viewModel = CounterViewModel()
         // when
         viewModel.decrement()
         // then
-        val actual = viewModel.count.value
-        assertThat(actual).isEqualTo(0)
+        val actual = viewModel.errorEvent.value
+        assertThat(actual).isEqualTo(ErrorEvent.CalculatorError)
     }
 }

@@ -55,7 +55,12 @@ class ExpressionTest {
     @Test
     fun `'8 +' 수식이 있을 때, + 연산자를 - 연산자로 변경할 수 있어야 한다`() {
         // given
-        val expression = Expression(listOf(8, Operator.Plus))
+        val expression = Expression(
+            listOf(
+                8,
+                Operator.Plus
+            )
+        )
 
         // when
         val actual = expression + Operator.Minus
@@ -67,7 +72,13 @@ class ExpressionTest {
     @Test
     fun `'32 + 1' 수식이 있을 때, 마지막 1을 제거할 수 있어야 한다`() {
         // given
-        val expression = Expression(listOf(32, Operator.Plus, 1))
+        val expression = Expression(
+            listOf(
+                32,
+                Operator.Plus,
+                1
+            )
+        )
 
         // when
         val actual = expression.removeLast()
@@ -79,7 +90,12 @@ class ExpressionTest {
     @Test
     fun `'32 +' 수식이 있을 때, 마지막 +를 제거할 수 있어야 한다`() {
         // given
-        val expression = Expression(listOf(32, Operator.Plus))
+        val expression = Expression(
+            listOf(
+                32,
+                Operator.Plus
+            )
+        )
 
         // when
         val actual = expression.removeLast()

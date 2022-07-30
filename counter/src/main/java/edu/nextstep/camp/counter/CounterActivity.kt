@@ -18,7 +18,7 @@ class CounterActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        viewModel.errorMessage.observe(this) {
+        viewModel.errorEvent.observe(this) {
             Toast.makeText(this, "0 이하로 내릴 수 없습니다", Toast.LENGTH_SHORT).show()
         }
     }
