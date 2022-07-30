@@ -31,7 +31,6 @@ class CalculatorActivity : AppCompatActivity() {
         binding.recyclerView.apply {
             adapter = this@CalculatorActivity.adapter
             itemAnimator = null
-            layoutManager = LinearLayoutManager(this@CalculatorActivity)
         }
 
         viewModel.expressionHistories.observe(this) { adapter.submitList(it) }
