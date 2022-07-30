@@ -34,7 +34,7 @@ class CalculatorActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@CalculatorActivity)
         }
 
-        viewModel.expressionHistories.observe(this) { adapter.data = it }
+        viewModel.expressionHistories.observe(this) { adapter.submitList(it) }
     }
 
     private fun handleViewEvent(viewEvent: ViewEvent) {
