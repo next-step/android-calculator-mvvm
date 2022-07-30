@@ -3,7 +3,6 @@ package edu.nextstep.camp.calculator
 import android.app.Application
 import edu.nextstep.camp.calculator.data.AppDatabase
 import edu.nextstep.camp.calculator.data.RoomExpressionHistoryRepository
-import kotlinx.coroutines.Dispatchers
 import kotlin.concurrent.thread
 
 class CalculatorApp : Application() {
@@ -17,8 +16,7 @@ class CalculatorApp : Application() {
         thread {
             appDatabase = AppDatabase.create(this)
             expressionHistoryRepository = RoomExpressionHistoryRepository(
-                appDatabase.expressionHistoryDao(),
-                Dispatchers.IO
+                appDatabase.expressionHistoryDao()
             )
         }
         INSTANCE = this

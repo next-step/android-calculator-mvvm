@@ -28,16 +28,16 @@ fun ExpressionHistoryEntity.toExpressionHistoryItem() =
 @Dao
 abstract class ExpressionHistoryDao {
     @Query("SELECT * FROM expressionhistoryentity")
-    abstract fun getAll(): List<ExpressionHistoryEntity>
+    abstract suspend fun getAll(): List<ExpressionHistoryEntity>
 
     @Insert
-    abstract fun insert(entities: List<ExpressionHistoryEntity>)
+    abstract suspend fun insert(entities: List<ExpressionHistoryEntity>)
 
     @Query("DELETE FROM expressionhistoryentity")
-    abstract fun deleteAll()
+    abstract suspend fun deleteAll()
 
     @Transaction
-    open fun setAll(entities: List<ExpressionHistoryEntity>) {
+    open suspend fun setAll(entities: List<ExpressionHistoryEntity>) {
         deleteAll()
         insert(entities)
     }
