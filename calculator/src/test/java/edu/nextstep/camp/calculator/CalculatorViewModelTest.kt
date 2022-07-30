@@ -94,4 +94,17 @@ class CalculatorViewModelTest {
         // then
         assertThat(viewModel.showIncompleteExpressionError.getOrAwaitValue()).isEqualTo(Unit)
     }
+
+    @Test
+    fun `계산을 진행하면 수식과 결과의 기록이 남는다`() {
+        // given
+        viewModel = CalculatorViewModel(Expression(listOf(1, Operator.Plus, 4)))
+
+        // when
+        viewModel.calculate()
+
+        //
+        assertThat(viewModel.calculateHistories.getOrAwaitValue()[0].expression.toString()).isEqualTo("1 + 4")
+        assertThat(viewModel.calculateHistories.getOrAwaitValue()[0].result).isEqualTo(5)
+    }
 }
