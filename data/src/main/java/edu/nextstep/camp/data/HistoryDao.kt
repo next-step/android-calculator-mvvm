@@ -10,11 +10,11 @@ import androidx.room.Query
 @Dao
 interface HistoryDao {
     @Query("SELECT * FROM history")
-    fun getAll(): List<History>
+    suspend fun getAll(): List<History>
 
     @Insert
-    fun insertAll(vararg users: History)
+    suspend fun insertAll(vararg users: List<History>)
 
     @Query("DELETE FROM history")
-    fun deleteAll()
+    suspend fun deleteAll()
 }
