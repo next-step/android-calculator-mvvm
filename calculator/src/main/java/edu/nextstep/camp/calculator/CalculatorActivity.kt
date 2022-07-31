@@ -9,6 +9,7 @@ import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
     private val viewModel: CalculatorViewModel by viewModels()
+    private val adapter = HistoryAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,6 +18,8 @@ class CalculatorActivity : AppCompatActivity() {
 
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+
+        binding.recyclerView.adapter = adapter
 
         viewModel.calculateErrorEvent.observe(this) { event ->
             if (event.consume() is CalculatorViewModel.CalculateError.ExpressionError)

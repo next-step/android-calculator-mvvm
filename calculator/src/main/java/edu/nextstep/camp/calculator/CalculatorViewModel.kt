@@ -22,6 +22,10 @@ class CalculatorViewModel(
     val calculateErrorEvent: LiveData<Event<CalculateError>>
         get() = _calculateErrorEvent
 
+    private var _isVisibleHistoryLayout = MutableLiveData(false)
+    val isVisibleHistoryLayout: LiveData<Boolean>
+        get() = _isVisibleHistoryLayout
+
     private fun getExpressionValue() = expression.value ?: Expression.EMPTY
 
     fun addToExpression(operand: Int) {
@@ -43,6 +47,10 @@ class CalculatorViewModel(
         } else {
             _expression.value = Expression(listOf(result))
         }
+    }
+
+    fun setVisibilityHistoryLayout(isVisible: Boolean) {
+        _isVisibleHistoryLayout.value = isVisible
     }
 
     sealed class CalculateError {
