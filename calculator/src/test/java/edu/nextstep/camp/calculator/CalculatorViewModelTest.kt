@@ -24,8 +24,8 @@ class CalculatorViewModelTest {
         val expected = Expression(listOf(value))
 
         //when
-        viewModel.onViewEvent(CalculatorViewEvent.operand(value))
-        val actual = viewModel.onViewState.getOrAwaitValue().consume() as CalculatorViewState.ShowExpression
+        viewModel.onViewEvent(CalculatorEvent.operand(value))
+        val actual = viewModel.onViewState.getOrAwaitValue().consume() as CalculatorState.ShowExpression
 
         //then
         assertThat(actual.expression).isEqualTo(expected)
@@ -39,8 +39,8 @@ class CalculatorViewModelTest {
         val expected = Expression(listOf(1, value))
 
         //when
-        viewModel.onViewEvent(CalculatorViewEvent.AddOperator(value))
-        val actual = viewModel.onViewState.getOrAwaitValue().consume() as CalculatorViewState.ShowExpression
+        viewModel.onViewEvent(CalculatorEvent.AddOperator(value))
+        val actual = viewModel.onViewState.getOrAwaitValue().consume() as CalculatorState.ShowExpression
 
         //then
         assertThat(actual.expression).isEqualTo(expected)
@@ -53,8 +53,8 @@ class CalculatorViewModelTest {
         val expected = Expression(listOf(1239))
 
         //when
-        viewModel.onViewEvent(CalculatorViewEvent.operand(9))
-        val actual = viewModel.onViewState.getOrAwaitValue().consume() as CalculatorViewState.ShowExpression
+        viewModel.onViewEvent(CalculatorEvent.operand(9))
+        val actual = viewModel.onViewState.getOrAwaitValue().consume() as CalculatorState.ShowExpression
 
         //then
         assertThat(actual.expression).isEqualTo(expected)
@@ -68,11 +68,11 @@ class CalculatorViewModelTest {
         val expected = Expression(listOf(1, Operator.Multiply))
 
         //when
-        viewModel.onViewEvent(CalculatorViewEvent.AddOperator(Operator.Minus))
-        viewModel.onViewEvent(CalculatorViewEvent.AddOperator(Operator.Plus))
-        viewModel.onViewEvent(CalculatorViewEvent.AddOperator(Operator.Divide))
-        viewModel.onViewEvent(CalculatorViewEvent.AddOperator(Operator.Multiply))
-        val actual = viewModel.onViewState.getOrAwaitValue().consume() as CalculatorViewState.ShowExpression
+        viewModel.onViewEvent(CalculatorEvent.AddOperator(Operator.Minus))
+        viewModel.onViewEvent(CalculatorEvent.AddOperator(Operator.Plus))
+        viewModel.onViewEvent(CalculatorEvent.AddOperator(Operator.Divide))
+        viewModel.onViewEvent(CalculatorEvent.AddOperator(Operator.Multiply))
+        val actual = viewModel.onViewState.getOrAwaitValue().consume() as CalculatorState.ShowExpression
 
         //then
         assertThat(actual.expression).isEqualTo(expected)
@@ -85,11 +85,11 @@ class CalculatorViewModelTest {
             expression = Expression(listOf(3, Operator.Multiply, 90, Operator.Minus))
         )
 
-        val expected = CalculatorViewState.ShowIncompleteExpressionError
+        val expected = CalculatorState.ShowIncompleteExpressionError
 
         //when
-        viewModel.onViewEvent(CalculatorViewEvent.Calculate)
-        val actual = viewModel.onViewState.getOrAwaitValue().consume() as CalculatorViewState.ShowIncompleteExpressionError
+        viewModel.onViewEvent(CalculatorEvent.Calculate)
+        val actual = viewModel.onViewState.getOrAwaitValue().consume() as CalculatorState.ShowIncompleteExpressionError
 
         //then
         assertThat(actual).isEqualTo(expected)
@@ -104,8 +104,8 @@ class CalculatorViewModelTest {
         )
 
         //when
-        viewModel.onViewEvent(CalculatorViewEvent.Calculate)
-        val actual = viewModel.onViewState.getOrAwaitValue().consume() as CalculatorViewState.ShowResult
+        viewModel.onViewEvent(CalculatorEvent.Calculate)
+        val actual = viewModel.onViewState.getOrAwaitValue().consume() as CalculatorState.ShowResult
 
         //then
         assertThat(actual.result).isEqualTo(expected)
@@ -120,8 +120,8 @@ class CalculatorViewModelTest {
         )
 
         //when
-        viewModel.onViewEvent(CalculatorViewEvent.RemoveLast)
-        val actual = viewModel.onViewState.getOrAwaitValue().consume() as CalculatorViewState.ShowExpression
+        viewModel.onViewEvent(CalculatorEvent.RemoveLast)
+        val actual = viewModel.onViewState.getOrAwaitValue().consume() as CalculatorState.ShowExpression
 
         //then
         assertThat(actual.expression).isEqualTo(expected)

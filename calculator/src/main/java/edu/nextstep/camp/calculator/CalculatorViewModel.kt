@@ -12,45 +12,45 @@ class CalculatorViewModel(
     private var expression: Expression = Expression.EMPTY
 ) : ViewModel() {
 
-    private val _onViewState = MutableLiveData<Event<CalculatorViewState>>()
-    val onViewState: LiveData<Event<CalculatorViewState>> get() = _onViewState
+    private val _onViewState = MutableLiveData<Event<CalculatorState>>()
+    val onViewState: LiveData<Event<CalculatorState>> get() = _onViewState
 
 
-    fun onViewEvent(event: CalculatorViewEvent) {
+    fun onViewEvent(event: CalculatorEvent) {
         when (event) {
-            is CalculatorViewEvent.AddOperand -> eventAddOperand(event.operand)
-            is CalculatorViewEvent.AddOperator -> eventAddOperator(event.operator)
-            CalculatorViewEvent.Calculate -> eventCalculate()
-            CalculatorViewEvent.RemoveLast -> eventRemoveLast()
+            is CalculatorEvent.AddOperand -> eventAddOperand(event.operand)
+            is CalculatorEvent.AddOperator -> eventAddOperator(event.operator)
+            CalculatorEvent.Calculate -> eventCalculate()
+            CalculatorEvent.RemoveLast -> eventRemoveLast()
         }
     }
 
-    private fun sendViewState(content: CalculatorViewState) {
+    private fun sendViewState(content: CalculatorState) {
         _onViewState.postValue(Event(content))
     }
 
     private fun eventAddOperand(operand: Int) {
         expression += operand
-        sendViewState(CalculatorViewState.ShowExpression(expression))
+        sendViewState(CalculatorState.ShowExpression(expression))
     }
 
     private fun eventAddOperator(operator: Operator) {
         expression += operator
-        sendViewState(CalculatorViewState.ShowExpression(expression))
+        sendViewState(CalculatorState.ShowExpression(expression))
     }
 
     private fun eventRemoveLast() {
         expression = expression.removeLast()
-        sendViewState(CalculatorViewState.ShowExpression(expression))
+        sendViewState(CalculatorState.ShowExpression(expression))
     }
 
     private fun eventCalculate() {
         val result = calculator.calculate(expression.toString())
         if (result == null) {
-            sendViewState(CalculatorViewState.ShowIncompleteExpressionError)
+            sendViewState(CalculatorState.ShowIncompleteExpressionError)
         } else {
             expression = Expression(listOf(result))
-            sendViewState(CalculatorViewState.ShowResult(result))
+            sendViewState(CalculatorState.ShowResult(result))
         }
     }
 }

@@ -25,9 +25,9 @@ class CounterActivity : AppCompatActivity() {
         counterViewModel.onViewState.observe(this) {
             it.consume()?.run {
                 when (this) {
-                    is CounterViewState.Counted -> updateCountedNumber("$counteredNumber")
-                    is CounterViewState.EMPTY -> updateCountedNumber("")
-                    is CounterViewState.ZeroDownError -> {
+                    is CounterState.Counted -> updateCountedNumber("$counteredNumber")
+                    is CounterState.EMPTY -> updateCountedNumber("")
+                    is CounterState.ZeroDownError -> {
                         updateCountedNumber("0")
                         showZeroDownError()
                     }

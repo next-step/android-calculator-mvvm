@@ -26,9 +26,9 @@ class CalculatorActivity : AppCompatActivity() {
         viewModel.onViewState.observe(this) {
             it.consume()?.run {
                 when (this) {
-                    is CalculatorViewState.ShowExpression -> showExpression(expression)
-                    is CalculatorViewState.ShowIncompleteExpressionError -> showIncompleteExpressionError()
-                    is CalculatorViewState.ShowResult -> showResult(result)
+                    is CalculatorState.ShowExpression -> showExpression(expression)
+                    is CalculatorState.ShowIncompleteExpressionError -> showIncompleteExpressionError()
+                    is CalculatorState.ShowResult -> showResult(result)
                 }
             }
         }
