@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
@@ -13,6 +14,7 @@ class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
 
     private val viewModel : CalculatorViewModel by viewModels()
+    private val adapter: EvaluationHistoryAdapter by lazy { EvaluationHistoryAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +24,7 @@ class CalculatorActivity : AppCompatActivity() {
         binding.apply {
             lifecycleOwner = this@CalculatorActivity
             viewModel = this@CalculatorActivity.viewModel
+            recyclerView.adapter = this@CalculatorActivity.adapter
         }
 
         observeViewModel()
@@ -30,6 +33,22 @@ class CalculatorActivity : AppCompatActivity() {
     private fun observeViewModel() {
         viewModel.sideEffect.observe(this) {
             handleSideEffect(it)
+        }
+        viewModel.state.observe(this) {
+            handleState(it)
+        }
+    }
+
+    private fun handleState(state: CalculatorViewModel.State) {
+        when (state) {
+            is CalculatorViewModel.State.ShowExpression -> {
+                binding.textView.text = state.expression.toString()
+                binding.recyclerView.isVisible = false
+            }
+            is CalculatorViewModel.State.ShowHistory -> {
+                adapter.submitList(state.history)
+                binding.recyclerView.isVisible = true
+            }
         }
     }
 
