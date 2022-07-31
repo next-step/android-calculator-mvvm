@@ -9,6 +9,7 @@ import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
     private val viewModel: CalculatorViewModel by viewModels()
+    private lateinit var calculationMemoryAdapter: CalculationMemoryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,8 +17,13 @@ class CalculatorActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupViewModel()
-
+        setRecyclerView()
         observeViewModel()
+    }
+
+    private fun setRecyclerView() {
+        calculationMemoryAdapter = CalculationMemoryAdapter()
+        binding.recyclerView.adapter = calculationMemoryAdapter
     }
 
     private fun observeViewModel() {
@@ -26,6 +32,9 @@ class CalculatorActivity : AppCompatActivity() {
                 CalculatorViewModel.ErrorEvent.INCOMPLETE_EXPRESSION_ERROR -> showIncompleteExpressionError()
                 else -> {}
             }
+        }
+        viewModel.updateMemory.observe(this) {
+            calculationMemoryAdapter.submitList(it)
         }
     }
 
