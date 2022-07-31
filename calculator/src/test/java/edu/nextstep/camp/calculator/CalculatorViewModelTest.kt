@@ -3,8 +3,13 @@ package edu.nextstep.camp.calculator
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.google.common.truth.Truth
+import edu.nextstep.camp.calculator.data.CalculatorRepository
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
+import io.mockk.Runs
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -25,9 +30,11 @@ class CalculatorViewModelTest {
 
 
     private lateinit var viewModel: CalculatorViewModel
+    private lateinit var repository: CalculatorRepository
 
     @Before
     fun setUp() {
+        repository = mockk()
         viewModel = CalculatorViewModel()
     }
 
@@ -74,7 +81,11 @@ class CalculatorViewModelTest {
     fun `계산이 실행되면 계산기에 의해 계산된다`() {
         // given
         val expression = Expression(listOf(1, Operator.Plus, 2))
-        viewModel = CalculatorViewModel(_expression = MutableLiveData(expression))
+        viewModel = CalculatorViewModel(
+            _expression = MutableLiveData(expression),
+            calculatorRepository = repository
+        )
+        every { repository.storeCalculationMemory("1 + 2", 3) } just Runs
 
         // when
         viewModel.calculate()
@@ -94,6 +105,30 @@ class CalculatorViewModelTest {
         // then
         Truth.assertThat(viewModel.errorEvent.value?.consume())
             .isEqualTo(CalculatorViewModel.ErrorEvent.INCOMPLETE_EXPRESSION_ERROR)
+    }
+
+    @Test
+    fun `계산기록이 보일때 계산기록 기능 실행하면 사라진다`() {
+        // given
+        viewModel.clickCalculationMemory()
+
+        // when
+        viewModel.clickCalculationMemory()
+
+        // then
+        Truth.assertThat(viewModel.isCalculationMemoryVisible.value)
+            .isEqualTo(false)
+    }
+
+    @Test
+    fun `계산기록이 안보일때 계산기록 기능 실행하면 보인다`() {
+        // given
+        // when
+        viewModel.clickCalculationMemory()
+
+        //then
+        Truth.assertThat(viewModel.isCalculationMemoryVisible.value)
+            .isEqualTo(true)
     }
 
 }
