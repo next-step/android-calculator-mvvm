@@ -71,12 +71,12 @@ class CalculatorViewModelTest {
         viewModel.calculate()
 
         // then
-        val actual = viewModel.calculatorError.getOrAwaitValue().consume()
+        val actual = viewModel.calculatorError.getOrAwaitValue()
         assertThat(actual).isEqualTo(Unit)
     }
 
     private fun assertShowing(expected: String) {
-        val actual = viewModel.showingExpression.getOrAwaitValue()
+        val actual = viewModel.expression.getOrAwaitValue().toString()
         assertThat(actual).isEqualTo(expected)
     }
 }

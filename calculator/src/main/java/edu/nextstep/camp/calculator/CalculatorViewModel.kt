@@ -8,40 +8,43 @@ import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 
 class CalculatorViewModel(
-    private var expression: Expression = Expression.EMPTY,
+    expression: Expression = Expression.EMPTY,
     private val calculator: Calculator = Calculator()
 ) : ViewModel() {
 
-    private val _showingExpression = MutableLiveData<String>()
-    val showingExpression: LiveData<String>
-        get() = _showingExpression
+    private val _expression = MutableLiveData(expression)
+    val expression: LiveData<Expression>
+        get() = _expression
 
     private val _calculatorError = SingleLiveEvent<Unit>()
     val calculatorError: LiveData<Unit> = _calculatorError
 
     fun addToExpression(operand: Int) {
-        expression += operand
-        _showingExpression.value = expression.toString()
+        _expression.value?.let {
+            _expression.value = it + operand
+        }
     }
 
     fun addToExpression(operator: Operator) {
-        expression += operator
-        _showingExpression.value = expression.toString()
+        _expression.value?.let {
+            _expression.value = it + operator
+        }
     }
 
     fun removeLast() {
-        expression = expression.removeLast()
-        _showingExpression.value = expression.toString()
+        _expression.value?.let {
+            _expression.value = it.removeLast()
+        }
     }
 
     fun calculate() {
-        val result = calculator.calculate(expression.toString())
-
-        if (result != null) {
-            expression = Expression(listOf(result))
-            _showingExpression.value = expression.toString()
-        } else {
-            _calculatorError.call()
+        _expression.value?.let {
+            val result = calculator.calculate(it.toString())
+            if (result != null) {
+                _expression.value = Expression(listOf(result))
+            } else {
+                _calculatorError.call()
+            }
         }
     }
 }
