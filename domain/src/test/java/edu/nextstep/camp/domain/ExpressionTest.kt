@@ -1,4 +1,4 @@
-package edu.nextstep.camp.calculator.domain
+package edu.nextstep.camp.domain
 
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test

@@ -9,7 +9,7 @@ class CounterViewModel : ViewModel() {
     val count: LiveData<Int>
         get() = _count
 
-    private val _toastMessage = MutableLiveData("")
+    private val _toastMessage = SingleLiveEvent<String>()
     val toastMessage: LiveData<String>
         get() = _toastMessage
 
