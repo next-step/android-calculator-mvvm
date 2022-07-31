@@ -15,7 +15,6 @@
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@sample/result.json/expression/data"
         />
 
     <TextView
@@ -25,6 +24,5 @@
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_expression"
-        tools:text="@sample/result.json/result/data"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
