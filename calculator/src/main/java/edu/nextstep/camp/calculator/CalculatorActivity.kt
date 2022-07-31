@@ -24,7 +24,7 @@ class CalculatorActivity : AppCompatActivity() {
             showIncompleteExpressionError()
         }
         viewModel.calculateHistories.observe(this) { calculateHistories ->
-            calculatorHistoryAdapter.setCalculatorHistories(calculateHistories)
+            calculatorHistoryAdapter.submitList(calculateHistories)
         }
     }
 
