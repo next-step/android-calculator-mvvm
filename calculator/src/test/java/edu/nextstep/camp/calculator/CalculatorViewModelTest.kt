@@ -2,6 +2,7 @@ package edu.nextstep.camp.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
+import edu.nextstep.camp.calculator.memoryview.MemoryUIModel
 import edu.nextstep.camp.domain.Expression
 import edu.nextstep.camp.domain.Operator
 import org.junit.Rule
@@ -118,5 +119,20 @@ class CalculatorViewModelTest {
 
         //then
         assertThat(actual).isEqualTo(CalculatorErrorEvent.IncompleteExpressionError)
+    }
+
+    @Test
+    fun `계산할 때 수식과 그 결과가 저장되고 계산 기록들이 온전하게 저장되어 있다`() {
+        //given
+        val expression = Expression(listOf(32,Operator.Plus,1))
+        val viewModelWithExpression = CalculatorViewModel(expression)
+        viewModelWithExpression.calculateExpression()
+
+        //when
+        viewModelWithExpression.showMemoryView()
+        val actual = viewModelWithExpression.memoryLog.value
+
+        //then
+        assertThat(actual).isEqualTo(listOf(MemoryUIModel(0, "32 + 1", "33")))
     }
 }
