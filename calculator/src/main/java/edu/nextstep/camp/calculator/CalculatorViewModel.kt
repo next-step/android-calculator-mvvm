@@ -12,9 +12,9 @@ import edu.nextstep.camp.calculator.domain.Operator
  */
 class CalculatorViewModel(
     private val calculator: Calculator = Calculator(),
-    initExpression: Expression = Expression.EMPTY,
+    initExpression: List<Any> = emptyList(),
 ) : ViewModel() {
-    private var _expression = MutableLiveData(initExpression)
+    private var _expression = MutableLiveData(Expression(initExpression))
     val expression: LiveData<Expression>
         get() = _expression
 
@@ -25,11 +25,11 @@ class CalculatorViewModel(
     private fun getExpressionValue() = expression.value ?: Expression.EMPTY
 
     fun addToExpression(operand: Int) {
-        _expression.value = getExpressionValue().plus(operand)
+        _expression.value = getExpressionValue() + operand
     }
 
     fun addToExpression(operator: Operator) {
-        _expression.value = getExpressionValue().plus(operator)
+        _expression.value = getExpressionValue() + operator
     }
 
     fun removeLast() {
