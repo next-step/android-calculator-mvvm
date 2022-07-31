@@ -7,7 +7,7 @@ import edu.nextstep.camp.domain.Calculator
 import edu.nextstep.camp.domain.Expression
 import edu.nextstep.camp.domain.Operator
 
-class CalculatorViewModel(private var expression: Expression = Expression.EMPTY) : ViewModel() {
+class CalculatorViewModel(expression: Expression = Expression.EMPTY) : ViewModel() {
     private val calculator = Calculator()
 
 
@@ -28,8 +28,7 @@ class CalculatorViewModel(private var expression: Expression = Expression.EMPTY)
     }
 
     fun deleteExpression() {
-        expression = _result.value?.removeLast() ?: Expression.EMPTY
-        _result.value = expression
+        _result.value = _result.value?.removeLast() ?: Expression.EMPTY
     }
 
     fun calculateExpression() {
@@ -37,8 +36,7 @@ class CalculatorViewModel(private var expression: Expression = Expression.EMPTY)
         if (result == null) {
             _error.value = CalculatorErrorEvent.IncompleteExpressionError
         } else {
-            expression = Expression(listOf(result))
-            _result.value = expression
+            _result.value = Expression(listOf(result))
         }
     }
 }
