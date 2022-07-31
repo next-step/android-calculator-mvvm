@@ -70,6 +70,8 @@ sealed interface StringExpressionState {
 
         fun of(terms: List<Term>): StringExpressionState = of(Terms(terms))
 
+        fun of(operand: Operand): StringExpressionState = of(Terms(listOf(operand)))
+
         private fun of(terms: Terms): StringExpressionState = terms.toState()
     }
 }

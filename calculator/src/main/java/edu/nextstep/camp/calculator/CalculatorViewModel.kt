@@ -13,12 +13,13 @@ class CalculatorViewModel : ViewModel() {
     private val _state = MutableLiveData<StringExpressionState>(StringExpressionState.EmptyState())
     val state: LiveData<StringExpressionState> get() = _state
 
-    private val _calculationResult = MutableLiveData<Operand>()
-    val calculationResult: LiveData<Operand> get() = _calculationResult
-
     private val _calculationFailed = SingleLiveEvent<Boolean>()
     val calculationFailed: LiveData<Boolean>
         get() = _calculationFailed
+
+    fun addOperand(operand: Int) {
+        addElement(Operand(operand))
+    }
 
     fun addElement(operator: Operator) {
         _state.value = state.value?.addElement(operator)
@@ -38,7 +39,7 @@ class CalculatorViewModel : ViewModel() {
             StringCalculator.calculate(state)
         }
             .onSuccess {
-                _calculationResult.value = it
+                _state.value = StringExpressionState.of(it)
             }
             .onFailure {
                 setCalculationFailed()
