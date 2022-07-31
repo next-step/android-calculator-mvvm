@@ -39,6 +39,10 @@ data class Expression(
         }
     }
 
+    fun isSameValue(result: Int): Boolean {
+        return this == Expression(listOf(result))
+    }
+
     companion object {
         val EMPTY = Expression()
     }

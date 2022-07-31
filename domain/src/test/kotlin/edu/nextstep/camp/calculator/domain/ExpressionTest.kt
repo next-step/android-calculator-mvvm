@@ -123,4 +123,29 @@ class ExpressionTest {
         // then
         assertThat(actual.toString()).isEqualTo("")
     }
+
+    @Test
+    fun `피연산자만 있는 수식 '14'와 숫자'14'가 동일 한지 확인시 true를 반환한다`() {
+        // given 14 수식이 주어졌을때
+        val expression = Expression(listOf(14))
+
+        // when '14'와 수식을 비교 했을 때
+        val actual = expression.isSameValue(14)
+
+        // then true를 반환 한다.
+        assertThat(actual).isEqualTo(true)
+    }
+
+    @Test
+    fun `피연산자만 있는 수식 '14'와 숫자'15'가 동일 한지 확인시 false를 반환한다`() {
+        // given 14 수식이 주어졌을때
+        val expression = Expression(listOf(14))
+
+        // when '14'와 수식을 비교 했을 때
+        val actual = expression.isSameValue(15)
+
+        // then true를 반환 한다.
+        assertThat(actual).isEqualTo(false)
+    }
+
 }
