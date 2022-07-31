@@ -11,10 +11,7 @@ import edu.nextstep.camp.calculator.domain.CalculateHistory
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class CalculatorViewModel(
     private var expression: Expression = Expression.EMPTY,
@@ -70,9 +67,12 @@ class CalculatorViewModel(
     }
 
     private fun putCalculateHistory(expression: Expression, result: Int) {
-        val list = _calculateHistories.value?.toMutableList()?: mutableListOf()
-        list.add(CalculateHistory(expression = expression, result = result))
-//        _calculateHistories.value = list
+        viewModelScope.launch {
+            calculatorDatabase.calculateHistoryDao().insertCalculateHistory(CalculateHistoryEntity(
+                expression = expression.toString(),
+                result = result,
+            ))
+        }
     }
 
     fun getCalculateHistories() {
