@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import edu.nextstep.camp.calculator.data.model.CalculateHistoryEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CalculateHistoryDao {
@@ -11,5 +12,5 @@ interface CalculateHistoryDao {
     suspend fun insertCalculateHistory(calculateHistoryEntity: CalculateHistoryEntity)
 
     @Query("select * from calculate_history")
-    suspend fun getCalculateHistories(): List<CalculateHistoryEntity>?
+    fun getCalculateHistories(): Flow<List<CalculateHistoryEntity>?>
 }

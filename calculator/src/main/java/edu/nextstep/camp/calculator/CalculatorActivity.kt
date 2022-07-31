@@ -19,6 +19,7 @@ class CalculatorActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
 
         initRecyclerView()
+        viewModel.getCalculateHistories()
 
         viewModel.showIncompleteExpressionError.observe(this) {
             showIncompleteExpressionError()
