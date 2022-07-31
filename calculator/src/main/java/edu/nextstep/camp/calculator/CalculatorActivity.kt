@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
-import edu.nextstep.camp.calculator.domain.Expression
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
@@ -21,11 +20,11 @@ class CalculatorActivity : AppCompatActivity() {
 
     private fun setViewModelObservers() {
         viewModel.event.observe(this@CalculatorActivity) {
-            it.consume()?.let(::showToastWithCounterEvent)
+            it.consume()?.let(::showToastWithCalculatorEvent)
         }
     }
 
-    private fun showToastWithCounterEvent(event: CalculatorEvent) {
+    private fun showToastWithCalculatorEvent(event: CalculatorEvent) {
         Toast.makeText(this, event.stringId, Toast.LENGTH_SHORT).show()
     }
 
