@@ -1,6 +1,7 @@
 package edu.nextstep.camp.calculator
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
@@ -16,5 +17,14 @@ class CalculatorActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+
+        setEventListener()
+    }
+
+    private fun setEventListener() {
+        viewModel.calculatorError.observe(this@CalculatorActivity) {
+            it.consume() ?: return@observe
+            Toast.makeText(this@CalculatorActivity, R.string.toast_incomplete_expression, Toast.LENGTH_SHORT).show()
+        }
     }
 }

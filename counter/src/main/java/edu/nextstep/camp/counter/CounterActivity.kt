@@ -24,12 +24,10 @@ class CounterActivity : AppCompatActivity() {
 
     private fun observeEvent() {
         viewModel.event.observe(this) {
-            val event = it.consume()
-            if (event != null) {
-                when (event) {
-                    CounterEvent.ShowNegativeError -> {
-                        Toast.makeText(this, getString(R.string.toast_no_negative), Toast.LENGTH_SHORT).show()
-                    }
+            val event = it.consume() ?: return@observe
+            when (event) {
+                CounterEvent.ShowNegativeError -> {
+                    Toast.makeText(this, getString(R.string.toast_no_negative), Toast.LENGTH_SHORT).show()
                 }
             }
         }
