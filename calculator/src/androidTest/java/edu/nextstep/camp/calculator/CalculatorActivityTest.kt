@@ -1,7 +1,7 @@
 package edu.nextstep.camp.calculator
 
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -34,7 +34,7 @@ internal class CalculatorActivityTest {
     @ParameterizedTest(name = "예상결과 = {1}")
     fun `버튼_동작`(buttonId: Int, expectedText: String) {
         //when: 버튼을 누르면
-        onView(withId(buttonId)).perform(ViewActions.click())
+        onView(withId(buttonId)).perform(click())
         //then: 화면에 버튼의 텍스트가 보여야 한다
         onView(withId(R.id.textView)).check(matches(withText(expectedText)))
     }
@@ -42,17 +42,17 @@ internal class CalculatorActivityTest {
     // -> 1 클릭 -> 1
     @Test
     fun `입력된_피연산자가_없을때_숫자_클릭은_해당_숫자가_표시된다`() {
-        onView(withId(R.id.button1)).perform(ViewActions.click())
+        onView(withId(R.id.button1)).perform(click())
         onView(withId(R.id.textView)).check(matches(withText("1")))
     }
 
     /* 5 + -> 1 클릭 -> 5 + 1 */
     @Test
     fun `입력_중_수식이_있을_때_숫자_클릭은_해당_숫자가_뒤에_추가된다`() {
-        onView(withId(R.id.button5)).perform(ViewActions.click())
-        onView(withId(R.id.buttonPlus)).perform(ViewActions.click())
+        onView(withId(R.id.button5)).perform(click())
+        onView(withId(R.id.buttonPlus)).perform(click())
 
-        onView(withId(R.id.button1)).perform(ViewActions.click())
+        onView(withId(R.id.button1)).perform(click())
 
         onView(withId(R.id.textView)).check(matches(withText("5 + 1")))
     }
@@ -60,9 +60,9 @@ internal class CalculatorActivityTest {
     //'8' -> '9' 클릭 = '89'
     @Test
     fun `입력된_피연산자가_있을때_숫자_클릭은_기존_숫자_뒤에_해당_숫자가_표시된다`() {
-        onView(withId(R.id.button8)).perform(ViewActions.click())
+        onView(withId(R.id.button8)).perform(click())
 
-        onView(withId(R.id.button9)).perform(ViewActions.click())
+        onView(withId(R.id.button9)).perform(click())
 
         onView(withId(R.id.textView)).check(matches(withText("89")))
     }
@@ -70,10 +70,10 @@ internal class CalculatorActivityTest {
     //' ' -> '+ or - or / or *' 클릭 = ' '
     @Test
     fun `입력된_피연산자가_없을때_연산자_클릭은_변화가_없다`() {
-        onView(withId(R.id.buttonPlus)).perform(ViewActions.click())
-        onView(withId(R.id.buttonDivide)).perform(ViewActions.click())
-        onView(withId(R.id.buttonMultiply)).perform(ViewActions.click())
-        onView(withId(R.id.buttonMinus)).perform(ViewActions.click())
+        onView(withId(R.id.buttonPlus)).perform(click())
+        onView(withId(R.id.buttonDivide)).perform(click())
+        onView(withId(R.id.buttonMultiply)).perform(click())
+        onView(withId(R.id.buttonMinus)).perform(click())
 
         onView(withId(R.id.textView)).check(matches(withText("")))
     }
@@ -81,9 +81,9 @@ internal class CalculatorActivityTest {
     //1 -> '+' 클릭 = '1 +'
     @Test
     fun `입력된_피연산자가_있을때_연산자_클릭은_해당_기호가_보인다`() {
-        onView(withId(R.id.button1)).perform(ViewActions.click())
+        onView(withId(R.id.button1)).perform(click())
 
-        onView(withId(R.id.buttonPlus)).perform(ViewActions.click())
+        onView(withId(R.id.buttonPlus)).perform(click())
 
         onView(withId(R.id.textView)).check(matches(withText("1 +")))
     }
@@ -91,10 +91,10 @@ internal class CalculatorActivityTest {
     //'1 +' -> '-' 클릭 = '1 -'
     @Test
     fun `입력된_연산자_있을_때_연산자_클릭_시_해당_연산자로_교체된다`() {
-        onView(withId(R.id.button1)).perform(ViewActions.click())
-        onView(withId(R.id.buttonPlus)).perform(ViewActions.click())
+        onView(withId(R.id.button1)).perform(click())
+        onView(withId(R.id.buttonPlus)).perform(click())
 
-        onView(withId(R.id.buttonMinus)).perform(ViewActions.click())
+        onView(withId(R.id.buttonMinus)).perform(click())
 
         onView(withId(R.id.textView)).check(matches(withText("1 -")))
     }
@@ -102,7 +102,7 @@ internal class CalculatorActivityTest {
     //' ' -> '삭제' 클릭 = ' '
     @Test
     fun `입력된_수식이_없을때_지우기_클릭은_변화가_없다`() {
-        onView(withId(R.id.buttonDelete)).perform(ViewActions.click())
+        onView(withId(R.id.buttonDelete)).perform(click())
 
         onView(withId(R.id.textView)).check(matches(withText("")))
     }
@@ -111,37 +111,37 @@ internal class CalculatorActivityTest {
     @Test
     fun `입력된_수식이_있을때_지우기_클릭은_마지막_연산자_또는_피연산자가_삭제된다`() {
         //given
-        onView(withId(R.id.button3)).perform(ViewActions.click())
-        onView(withId(R.id.button2)).perform(ViewActions.click())
-        onView(withId(R.id.buttonPlus)).perform(ViewActions.click())
-        onView(withId(R.id.button1)).perform(ViewActions.click())
+        onView(withId(R.id.button3)).perform(click())
+        onView(withId(R.id.button2)).perform(click())
+        onView(withId(R.id.buttonPlus)).perform(click())
+        onView(withId(R.id.button1)).perform(click())
 
         //when
-        onView(withId(R.id.buttonDelete)).perform(ViewActions.click())
+        onView(withId(R.id.buttonDelete)).perform(click())
 
         //then
         onView(withId(R.id.textView)).check(matches(withText("32 +")))
 
         //when
-        onView(withId(R.id.buttonDelete)).perform(ViewActions.click())
+        onView(withId(R.id.buttonDelete)).perform(click())
 
         //then
         onView(withId(R.id.textView)).check(matches(withText("32")))
 
         //when
-        onView(withId(R.id.buttonDelete)).perform(ViewActions.click())
+        onView(withId(R.id.buttonDelete)).perform(click())
 
         //then
         onView(withId(R.id.textView)).check(matches(withText("3")))
 
         //when
-        onView(withId(R.id.buttonDelete)).perform(ViewActions.click())
+        onView(withId(R.id.buttonDelete)).perform(click())
 
         //then
         onView(withId(R.id.textView)).check(matches(withText("")))
 
         //when
-        onView(withId(R.id.buttonDelete)).perform(ViewActions.click())
+        onView(withId(R.id.buttonDelete)).perform(click())
 
         //then
         onView(withId(R.id.textView)).check(matches(withText("")))
@@ -151,12 +151,12 @@ internal class CalculatorActivityTest {
     @Test
     fun `입력된_수식이_완전할때_등호_클릭은_수식의_결과가_표시된다`() {
         //given
-        onView(withId(R.id.button3)).perform(ViewActions.click())
-        onView(withId(R.id.buttonPlus)).perform(ViewActions.click())
-        onView(withId(R.id.button2)).perform(ViewActions.click())
+        onView(withId(R.id.button3)).perform(click())
+        onView(withId(R.id.buttonPlus)).perform(click())
+        onView(withId(R.id.button2)).perform(click())
 
         //when
-        onView(withId(R.id.buttonEquals)).perform(ViewActions.click())
+        onView(withId(R.id.buttonEquals)).perform(click())
 
         //then
         onView(withId(R.id.textView)).check(matches(withText("5")))
@@ -166,11 +166,11 @@ internal class CalculatorActivityTest {
     @Test
     fun `입력된_수식이_완전하지_않을때_등호_클릭은_변화가_없다`() {
         //given
-        onView(withId(R.id.button3)).perform(ViewActions.click())
-        onView(withId(R.id.buttonPlus)).perform(ViewActions.click())
+        onView(withId(R.id.button3)).perform(click())
+        onView(withId(R.id.buttonPlus)).perform(click())
 
         //when
-        onView(withId(R.id.buttonEquals)).perform(ViewActions.click())
+        onView(withId(R.id.buttonEquals)).perform(click())
 
         //then
         onView(withId(R.id.textView)).check(matches(withText("3 +")))
