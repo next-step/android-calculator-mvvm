@@ -42,7 +42,8 @@ class CalculatorViewModel(
             _event.value = Event(ERROR_INCOMPLETE_EXPRESSION)
             return
         }
-        _expression.value = Expression.EMPTY + result
+        lastExpression = Expression.EMPTY + result
+        _expression.value = lastExpression
     }
 
 }
