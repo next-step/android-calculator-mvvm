@@ -3,13 +3,14 @@ package edu.nextstep.camp.calculator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import edu.nextstep.camp.calculator.data.Injector
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 
 class CalculatorViewModel(
     expression: Expression = Expression.EMPTY,
-    private val calculator: Calculator = Calculator()
+    private val calculator: Calculator = Calculator(Injector.historyRepository),
 ) : ViewModel() {
 
     private val _expression = MutableLiveData(expression)
