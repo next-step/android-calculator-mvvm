@@ -3,14 +3,19 @@ package edu.nextstep.camp.calculator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import edu.nextstep.camp.calculator.data.History
+import edu.nextstep.camp.calculator.data.HistoryRepository
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
+import kotlinx.coroutines.launch
 
 /**
  * Created by link.js on 2022. 07. 28..
  */
 class CalculatorViewModel(
+    private val historyRepository: HistoryRepository = CalculatorApplication.INSTANCE.repository,
     private val calculator: Calculator = Calculator(),
     initExpression: List<Any> = emptyList(),
 ) : ViewModel() {
@@ -25,6 +30,10 @@ class CalculatorViewModel(
     private var _isVisibleHistoryLayout = MutableLiveData(false)
     val isVisibleHistoryLayout: LiveData<Boolean>
         get() = _isVisibleHistoryLayout
+
+    private var _historyList = MutableLiveData<List<History>>()
+    val historyList: LiveData<List<History>>
+        get() = _historyList
 
     private fun getExpressionValue() = expression.value ?: Expression.EMPTY
 
@@ -41,16 +50,36 @@ class CalculatorViewModel(
     }
 
     fun calculate() {
-        val result = calculator.calculate(_expression.value.toString())
+        val expression = _expression.value.toString()
+        val result = calculator.calculate(expression)
         if (result == null) {
             _calculateErrorEvent.value = Event(CalculateError.ExpressionError)
         } else {
+            addHistory(History(expression = expression, result = result))
             _expression.value = Expression(listOf(result))
         }
     }
 
     fun setVisibilityHistoryLayout(isVisible: Boolean) {
         _isVisibleHistoryLayout.value = isVisible
+    }
+
+    fun loadHistories() {
+        viewModelScope.launch {
+            _historyList.value = historyRepository.getHistories()
+        }
+    }
+
+    fun saveHistories() {
+        historyList.value?.let {
+            viewModelScope.launch {
+                historyRepository.setHistories(it)
+            }
+        }
+    }
+
+    private fun addHistory(history: History) {
+        _historyList.value = _historyList.value.orEmpty() + history
     }
 
     sealed class CalculateError {
