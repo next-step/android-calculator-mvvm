@@ -23,7 +23,6 @@ class CalculatorActivity : AppCompatActivity() {
 
     private fun setEventListener() {
         viewModel.calculatorError.observe(this@CalculatorActivity) {
-            it.consume() ?: return@observe
             Toast.makeText(this@CalculatorActivity, R.string.toast_incomplete_expression, Toast.LENGTH_SHORT).show()
         }
     }
