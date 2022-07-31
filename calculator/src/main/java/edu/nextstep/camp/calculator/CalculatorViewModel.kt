@@ -42,43 +42,37 @@ class CalculatorViewModel(
     }
 
     fun addToExpression(operand: Int) {
-        _expression.value?.let {
-            _expression.value = it + operand
-        }
+        _expression.value = _expression.value?.plus(operand)
     }
 
     fun addToExpression(operator: Operator) {
-        _expression.value?.let {
-            _expression.value = it + operator
-        }
+        _expression.value = _expression.value?.plus(operator)
     }
 
     fun removeLast() {
-        _expression.value?.let {
-            _expression.value = it.removeLast()
-        }
+        _expression.value = _expression.value?.removeLast()
     }
 
     fun calculate() {
-        _expression.value?.let {
-            val result = calculator.calculate(it.toString())
-            if (result != null) {
-                _expression.value = Expression(listOf(result))
-            } else {
-                _calculatorError.call()
-            }
+        val expression = _expression.value ?: return
+
+        val result = calculator.calculate(expression.toString())
+        if (result != null) {
+            _expression.value = Expression(listOf(result))
+        } else {
+            _calculatorError.call()
         }
     }
 
     fun toggleHistory() {
-        _isShowingHistory.value?.let {
-            if (!it) {
-                _history.value = calculator.historyList.map { history -> history.toItem() }
-                saveHistory()
-            }
+        val isShowingHistory = _isShowingHistory.value ?: return
 
-            _isShowingHistory.value = !it
+        if (!isShowingHistory) {
+            _history.value = calculator.historyList.map { history -> history.toItem() }
+            saveHistory()
         }
+
+        _isShowingHistory.value = !isShowingHistory
     }
 
     private fun saveHistory() {
