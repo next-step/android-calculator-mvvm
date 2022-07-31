@@ -9,7 +9,7 @@ import edu.nextstep.camp.calculator.domain.StringExpressionState
 
 class CalculatorViewModel : ViewModel() {
 
-    private val _state = MutableLiveData(StringExpressionState.of(""))
+    private val _state = MutableLiveData<StringExpressionState>(StringExpressionState.EmptyState())
     val state: LiveData<StringExpressionState> get() = _state
 
     private val _calculationResult = MutableLiveData<Operand>()
@@ -26,4 +26,9 @@ class CalculatorViewModel : ViewModel() {
     fun addElement(operand: Operand) {
         _state.value = state.value?.addElement(operand)
     }
+
+    fun removeElement() {
+        _state.value = state.value?.removeElement()
+    }
+
 }

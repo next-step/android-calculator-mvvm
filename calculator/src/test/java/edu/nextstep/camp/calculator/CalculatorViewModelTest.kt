@@ -37,4 +37,16 @@ internal class CalculatorViewModelTest {
             StringExpressionState.of("1 +")
         )
     }
+
+    @Test
+    fun `지우기가 실행되면 수식의 마지막이 지워지고 변경된 수식을 보여줘야 한다`() {
+        // when
+        calculatorViewModel.addElement(Operand(1))
+        calculatorViewModel.removeElement()
+
+        // then
+        assertThat(calculatorViewModel.state.getOrAwaitValue()).isEqualTo(
+            StringExpressionState.EmptyState()
+        )
+    }
 }
