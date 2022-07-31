@@ -18,7 +18,16 @@ class CalculatorViewModel(
         get() = _expression
 
     private val _calculatorError = SingleLiveEvent<Unit>()
-    val calculatorError: LiveData<Unit> = _calculatorError
+    val calculatorError: LiveData<Unit>
+        get() = _calculatorError
+
+    private val _isShowingHistory = MutableLiveData(false)
+    val isShowingHistory: LiveData<Boolean>
+        get() = _isShowingHistory
+
+    private val _history = MutableLiveData<List<HistoryItem>>()
+    val history: LiveData<List<HistoryItem>>
+        get() = _history
 
     fun addToExpression(operand: Int) {
         _expression.value?.let {
@@ -46,6 +55,16 @@ class CalculatorViewModel(
             } else {
                 _calculatorError.call()
             }
+        }
+    }
+
+    fun toggleHistory() {
+        _isShowingHistory.value?.let {
+            if (!it) {
+                _history.value = calculator.historyList.map { history -> history.toItem() }
+            }
+
+            _isShowingHistory.value = !it
         }
     }
 }
