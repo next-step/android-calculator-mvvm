@@ -3,6 +3,7 @@ package edu.nextstep.camp.calculator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import edu.nextstep.camp.calculator.data.CalculatorDatabase
 import edu.nextstep.camp.calculator.domain.CalculateHistory
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
@@ -10,6 +11,7 @@ import edu.nextstep.camp.calculator.domain.Operator
 
 class CalculatorViewModel(
     private var expression: Expression = Expression.EMPTY,
+    private val calculatorDatabase: CalculatorDatabase,
 ) : ViewModel() {
     private val calculator = Calculator()
 
@@ -63,6 +65,6 @@ class CalculatorViewModel(
     private fun putCalculateHistory(expression: Expression, result: Int) {
         val list = _calculateHistories.value?.toMutableList()?: mutableListOf()
         list.add(CalculateHistory(expression = expression, result = result))
-        _calculateHistories.value = list
+//        _calculateHistories.value = list
     }
 }
