@@ -1,6 +1,7 @@
 package edu.nextstep.camp.calculator
 
 import com.google.common.truth.Truth.assertThat
+import edu.nextstep.camp.counter.getOrAwaitValue
 import edu.nextstep.camp.domain.calculator.Expression
 import edu.nextstep.camp.domain.calculator.Operator
 import org.junit.jupiter.api.Test

@@ -36,9 +36,11 @@
 
     <data>
 
-        <import type="edu.nextstep.camp.counter.CounterViewEvent"/>
-        <import type="edu.nextstep.camp.counter.CounterViewEvent.Down"/>
-        <import type="edu.nextstep.camp.counter.CounterViewEvent.Up"/>
+        <import type="edu.nextstep.camp.counter.CounterViewEvent" />
+
+        <import type="edu.nextstep.camp.counter.CounterViewEvent.Down" />
+
+        <import type="edu.nextstep.camp.counter.CounterViewEvent.Up" />
 
         <variable
             name="viewModel"

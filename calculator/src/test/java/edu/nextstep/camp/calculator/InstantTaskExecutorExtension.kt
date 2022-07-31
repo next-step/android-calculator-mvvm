@@ -1,5 +1,6 @@
 package edu.nextstep.camp.calculator
 
+import android.annotation.SuppressLint
 import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.arch.core.executor.TaskExecutor
 import org.junit.jupiter.api.extension.AfterEachCallback
@@ -13,6 +14,7 @@ class InstantTaskExecutorExtension : BeforeEachCallback, AfterEachCallback {
                 runnable.run()
             }
 
+            @SuppressLint("RestrictedApi")
             override fun postToMainThread(runnable: Runnable) {
                 runnable.run()
             }

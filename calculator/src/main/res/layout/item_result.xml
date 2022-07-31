@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
-    >
+    android:padding="8dp">
 
     <TextView
         android:id="@+id/tv_expression"
@@ -15,8 +13,7 @@
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@sample/result.json/expression/data"
-        />
+        tools:text="@sample/result.json/expression/data" />
 
     <TextView
         android:id="@+id/tv_result"
@@ -25,6 +22,5 @@
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_expression"
-        tools:text="@sample/result.json/result/data"
-        />
+        tools:text="@sample/result.json/result/data" />
 </androidx.constraintlayout.widget.ConstraintLayout>
