@@ -30,7 +30,7 @@ internal class CalculatorViewModelTest {
     fun `연산자가 입력되면 수식에 추가되고 변경된 수식을 보여줘야 한다`() {
         // when
         calculatorViewModel.addElement(Operand(1))
-        calculatorViewModel.addElement(Operator.of("+"))
+        calculatorViewModel.addElement(Operator.PLUS)
 
         // then
         assertThat(calculatorViewModel.state.getOrAwaitValue()).isEqualTo(
@@ -47,6 +47,20 @@ internal class CalculatorViewModelTest {
         // then
         assertThat(calculatorViewModel.state.getOrAwaitValue()).isEqualTo(
             StringExpressionState.EmptyState()
+        )
+    }
+
+    @Test
+    fun `계산이 실행되면 계산기에 의해 계산되고 결과를 화면에 보여줘야 한다`() {
+        // when
+        calculatorViewModel.addElement(Operand(1))
+        calculatorViewModel.addElement(Operator.PLUS)
+        calculatorViewModel.addElement(Operand(2))
+        calculatorViewModel.calculate()
+
+        // then
+        assertThat(calculatorViewModel.calculationResult.getOrAwaitValue()).isEqualTo(
+            Operand(3)
         )
     }
 }
