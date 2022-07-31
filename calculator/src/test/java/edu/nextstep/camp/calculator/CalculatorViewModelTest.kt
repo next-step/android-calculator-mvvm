@@ -23,7 +23,6 @@ class CalculatorViewModelTest {
     fun setUp() {
         calculator = Calculator()
         viewModel = CalculatorViewModel()
-        viewModel.expression.observeForever {  }
     }
 
     @Test
@@ -32,7 +31,7 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(1)
 
         // then
-        val expected = Expression.EMPTY.plus(1)
+        val expected = Expression(listOf(1))
         assertThat(viewModel.expression.value).isEqualTo(expected)
     }
 
@@ -44,7 +43,7 @@ class CalculatorViewModelTest {
 
 
         // then
-        val expected = Expression.EMPTY.plus(1).plus(Operator.Plus)
+        val expected = Expression(listOf(1, Operator.Plus))
         assertThat(viewModel.expression.value).isEqualTo(expected)
     }
 
@@ -55,7 +54,7 @@ class CalculatorViewModelTest {
         viewModel.removeLast()
 
         // then
-        val expected = Expression.EMPTY.plus(1).removeLast()
+        val expected = Expression.EMPTY
         assertThat(viewModel.expression.value).isEqualTo(expected)
     }
 
@@ -71,9 +70,7 @@ class CalculatorViewModelTest {
 
 
         // then
-        val expected = calculator.calculate("3")?.let {
-            Expression(listOf(it))
-        }
+        val expected = Expression(listOf(3))
         assertThat(viewModel.expression.value).isEqualTo(expected)
     }
 
@@ -120,7 +117,7 @@ class CalculatorViewModelTest {
 
 
         // then
-        val expected = Expression.EMPTY.plus(1).plus(Operator.Divide).plus(1).removeLast()
+        val expected = Expression(listOf(1, Operator.Divide))
         assertThat(viewModel.expression.value).isEqualTo(expected)
     }
 }

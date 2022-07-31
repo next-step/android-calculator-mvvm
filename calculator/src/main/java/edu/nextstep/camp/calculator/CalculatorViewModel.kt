@@ -1,8 +1,5 @@
 package edu.nextstep.camp.calculator
 
-import android.view.View
-import android.widget.Button
-import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -31,7 +28,7 @@ class CalculatorViewModel : ViewModel() {
     }
 
     fun calculate() {
-        kotlin.runCatching { calculator.calculate(getExpressionValue().toString()) }
+        runCatching { calculator.calculate(getExpressionValue().toString()) }
             .onSuccess {
                 if (it == null) {
                     _sideEffect.value = Event(SideEffect.IncompleteExpressionError)
@@ -48,7 +45,7 @@ class CalculatorViewModel : ViewModel() {
             }
     }
 
-    private fun getExpressionValue() = _expression.value ?: Expression.EMPTY
+    private fun getExpressionValue(): Expression = _expression.value ?: Expression.EMPTY
 
     sealed class SideEffect {
         object IncompleteExpressionError : SideEffect()
