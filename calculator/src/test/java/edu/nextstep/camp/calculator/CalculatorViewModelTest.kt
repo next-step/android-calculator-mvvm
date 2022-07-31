@@ -134,7 +134,7 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `완전한 수식일 때 계산 요청시 계산 결과를 반환한다`() {
+    fun `완전한 수식일 때 계산 요청시 계산 결과를 전달한다`() {
         // given 완전한 수식인 경우
         val inputtedExpression = Expression(listOf(12, Operator.Plus, 34))
         viewModel = CalculatorViewModel(lastExpression = inputtedExpression)
@@ -142,7 +142,7 @@ class CalculatorViewModelTest {
         // when 계산요청시
         viewModel.requestCalculate()
 
-        // then 완성된 수식을 반환한다.
+        // then 수식의 결과 값을 전달 한다.
         val expected = Expression(listOf(46))
         val actual = viewModel.expression.getOrAwaitValue()
         assertThat(actual).isEqualTo(expected)
@@ -157,7 +157,7 @@ class CalculatorViewModelTest {
         // when 계산요청시
         viewModel.requestCalculate()
 
-        // then 완성된 수식을 반환한다.
+        // then '완성되지 않은 수식' 이벤트를 발생시킨다.
         val expected = ERROR_INCOMPLETE_EXPRESSION
         val actual = viewModel.event.getOrAwaitValue().consume()
         assertThat(actual).isEqualTo(expected)
@@ -171,7 +171,7 @@ class CalculatorViewModelTest {
         // when 계산요청시
         viewModel.requestCalculate()
 
-        // then 완성된 수식을 반환한다.
+        // then '완성되지 않은 수식' 이벤트를 발생시킨다.
         val expected = ERROR_INCOMPLETE_EXPRESSION
         val actual = viewModel.event.getOrAwaitValue().consume()
         assertThat(actual).isEqualTo(expected)

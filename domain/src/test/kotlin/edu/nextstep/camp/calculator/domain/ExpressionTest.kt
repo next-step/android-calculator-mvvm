@@ -141,10 +141,10 @@ class ExpressionTest {
         // given 14 수식이 주어졌을때
         val expression = Expression(listOf(14))
 
-        // when '14'와 수식을 비교 했을 때
+        // when '15'와 수식을 비교 했을 때
         val actual = expression.isSameValue(15)
 
-        // then true를 반환 한다.
+        // then false를 반환 한다.
         assertThat(actual).isEqualTo(false)
     }
 
