@@ -10,7 +10,7 @@ import edu.nextstep.camp.calculator.domain.Operator
 
 class CalculatorViewModel(
     private val calculator: Calculator = Calculator(),
-    private var lastExpression: Expression = Expression.EMPTY
+    lastExpression: Expression = Expression.EMPTY
 ) : ViewModel() {
 
     private val _expression = MutableLiveData(lastExpression)
@@ -20,30 +20,31 @@ class CalculatorViewModel(
     private val _event = MutableLiveData<Event<CalculatorEvent>>()
     val event: LiveData<Event<CalculatorEvent>>
         get() = _event
-
     fun addOperandToExpression(operand: Int) {
-        lastExpression += operand
-        _expression.value = lastExpression
+        val newExpression = getExpressionOrEmpty() + operand
+        _expression.value = newExpression
     }
 
     fun addOperatorToExpression(operator: Operator) {
-        lastExpression += operator
-        _expression.value = lastExpression
+        val newExpression = getExpressionOrEmpty() + operator
+        _expression.value = newExpression
     }
 
     fun removeLastFromExpression() {
-        lastExpression = lastExpression.removeLast()
-        _expression.value = lastExpression
+        val newExpression = getExpressionOrEmpty().removeLast()
+        _expression.value = newExpression
     }
 
     fun requestCalculate() {
-        val result = calculator.calculate(lastExpression.toString())
-        if (result == null || lastExpression.isSameValue(result)) {
+        val inputtedExpression = getExpressionOrEmpty()
+        val result = calculator.calculate(inputtedExpression.toString())
+        if (result == null || inputtedExpression.isSameValue(result)) {
             _event.value = Event(ERROR_INCOMPLETE_EXPRESSION)
             return
         }
-        lastExpression = Expression.EMPTY + result
-        _expression.value = lastExpression
+        val newExpression = Expression.EMPTY + result
+        _expression.value = newExpression
     }
-
+    
+    private fun getExpressionOrEmpty():Expression = expression.value ?: Expression.EMPTY
 }
