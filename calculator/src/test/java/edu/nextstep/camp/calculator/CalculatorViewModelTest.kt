@@ -9,13 +9,7 @@ import edu.nextstep.camp.calculator.domain.HistoryRepository
 import edu.nextstep.camp.calculator.domain.Operator
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -26,20 +20,15 @@ class CalculatorViewModelTest {
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
+
     @MockK private lateinit var historyRepository: HistoryRepository
     private lateinit var viewModel: CalculatorViewModel
 
-    private val testScope = TestScope()
-
     @Before
     fun setUp() {
-        Dispatchers.setMain(StandardTestDispatcher(testScope.testScheduler))
         MockKAnnotations.init(this, relaxed = true)
-    }
-
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
     }
 
     @Test
