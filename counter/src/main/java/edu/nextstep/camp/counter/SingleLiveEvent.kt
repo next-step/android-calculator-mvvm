@@ -11,11 +11,13 @@ class SingleLiveEvent<T> : MutableLiveData<T>() {
     private val pending = AtomicBoolean(false)
 
     override fun observe(owner: LifecycleOwner, observer: Observer<in T?>) {
-        super.observe(owner, { value ->
+        super.observe(owner) { value ->
             if (pending.compareAndSet(true, false)) {
                 observer.onChanged(value)
+            } else {
+                // 이외의 경우 else문을 비움.
             }
-        })
+        }
     }
 
     @MainThread
