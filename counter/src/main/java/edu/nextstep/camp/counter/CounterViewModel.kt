@@ -23,11 +23,11 @@ class CounterViewModel : ViewModel() {
             if (currentCount.minus(1) < 0) {
                 throw IllegalArgumentException("")
             }
-
-            _counter.value = counter.value?.minus(1)
-            _counter.value
         }
-            .onSuccess {}
+            .onSuccess {
+                _counter.value = counter.value?.minus(1)
+                _counter.value
+            }
             .onFailure { _failInfo.value = true }
     }
 
