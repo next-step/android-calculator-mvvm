@@ -67,7 +67,7 @@ class CalculatorViewModel(
         }
             .onSuccess {
                 _state.value = StringExpressionState.of(it)
-                insertRecord(state = state, result = it)
+                insertRecord(Record(expression = state.toString(), result = it.value))
             }
             .onFailure {
                 setCalculationFailed()
@@ -78,8 +78,7 @@ class CalculatorViewModel(
         _showRecords.value = showRecords.value?.not()
     }
 
-    private fun insertRecord(state: StringExpressionState, result: Operand) {
-        val record = Record(expression = state.toString(), result = result.value)
+    private fun insertRecord(record: Record) {
         viewModelScope.launch(dispatcher) {
             recordsRepository.insert(record)
         }
