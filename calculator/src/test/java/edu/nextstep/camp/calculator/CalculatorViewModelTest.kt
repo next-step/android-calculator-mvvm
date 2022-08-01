@@ -130,6 +130,29 @@ class CalculatorViewModelTest {
         assertThat(actualFlag).isEqualTo(true)
     }
 
+    @Test
+    fun `계산 결과가 존재하지 않을 때 기록 버튼을 누르면 화면에 빈 기록이 표시된다`() {
+        // given
+        val historyList = emptyList<History>()
+        viewModel = CalculatorViewModel(
+            calculator = Calculator(
+                historyRepository = historyRepository,
+                historyList = historyList
+            )
+        )
+
+        // when
+        viewModel.toggleHistory()
+
+        // then
+        val actualList = viewModel.history.getOrAwaitValue()
+        val expectedList = emptyList<HistoryItem>()
+        assertThat(actualList).isEqualTo(expectedList)
+
+        val actualFlag = viewModel.isShowingHistory.getOrAwaitValue()
+        assertThat(actualFlag).isEqualTo(true)
+    }
+
     private fun assertShowing(expected: String) {
         val actual = viewModel.expression.getOrAwaitValue().toString()
         assertThat(actual).isEqualTo(expected)
