@@ -1,11 +1,11 @@
 package edu.nextstep.camp.calculator.domain
 
-object StringCalculator {
+object StringCalculator : Calculator {
 
     private const val OPERATOR_INDEX_UNIT = 2
     private const val OPERATOR_INDEX_BUFFER = 1
 
-    fun calculate(expression: StringExpressionState): Operand {
+    override fun calculate(expression: StringExpressionState): Operand {
         val (rawOperands, rawOperators) = expression.value
             .withIndex()
             .partition { it.index % OPERATOR_INDEX_UNIT == 0 }
@@ -19,7 +19,7 @@ object StringCalculator {
         }
     }
 
-    fun calculate(raw: String): Operand =
+    override fun calculate(raw: String): Operand =
         calculate(StringExpressionState.of(raw))
 
     private fun parseOperands(rawOperands: List<IndexedValue<Term>>): List<Operand> =
