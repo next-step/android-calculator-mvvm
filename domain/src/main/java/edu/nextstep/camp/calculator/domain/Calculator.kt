@@ -1,6 +1,13 @@
 package edu.nextstep.camp.calculator.domain
 
-class Calculator {
+class Calculator(
+    private val historyRepository: HistoryRepository,
+    historyList: List<History> = listOf(),
+) {
+
+    var historyList: List<History> = historyList
+        private set
+
     fun calculate(rawExpression: String): Int? {
         if (rawExpression.isBlank()) return null
 
@@ -13,6 +20,19 @@ class Calculator {
             val secondOperand = values[i + 1].toIntOrNull() ?: return null
             acc = operator.operation(acc, secondOperand)
         }
+
+        historyList += History(rawExpression, acc)
+
         return acc
+    }
+
+    suspend fun saveHistory(): Result<Unit> {
+        return historyRepository.save(historyList)
+    }
+
+    suspend fun loadHistory() {
+        historyRepository.fetch().onSuccess {
+            historyList = it
+        }
     }
 }

@@ -15,18 +15,15 @@ class CounterViewModel(initialValue: Int = 0) : ViewModel() {
         get() = _event
 
     fun increase() {
-        _number.value?.let { number ->
-            _number.value = number + 1
-        }
+        _number.value = _number.value?.plus(1)
     }
 
     fun decrease() {
-        _number.value?.let { number ->
-            if (number > 0) {
-                _number.value = number - 1
-            } else {
-                _event.value = CounterEvent.ShowNegativeError
-            }
+        val number = _number.value ?: return
+        if (number > 0) {
+            _number.value = number - 1
+        } else {
+            _event.value = CounterEvent.ShowNegativeError
         }
     }
 }
