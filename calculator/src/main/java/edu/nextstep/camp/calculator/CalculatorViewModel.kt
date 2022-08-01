@@ -37,8 +37,12 @@ class CalculatorViewModel(
 
     fun requestCalculate() {
         val inputtedExpression = getExpressionOrDefault()
+        if (!inputtedExpression.isCompletedExpression()) {
+            _event.value = Event(ERROR_INCOMPLETE_EXPRESSION)
+            return
+        }
         val result = calculator.calculate(inputtedExpression.toString())
-        if (result == null || inputtedExpression.isSameValue(result)) {
+        if (result == null) {
             _event.value = Event(ERROR_INCOMPLETE_EXPRESSION)
             return
         }
@@ -48,7 +52,7 @@ class CalculatorViewModel(
 
     private fun getExpressionOrDefault(): Expression = expression.value ?: DEFAULT_EXPRESSION
 
-    companion object{
+    companion object {
         private val DEFAULT_EXPRESSION = Expression.EMPTY
     }
 }
