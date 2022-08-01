@@ -70,4 +70,16 @@ internal class CalculatorViewModelTest {
             StringExpressionState.of("3")
         )
     }
+
+    @Test
+    fun `완전하지 않은 형식의 계산이 실행되면 실패 토스트 메시지를 보여줘야 한다`() {
+        // given
+        calculatorViewModel = CalculatorViewModel(state = StringExpressionState.of("1 +"))
+
+        // when
+        calculatorViewModel.calculate()
+
+        // then
+        assertThat(calculatorViewModel.calculationFailed.getOrAwaitValue()).isEqualTo(true)
+    }
 }
