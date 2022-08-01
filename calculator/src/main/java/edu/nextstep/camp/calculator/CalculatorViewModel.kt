@@ -54,13 +54,16 @@ class CalculatorViewModel(
     }
 
     fun calculate() {
-        val expression = _expression.value ?: return
+        val expression = _expression.value ?: run {
+            triggerError()
+            return
+        }
 
         val result = calculator.calculate(expression.toString())
         if (result != null) {
             _expression.value = Expression(listOf(result))
         } else {
-            _calculatorError.value = CalculationException
+            triggerError()
         }
     }
 
@@ -73,6 +76,10 @@ class CalculatorViewModel(
         }
 
         _isShowingHistory.value = !isShowingHistory
+    }
+
+    private fun triggerError() {
+        _calculatorError.value = CalculationException
     }
 
     private fun saveHistory() {
