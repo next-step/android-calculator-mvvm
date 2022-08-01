@@ -5,8 +5,8 @@
             name="viewModel"
             type="edu.nextstep.camp.counter.CounterViewModel" />
     </data>
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,25 +18,26 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{String.valueOf(viewModel.count)}"
             android:textColor="@color/black"
             android:textSize="24sp"
-            tools:text="11"
-            />
+            tools:text="11" />
 
         <Button
             android:id="@+id/buttonUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{()->viewModel.increaseCount()}"
             android:text="Up"
-            tools:ignore="HardcodedText"
-            />
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/buttonDown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{()->viewModel.decreaseCount()}"
             android:text="Down"
-            tools:ignore="HardcodedText"
-            />
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 </layout>
+

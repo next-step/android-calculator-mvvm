@@ -6,48 +6,71 @@ import org.junit.Rule
 import org.junit.Test
 
 class CounterViewModelTest {
-
     @get:Rule
-    val instantExecutorRule = InstantTaskExecutorRule()
-
-    private lateinit var viewModel: CounterViewModel
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
+    lateinit var counterViewModel: CounterViewModel
 
     @Test
-    fun `UP button click and increase one`() {
-        // given
-        viewModel = CounterViewModel(1)
+    fun `count가 2일 때 up 버튼을 클릭하면 count가 3이 된다`() {
+        // given : count가 2일 때
+        val inputValue = 2
+        counterViewModel = CounterViewModel(inputValue)
 
-        // when
-        viewModel.incrementCount()
+        // when : up 버튼을 클릭하면
+        counterViewModel.increaseCount()
 
-        // then
-        val actualCountData = viewModel.count.value
-        assertThat(actualCountData).isEqualTo(2)
+        // then : count가 3이 된다
+        val expectedValue = 3
+        val actualValue = counterViewModel.count.getOrAwaitValue()
+        assertThat(actualValue).isEqualTo(expectedValue)
+    }
+
+    // count가 3일 때
+    // down을 클릭하면
+    // count가 2가 된다
+    @Test
+    fun `count가 3일 때 down을 클릭하면 count가 2가 된다`() {
+        // given : count가 3일 때
+        val inputValue = 3
+        counterViewModel = CounterViewModel(inputValue)
+
+        // when : down을 클릭하면
+        counterViewModel.decreaseCount()
+
+        // then : count가 2가 된다
+        val expectedValue = 2
+        val actualValue = counterViewModel.count.getOrAwaitValue()
+        assertThat(actualValue).isEqualTo(expectedValue)
     }
 
     @Test
-    fun `Down button click and decrease one`() {
-        // given
-        viewModel = CounterViewModel(3)
+    fun `count가 0일 때 down을 클릭하면 count는 0을 유지한다`() {
+        // given : count가 0일 때
+        val startValue = 0
+        counterViewModel = CounterViewModel(startValue)
 
-        // when
-        viewModel.decrementCount()
+        // when : down을 클릭하면
+        counterViewModel.decreaseCount()
 
-        // then
-        val actualCountData = viewModel.count.value
-        assertThat(actualCountData).isEqualTo(2)
+        // then : count는 0을 유지한다
+        val expectedValue = 0
+        val actualValue = counterViewModel.count.getOrAwaitValue()
+        assertThat(actualValue).isEqualTo(expectedValue)
     }
 
     @Test
-    fun `when zero down click and execute error message event`() {
-        // given
-        viewModel = CounterViewModel()
+    fun `count가 0일 때 down 클릭하면 0미만으로 내릴 수 없기에 event 전달`() {
+        // given : count가 0일 때
+        val startValue = 0
+        counterViewModel = CounterViewModel(startValue)
 
-        // when
-        viewModel.decrementCount()
+        // when : down 클릭하면
+        counterViewModel.decreaseCount()
 
-        // then
-        val actualCountData = viewModel.count.value
-        assertThat(actualCountData).isEqualTo(0)
+        // then : 0미만으로 내릴 수 없기에 event 전달
+        val expectedValue = CounterEventData.CAN_NOT_DECREASE_DOWN_ZERO
+        val actualValue = counterViewModel.countEventDataLiveData.getOrAwaitValue().consume()
+        assertThat(actualValue).isEqualTo(expectedValue)
     }
+
 }

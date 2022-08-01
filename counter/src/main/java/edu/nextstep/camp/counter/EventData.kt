@@ -1,6 +1,6 @@
 package edu.nextstep.camp.counter
 
-class Event<out T>(private val content: T) {
+class EventData<out T>(private val content: T) {
     var consumed = false
         private set
 
