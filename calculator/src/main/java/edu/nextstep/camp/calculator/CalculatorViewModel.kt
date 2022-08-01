@@ -10,9 +10,8 @@ import edu.nextstep.camp.calculator.domain.Operator
 
 class CalculatorViewModel(
     private val calculator: Calculator = Calculator(),
-    lastExpression: Expression = Expression.EMPTY
+    lastExpression: Expression = DEFAULT_EXPRESSION
 ) : ViewModel() {
-
     private val _expression = MutableLiveData(lastExpression)
     val expression: LiveData<Expression>
         get() = _expression
@@ -22,22 +21,22 @@ class CalculatorViewModel(
         get() = _event
 
     fun addOperandToExpression(operand: Int) {
-        val newExpression = getExpressionOrEmpty() + operand
+        val newExpression = getExpressionOrDefault() + operand
         _expression.value = newExpression
     }
 
     fun addOperatorToExpression(operator: Operator) {
-        val newExpression = getExpressionOrEmpty() + operator
+        val newExpression = getExpressionOrDefault() + operator
         _expression.value = newExpression
     }
 
     fun removeLastFromExpression() {
-        val newExpression = getExpressionOrEmpty().removeLast()
+        val newExpression = getExpressionOrDefault().removeLast()
         _expression.value = newExpression
     }
 
     fun requestCalculate() {
-        val inputtedExpression = getExpressionOrEmpty()
+        val inputtedExpression = getExpressionOrDefault()
         val result = calculator.calculate(inputtedExpression.toString())
         if (result == null || inputtedExpression.isSameValue(result)) {
             _event.value = Event(ERROR_INCOMPLETE_EXPRESSION)
@@ -47,5 +46,9 @@ class CalculatorViewModel(
         _expression.value = newExpression
     }
 
-    private fun getExpressionOrEmpty(): Expression = expression.value ?: Expression.EMPTY
+    private fun getExpressionOrDefault(): Expression = expression.value ?: DEFAULT_EXPRESSION
+
+    companion object{
+        private val DEFAULT_EXPRESSION = Expression.EMPTY
+    }
 }
