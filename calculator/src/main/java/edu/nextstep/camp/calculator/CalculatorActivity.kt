@@ -14,7 +14,9 @@ class CalculatorActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_calculator)
+        binding = ActivityCalculatorBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
