@@ -24,10 +24,7 @@ class CounterViewModelTest {
         val actualValue = counterViewModel.count.getOrAwaitValue()
         assertThat(actualValue).isEqualTo(expectedValue)
     }
-
-    // count가 3일 때
-    // down을 클릭하면
-    // count가 2가 된다
+    
     @Test
     fun `count가 3일 때 down을 클릭하면 count가 2가 된다`() {
         // given : count가 3일 때
