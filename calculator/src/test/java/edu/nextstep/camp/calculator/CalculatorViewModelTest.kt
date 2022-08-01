@@ -1,6 +1,7 @@
 package edu.nextstep.camp.calculator
 
 import com.google.common.truth.Truth.assertThat
+import edu.nextstep.camp.calculator.domain.ExpressionHistories
 import edu.nextstep.camp.calculator.domain.ExpressionHistory
 import edu.nextstep.camp.calculator.domain.Operator
 import io.mockk.mockk
@@ -166,8 +167,8 @@ class CalculatorViewModelTest {
 
         // then
         val actual = viewModel.expressionHistories.getOrAwaitValue()
-        val expected = listOf(
-            ExpressionHistory("3 - 7", -4)
+        val expected = ExpressionHistories(
+            listOf(ExpressionHistory("3 - 7", -4))
         )
         assertThat(actual).isEqualTo(expected)
     }
