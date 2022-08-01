@@ -7,11 +7,11 @@ import androidx.room.Query
 @Dao
 interface LogDao {
     @Insert
-    fun insert(log: Log)
+    fun insert(log: LogEntity)
 
-    @Query("SELECT * FROM Log")
-    fun getAll(): List<Log>
+    @Query("SELECT * FROM LogEntity")
+    fun getAll(): List<LogEntity>
 
-    @Query("SELECT *  FROM Log ORDER BY id DESC LIMIT 1")
-    fun getLast(): Log
+    @Query("SELECT *  FROM LogEntity ORDER BY id DESC LIMIT 1")
+    fun getLast(): LogEntity
 }

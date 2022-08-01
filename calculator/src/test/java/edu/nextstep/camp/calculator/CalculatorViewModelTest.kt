@@ -8,6 +8,8 @@ import com.google.common.truth.Truth.assertThat
 import edu.nextstep.camp.calculator.memoryview.MemoryUIModel
 import edu.nextstep.camp.data.LogDao
 import edu.nextstep.camp.data.LogDatabase
+import edu.nextstep.camp.data.LogRepository
+import edu.nextstep.camp.data.LogRepositoryImpl
 import edu.nextstep.camp.domain.Expression
 import edu.nextstep.camp.domain.Operator
 import org.junit.Rule
@@ -25,14 +27,15 @@ class CalculatorViewModelTest {
 
     lateinit var viewModel: CalculatorViewModel
 
-    private lateinit var db: LogDatabase
+    private lateinit var repository: LogRepositoryImpl
 
     @Before
     fun setUp() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        db = Room.inMemoryDatabaseBuilder(
+        val db = Room.inMemoryDatabaseBuilder(
             context, LogDatabase::class.java).build()
-        viewModel = CalculatorViewModel(db, Expression.EMPTY)
+        repository = LogRepositoryImpl(db)
+        viewModel = CalculatorViewModel(repository, Expression.EMPTY)
     }
 
     @Test
@@ -95,7 +98,7 @@ class CalculatorViewModelTest {
     fun `32 + 1 이라는 수식이 있을 때, 수식의 마지막을 2번 연속 지우면 마지막으로 추가된 피연산자 1과 연산자 +가 제거됐어야 한다`() {
         //given
         val expression = Expression(listOf(32,Operator.Plus,1))
-        val viewModelWithExpression = CalculatorViewModel(db, expression)
+        val viewModelWithExpression = CalculatorViewModel(repository, expression)
 
         //when
         viewModelWithExpression.deleteExpression()
@@ -110,7 +113,7 @@ class CalculatorViewModelTest {
     fun `3 + 2 라는 완전한 수식이 있을 때, 계산하면 계산 결과가 도출된다`() {
         //given
         val expression = Expression(listOf(3, Operator.Plus, 2))
-        val viewModelWithExpression = CalculatorViewModel(db, expression)
+        val viewModelWithExpression = CalculatorViewModel(repository, expression)
 
         //when
         viewModelWithExpression.calculateExpression()
@@ -138,7 +141,7 @@ class CalculatorViewModelTest {
     fun `계산할 때 수식과 그 결과가 저장되고 계산 기록들이 온전하게 저장되어 있다`() {
         //given
         val expression = Expression(listOf(32,Operator.Plus,1))
-        val viewModelWithExpression = CalculatorViewModel(db, expression)
+        val viewModelWithExpression = CalculatorViewModel(repository, expression)
         viewModelWithExpression.calculateExpression()
 
         //when
