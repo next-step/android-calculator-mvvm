@@ -15,4 +15,5 @@ sealed class CalculatorEvent {
     data class AddOperand(val operand: Int) : CalculatorEvent()
     object RemoveLast : CalculatorEvent()
     object Calculate : CalculatorEvent()
+    object ToggleCalculatorHistory : CalculatorEvent()
 }

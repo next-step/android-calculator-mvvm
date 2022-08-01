@@ -24,7 +24,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.onViewEvent(CalculatorEvent.operand(7))}"
+                android:onClick="@{() -> viewModel.onEvent(CalculatorEvent.operand(7))}"
                 android:text="@string/calculator_7" />
 
             <Button
@@ -32,7 +32,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.onViewEvent(CalculatorEvent.operand(8))}"
+                android:onClick="@{() -> viewModel.onEvent(CalculatorEvent.operand(8))}"
                 android:text="@string/calculator_8" />
 
             <Button
@@ -40,7 +40,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.onViewEvent(CalculatorEvent.operand(9))}"
+                android:onClick="@{() -> viewModel.onEvent(CalculatorEvent.operand(9))}"
                 android:text="@string/calculator_9" />
 
             <Button
@@ -48,7 +48,7 @@
                 style="@style/Widget.Calculator.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.onViewEvent(CalculatorEvent.operator('/'))}"
+                android:onClick="@{() -> viewModel.onEvent(CalculatorEvent.operator('/'))}"
                 android:text="@string/calculator_divide" />
 
             <Button
@@ -56,7 +56,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.onViewEvent(CalculatorEvent.operand(4))}"
+                android:onClick="@{() -> viewModel.onEvent(CalculatorEvent.operand(4))}"
                 android:text="@string/calculator_4" />
 
             <Button
@@ -64,7 +64,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.onViewEvent(CalculatorEvent.operand(5))}"
+                android:onClick="@{() -> viewModel.onEvent(CalculatorEvent.operand(5))}"
                 android:text="@string/calculator_5" />
 
             <Button
@@ -72,7 +72,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.onViewEvent(CalculatorEvent.operand(6))}"
+                android:onClick="@{() -> viewModel.onEvent(CalculatorEvent.operand(6))}"
                 android:text="@string/calculator_6" />
 
             <Button
@@ -80,7 +80,7 @@
                 style="@style/Widget.Calculator.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.onViewEvent(CalculatorEvent.operator('*'))}"
+                android:onClick="@{() -> viewModel.onEvent(CalculatorEvent.operator('*'))}"
                 android:text="@string/calculator_multiply" />
 
             <Button
@@ -88,7 +88,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.onViewEvent(CalculatorEvent.operand(1))}"
+                android:onClick="@{() -> viewModel.onEvent(CalculatorEvent.operand(1))}"
                 android:text="@string/calculator_1" />
 
             <Button
@@ -96,7 +96,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.onViewEvent(CalculatorEvent.operand(2))}"
+                android:onClick="@{() -> viewModel.onEvent(CalculatorEvent.operand(2))}"
                 android:text="@string/calculator_2" />
 
             <Button
@@ -104,7 +104,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.onViewEvent(CalculatorEvent.operand(3))}"
+                android:onClick="@{() -> viewModel.onEvent(CalculatorEvent.operand(3))}"
                 android:text="@string/calculator_3" />
 
             <Button
@@ -112,7 +112,7 @@
                 style="@style/Widget.Calculator.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.onViewEvent(CalculatorEvent.operator('-'))}"
+                android:onClick="@{() -> viewModel.onEvent(CalculatorEvent.operator('-'))}"
                 android:text="@string/calculator_minus" />
 
             <Button
@@ -120,7 +120,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.onViewEvent(CalculatorEvent.operand(0))}"
+                android:onClick="@{() -> viewModel.onEvent(CalculatorEvent.operand(0))}"
                 android:text="@string/calculator_0" />
 
             <Button
@@ -128,7 +128,7 @@
                 style="@style/Widget.Calculator.Button.BackgroundColored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.onViewEvent(CalculatorEvent.Calculate.INSTANCE)}"
+                android:onClick="@{() -> viewModel.onEvent(CalculatorEvent.Calculate.INSTANCE)}"
                 android:text="@string/calculator_equals" />
 
             <Button
@@ -136,7 +136,7 @@
                 style="@style/Widget.Calculator.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.onViewEvent(CalculatorEvent.operator('+'))}"
+                android:onClick="@{() -> viewModel.onEvent(CalculatorEvent.operator('+'))}"
                 android:text="@string/calculator_plus" />
 
             <Space
@@ -153,6 +153,7 @@
             android:hint="0"
             android:textAlignment="viewEnd"
             android:textSize="24sp"
+            android:scrollbars="vertical"
             app:layout_constraintBottom_toBottomOf="@id/divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -186,6 +187,7 @@
             style="@style/Widget.Calculator.Button.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.onEvent(CalculatorEvent.ToggleCalculatorHistory.INSTANCE)}"
             app:icon="@drawable/ic_baseline_access_time_24"
             app:layout_constraintBottom_toBottomOf="@id/buttonDelete"
             app:layout_constraintStart_toStartOf="@id/input"
@@ -197,7 +199,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:onClick="@{() -> viewModel.onViewEvent(CalculatorEvent.RemoveLast.INSTANCE)}"
+            android:onClick="@{() -> viewModel.onEvent(CalculatorEvent.RemoveLast.INSTANCE)}"
             app:icon="@drawable/ic_baseline_keyboard_backspace_24"
             app:layout_constraintBottom_toTopOf="@id/input"
             app:layout_constraintEnd_toEndOf="@id/input" />
