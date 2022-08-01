@@ -7,7 +7,7 @@ class RoomExpressionHistoryRepository(
     private val expressionHistoryDao: ExpressionHistoryDao
 ) : ExpressionHistoryRepository {
     override suspend fun setAll(expressionHistory: List<ExpressionHistory>) {
-        expressionHistoryDao.setAll(expressionHistory.map { it.toEntry() })
+        expressionHistoryDao.setAll(expressionHistory.map { it.toEntity() })
     }
 
     override suspend fun getAll(): List<ExpressionHistory> {

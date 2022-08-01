@@ -19,7 +19,7 @@ data class ExpressionHistoryEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
 )
 
-fun ExpressionHistory.toEntry() =
+fun ExpressionHistory.toEntity() =
     ExpressionHistoryEntity(rawExpression, result)
 
 fun ExpressionHistoryEntity.toExpressionHistoryItem() =
