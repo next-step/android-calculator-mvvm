@@ -8,9 +8,11 @@ import edu.nextstep.camp.calculator.domain.Operator
 import edu.nextstep.camp.calculator.domain.StringCalculator
 import edu.nextstep.camp.calculator.domain.StringExpressionState
 
-class CalculatorViewModel : ViewModel() {
+class CalculatorViewModel(
+    state: StringExpressionState = StringExpressionState.EmptyState()
+) : ViewModel() {
 
-    private val _state = MutableLiveData<StringExpressionState>(StringExpressionState.EmptyState())
+    private val _state = MutableLiveData(state)
     val state: LiveData<StringExpressionState> get() = _state
 
     private val _calculationFailed = SingleLiveEvent<Boolean>()

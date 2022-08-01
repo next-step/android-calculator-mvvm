@@ -13,10 +13,13 @@ internal class CalculatorViewModelTest {
     @RegisterExtension
     val instantTaskExecutorExtension = InstantTaskExecutorExtension()
 
-    private val calculatorViewModel = CalculatorViewModel()
+    private lateinit var calculatorViewModel: CalculatorViewModel
 
     @Test
     fun `숫자가 입력되면 수식에 추가되고 변경된 수식을 보여줘야 한다`() {
+        // given
+        calculatorViewModel = CalculatorViewModel(state = StringExpressionState.EmptyState())
+
         // when
         calculatorViewModel.addElement(Operand(10))
 
@@ -27,9 +30,11 @@ internal class CalculatorViewModelTest {
     }
 
     @Test
-    fun `연산자가 입력되면 수식에 추가되고 변경된 수식을 보여줘야 한다`() {
+    fun `피연산자가 입력되어 있을때, 연산자가 입력되면 수식에 추가되고 변경된 수식을 보여줘야 한다`() {
+        // given
+        calculatorViewModel = CalculatorViewModel(state = StringExpressionState.of("1"))
+
         // when
-        calculatorViewModel.addElement(Operand(1))
         calculatorViewModel.addElement(Operator.PLUS)
 
         // then
@@ -40,8 +45,10 @@ internal class CalculatorViewModelTest {
 
     @Test
     fun `지우기가 실행되면 수식의 마지막이 지워지고 변경된 수식을 보여줘야 한다`() {
+        // given
+        calculatorViewModel = CalculatorViewModel(state = StringExpressionState.of("1"))
+
         // when
-        calculatorViewModel.addElement(Operand(1))
         calculatorViewModel.removeElement()
 
         // then
@@ -52,15 +59,15 @@ internal class CalculatorViewModelTest {
 
     @Test
     fun `계산이 실행되면 계산기에 의해 계산되고 결과를 화면에 보여줘야 한다`() {
+        // given
+        calculatorViewModel = CalculatorViewModel(state = StringExpressionState.of("1 + 2"))
+
         // when
-        calculatorViewModel.addElement(Operand(1))
-        calculatorViewModel.addElement(Operator.PLUS)
-        calculatorViewModel.addElement(Operand(2))
         calculatorViewModel.calculate()
 
         // then
-        assertThat(calculatorViewModel.calculationResult.getOrAwaitValue()).isEqualTo(
-            Operand(3)
+        assertThat(calculatorViewModel.state.getOrAwaitValue()).isEqualTo(
+            StringExpressionState.of("3")
         )
     }
 }
