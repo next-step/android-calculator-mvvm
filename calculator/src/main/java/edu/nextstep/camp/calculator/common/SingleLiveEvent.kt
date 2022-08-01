@@ -1,4 +1,4 @@
-package edu.nextstep.camp.calculator
+package edu.nextstep.camp.calculator.common
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.LifecycleOwner
@@ -11,11 +11,11 @@ class SingleLiveEvent<T> : MutableLiveData<T>() {
     private val pending = AtomicBoolean(false)
 
     override fun observe(owner: LifecycleOwner, observer: Observer<in T?>) {
-        super.observe(owner, { value ->
+        super.observe(owner) { value ->
             if (pending.compareAndSet(true, false)) {
                 observer.onChanged(value)
             }
-        })
+        }
     }
 
     @MainThread

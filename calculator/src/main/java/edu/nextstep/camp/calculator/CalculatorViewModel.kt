@@ -4,23 +4,31 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import edu.nextstep.camp.calculator.common.SingleLiveEvent
 import edu.nextstep.camp.calculator.memoryview.MemoryUIModel
+import edu.nextstep.camp.data.Log
+import edu.nextstep.camp.data.LogDatabase
 import edu.nextstep.camp.domain.Calculator
 import edu.nextstep.camp.domain.Expression
 import edu.nextstep.camp.domain.Operator
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CalculatorViewModel(expression: Expression = Expression.EMPTY) : ViewModel() {
+@HiltViewModel
+class CalculatorViewModel @Inject constructor(private val db: LogDatabase, expression: Expression) : ViewModel() {
     private val calculator = Calculator()
 
     private var isMemoryViewDisplayed = false
-
-    private val logs = mutableListOf<MemoryUIModel>()
 
     private val _visibilityMemoryView =MutableLiveData(View.GONE)
     val visibilityMemoryView: LiveData<Int>
         get() = _visibilityMemoryView
 
-    private val _memoryLog = MutableLiveData(logs.toList())
+    private val _memoryLog = MutableLiveData(listOf<MemoryUIModel>())
     val memoryLog: LiveData<List<MemoryUIModel>>
         get() = _memoryLog
 
@@ -56,7 +64,9 @@ class CalculatorViewModel(expression: Expression = Expression.EMPTY) : ViewModel
     }
 
     private fun saveExpression(expression: String, result: String) {
-        logs.add(MemoryUIModel(logs.size, expression, result))
+        CoroutineScope(Dispatchers.IO).launch {
+            db.logDao().insert(Log(expression, result))
+        }
     }
 
     fun showMemoryView() {
@@ -64,10 +74,34 @@ class CalculatorViewModel(expression: Expression = Expression.EMPTY) : ViewModel
         if (isMemoryViewDisplayed) {
             _visibilityMemoryView.value = View.VISIBLE
             _result.value = Expression.EMPTY
-            _memoryLog.value = logs.toList()
+            fetchMemoryList()
         } else {
             _visibilityMemoryView.value = View.GONE
-            _result.value = Expression(listOf(logs.last().resultText.toInt()))
+            getLastLog()
         }
+    }
+
+    private fun fetchMemoryList() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val list = getLogs()
+            _memoryLog.postValue(mapToMemoryUIModel(list))
+        }
+    }
+
+    private fun getLogs(): List<Log> = db.logDao().getAll()
+
+    private fun getLastLog() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val log = db.logDao().getLast()
+            _result.postValue(Expression(listOf(log.result.toInt())))
+        }
+    }
+
+    private fun mapToMemoryUIModel(logs: List<Log>): List<MemoryUIModel> {
+        val memoryUIModel = mutableListOf<MemoryUIModel>()
+        for (log in logs) {
+            memoryUIModel.add(MemoryUIModel(log.id, log.expressionText, log.result))
+        }
+        return memoryUIModel.toList()
     }
 }
