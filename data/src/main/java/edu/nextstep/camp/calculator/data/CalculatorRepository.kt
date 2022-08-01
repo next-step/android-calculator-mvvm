@@ -9,29 +9,29 @@ import io.realm.Realm
  */
 object CalculatorRepository {
 
-    var calculationRecord: CalculationRecord = CalculationRecord()
+    var calculationRecords: CalculationRecords = CalculationRecords()
         private set
     private lateinit var mRealm: Realm
 
     fun init(context: Context) {
         Realm.init(context)
         mRealm = Realm.getDefaultInstance()
-        mRealm.where(CalculationRecord::class.java)
+        mRealm.where(CalculationRecords::class.java)
             .findFirst()?.let { it ->
                 it.calculationRecordList.forEach { item ->
                     val expression = item.expression ?: return@forEach
                     val result = item.result ?: return@forEach
-                    calculationRecord.addCalculationRecord(expression, result)
+                    calculationRecords.addCalculationRecord(expression, result)
                 }
             }
     }
 
     fun storeCalculationMemory(expression: String, result: Int) {
-        calculationRecord.addCalculationRecord(expression, result)
+        calculationRecords.addCalculationRecord(expression, result)
 
         mRealm.executeTransactionAsync { realm ->
             realm.deleteAll()
-            realm.insert(calculationRecord)
+            realm.insert(calculationRecords)
         }
     }
 

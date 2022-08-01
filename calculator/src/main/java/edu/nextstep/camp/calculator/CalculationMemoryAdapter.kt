@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import edu.nextstep.camp.calculator.data.CalculationRecordItem
+import edu.nextstep.camp.calculator.data.CalculationRecord
 import edu.nextstep.camp.calculator.databinding.ItemResultBinding
 
 /**
@@ -14,7 +14,7 @@ import edu.nextstep.camp.calculator.databinding.ItemResultBinding
  * Created by jeongjinhong on 2022. 07. 24..
  */
 class CalculationMemoryAdapter() :
-    ListAdapter<CalculationRecordItem, RecyclerView.ViewHolder>(ItemDiffCallback()) {
+    ListAdapter<CalculationRecord, RecyclerView.ViewHolder>(ItemDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemResultBinding =
@@ -33,24 +33,24 @@ class CalculationMemoryAdapter() :
         private val binding: ItemResultBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun setData(data: CalculationRecordItem) {
+        fun setData(data: CalculationRecord) {
             binding.tvExpression.text = data.expression
             binding.tvResult.text = "= ${data.result}"
         }
     }
 
-    class ItemDiffCallback : DiffUtil.ItemCallback<CalculationRecordItem>() {
+    class ItemDiffCallback : DiffUtil.ItemCallback<CalculationRecord>() {
         override fun areItemsTheSame(
-            oldItem: CalculationRecordItem,
-            newItem: CalculationRecordItem
+            oldItem: CalculationRecord,
+            newItem: CalculationRecord
         ): Boolean {
             return oldItem.expression == newItem.expression
         }
 
         @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(
-            oldItem: CalculationRecordItem,
-            newItem: CalculationRecordItem
+            oldItem: CalculationRecord,
+            newItem: CalculationRecord
         ): Boolean {
             return oldItem == newItem
         }
