@@ -1,7 +1,9 @@
 package edu.nextstep.camp.calculator
 
 import com.google.common.truth.Truth.assertThat
+import edu.nextstep.camp.calculator.domain.ExpressionHistory
 import edu.nextstep.camp.calculator.domain.Operator
+import io.mockk.mockk
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
 import org.junit.jupiter.params.ParameterizedTest
@@ -13,7 +15,7 @@ class CalculatorViewModelTest {
     @RegisterExtension
     val instantTaskExecutorExtension = InstantTaskExecutorExtension()
 
-    private val viewModel = CalculatorViewModel()
+    private val viewModel = CalculatorViewModel(mockk())
 
     @Test
     fun `입력된 피연산자가 없을 때, 숫자가 입력되면 숫자가 추가된다`() {
@@ -125,8 +127,48 @@ class CalculatorViewModelTest {
         viewModel.calculate()
 
         // then
-        val actual = viewModel.event.getOrAwaitValue().consume()
+        val actual = viewModel.viewEvent.getOrAwaitValue()
         assertThat(actual).isInstanceOf(CalculatorViewModel.ViewEvent.IncompleteExpressionError::class.java)
     }
 
+    @Test
+    fun `계산 기록 화면이 안 보일 때, 토글하면 보인다`() {
+        // when
+        viewModel.toggleExpressionHistory()
+
+        // then
+        val actual = viewModel.isExpressionHistoryOpen.getOrAwaitValue()
+        assertThat(actual).isTrue()
+    }
+
+    @Test
+    fun `계산 기록 화면이 보일 때, 토글하면 안보인다`() {
+        // given 보이는 상태
+        viewModel.toggleExpressionHistory()
+
+        // when
+        viewModel.toggleExpressionHistory()
+
+        // then
+        val actual = viewModel.isExpressionHistoryOpen.getOrAwaitValue()
+        assertThat(actual).isFalse()
+    }
+
+    @Test
+    fun `계산에 성공할 때, 계산 기록한다`() {
+        // given
+        viewModel.addOperand(3)
+        viewModel.addOperator(Operator.Minus)
+        viewModel.addOperand(7)
+
+        // when
+        viewModel.calculate()
+
+        // then
+        val actual = viewModel.expressionHistories.getOrAwaitValue()
+        val expected = listOf(
+            ExpressionHistory("3 - 7", -4)
+        )
+        assertThat(actual).isEqualTo(expected)
+    }
 }

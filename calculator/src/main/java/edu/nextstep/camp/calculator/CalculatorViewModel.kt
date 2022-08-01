@@ -3,23 +3,37 @@ package edu.nextstep.camp.calculator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
+import edu.nextstep.camp.calculator.domain.ExpressionHistory
+import edu.nextstep.camp.calculator.domain.ExpressionHistoryRepository
 import edu.nextstep.camp.calculator.domain.Operator
+import kotlinx.coroutines.launch
 
-class CalculatorViewModel : ViewModel() {
+class CalculatorViewModel(
+    private val expressionHistoryRepository: ExpressionHistoryRepository =
+        CalculatorApp.INSTANCE.expressionHistoryRepository
+) : ViewModel() {
     private var expression = Expression.EMPTY
         set(value) {
             field = value
-            displayExpression()
+            refreshDisplay()
         }
     private val calculator = Calculator()
 
     private val _display: MutableLiveData<String> = MutableLiveData()
     val display: LiveData<String> = _display
 
-    private val _event: MutableLiveData<Event<ViewEvent>> = MutableLiveData()
-    val event: LiveData<Event<ViewEvent>> = _event
+    private val _isExpressionHistoryOpen: MutableLiveData<Boolean> = MutableLiveData(false)
+    val isExpressionHistoryOpen: LiveData<Boolean> = _isExpressionHistoryOpen
+
+    private val _expressionHistories: MutableLiveData<List<ExpressionHistory>> =
+        MutableLiveData(emptyList())
+    val expressionHistories: LiveData<List<ExpressionHistory>> = _expressionHistories
+
+    private val _viewEvent: SingleLiveEvent<ViewEvent> = SingleLiveEvent()
+    val viewEvent: LiveData<ViewEvent> = _viewEvent
 
     fun addOperand(operand: Int) {
         expression += operand
@@ -36,13 +50,48 @@ class CalculatorViewModel : ViewModel() {
     fun calculate() {
         val result = calculator.calculate(expression.toString())
         if (result == null) {
-            _event.value = Event(ViewEvent.IncompleteExpressionError)
+            _viewEvent.value = ViewEvent.IncompleteExpressionError
             return
         }
+        addExpressionHistoryItem(expression, result)
         expression = Expression.EMPTY + result
     }
 
-    private fun displayExpression() {
+    fun toggleExpressionHistory() {
+        if (isExpressionHistoryOpen.value == true) closeExpressionHistory()
+        else openExpressionHistory()
+    }
+
+    fun loadExpressionHistories() {
+        viewModelScope.launch {
+            _expressionHistories.value = expressionHistoryRepository.getAll()
+        }
+    }
+
+    fun saveExpressionHistories() {
+        viewModelScope.launch {
+            expressionHistories.value?.let { expressionHistoryRepository.setAll(it) }
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+    }
+
+    private fun addExpressionHistoryItem(expression: Expression, result: Int) {
+        val historyItem = ExpressionHistory(expression.toString(), result)
+        _expressionHistories.value = _expressionHistories.value.orEmpty() + historyItem
+    }
+
+    private fun closeExpressionHistory() {
+        _isExpressionHistoryOpen.value = false
+    }
+
+    private fun openExpressionHistory() {
+        _isExpressionHistoryOpen.value = true
+    }
+
+    private fun refreshDisplay() {
         _display.value = expression.toString()
     }
 
