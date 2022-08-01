@@ -27,9 +27,9 @@ class CalculatorViewModel(
     val errorEvent: LiveData<Event<ErrorEvent>>
         get() = _errorEvent
 
-    private var _isCalculationMemoryVisible = MutableLiveData(false)
-    val isCalculationMemoryVisible: LiveData<Boolean>
-        get() = _isCalculationMemoryVisible
+    private var _toggleCalculationMemory = MutableLiveData(false)
+    val toggleCalculationMemory: LiveData<Boolean>
+        get() = _toggleCalculationMemory
 
     private var _updateMemory: MutableLiveData<List<CalculationRecordItem>> =
         MutableLiveData(listOf())
@@ -59,8 +59,8 @@ class CalculatorViewModel(
         }
     }
 
-    fun clickCalculationMemory() {
-        _isCalculationMemoryVisible.value = !(_isCalculationMemoryVisible.value ?: false)
+    fun updateCalculationMemory() {
+        _toggleCalculationMemory.value = !(_toggleCalculationMemory.value ?: false)
         _updateMemory.value = calculatorRepository.calculationRecord.calculationRecordList
     }
 

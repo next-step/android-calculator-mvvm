@@ -110,13 +110,13 @@ class CalculatorViewModelTest {
     @Test
     fun `계산기록이 보일때 계산기록 기능 실행하면 사라진다`() {
         // given
-        viewModel.clickCalculationMemory()
+        viewModel.updateCalculationMemory()
 
         // when
-        viewModel.clickCalculationMemory()
+        viewModel.updateCalculationMemory()
 
         // then
-        Truth.assertThat(viewModel.isCalculationMemoryVisible.value)
+        Truth.assertThat(viewModel.toggleCalculationMemory.value)
             .isEqualTo(false)
     }
 
@@ -124,10 +124,10 @@ class CalculatorViewModelTest {
     fun `계산기록이 안보일때 계산기록 기능 실행하면 보인다`() {
         // given
         // when
-        viewModel.clickCalculationMemory()
+        viewModel.updateCalculationMemory()
 
         //then
-        Truth.assertThat(viewModel.isCalculationMemoryVisible.value)
+        Truth.assertThat(viewModel.toggleCalculationMemory.value)
             .isEqualTo(true)
     }
 
