@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import edu.nextstep.camp.counter.CounterEvent.*
 
-class CounterViewModel(private var countValue: Int = 0) : ViewModel() {
+class CounterViewModel(countValue: Int = 0) : ViewModel() {
     private val _count = MutableLiveData(countValue)
     val count: LiveData<Int>
         get() = _count
@@ -15,16 +15,15 @@ class CounterViewModel(private var countValue: Int = 0) : ViewModel() {
         get() = _countEvent
 
     fun increaseCount() {
-        countValue++
-        _count.value = countValue
+        val newValue = (count.value ?: 0) + 1
+        _count.value = newValue
     }
 
     fun decreaseCount() {
-        if (countValue == 0) {
+        if ((count.value ?: 0) == 0) {
             _countEvent.value = Event(CAN_NOT_DECREASE_COUNT_UNDER_0)
             return
         }
-        countValue--
-        _count.value = countValue
+        _count.value = (count.value ?: 0) - 1
     }
 }

@@ -39,6 +39,22 @@ data class Expression(
         }
     }
 
+    fun isCompletedExpression(): Boolean {
+        if (values.size <= 1)
+            return false
+        if (values.size % 2 == 0)
+            return false
+        val indexOfNotOperandInOperandSlot =
+            (0..values.lastIndex step 2).find { values[it] !is Int }
+        if (indexOfNotOperandInOperandSlot != null)
+            return false
+        val indexOfNotOperatorInOperatorSlot =
+            (1..values.lastIndex step 2).find { values[it] !is Operator }
+        if (indexOfNotOperatorInOperatorSlot != null)
+            return false
+        return true
+    }
+
     companion object {
         val EMPTY = Expression()
     }

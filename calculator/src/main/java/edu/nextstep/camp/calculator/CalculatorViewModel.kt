@@ -1,0 +1,58 @@
+package edu.nextstep.camp.calculator
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import edu.nextstep.camp.calculator.CalculatorEvent.*
+import edu.nextstep.camp.calculator.domain.Calculator
+import edu.nextstep.camp.calculator.domain.Expression
+import edu.nextstep.camp.calculator.domain.Operator
+
+class CalculatorViewModel(
+    private val calculator: Calculator = Calculator(),
+    lastExpression: Expression = DEFAULT_EXPRESSION
+) : ViewModel() {
+    private val _expression = MutableLiveData(lastExpression)
+    val expression: LiveData<Expression>
+        get() = _expression
+
+    private val _event = MutableLiveData<Event<CalculatorEvent>>()
+    val event: LiveData<Event<CalculatorEvent>>
+        get() = _event
+
+    fun addOperandToExpression(operand: Int) {
+        val newExpression = getExpressionOrDefault() + operand
+        _expression.value = newExpression
+    }
+
+    fun addOperatorToExpression(operator: Operator) {
+        val newExpression = getExpressionOrDefault() + operator
+        _expression.value = newExpression
+    }
+
+    fun removeLastFromExpression() {
+        val newExpression = getExpressionOrDefault().removeLast()
+        _expression.value = newExpression
+    }
+
+    fun requestCalculate() {
+        val inputtedExpression = getExpressionOrDefault()
+        if (!inputtedExpression.isCompletedExpression()) {
+            _event.value = Event(ERROR_INCOMPLETE_EXPRESSION)
+            return
+        }
+        val result = calculator.calculate(inputtedExpression.toString())
+        if (result == null) {
+            _event.value = Event(ERROR_INCOMPLETE_EXPRESSION)
+            return
+        }
+        val newExpression = Expression.EMPTY + result
+        _expression.value = newExpression
+    }
+
+    private fun getExpressionOrDefault(): Expression = expression.value ?: DEFAULT_EXPRESSION
+
+    companion object {
+        private val DEFAULT_EXPRESSION = Expression.EMPTY
+    }
+}
