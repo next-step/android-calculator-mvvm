@@ -2,7 +2,7 @@ package edu.nextstep.camp.calculator.domain
 
 class Calculator(
     private val historyRepository: HistoryRepository,
-    historyList: List<History> = listOf(),
+    historyList: List<History> = emptyList(),
 ) {
 
     var historyList: List<History> = historyList

@@ -19,8 +19,8 @@ class CalculatorViewModel(
     val expression: LiveData<Expression>
         get() = _expression
 
-    private val _calculatorError = SingleLiveEvent<Unit>()
-    val calculatorError: LiveData<Unit>
+    private val _calculatorError = SingleLiveEvent<CalculationException>()
+    val calculatorError: LiveData<CalculationException>
         get() = _calculatorError
 
     private val _isShowingHistory = MutableLiveData(false)
@@ -31,11 +31,7 @@ class CalculatorViewModel(
     val history: LiveData<List<HistoryItem>>
         get() = _history
 
-    init {
-        loadHistory()
-    }
-
-    private fun loadHistory() {
+    fun loadHistory() {
         viewModelScope.launch {
             calculator.loadHistory()
         }
@@ -54,13 +50,16 @@ class CalculatorViewModel(
     }
 
     fun calculate() {
-        val expression = _expression.value ?: return
+        val expression = _expression.value ?: run {
+            triggerError()
+            return
+        }
 
         val result = calculator.calculate(expression.toString())
         if (result != null) {
             _expression.value = Expression(listOf(result))
         } else {
-            _calculatorError.call()
+            triggerError()
         }
     }
 
@@ -73,6 +72,10 @@ class CalculatorViewModel(
         }
 
         _isShowingHistory.value = !isShowingHistory
+    }
+
+    private fun triggerError() {
+        _calculatorError.value = CalculationException
     }
 
     private fun saveHistory() {

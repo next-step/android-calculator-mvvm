@@ -9,13 +9,7 @@ import edu.nextstep.camp.calculator.domain.HistoryRepository
 import edu.nextstep.camp.calculator.domain.Operator
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -26,26 +20,24 @@ class CalculatorViewModelTest {
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
+
     @MockK private lateinit var historyRepository: HistoryRepository
     private lateinit var viewModel: CalculatorViewModel
 
-    private val testScope = TestScope()
-
     @Before
     fun setUp() {
-        Dispatchers.setMain(StandardTestDispatcher(testScope.testScheduler))
         MockKAnnotations.init(this, relaxed = true)
-    }
-
-    @After
-    fun tearDown() {
-        Dispatchers.resetMain()
     }
 
     @Test
     fun `숫자가 입력되면 수식에 추가되고 변경된 수식을 보여줘야 한다`() {
         // given
-        viewModel = CalculatorViewModel(expression = Expression.EMPTY, calculator = Calculator(historyRepository))
+        viewModel = CalculatorViewModel(
+            expression = Expression.EMPTY,
+            calculator = Calculator(historyRepository)
+        )
 
         // when
         viewModel.addToExpression(1)
@@ -57,7 +49,10 @@ class CalculatorViewModelTest {
     @Test
     fun `연산자가 입력되면 수식에 추가되고 변경된 수식을 보여줘야 한다`() {
         // given
-        viewModel = CalculatorViewModel(expression = Expression(listOf(1)), calculator = Calculator(historyRepository))
+        viewModel = CalculatorViewModel(
+            expression = Expression(listOf(1)),
+            calculator = Calculator(historyRepository)
+        )
 
         // when
         viewModel.addToExpression(Operator.Plus)
@@ -69,7 +64,10 @@ class CalculatorViewModelTest {
     @Test
     fun `지우기가 실행되면 수식의 마지막이 지워지고 변경된 수식을 보여줘야 한다`() {
         // given
-        viewModel = CalculatorViewModel(expression = Expression(listOf(1)), calculator = Calculator(historyRepository))
+        viewModel = CalculatorViewModel(
+            expression = Expression(listOf(1)),
+            calculator = Calculator(historyRepository)
+        )
 
         // when
         viewModel.removeLast()
@@ -81,7 +79,10 @@ class CalculatorViewModelTest {
     @Test
     fun `계산이 실행되면 계산기에 의해 계산되고 결과를 화면에 보여줘야 한다`() {
         // given
-        viewModel = CalculatorViewModel(expression = Expression(listOf(1, Operator.Plus, 2)), calculator = Calculator(historyRepository))
+        viewModel = CalculatorViewModel(
+            expression = Expression(listOf(1, Operator.Plus, 2)),
+            calculator = Calculator(historyRepository)
+        )
 
         // when
         viewModel.calculate()
@@ -93,21 +94,29 @@ class CalculatorViewModelTest {
     @Test
     fun `완성되지 않은 수식에 대한 계산이 실행되면 오류를 화면에 표시한다`() {
         // given
-        viewModel = CalculatorViewModel(expression = Expression(listOf(1, Operator.Plus)), calculator = Calculator(historyRepository))
+        viewModel = CalculatorViewModel(
+            expression = Expression(listOf(1, Operator.Plus)),
+            calculator = Calculator(historyRepository)
+        )
 
         // when
         viewModel.calculate()
 
         // then
         val actual = viewModel.calculatorError.getOrAwaitValue()
-        assertThat(actual).isEqualTo(Unit)
+        assertThat(actual).isEqualTo(CalculationException)
     }
 
     @Test
     fun `계산 결과가 존재할 때 기록 버튼을 누르면 화면에 기록을 표시한다`() {
         // given
         val historyList = listOf(History("8 - 3", 5))
-        viewModel = CalculatorViewModel(calculator = Calculator(historyRepository = historyRepository, historyList = historyList))
+        viewModel = CalculatorViewModel(
+            calculator = Calculator(
+                historyRepository = historyRepository,
+                historyList = historyList
+            )
+        )
 
         // when
         viewModel.toggleHistory()
@@ -115,6 +124,29 @@ class CalculatorViewModelTest {
         // then
         val actualList = viewModel.history.getOrAwaitValue()
         val expectedList = listOf(HistoryItem("8 - 3", "= 5"))
+        assertThat(actualList).isEqualTo(expectedList)
+
+        val actualFlag = viewModel.isShowingHistory.getOrAwaitValue()
+        assertThat(actualFlag).isEqualTo(true)
+    }
+
+    @Test
+    fun `계산 결과가 존재하지 않을 때 기록 버튼을 누르면 화면에 빈 기록이 표시된다`() {
+        // given
+        val historyList = emptyList<History>()
+        viewModel = CalculatorViewModel(
+            calculator = Calculator(
+                historyRepository = historyRepository,
+                historyList = historyList
+            )
+        )
+
+        // when
+        viewModel.toggleHistory()
+
+        // then
+        val actualList = viewModel.history.getOrAwaitValue()
+        val expectedList = emptyList<HistoryItem>()
         assertThat(actualList).isEqualTo(expectedList)
 
         val actualFlag = viewModel.isShowingHistory.getOrAwaitValue()
