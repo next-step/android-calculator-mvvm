@@ -31,6 +31,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+        freeCompilerArgs += [
+                "-Xjvm-default=all",
+        ]
     }
     buildFeatures {
         viewBinding true
@@ -60,5 +63,14 @@ dependencies {
     implementation 'androidx.fragment:fragment-ktx:1.5.1'
     testImplementation 'androidx.arch.core:core-testing:2.1.0'
 
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.2"
+
+    // Room
+    def room_version = "2.4.3"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+
     implementation(project(":domain"))
+    implementation(project(":data"))
 }
