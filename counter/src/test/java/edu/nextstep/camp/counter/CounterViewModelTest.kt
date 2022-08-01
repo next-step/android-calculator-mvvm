@@ -15,11 +15,11 @@ class CounterViewModelTest {
     fun `ViewModel은 기본적으로 EMPTY를 반환한다`() {
         // given
         val viewModel = CounterViewModel()
-        val expected = CounterViewState.EMPTY
+        val expected = CounterState.EMPTY
 
         // when
         // then
-        val actual = viewModel.onViewState.getOrAwaitValue().consume() as CounterViewState.EMPTY
+        val actual = viewModel.onViewState.getOrAwaitValue().consume() as CounterState.EMPTY
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -30,10 +30,10 @@ class CounterViewModelTest {
         val expected = 1
 
         // when
-        viewModel.onEvent(CounterViewEvent.Up)
+        viewModel.onEvent(CounterEvent.Up)
 
         // then
-        val actual: CounterViewState.Counted = viewModel.onViewState.getOrAwaitValue().consume() as CounterViewState.Counted
+        val actual: CounterState.Counted = viewModel.onViewState.getOrAwaitValue().consume() as CounterState.Counted
         assertThat(actual.counteredNumber).isEqualTo(expected)
     }
 
@@ -44,10 +44,10 @@ class CounterViewModelTest {
         val expected = 1
 
         // when
-        viewModel.onEvent(CounterViewEvent.Down)
+        viewModel.onEvent(CounterEvent.Down)
 
         // then
-        val actual: CounterViewState.Counted = viewModel.onViewState.getOrAwaitValue().consume() as CounterViewState.Counted
+        val actual: CounterState.Counted = viewModel.onViewState.getOrAwaitValue().consume() as CounterState.Counted
         assertThat(actual.counteredNumber).isEqualTo(expected)
     }
 
@@ -55,13 +55,13 @@ class CounterViewModelTest {
     fun `0일때 Down 이벤트를 전달받으면 카운터 State는 ZeroDownError를 반환한다`() {
         // given
         val viewModel = CounterViewModel(Counter(0))
-        val expected = CounterViewState.ZeroDownError
+        val expected = CounterState.ZeroDownError
 
         // when
-        viewModel.onEvent(CounterViewEvent.Down)
+        viewModel.onEvent(CounterEvent.Down)
 
         // then
-        val actual = viewModel.onViewState.getOrAwaitValue().consume() as CounterViewState.ZeroDownError
+        val actual = viewModel.onViewState.getOrAwaitValue().consume() as CounterState.ZeroDownError
         assertThat(actual).isEqualTo(expected)
     }
 }

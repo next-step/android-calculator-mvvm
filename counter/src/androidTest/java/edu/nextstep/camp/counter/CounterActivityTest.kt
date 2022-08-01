@@ -1,11 +1,7 @@
 package edu.nextstep.camp.counter
 
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import edu.nextstep.camp.common.AndroidTestHelper
 import org.junit.Rule
 import org.junit.Test
 
@@ -16,28 +12,27 @@ class CounterActivityTest {
     @Test
     fun up() {
         // when
-        onView(withId(R.id.buttonUp)).perform(click())
+        AndroidTestHelper.onViewsClick(R.id.buttonUp)
 
         // then
-        onView(withId(R.id.textView)).check(matches(withText("1")))
+        AndroidTestHelper.onViewMatchText(R.id.textView, "1")
     }
 
     @Test
     fun down_1_to_0() {
         // when
-        onView(withId(R.id.buttonUp)).perform(click())
-        onView(withId(R.id.buttonDown)).perform(click())
+        AndroidTestHelper.onViewsClick(R.id.buttonUp, R.id.buttonDown)
 
         // then
-        onView(withId(R.id.textView)).check(matches(withText("0")))
+        AndroidTestHelper.onViewMatchText(R.id.textView, "0")
     }
 
     @Test
     fun down_0_to_0() {
         // when
-        onView(withId(R.id.buttonDown)).perform(click())
+        AndroidTestHelper.onViewsClick(R.id.buttonDown)
 
         // then
-        onView(withId(R.id.textView)).check(matches(withText("0")))
+        AndroidTestHelper.onViewMatchText(R.id.textView, "0")
     }
 }

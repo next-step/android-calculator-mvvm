@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Up"
-            android:onClick="@{() -> viewModel.onEvent(CounterViewEvent.Up.INSTANCE)}"
+            android:onClick="@{() -> viewModel.onEvent(CounterEvent.Up.INSTANCE)}"
             tools:ignore="HardcodedText" />
 
         <Button
@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Down"
-            android:onClick="@{() -> viewModel.onEvent(CounterViewEvent.Down.INSTANCE)}"
+            android:onClick="@{() -> viewModel.onEvent(CounterEvent.Down.INSTANCE)}"
             tools:ignore="HardcodedText" />
 
         <TextView
@@ -36,9 +36,11 @@
 
     <data>
 
-        <import type="edu.nextstep.camp.counter.CounterViewEvent"/>
-        <import type="edu.nextstep.camp.counter.CounterViewEvent.Down"/>
-        <import type="edu.nextstep.camp.counter.CounterViewEvent.Up"/>
+        <import type="edu.nextstep.camp.counter.CounterEvent" />
+
+        <import type="edu.nextstep.camp.counter.CounterEvent.Down" />
+
+        <import type="edu.nextstep.camp.counter.CounterEvent.Up" />
 
         <variable
             name="viewModel"

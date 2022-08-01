@@ -3,54 +3,92 @@ package edu.nextstep.camp.calculator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import edu.nextstep.camp.domain.calculator.Calculator
-import edu.nextstep.camp.domain.calculator.Expression
-import edu.nextstep.camp.domain.calculator.Operator
+import androidx.lifecycle.viewModelScope
+import edu.nextstep.camp.domain.calculator.*
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
     private val calculator: Calculator = Calculator(),
-    private var expression: Expression = Expression.EMPTY
+    private var expression: Expression = Expression.EMPTY,
+    private var isShowingHistory: Boolean = false,
+    private val calculationRecordsRepository: CalculationRecordsRepository,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
-    private val _onViewState = MutableLiveData<Event<CalculatorViewState>>()
-    val onViewState: LiveData<Event<CalculatorViewState>> get() = _onViewState
+    private val _onState = MutableLiveData<Event<CalculatorState>>()
+    val onState: LiveData<Event<CalculatorState>> get() = _onState
 
-
-    fun onViewEvent(event: CalculatorViewEvent) {
+    fun onEvent(event: CalculatorEvent) {
         when (event) {
-            is CalculatorViewEvent.AddOperand -> eventAddOperand(event.operand)
-            is CalculatorViewEvent.AddOperator -> eventAddOperator(event.operator)
-            CalculatorViewEvent.Calculate -> eventCalculate()
-            CalculatorViewEvent.RemoveLast -> eventRemoveLast()
+            is CalculatorEvent.AddOperand -> eventAddOperand(event.operand)
+            is CalculatorEvent.AddOperator -> eventAddOperator(event.operator)
+            CalculatorEvent.Calculate -> eventCalculate()
+            CalculatorEvent.RemoveLast -> eventRemoveLast()
+            CalculatorEvent.ToggleCalculatorHistory -> eventToggleCalculatorHistory()
         }
     }
 
-    private fun sendViewState(content: CalculatorViewState) {
-        _onViewState.postValue(Event(content))
+    private fun sendViewState(content: CalculatorState) {
+        _onState.postValue(Event(content))
+    }
+
+    private fun sendShowExpressionState() {
+        isShowingHistory = false
+        sendViewState(CalculatorState.ShowExpression(expression))
+    }
+
+    private fun sendLoadedCalculatorRecordsState() {
+        viewModelScope.launch(dispatcher) {
+            calculationRecordsRepository.loadCalculationRecords().let {
+                CalculatorState.LoadedCalculatorHistory(it)
+            }.run {
+                sendViewState(this)
+            }
+        }
+    }
+
+    private fun eventToggleCalculatorHistory() {
+        if (isShowingHistory) {
+            sendShowExpressionState()
+        } else {
+            sendLoadedCalculatorRecordsState()
+            isShowingHistory = true
+        }
     }
 
     private fun eventAddOperand(operand: Int) {
         expression += operand
-        sendViewState(CalculatorViewState.ShowExpression(expression))
+        sendShowExpressionState()
     }
 
     private fun eventAddOperator(operator: Operator) {
         expression += operator
-        sendViewState(CalculatorViewState.ShowExpression(expression))
+        sendShowExpressionState()
     }
 
     private fun eventRemoveLast() {
         expression = expression.removeLast()
-        sendViewState(CalculatorViewState.ShowExpression(expression))
+        sendShowExpressionState()
     }
 
     private fun eventCalculate() {
         val result = calculator.calculate(expression.toString())
         if (result == null) {
-            sendViewState(CalculatorViewState.ShowIncompleteExpressionError)
+            sendViewState(CalculatorState.ShowIncompleteExpressionError)
         } else {
+            saveCalculatorResult(expression, result)
             expression = Expression(listOf(result))
-            sendViewState(CalculatorViewState.ShowResult(result))
+            sendViewState(CalculatorState.ShowResult(result))
+        }
+    }
+
+    private fun saveCalculatorResult(expression: Expression, result: Int) {
+        viewModelScope.launch(dispatcher) {
+            calculationRecordsRepository.saveCalculationRecord(
+                CalculationRecord(expression, result)
+            )
         }
     }
 }
