@@ -1,7 +1,14 @@
 package edu.nextstep.camp.calculator.domain
 
-class ExpressionHistories(
-    vararg _histories: ExpressionHistory
+data class ExpressionHistories(
+    val histories: List<ExpressionHistory>
 ) {
-    private val histories: List<ExpressionHistory> = _histories.toList()
+
+    fun add(history: ExpressionHistory): ExpressionHistories {
+        return ExpressionHistories(histories + history)
+    }
+
+    companion object {
+        val EMPTY = ExpressionHistories(emptyList())
+    }
 }

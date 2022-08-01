@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
+import edu.nextstep.camp.calculator.domain.ExpressionHistories
 import edu.nextstep.camp.calculator.domain.ExpressionHistory
 import edu.nextstep.camp.calculator.domain.ExpressionHistoryRepository
 import edu.nextstep.camp.calculator.domain.Operator
@@ -28,9 +29,9 @@ class CalculatorViewModel(
     private val _isExpressionHistoryOpen: MutableLiveData<Boolean> = MutableLiveData(false)
     val isExpressionHistoryOpen: LiveData<Boolean> = _isExpressionHistoryOpen
 
-    private val _expressionHistories: MutableLiveData<List<ExpressionHistory>> =
-        MutableLiveData(emptyList())
-    val expressionHistories: LiveData<List<ExpressionHistory>> = _expressionHistories
+    private val _expressionHistories: MutableLiveData<ExpressionHistories> =
+        MutableLiveData(ExpressionHistories.EMPTY)
+    val expressionHistories: LiveData<ExpressionHistories> = _expressionHistories
 
     private val _viewEvent: SingleLiveEvent<ViewEvent> = SingleLiveEvent()
     val viewEvent: LiveData<ViewEvent> = _viewEvent
@@ -64,13 +65,14 @@ class CalculatorViewModel(
 
     fun loadExpressionHistories() {
         viewModelScope.launch {
-            _expressionHistories.value = expressionHistoryRepository.getAll()
+            _expressionHistories.value = ExpressionHistories(expressionHistoryRepository.getAll())
         }
     }
 
     fun saveExpressionHistories() {
         viewModelScope.launch {
-            expressionHistories.value?.let { expressionHistoryRepository.setAll(it) }
+            expressionHistories.value?.histories
+                ?.let { expressionHistoryRepository.setAll(it) }
         }
     }
 
@@ -80,7 +82,7 @@ class CalculatorViewModel(
 
     private fun addExpressionHistoryItem(expression: Expression, result: Int) {
         val historyItem = ExpressionHistory(expression.toString(), result)
-        _expressionHistories.value = _expressionHistories.value.orEmpty() + historyItem
+        _expressionHistories.value = _expressionHistories.value?.add(historyItem)
     }
 
     private fun closeExpressionHistory() {
