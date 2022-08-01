@@ -34,7 +34,10 @@ class CalculatorViewModelTest {
     @Test
     fun `숫자가 입력되면 수식에 추가되고 변경된 수식을 보여줘야 한다`() {
         // given
-        viewModel = CalculatorViewModel(expression = Expression.EMPTY, calculator = Calculator(historyRepository))
+        viewModel = CalculatorViewModel(
+            expression = Expression.EMPTY,
+            calculator = Calculator(historyRepository)
+        )
 
         // when
         viewModel.addToExpression(1)
@@ -46,7 +49,10 @@ class CalculatorViewModelTest {
     @Test
     fun `연산자가 입력되면 수식에 추가되고 변경된 수식을 보여줘야 한다`() {
         // given
-        viewModel = CalculatorViewModel(expression = Expression(listOf(1)), calculator = Calculator(historyRepository))
+        viewModel = CalculatorViewModel(
+            expression = Expression(listOf(1)),
+            calculator = Calculator(historyRepository)
+        )
 
         // when
         viewModel.addToExpression(Operator.Plus)
@@ -58,7 +64,10 @@ class CalculatorViewModelTest {
     @Test
     fun `지우기가 실행되면 수식의 마지막이 지워지고 변경된 수식을 보여줘야 한다`() {
         // given
-        viewModel = CalculatorViewModel(expression = Expression(listOf(1)), calculator = Calculator(historyRepository))
+        viewModel = CalculatorViewModel(
+            expression = Expression(listOf(1)),
+            calculator = Calculator(historyRepository)
+        )
 
         // when
         viewModel.removeLast()
@@ -70,7 +79,10 @@ class CalculatorViewModelTest {
     @Test
     fun `계산이 실행되면 계산기에 의해 계산되고 결과를 화면에 보여줘야 한다`() {
         // given
-        viewModel = CalculatorViewModel(expression = Expression(listOf(1, Operator.Plus, 2)), calculator = Calculator(historyRepository))
+        viewModel = CalculatorViewModel(
+            expression = Expression(listOf(1, Operator.Plus, 2)),
+            calculator = Calculator(historyRepository)
+        )
 
         // when
         viewModel.calculate()
@@ -82,7 +94,10 @@ class CalculatorViewModelTest {
     @Test
     fun `완성되지 않은 수식에 대한 계산이 실행되면 오류를 화면에 표시한다`() {
         // given
-        viewModel = CalculatorViewModel(expression = Expression(listOf(1, Operator.Plus)), calculator = Calculator(historyRepository))
+        viewModel = CalculatorViewModel(
+            expression = Expression(listOf(1, Operator.Plus)),
+            calculator = Calculator(historyRepository)
+        )
 
         // when
         viewModel.calculate()
@@ -96,7 +111,12 @@ class CalculatorViewModelTest {
     fun `계산 결과가 존재할 때 기록 버튼을 누르면 화면에 기록을 표시한다`() {
         // given
         val historyList = listOf(History("8 - 3", 5))
-        viewModel = CalculatorViewModel(calculator = Calculator(historyRepository = historyRepository, historyList = historyList))
+        viewModel = CalculatorViewModel(
+            calculator = Calculator(
+                historyRepository = historyRepository,
+                historyList = historyList
+            )
+        )
 
         // when
         viewModel.toggleHistory()
