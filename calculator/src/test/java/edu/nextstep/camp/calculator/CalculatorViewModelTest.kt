@@ -162,6 +162,7 @@ class CalculatorViewModelTest {
         val actual = viewModel.event.getOrAwaitValue().consume()
         assertThat(actual).isEqualTo(expected)
     }
+
     @Test
     fun `피연산자 하나만 있는 불완전한 수식일 때 계산 요청시 '완성되지 않은 수식'에러 이벤트를 발생시킨다`() {
         // given 연산자로 끝나는 불완전한 수식인 경우

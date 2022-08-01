@@ -125,7 +125,7 @@ class ExpressionTest {
     }
 
     @Test
-    fun `빈 수식이 완성된 수식인지  확인시 false 가 반환된다`() {
+    fun `빈 수식이 완성된 수식인지 확인시 false 가 반환된다`() {
         // given 빈 수식이 주어졌을때
         val expression = Expression.EMPTY
 
@@ -159,6 +159,7 @@ class ExpressionTest {
         // then false를 반환 한다.
         assertThat(actual).isEqualTo(false)
     }
+
     @Test
     fun `수식 '14 + 18'이 완성된 수식인지  확인시 true 가 반환된다`() {
         // given 14 + 18 수식이 주어졌을때
