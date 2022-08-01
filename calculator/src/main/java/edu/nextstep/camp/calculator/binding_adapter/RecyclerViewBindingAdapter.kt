@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 @BindingAdapter("submitList")
-internal fun <T, VH: RecyclerView.ViewHolder> RecyclerView.submitList(itemList: List<T>?) {
+internal fun <T, VH: RecyclerView.ViewHolder> submitList(recyclerView: RecyclerView, itemList: List<T>?) {
     if (itemList == null) return
-    (adapter as? ListAdapter<T, VH>)?.submitList(itemList)
+    (recyclerView.adapter as? ListAdapter<T, VH>)?.submitList(itemList)
 }
