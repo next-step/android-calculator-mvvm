@@ -25,7 +25,7 @@ internal class HistoryRepositoryImpl(
 
     override suspend fun fetch(): Result<List<History>> {
         return runCatching {
-            val rawList = sharedPreferences.getString(KEY_HISTORY_LIST, null) ?: return@runCatching listOf()
+            val rawList = sharedPreferences.getString(KEY_HISTORY_LIST, null) ?: return@runCatching emptyList()
             Json.decodeFromString<List<HistoryData>>(rawList).map { it.toDomain() }
         }
     }
