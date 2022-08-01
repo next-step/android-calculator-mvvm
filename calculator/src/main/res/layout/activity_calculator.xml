@@ -44,7 +44,7 @@
             app:layout_constraintStart_toStartOf="@id/textView"
             app:layout_constraintTop_toTopOf="@id/textView"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:isVisible="@{viewModel.isVisibleHistoryLayout()}"
+            app:isVisible="@{viewModel.isVisibleHistory()}"
             tools:listitem="@layout/item_result"
             tools:visibility="visible" />
 
@@ -74,7 +74,7 @@
             style="@style/Widget.Calculator.Button.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{()->viewModel.setVisibilityHistoryLayout(!viewModel.isVisibleHistoryLayout)}"
+            android:onClick="@{()->viewModel.setVisibilityHistory(!viewModel.isVisibleHistory)}"
             app:icon="@drawable/ic_baseline_access_time_24"
             app:layout_constraintBottom_toBottomOf="@id/buttonDelete"
             app:layout_constraintStart_toStartOf="@id/input"

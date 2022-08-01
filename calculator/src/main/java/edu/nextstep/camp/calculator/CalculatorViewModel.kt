@@ -27,9 +27,9 @@ class CalculatorViewModel(
     val calculateErrorEvent: LiveData<Event<CalculateError>>
         get() = _calculateErrorEvent
 
-    private var _isVisibleHistoryLayout = MutableLiveData(false)
-    val isVisibleHistoryLayout: LiveData<Boolean>
-        get() = _isVisibleHistoryLayout
+    private var _isVisibleHistory = MutableLiveData(false)
+    val isVisibleHistory: LiveData<Boolean>
+        get() = _isVisibleHistory
 
     private var _historyList = MutableLiveData<List<History>>()
     val historyList: LiveData<List<History>>
@@ -60,8 +60,8 @@ class CalculatorViewModel(
         }
     }
 
-    fun setVisibilityHistoryLayout(isVisible: Boolean) {
-        _isVisibleHistoryLayout.value = isVisible
+    fun setVisibilityHistory(isVisible: Boolean) {
+        _isVisibleHistory.value = isVisible
     }
 
     fun loadHistories() {

@@ -93,10 +93,10 @@ class CalculatorViewModelTest {
         viewModel = CalculatorViewModel(mockk())
 
         // when : 계산버튼을 누르면
-        viewModel.setVisibilityHistoryLayout(true)
+        viewModel.setVisibilityHistory(true)
 
         // then : 레이아웃이 보인다.
-        val actual = viewModel.isVisibleHistoryLayout.value
+        val actual = viewModel.isVisibleHistory.value
         assertThat(actual).isTrue()
     }
 
@@ -104,13 +104,13 @@ class CalculatorViewModelTest {
     fun `계산기록이 보일때 계산기록 버튼 클릭시 레이아웃이 안보인다`() {
         // given : 계산기록이 보일때
         viewModel = CalculatorViewModel(mockk())
-        viewModel.setVisibilityHistoryLayout(true)
+        viewModel.setVisibilityHistory(true)
 
         // when : 계산버튼을 누르면
-        viewModel.setVisibilityHistoryLayout(false)
+        viewModel.setVisibilityHistory(false)
 
         // then : 레이아웃이 안보인다.
-        val actual = viewModel.isVisibleHistoryLayout.value
+        val actual = viewModel.isVisibleHistory.value
         assertThat(actual).isFalse()
     }
 
