@@ -97,6 +97,7 @@ internal class CalculatorViewModelTest {
         assertThat(calculatorViewModel.state.getOrAwaitValue()).isEqualTo(
             StringExpressionState.of("3")
         )
+        assertThat(calculatorViewModel.records.getOrAwaitValue().size).isEqualTo(1)
         coVerify { recordsRepository.insert(Record(expression = givenExpression, result = 3.0)) }
     }
 
@@ -143,5 +144,18 @@ internal class CalculatorViewModelTest {
 
         // then
         assertThat(calculatorViewModel.showRecords.getOrAwaitValue()).isEqualTo(false)
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `화면이 초기화될때 저장된 기록을 불러와야 한다`() {
+        // given
+        calculatorViewModel = CalculatorViewModel(
+            recordsRepository = recordsRepository,
+            dispatcher = UnconfinedTestDispatcher()
+        )
+
+        // then
+        coVerify { recordsRepository.getAll() }
     }
 }
