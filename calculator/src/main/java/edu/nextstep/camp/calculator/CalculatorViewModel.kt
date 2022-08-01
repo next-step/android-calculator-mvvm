@@ -20,6 +20,7 @@ class CalculatorViewModel(
     private val _event = MutableLiveData<Event<CalculatorEvent>>()
     val event: LiveData<Event<CalculatorEvent>>
         get() = _event
+
     fun addOperandToExpression(operand: Int) {
         val newExpression = getExpressionOrEmpty() + operand
         _expression.value = newExpression
@@ -45,6 +46,6 @@ class CalculatorViewModel(
         val newExpression = Expression.EMPTY + result
         _expression.value = newExpression
     }
-    
-    private fun getExpressionOrEmpty():Expression = expression.value ?: Expression.EMPTY
+
+    private fun getExpressionOrEmpty(): Expression = expression.value ?: Expression.EMPTY
 }
