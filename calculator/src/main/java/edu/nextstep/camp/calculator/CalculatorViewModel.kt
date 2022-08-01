@@ -14,25 +14,25 @@ import edu.nextstep.camp.calculator.domain.Operator
  * Created by jeongjinhong on 2022. 07. 30..
  */
 class CalculatorViewModel(
-    private val calculator: Calculator = Calculator(),
     private var _expression: MutableLiveData<Expression> = MutableLiveData(Expression.EMPTY),
-    private var _errorEvent: MutableLiveData<Event<ErrorEvent>> = MutableLiveData(Event(ErrorEvent.NORMAL)),
-    private var calculatorRepository: CalculatorRepository = CalculatorRepository,
-    private var _isCalculationMemoryVisible: MutableLiveData<Boolean> = MutableLiveData(false),
-    private var _updateMemory: MutableLiveData<List<CalculationRecordItem>> = MutableLiveData(
-        listOf()
-    )
+    private var calculatorRepository: CalculatorRepository = CalculatorRepository
 ) : ViewModel() {
+
+    private val calculator = Calculator()
 
     val expression: LiveData<Expression>
         get() = _expression
 
+    private var _errorEvent = MutableLiveData(Event(ErrorEvent.NORMAL))
     val errorEvent: LiveData<Event<ErrorEvent>>
         get() = _errorEvent
 
+    private var _isCalculationMemoryVisible = MutableLiveData(false)
     val isCalculationMemoryVisible: LiveData<Boolean>
         get() = _isCalculationMemoryVisible
 
+    private var _updateMemory: MutableLiveData<List<CalculationRecordItem>> =
+        MutableLiveData(listOf())
     val updateMemory: LiveData<List<CalculationRecordItem>>
         get() = _updateMemory
 
