@@ -7,11 +7,9 @@ import edu.nextstep.camp.calculator.domain.Operand
 import edu.nextstep.camp.calculator.domain.Operator
 import edu.nextstep.camp.calculator.domain.StringExpressionState
 import io.mockk.coVerify
-import io.mockk.confirmVerified
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
@@ -28,11 +26,6 @@ internal class CalculatorViewModelTest {
     @BeforeEach
     fun setUp() {
         recordsRepository = mockk(relaxed = true)
-    }
-
-    @AfterEach
-    fun clearUp() {
-        confirmVerified(recordsRepository)
     }
 
     @Test
@@ -120,5 +113,35 @@ internal class CalculatorViewModelTest {
 
         // then
         assertThat(calculatorViewModel.calculationFailed.getOrAwaitValue()).isEqualTo(true)
+    }
+
+    @Test
+    fun `계산 기록이 안보이는 상태에서 시계 버튼을 누르면 계산 기록 UI가 사라져야 한다`() {
+        // given
+        calculatorViewModel = CalculatorViewModel(
+            recordsRepository = recordsRepository,
+            shouldShowRecords = false
+        )
+
+        // when
+        calculatorViewModel.toggleRecords()
+
+        // then
+        assertThat(calculatorViewModel.showRecords.getOrAwaitValue()).isEqualTo(true)
+    }
+
+    @Test
+    fun `계산 기록이 보이는 상태에서 시계 버튼을 누르면 계산 기록 UI가 사라져야 한다`() {
+        // given
+        calculatorViewModel = CalculatorViewModel(
+            recordsRepository = recordsRepository,
+            shouldShowRecords = true
+        )
+
+        // when
+        calculatorViewModel.toggleRecords()
+
+        // then
+        assertThat(calculatorViewModel.showRecords.getOrAwaitValue()).isEqualTo(false)
     }
 }

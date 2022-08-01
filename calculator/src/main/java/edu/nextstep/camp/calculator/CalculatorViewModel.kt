@@ -19,6 +19,7 @@ class CalculatorViewModel(
     val recordsRepository: RecordsRepository,
     val calculator: Calculator = StringCalculator,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
+    shouldShowRecords: Boolean = false,
     state: StringExpressionState = StringExpressionState.EmptyState()
 ) : ViewModel() {
 
@@ -28,6 +29,20 @@ class CalculatorViewModel(
     private val _calculationFailed = SingleLiveEvent<Boolean>()
     val calculationFailed: LiveData<Boolean>
         get() = _calculationFailed
+
+    private val _showRecords = MutableLiveData(shouldShowRecords)
+    val showRecords: LiveData<Boolean>
+        get() = _showRecords
+
+    private val _records = MutableLiveData<List<Record>>()
+    val records: LiveData<List<Record>>
+        get() = _records
+
+    init {
+        viewModelScope.launch(dispatcher) {
+            _records.postValue(recordsRepository.getAll())
+        }
+    }
 
     fun addOperand(operand: Int) {
         addElement(Operand(operand))
@@ -59,10 +74,17 @@ class CalculatorViewModel(
             }
     }
 
-    private fun insertRecord(state: StringExpressionState, result: Operand) =
+    fun toggleRecords() {
+        _showRecords.value = showRecords.value?.not()
+    }
+
+    private fun insertRecord(state: StringExpressionState, result: Operand) {
+        val record = Record(expression = state.toString(), result = result.value)
         viewModelScope.launch(dispatcher) {
-            recordsRepository.insert(Record(expression = state.toString(), result = result.value))
+            recordsRepository.insert(record)
         }
+        _records.value = _records.value?.plus(record)
+    }
 
     private fun setCalculationFailed() {
         _calculationFailed.value = true
