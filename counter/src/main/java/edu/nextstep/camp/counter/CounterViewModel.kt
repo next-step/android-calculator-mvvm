@@ -18,7 +18,6 @@ class CounterViewModel : ViewModel() {
 
     fun down() {
         runCatching {
-            // 기본 값이 0 이므로 ?: 0 처리
             val currentCount = counter.value ?: 0
 
             if (currentCount.minus(1) < 0) {
