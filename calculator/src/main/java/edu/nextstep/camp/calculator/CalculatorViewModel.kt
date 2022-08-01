@@ -31,11 +31,7 @@ class CalculatorViewModel(
     val history: LiveData<List<HistoryItem>>
         get() = _history
 
-    init {
-        loadHistory()
-    }
-
-    private fun loadHistory() {
+    fun loadHistory() {
         viewModelScope.launch {
             calculator.loadHistory()
         }

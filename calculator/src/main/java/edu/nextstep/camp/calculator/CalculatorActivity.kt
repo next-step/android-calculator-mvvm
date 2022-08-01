@@ -19,6 +19,7 @@ class CalculatorActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.recyclerView.adapter = HistoryListAdapter()
 
+        viewModel.loadHistory()
         setEventListener()
     }
 
