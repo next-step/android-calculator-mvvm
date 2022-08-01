@@ -19,8 +19,8 @@ class CalculatorViewModel(
     val expression: LiveData<Expression>
         get() = _expression
 
-    private val _calculatorError = SingleLiveEvent<Unit>()
-    val calculatorError: LiveData<Unit>
+    private val _calculatorError = SingleLiveEvent<CalculationException>()
+    val calculatorError: LiveData<CalculationException>
         get() = _calculatorError
 
     private val _isShowingHistory = MutableLiveData(false)
@@ -60,7 +60,7 @@ class CalculatorViewModel(
         if (result != null) {
             _expression.value = Expression(listOf(result))
         } else {
-            _calculatorError.call()
+            _calculatorError.value = CalculationException
         }
     }
 

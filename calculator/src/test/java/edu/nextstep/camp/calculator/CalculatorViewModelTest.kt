@@ -100,7 +100,7 @@ class CalculatorViewModelTest {
 
         // then
         val actual = viewModel.calculatorError.getOrAwaitValue()
-        assertThat(actual).isEqualTo(Unit)
+        assertThat(actual).isEqualTo(CalculationException)
     }
 
     @Test
