@@ -28,9 +28,6 @@ class CalculatorActivity : AppCompatActivity() {
         viewModel.calculationFailed.observe(this) {
             showCalculationFailedToast()
         }
-        viewModel.calculationFailed.observe(this) {
-            showCalculationFailedToast()
-        }
     }
 
     private fun showCalculationFailedToast() {
