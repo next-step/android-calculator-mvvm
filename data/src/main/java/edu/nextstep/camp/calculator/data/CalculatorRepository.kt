@@ -12,72 +12,33 @@ object CalculatorRepository {
 
     private lateinit var db: CalculatorDatabase
 
-    var calculationRecords: CalculationRecords = CalculationRecords()
+    var calculationRecordList: MutableList<CalculationRecord> = mutableListOf()
         private set
 
     fun init(context: Context) {
         db = Room.databaseBuilder(
             context,
-            CalculatorDatabase::class.java, "calculation_records.db"
+            CalculatorDatabase::class.java, "calculationRecord.db"
         ).build()
     }
 
-    suspend fun getCalculationRecords(): List<CalculationRecords> {
+    suspend fun getCalculationRecords(): List<CalculationRecord> {
         return db.calculationRecordsDao().getAll()
     }
 
-    private suspend fun insert() {
-        return db.calculationRecordsDao().insert(calculationRecords)
-    }
-
-    suspend fun remove() {
-        db.calculationRecordsDao().delete(calculationRecords)
+    private suspend fun insert(calculationRecord: CalculationRecord) {
+        return db.calculationRecordsDao().insert(calculationRecord)
     }
 
     suspend fun storeCalculationMemory(expression: String, result: Int) {
-        calculationRecords.addCalculationRecord(expression, result)
+        calculationRecordList.add(CalculationRecord(expression, result))
 
-        insert()
+        insert(CalculationRecord(expression, result))
     }
 
     suspend fun loadCalculationRecords() {
-        getCalculationRecords().getOrNull(0)?.let {
-            calculationRecords = it
-        }
+        calculationRecordList = getCalculationRecords().toMutableList()
+
     }
 
 }
-
-/*
-object CalculatorRepository {
-
-    var calculationRecords: CalculationRecords = CalculationRecords()
-        private set
-    private lateinit var mRealm: Realm
-
-    fun init(context: Context) {
-        Realm.init(context)
-        mRealm = Realm.getDefaultInstance()
-        mRealm.where(CalculationRecords::class.java)
-            .findFirst()?.let { it ->
-                it.calculationRecordList.forEach { item ->
-                    val expression = item.expression ?: return@forEach
-                    val result = item.result ?: return@forEach
-                    calculationRecords.addCalculationRecord(expression, result)
-                }
-            }
-    }
-
-    fun storeCalculationMemory(expression: String, result: Int) {
-        calculationRecords.addCalculationRecord(expression, result)
-
-        mRealm.executeTransactionAsync { realm ->
-            realm.deleteAll()
-            realm.insert(calculationRecords)
-        }
-    }
-
-}
-
-
- */
