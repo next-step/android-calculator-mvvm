@@ -1,36 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    tools:context=".CounterActivity"
-    >
+<layout>
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        tools:text="11"
-        />
+    <data>
 
-    <Button
-        android:id="@+id/buttonUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Up"
-        tools:ignore="HardcodedText"
-        />
+        <variable
+            name="counterVM"
+            type="edu.nextstep.camp.counter.CounterViewModel" />
+    </data>
 
-    <Button
-        android:id="@+id/buttonDown"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Down"
-        tools:ignore="HardcodedText"
-        />
-</LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:context=".CounterActivity">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{String.valueOf(counterVM.count)}"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            tools:text="0" />
+
+        <Button
+            android:id="@+id/buttonUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{()-> counterVM.increment()}"
+            android:text="Up"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/buttonDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{()-> counterVM.decrement()}"
+            android:text="Down"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+</layout>
