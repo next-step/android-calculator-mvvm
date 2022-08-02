@@ -22,7 +22,7 @@ object CalculatorRepository {
         ).build()
     }
 
-    suspend fun getCalculationRecords(): List<CalculationRecord> {
+    private suspend fun getCalculationRecords(): List<CalculationRecord> {
         return db.calculationRecordsDao().getAll()
     }
 

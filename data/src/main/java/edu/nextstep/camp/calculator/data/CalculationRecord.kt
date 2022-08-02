@@ -11,5 +11,5 @@ import androidx.room.PrimaryKey
 class CalculationRecord(
     val expression: String,
     val result: Int,
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0
 )
