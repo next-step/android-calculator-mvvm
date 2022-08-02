@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
  * Created by link.js on 2022. 07. 28..
  */
 class CalculatorViewModel(
-    private val historyRepository: HistoryRepository = CalculatorApplication.INSTANCE.repository,
+    private val historyRepository: HistoryRepository,
     private val calculator: Calculator = Calculator(),
     initExpression: List<Any> = emptyList(),
 ) : ViewModel() {
