@@ -8,13 +8,10 @@ internal class DefaultCalculationRecordsRepository(
 ) : CalculationRecordsRepository {
 
     override suspend fun saveCalculationRecord(vararg records: CalculationRecord) {
-        calculationRecordsDao.insertCalculationRecords(*records.map(::mapTo).toTypedArray())
+        calculationRecordsDao.insertCalculationRecords(*records.map(CalculationRecordEntity::of).toTypedArray())
     }
 
     override suspend fun loadCalculationRecords(): List<CalculationRecord> {
-        return calculationRecordsDao.loadCalculationRecords().map(::mapTo).toList()
+        return calculationRecordsDao.loadCalculationRecords().map(CalculationRecordEntity::mapToDomain).toList()
     }
-
-    private fun mapTo(calculationRecordEntity: CalculationRecordEntity): CalculationRecord = CalculationRecord(calculationRecordEntity.expression, calculationRecordEntity.result)
-    private fun mapTo(calculationRecord: CalculationRecord): CalculationRecordEntity = CalculationRecordEntity(calculationRecord.expression, calculationRecord.result)
 }
