@@ -144,4 +144,15 @@ class CalculatorViewModelTest {
         // then : 계산기록이 잘 저장된다.
         coVerify { repository.setHistories(expected) }
     }
+
+    @Test
+    fun `계산기록 불러올때 계산했던 기록을 잘 불러온다`() {
+        // when : 계산기록을 불러올때
+        val repository: HistoryRepository = mockk(relaxed = true)
+        viewModel = CalculatorViewModel(repository)
+        viewModel.loadHistories()
+
+        // then : 계산했던 기록을 잘 불러온다
+        coVerify { repository.getHistories() }
+    }
 }
