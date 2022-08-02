@@ -3,16 +3,24 @@ package edu.nextstep.camp.calculator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.nextstep.camp.calculator.data.repository.EvaluationRecordRepositoryImpl
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.EvaluationRecord
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 import edu.nextstep.camp.calculator.domain.repository.EvaluationRecordRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class CalculatorViewModel : ViewModel() {
-    private val calculator = Calculator()
-    private val evaluationRecordRepository: EvaluationRecordRepository = EvaluationRecordRepositoryImpl()
+@HiltViewModel
+class CalculatorViewModel @Inject constructor(
+    private val evaluationRecordRepository: EvaluationRecordRepository,
+    private val calculator: Calculator
+    ): ViewModel() {
     private var expression = Expression.EMPTY
 
     private val _state = MutableLiveData<State>(State.ShowExpression(Expression.EMPTY))
@@ -49,7 +57,11 @@ class CalculatorViewModel : ViewModel() {
                     _sideEffect.value = Event(SideEffect.IncompleteExpressionError)
                 } else {
                     _state.value = State.ShowExpression(Expression(listOf(result)))
-                    evaluationRecordRepository.record(EvaluationRecord(expression.toString(), result.toString()))
+                    viewModelScope.launch {
+                        withContext(Dispatchers.IO) {
+                            evaluationRecordRepository.record(EvaluationRecord(expression.toString(), result.toString()))
+                        }
+                    }
                 }
             }
             .onFailure {
@@ -66,7 +78,7 @@ class CalculatorViewModel : ViewModel() {
         when (val currentState = _state.value) {
             is State.ShowExpression -> {
                 expression = currentState.expression
-                _state.value = State.ShowHistory(evaluationRecordRepository.getEvaluationHistory())
+//                _state.value = State.ShowHistory(evaluationRecordRepository.getEvaluationHistory())
             }
             is State.ShowHistory -> {
                 _state.value = State.ShowExpression(expression)
