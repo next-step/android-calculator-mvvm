@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import edu.nextstep.camp.calculator.databinding.ItemResultBinding
 import androidx.recyclerview.widget.ListAdapter
-import edu.nextstep.camp.calculator.domain.EvaluationRecord
+import edu.nextstep.camp.calculator.domain.model.EvaluationRecord
 
 class EvaluationHistoryAdapter : ListAdapter<EvaluationRecord, RecordViewHolder>(EvaluationHistoryDiffCallback()) {
 
@@ -20,7 +20,7 @@ class EvaluationHistoryAdapter : ListAdapter<EvaluationRecord, RecordViewHolder>
 
     internal class EvaluationHistoryDiffCallback : DiffUtil.ItemCallback<EvaluationRecord>() {
         override fun areItemsTheSame(oldItem: EvaluationRecord, newItem: EvaluationRecord): Boolean {
-            return oldItem === newItem
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(oldItem: EvaluationRecord, newItem: EvaluationRecord): Boolean {

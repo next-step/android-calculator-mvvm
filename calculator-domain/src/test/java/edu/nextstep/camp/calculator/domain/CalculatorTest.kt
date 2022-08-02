@@ -34,7 +34,7 @@ class CalculatorTest {
     @Test
     fun `곱하기`() {
         // when
-        val actual = calculator.calculate("1 * 2")
+        val actual = calculator.calculate("1 × 2")
 
         // then
         assertThat(actual).isEqualTo(2)
@@ -43,7 +43,7 @@ class CalculatorTest {
     @Test
     fun `나누기`() {
         // when
-        val actual = calculator.calculate("4 / 2")
+        val actual = calculator.calculate("4 ÷ 2")
 
         // then
         assertThat(actual).isEqualTo(2)

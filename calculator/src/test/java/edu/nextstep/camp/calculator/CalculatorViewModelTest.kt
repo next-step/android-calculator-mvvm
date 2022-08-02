@@ -3,8 +3,9 @@ package edu.nextstep.camp.calculator
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import edu.nextstep.camp.calculator.domain.Calculator
-import edu.nextstep.camp.calculator.domain.Expression
-import edu.nextstep.camp.calculator.domain.Operator
+import edu.nextstep.camp.calculator.domain.model.Expression
+import edu.nextstep.camp.calculator.domain.model.Operator
+import io.mockk.mockk
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -22,7 +23,7 @@ class CalculatorViewModelTest {
     @Before
     fun setUp() {
         calculator = Calculator()
-        viewModel = CalculatorViewModel()
+        viewModel = CalculatorViewModel(mockk())
     }
 
     @Test
@@ -32,7 +33,8 @@ class CalculatorViewModelTest {
 
         // then
         val expected = Expression(listOf(1))
-        assertThat(viewModel.expression.value).isEqualTo(expected)
+        val actual = (viewModel.state.value as? CalculatorViewModel.State.ShowExpression)?.expression
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
@@ -44,7 +46,8 @@ class CalculatorViewModelTest {
 
         // then
         val expected = Expression(listOf(1, Operator.Plus))
-        assertThat(viewModel.expression.value).isEqualTo(expected)
+        val actual = (viewModel.state.value as? CalculatorViewModel.State.ShowExpression)?.expression
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
@@ -55,7 +58,8 @@ class CalculatorViewModelTest {
 
         // then
         val expected = Expression.EMPTY
-        assertThat(viewModel.expression.value).isEqualTo(expected)
+        val actual = (viewModel.state.value as? CalculatorViewModel.State.ShowExpression)?.expression
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
@@ -71,7 +75,8 @@ class CalculatorViewModelTest {
 
         // then
         val expected = Expression(listOf(3))
-        assertThat(viewModel.expression.value).isEqualTo(expected)
+        val actual = (viewModel.state.value as? CalculatorViewModel.State.ShowExpression)?.expression
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
@@ -118,6 +123,7 @@ class CalculatorViewModelTest {
 
         // then
         val expected = Expression(listOf(1, Operator.Divide))
-        assertThat(viewModel.expression.value).isEqualTo(expected)
+        val actual = (viewModel.state.value as? CalculatorViewModel.State.ShowExpression)?.expression
+        assertThat(actual).isEqualTo(expected)
     }
 }

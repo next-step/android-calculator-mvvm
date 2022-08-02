@@ -1,6 +1,6 @@
 package edu.nextstep.camp.calculator.data
 
-import edu.nextstep.camp.calculator.domain.EvaluationRecord
+import edu.nextstep.camp.calculator.domain.model.EvaluationRecord
 
 fun EvaluationRecord.toEntity() : EvaluationRecordEntity =
     EvaluationRecordEntity(expression = this.expression, result = this.result)

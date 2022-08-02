@@ -1,4 +1,4 @@
-package edu.nextstep.camp.calculator.di
+package edu.nextstep.camp.calculator.data.di
 
 import android.content.Context
 import dagger.Module
