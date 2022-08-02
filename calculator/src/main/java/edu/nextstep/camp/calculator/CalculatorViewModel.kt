@@ -10,9 +10,7 @@ import edu.nextstep.camp.calculator.domain.model.EvaluationRecord
 import edu.nextstep.camp.calculator.domain.model.Expression
 import edu.nextstep.camp.calculator.domain.model.Operator
 import edu.nextstep.camp.calculator.domain.repository.EvaluationRecordRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,9 +55,7 @@ class CalculatorViewModel @Inject constructor(
                 } else {
                     _state.value = State.ShowExpression(Expression(listOf(result)))
                     viewModelScope.launch {
-                        withContext(Dispatchers.IO) {
-                            evaluationRecordRepository.record(EvaluationRecord(expression.toString(), result.toString()))
-                        }
+                        evaluationRecordRepository.record(EvaluationRecord(expression.toString(), result.toString()))
                     }
                 }
             }
@@ -78,7 +74,7 @@ class CalculatorViewModel @Inject constructor(
             is State.ShowExpression -> {
                 expression = currentState.expression
                 viewModelScope.launch {
-                    _state.value = State.ShowHistory(withContext(Dispatchers.IO) { evaluationRecordRepository.getEvaluationHistory() })
+                    _state.value = State.ShowHistory(evaluationRecordRepository.getEvaluationHistory())
                 }
             }
             is State.ShowHistory -> {
