@@ -41,6 +41,7 @@ class CalculatorActivity : AppCompatActivity() {
     private fun setupViewModel() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        viewModel.loadCalculationMemory()
     }
 
     private fun showIncompleteExpressionError() {

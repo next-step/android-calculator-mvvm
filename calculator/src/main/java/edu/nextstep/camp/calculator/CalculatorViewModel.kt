@@ -3,11 +3,13 @@ package edu.nextstep.camp.calculator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import edu.nextstep.camp.calculator.data.CalculationRecord
 import edu.nextstep.camp.calculator.data.CalculatorRepository
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
+import kotlinx.coroutines.launch
 
 /**
  * CalculatorActivity에 대한 viewModel
@@ -54,8 +56,20 @@ class CalculatorViewModel(
         if (result == null) {
             _errorEvent.value = Event(ErrorEvent.INCOMPLETE_EXPRESSION_ERROR)
         } else {
-            calculatorRepository.storeCalculationMemory(expression.value.toString(), result)
+            storeCalculationMemory(result)
             _expression.value = Expression(listOf(result))
+        }
+    }
+
+    private fun storeCalculationMemory(result: Int) {
+        viewModelScope.launch {
+            calculatorRepository.storeCalculationMemory(expression.value.toString(), result)
+        }
+    }
+
+    fun loadCalculationMemory() {
+        viewModelScope.launch {
+            calculatorRepository.loadCalculationRecords()
         }
     }
 
