@@ -3,7 +3,9 @@ package edu.nextstep.camp.calculator
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import edu.nextstep.camp.calculator.data.History
+import edu.nextstep.camp.calculator.data.HistoryRepository
 import edu.nextstep.camp.calculator.domain.Operator
+import io.mockk.coVerify
 import io.mockk.mockk
 import org.junit.Rule
 import org.junit.Test
@@ -126,5 +128,20 @@ class CalculatorViewModelTest {
         // then : 계산기록이 저장된다.
         val actual = viewModel.historyList.value
         assertThat(actual).isEqualTo(listOf(History(expression = "2 + 2", result = 4)))
+    }
+
+    @Test
+    fun `계산기록 저장시 계산했던 결과들이 repository에 잘 저장된다`() {
+        // given : 계산기록 추가
+        val testExpression = listOf(2, Operator.Plus, 2)
+        val repository: HistoryRepository = mockk(relaxed = true)
+        viewModel = CalculatorViewModel(repository, initExpression = testExpression)
+        viewModel.calculate()
+        val expected = listOf(History(expression = "2 + 2", result = 4))
+
+        // when : 계산기록 저장시
+        viewModel.saveHistories()
+        // then : 계산기록이 잘 저장된다.
+        coVerify { repository.setHistories(expected) }
     }
 }
