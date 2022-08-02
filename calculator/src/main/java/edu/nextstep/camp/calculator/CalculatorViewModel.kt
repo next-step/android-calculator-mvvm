@@ -30,26 +30,29 @@ class CalculatorViewModel(
     val isShowHistory: LiveData<Boolean>
         get() = _isShowHistory
 
-    private fun getExpressionValue() = _expression.value ?: initExpression
-
     fun addToExpression(operand: Int) {
-        _expression.value = getExpressionValue() + operand
+        val expression = expression.value ?: return
+        _expression.value = expression + operand
     }
 
     fun addToExpression(operator: Operator) {
-        _expression.value = getExpressionValue() + operator
+        val expression = expression.value ?: return
+        _expression.value = expression + operator
     }
 
     fun removeLast() {
-        _expression.value = getExpressionValue().removeLast()
+        val expression = expression.value ?: return
+        _expression.value = expression.removeLast()
     }
 
     fun calculate() {
-        val result = calculator.calculate(getExpressionValue().toString())
+        val expression = expression.value ?: return
+        val result = calculator.calculate(expression.toString())
+
         if (result == null) {
             _errorEvent.value = Event.CalculatorError
         } else {
-            insertHistory(getExpressionValue(), result)
+            insertHistory(expression, result)
             _expression.value = Expression(listOf(result))
         }
     }
