@@ -11,23 +11,27 @@ import edu.nextstep.camp.calculator.domain.CalculateHistory
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
     private var expression: Expression = Expression.EMPTY,
     private val calculatorDatabase: CalculatorDatabase,
+    private val calculator: Calculator = Calculator(),
 ) : ViewModel() {
-    private val calculator = Calculator()
 
+    private val _calculateHistories = MutableLiveData<List<CalculateHistory>>()
     val calculateHistories: LiveData<List<CalculateHistory>>
         get() = _calculateHistories
-    private val _calculateHistories = MutableLiveData<List<CalculateHistory>>()
+
     private val _calculatorText = MutableLiveData("")
     val calculatorText: LiveData<String>
         get() = _calculatorText
+
     private val _isShowCalculatorHistory = MutableLiveData(false)
     val isShowingCalculatorHistory: LiveData<Boolean>
         get() = _isShowCalculatorHistory
+
     private val _showIncompleteExpressionError = MutableLiveData<Unit>()
     val showIncompleteExpressionError: LiveData<Unit>
         get() = _showIncompleteExpressionError
@@ -77,9 +81,9 @@ class CalculatorViewModel(
 
     fun getCalculateHistories() {
         viewModelScope.launch {
-            calculatorDatabase.calculateHistoryDao().getCalculateHistories().collect {
-                _calculateHistories.value = mapToCalculateHistory(it)
-            }
+            calculatorDatabase.calculateHistoryDao().getCalculateHistories()
+                .map(::mapToCalculateHistory)
+                .collect(_calculateHistories::setValue)
         }
     }
 
