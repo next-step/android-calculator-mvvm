@@ -3,7 +3,7 @@ package edu.nextstep.camp.data
 import edu.nextstep.camp.domain.calculator.CalculationRecord
 import edu.nextstep.camp.domain.calculator.CalculationRecordsRepository
 
-internal class CalculationRecordsRepositoryImpl(
+internal class DefaultCalculationRecordsRepository(
     private val calculationRecordsDao: CalculationRecordsDao
 ) : CalculationRecordsRepository {
 
