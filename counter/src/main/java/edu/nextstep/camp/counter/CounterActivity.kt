@@ -19,6 +19,7 @@ class CounterActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
 
         counterViewModel.failInfo.observe(this) {
+            if (!it) return@observe
             Toast.makeText(applicationContext, "0 미만으로 내려갈 수 없습니다.", Toast.LENGTH_LONG).show()
         }
     }

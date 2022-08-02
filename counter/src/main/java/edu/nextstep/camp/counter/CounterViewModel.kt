@@ -18,17 +18,16 @@ class CounterViewModel : ViewModel() {
 
     fun down() {
         runCatching {
-            // 기본 값이 0 이므로 ?: 0 처리
             val currentCount = counter.value ?: 0
 
             if (currentCount.minus(1) < 0) {
                 throw IllegalArgumentException("")
             }
-
-            _counter.value = counter.value?.minus(1)
-            _counter.value
         }
-            .onSuccess {}
+            .onSuccess {
+                _counter.value = counter.value?.minus(1)
+                _counter.value
+            }
             .onFailure { _failInfo.value = true }
     }
 
