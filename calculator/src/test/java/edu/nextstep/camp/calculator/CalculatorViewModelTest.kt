@@ -3,8 +3,7 @@ package edu.nextstep.camp.calculator
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import edu.nextstep.camp.calculator.CalculatorEvent.*
-import edu.nextstep.camp.calculator.domain.Expression
-import edu.nextstep.camp.calculator.domain.Operator
+import edu.nextstep.camp.calculator.domain.*
 import org.junit.Rule
 import org.junit.Test
 
@@ -178,4 +177,48 @@ class CalculatorViewModelTest {
         assertThat(actual).isEqualTo(expected)
     }
 
+    @Test
+    fun `계산 결과 목록의 visible 상태 값이 true일 때 상태 값 변경 요청을 하면 false를 전달 한다`() {
+        // given 계산 결과 목록의 visible 상태 값이 true일 때
+        viewModel = CalculatorViewModel(lastCalculationHistoryVisibility = true)
+
+        // when 상태 값 변경 요청을 하면
+        viewModel.toggleCalculationHistoryVisibility()
+
+        // then 상태 값은 false 가 전달 된다
+        val actual = viewModel.isCalculationHistoryVisible.getOrAwaitValue()
+        assertThat(actual).isEqualTo(false)
+    }
+
+    @Test
+    fun `계산 결과 목록의 visible 상태 값이 false일 때 상태 값 변경 요청을 하면 true를 전달 한다`() {
+        // given 계산 결과 목록의 visible 상태 값이 false일 때
+        viewModel = CalculatorViewModel(lastCalculationHistoryVisibility = false)
+
+        // when 상태 값 변경 요청을 하면
+        viewModel.toggleCalculationHistoryVisibility()
+
+        // then 상태 값은 true 가 전달 된다
+        val actual = viewModel.isCalculationHistoryVisible.getOrAwaitValue()
+        assertThat(actual).isEqualTo(true)
+    }
+
+    @Test
+    fun `계산 결과 최신화 요청시 저장된 계산 결과를 전달 한다`() {
+        // given 이미 저장된 결과가 있을 시
+        val expectedList =
+            mutableListOf(
+                CalculationResult(Expression(listOf("1", Operator.Plus, "1")), 2),
+                CalculationResult(Expression(listOf("3", Operator.Plus, "2")), 5)
+            )
+        viewModel =
+            CalculatorViewModel(calculationResultStorage = CalculationResultStorage(expectedList))
+
+        // when 계산 결과 최신화 요청을 하면
+        viewModel.requestCalculationResultsUpdate()
+
+        // then 저장된 계산 결과가 전달 된다
+        val actual = viewModel.calculationResults.getOrAwaitValue()
+        assertThat(actual).isEqualTo(expectedList)
+    }
 }
