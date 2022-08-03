@@ -46,4 +46,23 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    testImplementation 'io.mockk:mockk:1.12.4'
+    testImplementation 'com.google.truth:truth:1.1.3'
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1"
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
+    androidTestImplementation 'com.google.truth:truth:1.1.3'
+
+//    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+//    testImplementation project(path: ':androidTestCommon')
+//    androidTestImplementation project(path: ':androidTestCommon')
+//    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.8.2' // junit4 지원
+//
+//
+//    androidTestImplementation "org.junit.jupiter:junit-jupiter-params:5.8.2"
+//    androidTestImplementation "androidx.test:runner:1.4.0"
+//    androidTestImplementation "org.junit.jupiter:junit-jupiter-api:5.8.2"
+//    androidTestImplementation "de.mannodermaus.junit5:android-test-core:1.3.0"
+//    androidTestRuntimeOnly "de.mannodermaus.junit5:android-test-runner:1.3.0"
+
 }

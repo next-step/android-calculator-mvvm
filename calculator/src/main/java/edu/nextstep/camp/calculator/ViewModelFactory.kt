@@ -3,7 +3,7 @@ package edu.nextstep.camp.calculator
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import edu.nextstep.camp.data.DataModule
+import edu.nextstep.camp.data.Injector
 
 class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
 
@@ -17,7 +17,7 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
 
     private fun createCalculatorViewModel(): CalculatorViewModel {
         return CalculatorViewModel(
-            calculationRecordsRepository = DataModule.provideCalculationRecordsRepository(context)
+            calculationRecordsRepository = Injector.provideCalculationRecordsRepository(context)
         )
     }
 }
