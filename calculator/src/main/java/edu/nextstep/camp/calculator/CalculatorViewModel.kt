@@ -5,8 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import edu.nextstep.camp.calculator.data.CalculationRecord
-import edu.nextstep.camp.calculator.data.CalculatorRepository
+import edu.nextstep.camp.calculator.data.DataInjector
 import edu.nextstep.camp.calculator.domain.Calculator
+import edu.nextstep.camp.calculator.domain.CalculatorRepository
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 import kotlinx.coroutines.launch
@@ -17,7 +18,7 @@ import kotlinx.coroutines.launch
  */
 class CalculatorViewModel(
     private var _expression: MutableLiveData<Expression> = MutableLiveData(Expression.EMPTY),
-    private var calculatorRepository: CalculatorRepository = CalculatorRepository
+    private var calculatorRepository: CalculatorRepository = DataInjector.provideCalculatorRepository()
 ) : ViewModel() {
 
     private val calculator = Calculator()
@@ -75,7 +76,7 @@ class CalculatorViewModel(
 
     fun updateCalculationMemory() {
         _toggleCalculationMemory.value = !(_toggleCalculationMemory.value ?: false)
-        _updateMemory.value = calculatorRepository.calculationRecordList
+        _updateMemory.value = calculatorRepository.calculationRecordList as? List<CalculationRecord>
     }
 
     enum class ErrorEvent {

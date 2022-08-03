@@ -3,7 +3,7 @@ package edu.nextstep.camp.calculator
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import com.google.common.truth.Truth
-import edu.nextstep.camp.calculator.data.CalculatorRepository
+import edu.nextstep.camp.calculator.domain.CalculatorRepository
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 import io.mockk.Runs

@@ -1,7 +1,8 @@
 package edu.nextstep.camp.calculator
 
 import android.app.Application
-import edu.nextstep.camp.calculator.data.CalculatorRepository
+import edu.nextstep.camp.calculator.data.DataInjector
+import edu.nextstep.camp.calculator.data.RepositorySetting
 
 /**
  * 클래스에 대한 간단한 설명이나 참고 url을 남겨주세요.
@@ -11,7 +12,7 @@ class MyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        CalculatorRepository.init(this)
+        (DataInjector.provideCalculatorRepository() as? RepositorySetting)?.init(this)
     }
 
 }
