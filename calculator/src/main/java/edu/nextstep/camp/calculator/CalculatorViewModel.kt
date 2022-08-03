@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import edu.nextstep.camp.calculator.data.Injector
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.ExpressionHistories
@@ -14,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
     private val expressionHistoryRepository: ExpressionHistoryRepository =
-        CalculatorApp.INSTANCE.expressionHistoryRepository
+        Injector.provideExpressionHistoryRepository(CalculatorApp.INSTANCE)
 ) : ViewModel() {
     private var expression = Expression.EMPTY
         set(value) {

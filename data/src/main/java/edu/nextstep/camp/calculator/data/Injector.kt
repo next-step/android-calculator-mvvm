@@ -5,12 +5,30 @@ import edu.nextstep.camp.calculator.domain.ExpressionHistoryRepository
 
 object Injector {
 
+    private var appDatabase: AppDatabase? = null
+    private var expressionHistoryRepository: ExpressionHistoryRepository? = null
+
     private fun provideAppDatabase(context: Context): AppDatabase {
-        return AppDatabase.create(context)
+        if (appDatabase == null) {
+            synchronized(AppDatabase::class) {
+                if (appDatabase == null) {
+                    appDatabase = AppDatabase.create(context)
+                }
+            }
+        }
+        return appDatabase!!
     }
 
     fun provideExpressionHistoryRepository(context: Context): ExpressionHistoryRepository {
         val appDatabase = provideAppDatabase(context)
-        return RoomExpressionHistoryRepository(appDatabase.expressionHistoryDao())
+
+        if (expressionHistoryRepository == null) {
+            synchronized(AppDatabase::class) {
+                if (expressionHistoryRepository == null) {
+                    expressionHistoryRepository = RoomExpressionHistoryRepository(appDatabase.expressionHistoryDao())
+                }
+            }
+        }
+        return expressionHistoryRepository!!
     }
 }
