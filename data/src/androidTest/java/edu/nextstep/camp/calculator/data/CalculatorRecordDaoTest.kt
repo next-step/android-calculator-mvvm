@@ -15,7 +15,7 @@ import org.junit.runner.RunWith
  * Created by jeongjinhong on 2022. 08. 02..
  */
 @RunWith(AndroidJUnit4::class)
-class CalculatorRepositoryTest {
+class CalculatorRecordDaoTest {
 
     private lateinit var appDatabase: CalculatorDatabase
 
