@@ -6,9 +6,9 @@ import androidx.room.Query
 
 @Dao
 interface CalculationHistoryDao {
-    @Query("SELECT * FROM calculationhistoryentity")
-    fun getAll(): List<CalculationHistoryEntity>
+    @Query("SELECT * FROM calculation_history")
+    suspend fun getAll(): List<CalculationHistoryEntity>
 
     @Insert
-    fun insert(entities: List<CalculationHistoryEntity>)
+    suspend fun insert(vararg entities: CalculationHistoryEntity)
 }

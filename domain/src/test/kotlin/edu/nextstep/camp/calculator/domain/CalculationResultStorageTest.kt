@@ -50,4 +50,24 @@ class CalculationResultStorageTest {
         assertThat(resultList[0]).isEqualTo(firstExpected)
         assertThat(resultList[1]).isEqualTo(secondExpected)
     }
+
+    @Test
+    fun `기존값이 존재하는 계산기록 저장소에 계산기록목록을 추가 하면, 추가된 순서대로 저장된 계산 기록을 받아 올 수 있다`() {
+        // given 기존 값이 존재 하는 계산 기록 저장소
+        val firstExpected = CalculationResult(Expression(listOf("1", Operator.Plus, "1")), 2)
+
+        storage += firstExpected
+
+        // when 계산기록 저장소에 계산기록 목록을 추가 하면
+        val secondExpected = CalculationResult(Expression(listOf("2", Operator.Plus, "2")), 4)
+        val thirdExpected = CalculationResult(Expression(listOf("4", Operator.Plus, "4")), 4)
+
+        storage += listOf(secondExpected, thirdExpected)
+
+        // then 추가된 순서대로 저장된 계산 기록을 받아 올 수 있다.
+        val resultList = storage.getResultsAsList()
+        assertThat(resultList[0]).isEqualTo(firstExpected)
+        assertThat(resultList[1]).isEqualTo(secondExpected)
+        assertThat(resultList[2]).isEqualTo(thirdExpected)
+    }
 }
