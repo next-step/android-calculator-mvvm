@@ -10,7 +10,7 @@ class CounterViewModelTest {
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var counterViewModel: CounterViewModel;
+    private lateinit var counterViewModel: CounterViewModel
 
     @Before
     fun setUp() {

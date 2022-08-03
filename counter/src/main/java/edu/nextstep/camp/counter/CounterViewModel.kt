@@ -24,6 +24,6 @@ class CounterViewModel(initialValue: Int = 0) : ViewModel() {
             _showErrorMessage.value = Event<Any>("0 이하로 내려갈 수 없습니다.")
             return
         }
-        _count.value = count - 1;
+        _count.value = count - 1
     }
 }
