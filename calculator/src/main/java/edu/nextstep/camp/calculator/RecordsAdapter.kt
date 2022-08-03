@@ -34,7 +34,7 @@ class RecordsAdapter : ListAdapter<Record, RecordsAdapter.RecordsViewHolder>(dif
             override fun areItemsTheSame(
                 oldItem: Record,
                 newItem: Record
-            ): Boolean = oldItem == newItem
+            ): Boolean = oldItem.expression == newItem.expression
 
             override fun areContentsTheSame(
                 oldItem: Record,
