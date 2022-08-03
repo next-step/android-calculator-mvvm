@@ -1,10 +1,10 @@
 package edu.nextstep.camp.calculator
 
 import com.google.common.truth.Truth.assertThat
-import com.nextstep.camp.calculator.data.Record
 import com.nextstep.camp.calculator.data.RecordsRepository
 import edu.nextstep.camp.calculator.domain.Operand
 import edu.nextstep.camp.calculator.domain.Operator
+import edu.nextstep.camp.calculator.domain.Record
 import edu.nextstep.camp.calculator.domain.StringExpressionState
 import io.mockk.coVerify
 import io.mockk.mockk

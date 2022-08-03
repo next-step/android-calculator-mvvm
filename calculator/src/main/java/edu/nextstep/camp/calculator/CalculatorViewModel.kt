@@ -4,11 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nextstep.camp.calculator.data.Record
+import com.nextstep.camp.calculator.data.RecordEntity
 import com.nextstep.camp.calculator.data.RecordsRepository
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Operand
 import edu.nextstep.camp.calculator.domain.Operator
+import edu.nextstep.camp.calculator.domain.Record
 import edu.nextstep.camp.calculator.domain.StringCalculator
 import edu.nextstep.camp.calculator.domain.StringExpressionState
 import kotlinx.coroutines.CoroutineDispatcher
