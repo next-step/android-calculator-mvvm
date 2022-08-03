@@ -9,7 +9,7 @@ import edu.nextstep.camp.calculator.domain.CalculationResult
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
-    private val viewModel: CalculatorViewModel by viewModels()
+    private val viewModel: CalculatorViewModel by viewModels { ViewModelFactory(application) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,6 +17,7 @@ class CalculatorActivity : AppCompatActivity() {
         setContentView(binding.root)
         setBindingSettings()
         setViewModelObservers()
+        viewModel.requestGetCalculationResultsFromDB()
         setCalculationResultRecyclerView()
     }
 

@@ -61,4 +61,11 @@ dependencies {
     implementation(project(":data"))
     testImplementation 'androidx.arch.core:core-testing:2.1.0'
 
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.2"
+
+    def room_version = "2.4.2"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 }
