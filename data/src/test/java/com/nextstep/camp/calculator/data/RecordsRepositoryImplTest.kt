@@ -36,4 +36,16 @@ internal class RecordsRepositoryImplTest {
         assertThat(records).containsExactly(Record(expression = "1 + 2", result = 3.0))
         coVerify { recordDao.getAll() }
     }
+
+    @Test
+    fun `하나의 레코드를 추가할 수 있다`() = runBlocking {
+        // given
+        val record = Record(expression = "1 + 2", result = 3.0)
+
+        // when
+        recordsRepository.insert(record)
+
+        // then
+        coVerify { recordDao.insert(RecordEntity(expression = "1 + 2", result = 3.0)) }
+    }
 }
