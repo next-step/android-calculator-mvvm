@@ -8,7 +8,11 @@ import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
-    private val viewModel: CalculatorViewModel by viewModels()
+    private val viewModel: CalculatorViewModel by viewModels {
+        CalculatorViewModelFactory(CalculatorApplication.INSTANCE.repository)
+    }
+
+    private val adapter = HistoryAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,10 +22,23 @@ class CalculatorActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
+        binding.recyclerView.adapter = adapter
+
+        viewModel.historyList.observe(this) {
+            adapter.setItems(it)
+        }
+
+        viewModel.loadHistories()
+
         viewModel.calculateErrorEvent.observe(this) { event ->
             if (event.consume() is CalculatorViewModel.CalculateError.ExpressionError)
                 showIncompleteExpressionError()
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.saveHistories()
     }
 
     private fun showIncompleteExpressionError() {
