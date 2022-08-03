@@ -2,7 +2,7 @@ package com.nextstep.camp.calculator.data
 
 import edu.nextstep.camp.calculator.domain.Record
 
-class RecordsRepositoryImpl(
+internal class RecordsRepositoryImpl(
     private val recordDao: RecordDao
 ) : RecordsRepository {
 
