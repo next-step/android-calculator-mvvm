@@ -2,8 +2,8 @@ package edu.nextstep.camp.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
-import edu.nextstep.camp.calculator.data.History
-import edu.nextstep.camp.calculator.data.HistoryRepository
+import edu.nextstep.camp.calculator.domain.History
+import edu.nextstep.camp.calculator.domain.HistoryRepository
 import edu.nextstep.camp.calculator.domain.Operator
 import io.mockk.coVerify
 import io.mockk.mockk

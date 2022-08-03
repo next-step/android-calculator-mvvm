@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import edu.nextstep.camp.calculator.data.Injector
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
     private val viewModel: CalculatorViewModel by viewModels {
-        CalculatorViewModelFactory(CalculatorApplication.INSTANCE.repository)
+        CalculatorViewModelFactory(Injector.provideSampleRepository(this))
     }
 
     private val adapter = HistoryAdapter()

@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
 /**
  * Created by link.js on 2022. 07. 31..
  */
-@Database(entities = [History::class], version = 1)
+@Database(entities = [HistoryEntity::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun historyDao(): HistoryDao
 

@@ -9,16 +9,16 @@ import androidx.room.Query
  */
 @Dao
 abstract class HistoryDao {
-    @Query("SELECT * FROM history")
-    abstract suspend fun getAll(): List<History>
+    @Query("SELECT * FROM HistoryEntity")
+    abstract suspend fun getAll(): List<HistoryEntity>
 
     @Insert
-    abstract suspend fun insertAll(histories: List<History>)
+    abstract suspend fun insertAll(histories: List<HistoryEntity>)
 
-    @Query("DELETE FROM history")
+    @Query("DELETE FROM HistoryEntity")
     abstract suspend fun deleteAll()
 
-    open suspend fun setHistories(histories: List<History>) {
+    open suspend fun setHistories(histories: List<HistoryEntity>) {
         deleteAll()
         insertAll(histories)
     }
