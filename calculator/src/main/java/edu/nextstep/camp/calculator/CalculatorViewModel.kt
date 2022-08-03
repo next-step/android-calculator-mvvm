@@ -39,9 +39,7 @@ class CalculatorViewModel(
         get() = _records
 
     init {
-        viewModelScope.launch(dispatcher) {
-            _records.postValue(recordsRepository.getAll())
-        }
+        initRecords()
     }
 
     fun addOperand(operand: Int) {
@@ -76,6 +74,12 @@ class CalculatorViewModel(
 
     fun toggleRecords() {
         _showRecords.value = showRecords.value?.not()
+    }
+
+    private fun initRecords() {
+        viewModelScope.launch(dispatcher) {
+            _records.postValue(recordsRepository.getAll())
+        }
     }
 
     private fun insertRecord(record: Record) {
