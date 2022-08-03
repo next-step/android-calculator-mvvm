@@ -65,14 +65,13 @@ class CalculatorViewModel(
 
     fun loadExpressionHistories() {
         viewModelScope.launch {
-            _expressionHistories.value = ExpressionHistories(expressionHistoryRepository.getAll())
+            _expressionHistories.value = expressionHistoryRepository.getAll()
         }
     }
 
     fun saveExpressionHistories() {
         viewModelScope.launch {
-            expressionHistories.value?.histories
-                ?.let { expressionHistoryRepository.setAll(it) }
+            expressionHistories.value?.let { expressionHistoryRepository.setAll(it) }
         }
     }
 
