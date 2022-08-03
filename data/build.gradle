@@ -40,6 +40,7 @@ dependencies {
     implementation(project(":domain"))
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.2"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.2"
 
     def room_version = "2.4.3"
     implementation "androidx.room:room-runtime:$room_version"
