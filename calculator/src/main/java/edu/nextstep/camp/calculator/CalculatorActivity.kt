@@ -8,13 +8,19 @@ import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
-    private val viewModel: CalculatorViewModel by viewModels()
+    private val viewModel: CalculatorViewModel by viewModels { ViewModelFactory(this) }
+    private val recordsAdapter: RecordsAdapter by lazy { RecordsAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         initViewBinding()
+        initRecords()
         initObserver()
+    }
+
+    private fun initRecords() {
+        binding.recyclerView.adapter = recordsAdapter
     }
 
     private fun initViewBinding() {
@@ -27,6 +33,9 @@ class CalculatorActivity : AppCompatActivity() {
     private fun initObserver() {
         viewModel.calculationFailed.observe(this) {
             showCalculationFailedToast()
+        }
+        viewModel.records.observe(this) {
+            recordsAdapter.submitList(it)
         }
     }
 
