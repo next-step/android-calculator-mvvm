@@ -40,18 +40,13 @@ data class Expression(
     }
 
     fun isCompletedExpression(): Boolean {
-        if (values.size <= 1)
-            return false
-        if (values.size % 2 == 0)
-            return false
-        val indexOfNotOperandInOperandSlot =
-            (0..values.lastIndex step 2).find { values[it] !is Int }
-        if (indexOfNotOperandInOperandSlot != null)
-            return false
-        val indexOfNotOperatorInOperatorSlot =
-            (1..values.lastIndex step 2).find { values[it] !is Operator }
-        if (indexOfNotOperatorInOperatorSlot != null)
-            return false
+        if (values.size <= 1) return false
+        if (values.size % 2 == 0) return false
+
+        values.forEachIndexed { index, value ->
+            if (index % 2 == 0 && value !is Int) return false
+            if (index % 2 == 1 && value !is Operator) return false
+        }
         return true
     }
 
