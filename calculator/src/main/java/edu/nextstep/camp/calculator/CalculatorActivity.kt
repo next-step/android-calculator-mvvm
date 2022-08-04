@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
-import edu.nextstep.camp.calculator.domain.Expression
-import edu.nextstep.camp.calculator.domain.Operator
+import edu.nextstep.camp.domain.calculator.Expression
+import edu.nextstep.camp.domain.calculator.Operator
 
 class CalculatorActivity : AppCompatActivity(), CalculatorContract.View {
     private lateinit var binding: ActivityCalculatorBinding
