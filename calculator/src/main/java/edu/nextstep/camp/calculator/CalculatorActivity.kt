@@ -15,8 +15,8 @@ class CalculatorActivity : AppCompatActivity() {
         binding = ActivityCalculatorBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initBinding();
-        initObserver();
+        initBinding()
+        initObserver()
     }
 
 

@@ -15,8 +15,8 @@ class CounterActivity : AppCompatActivity() {
         binding = ActivityCounterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initBinding();
-        initObserver();
+        initBinding()
+        initObserver()
     }
 
     private fun initBinding() {
