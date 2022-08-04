@@ -128,7 +128,7 @@ class CalculatorViewModelTest {
         viewModel.calculate()
 
         // then
-        assertThat(viewModel.calculateHistories.getOrAwaitValue()[0].expression.toString()).isEqualTo("1 + 4")
-        assertThat(viewModel.calculateHistories.getOrAwaitValue()[0].result).isEqualTo(5)
+        assertThat(viewModel.calculateHistory.getOrAwaitValue().calculateResults[0].expression.toString()).isEqualTo("1 + 4")
+        assertThat(viewModel.calculateHistory.getOrAwaitValue().calculateResults[0].result).isEqualTo(5)
     }
 }
