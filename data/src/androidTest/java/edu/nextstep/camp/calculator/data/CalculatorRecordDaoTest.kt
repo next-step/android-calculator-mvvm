@@ -15,9 +15,10 @@ import org.junit.runner.RunWith
  * Created by jeongjinhong on 2022. 08. 02..
  */
 @RunWith(AndroidJUnit4::class)
-class CalculatorRepositoryTest {
+class CalculatorRecordDaoTest {
 
     private lateinit var appDatabase: CalculatorDatabase
+    private lateinit var dao: CalculationRecordDao
 
     @Before
     fun setUp() {
@@ -27,15 +28,17 @@ class CalculatorRepositoryTest {
             appContext,
             CalculatorDatabase::class.java
         ).build()
+
+        dao = appDatabase.calculationRecordsDao()
     }
 
     @Test
     fun insertCalculationRecord_checkCalculationRecord() = runBlocking {
         // given
         // when
-        val calculationRecordTmp = CalculationRecord("1 + 1", 2, 0)
-        appDatabase.calculationRecordsDao().insert(calculationRecordTmp)
-        val calculationRecord = appDatabase.calculationRecordsDao().getAll().getOrNull(0)
+        val calculationRecordTmp = CalculationRecordEntity("1 + 1", 2, 0)
+        dao.insert(calculationRecordTmp)
+        val calculationRecord = dao.getAll().getOrNull(0)
 
         // then
         assertEquals(calculationRecord?.expression, calculationRecordTmp.expression)

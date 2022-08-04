@@ -4,11 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import edu.nextstep.camp.calculator.data.CalculationRecord
-import edu.nextstep.camp.calculator.data.CalculatorRepository
-import edu.nextstep.camp.calculator.domain.Calculator
-import edu.nextstep.camp.calculator.domain.Expression
-import edu.nextstep.camp.calculator.domain.Operator
+import edu.nextstep.camp.calculator.domain.*
 import kotlinx.coroutines.launch
 
 /**
@@ -17,7 +13,7 @@ import kotlinx.coroutines.launch
  */
 class CalculatorViewModel(
     private var _expression: MutableLiveData<Expression> = MutableLiveData(Expression.EMPTY),
-    private var calculatorRepository: CalculatorRepository = CalculatorRepository
+    private var calculatorRepository: CalculatorRepository
 ) : ViewModel() {
 
     private val calculator = Calculator()
@@ -63,7 +59,12 @@ class CalculatorViewModel(
 
     private fun storeCalculationMemory(result: Int) {
         viewModelScope.launch {
-            calculatorRepository.storeCalculationMemory(expression.value.toString(), result)
+            calculatorRepository.storeCalculationMemory(
+                CalculationRecord(
+                    expression.value.toString(),
+                    result
+                )
+            )
         }
     }
 
@@ -75,7 +76,7 @@ class CalculatorViewModel(
 
     fun updateCalculationMemory() {
         _toggleCalculationMemory.value = !(_toggleCalculationMemory.value ?: false)
-        _updateMemory.value = calculatorRepository.calculationRecordList
+        _updateMemory.value = calculatorRepository.getCalculationRecordList()
     }
 
     enum class ErrorEvent {
