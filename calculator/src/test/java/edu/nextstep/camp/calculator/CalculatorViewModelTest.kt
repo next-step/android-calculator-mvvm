@@ -5,13 +5,14 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
-import edu.nextstep.camp.calculator.memoryview.MemoryUIModel
-import edu.nextstep.camp.data.LogDao
 import edu.nextstep.camp.data.LogDatabase
 import edu.nextstep.camp.data.LogRepository
 import edu.nextstep.camp.data.LogRepositoryImpl
 import edu.nextstep.camp.domain.Expression
 import edu.nextstep.camp.domain.Operator
+import io.mockk.MockKAnnotations
+import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
 import org.junit.Rule
 
 import org.junit.Before
@@ -27,14 +28,12 @@ class CalculatorViewModelTest {
 
     lateinit var viewModel: CalculatorViewModel
 
-    private lateinit var repository: LogRepositoryImpl
+    @RelaxedMockK
+    private lateinit var repository: LogRepository
 
     @Before
     fun setUp() {
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        val db = Room.inMemoryDatabaseBuilder(
-            context, LogDatabase::class.java).build()
-        repository = LogRepositoryImpl(db)
+        MockKAnnotations.init(this)
         viewModel = CalculatorViewModel(repository, Expression.EMPTY)
     }
 
@@ -42,7 +41,7 @@ class CalculatorViewModelTest {
     fun `0을 빈 수식에 추가하면 0이 나온다`() {
         //when
         viewModel.addOperandToExpression(0)
-        val actual = viewModel.result.value.toString()
+        val actual = viewModel.expression.value.toString()
         //then
         assertThat(actual).isEqualTo("0")
     }
@@ -54,7 +53,7 @@ class CalculatorViewModelTest {
 
         //when
         viewModel.addOperandToExpression(9)
-        val actual = viewModel.result.value.toString()
+        val actual = viewModel.expression.value.toString()
 
         //then
         assertThat(actual).isEqualTo("89")
@@ -64,7 +63,7 @@ class CalculatorViewModelTest {
     fun `수식이 없을 때 연산자 +를 수식에 추가하면 추가되지 않는다`() {
         //when
         viewModel.addOperatorToExpression(Operator.Plus)
-        val actual = viewModel.result.value.toString()
+        val actual = viewModel.expression.value.toString()
 
         //then
         assertThat(actual).isEqualTo("")
@@ -78,7 +77,7 @@ class CalculatorViewModelTest {
 
         //when
         viewModel.addOperatorToExpression(Operator.Minus)
-        val actual = viewModel.result.value.toString()
+        val actual = viewModel.expression.value.toString()
 
         //then
         assertThat(actual).isEqualTo("1 -")
@@ -88,7 +87,7 @@ class CalculatorViewModelTest {
     fun `빈 수식일 때, 수식의 마지막을 제거하려하면 아무런 변화가 없다`() {
         //when
         viewModel.deleteExpression()
-        val actual = viewModel.result.value.toString()
+        val actual = viewModel.expression.value.toString()
 
         //then
         assertThat(actual).isEqualTo("")
@@ -103,7 +102,7 @@ class CalculatorViewModelTest {
         //when
         viewModelWithExpression.deleteExpression()
         viewModelWithExpression.deleteExpression()
-        val actual = viewModelWithExpression.result.value.toString()
+        val actual = viewModelWithExpression.expression.value.toString()
 
         //then
         assertThat(actual).isEqualTo("32")
@@ -117,7 +116,7 @@ class CalculatorViewModelTest {
 
         //when
         viewModelWithExpression.calculateExpression()
-        val actual = viewModelWithExpression.result.value.toString()
+        val actual = viewModelWithExpression.expression.value.toString()
 
         //then
         assertThat(actual).isEqualTo("5")
@@ -145,8 +144,8 @@ class CalculatorViewModelTest {
         viewModelWithExpression.calculateExpression()
 
         //when
-        viewModelWithExpression.showMemoryView()
-        val actual = viewModelWithExpression.memoryLog.value?.size
+        viewModelWithExpression.controlMemoryView()
+        val actual = viewModelWithExpression.memoryLogs.value?.size
 
         //then
         if (actual != null) {

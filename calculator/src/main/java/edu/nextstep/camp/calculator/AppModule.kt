@@ -18,7 +18,7 @@ class AppModule {
     @Provides
     @Singleton
     fun provideLogDatabase(@ApplicationContext context: Context): LogDatabase {
-        return LogDatabase.getInstance(context)!!
+        return LogDatabase.getInstance(context)
     }
 
     @Provides
@@ -30,6 +30,6 @@ class AppModule {
     @Provides
     @Singleton
     fun provideLogRepository(db: LogDatabase): LogRepository {
-        return LogRepositoryImpl(db)
+        return LogRepositoryImpl(db.logDao())
     }
 }

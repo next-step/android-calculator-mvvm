@@ -1,6 +1,7 @@
 package edu.nextstep.camp.calculator
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +13,9 @@ import edu.nextstep.camp.calculator.memoryview.MemoryRecyclerViewAdapter
 class CalculatorActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCalculatorBinding
-    private lateinit var memoryAdapter: MemoryRecyclerViewAdapter
+    private val memoryAdapter: MemoryRecyclerViewAdapter by lazy {
+        MemoryRecyclerViewAdapter()
+    }
 
     private val viewModel: CalculatorViewModel by viewModels()
 
@@ -28,9 +31,7 @@ class CalculatorActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerView() {
-        memoryAdapter = MemoryRecyclerViewAdapter().also {
-            binding.recyclerView.adapter = it
-        }
+        binding.recyclerView.adapter = memoryAdapter
     }
 
     private fun observe() {
@@ -41,7 +42,7 @@ class CalculatorActivity : AppCompatActivity() {
                 }
             }
 
-            memoryLog.observe(this@CalculatorActivity) { calculatingLogs ->
+            memoryLogs.observe(this@CalculatorActivity) { calculatingLogs ->
                 memoryAdapter.submitList(calculatingLogs)
             }
         }

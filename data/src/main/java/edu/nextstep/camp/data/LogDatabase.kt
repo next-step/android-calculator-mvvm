@@ -10,20 +10,12 @@ abstract class LogDatabase: RoomDatabase() {
     abstract fun logDao(): LogDao
 
     companion object {
-        private var instance: LogDatabase? = null
-
-        @Synchronized
-        fun getInstance(context: Context): LogDatabase? {
-            if (instance == null) {
-                synchronized(LogDatabase::class){
-                    instance = Room.databaseBuilder(
-                        context.applicationContext,
-                        LogDatabase::class.java,
-                        "log-database"
-                    ).build()
-                }
-            }
-            return instance
+        fun getInstance(context: Context): LogDatabase {
+           return Room.databaseBuilder(
+               context.applicationContext,
+               LogDatabase::class.java,
+               "log-database"
+           ).build()
         }
     }
 }
