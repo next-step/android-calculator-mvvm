@@ -2,23 +2,23 @@ package edu.nextstep.camp.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
+import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 class CalculatorViewModelTest {
     private lateinit var viewModel: CalculatorViewModel
+
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    @Before
-    fun setUp() {
-        viewModel = CalculatorViewModel()
-    }
     @Test
-    fun `빈 수식일 때, 피연산자를 추가할 수 있어야한다`() {
+    fun `빈 수식일 때, 1을 입력하면 1이 화면에 출력된다`() {
         // given
+        viewModel = CalculatorViewModel()
+
+        // when
         viewModel.addToExpression(1)
 
         // then
@@ -26,9 +26,9 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `'8' 수식이 있을 때, 9를 입력하면 89로 바뀌어야 한다`() {
+    fun `'8' 수식이 있을 때, 9를 입력하면 89가 화면에 촐력된다`() {
         // given
-        viewModel.addToExpression(8)
+        viewModel = CalculatorViewModel(Expression(listOf(8)))
 
         // when
         viewModel.addToExpression(9)
@@ -38,8 +38,10 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `빈 수식일 때, + 연산자를 추가할 수 없어야 한다`() {
+    fun `빈 수식일 때, + 를 입력하면 +가 화면에 출력된다`() {
         // given
+        viewModel = CalculatorViewModel()
+
         // when
         viewModel.addToExpression(Operator.Plus)
 
@@ -48,9 +50,9 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `'1' 수식이 있을 때, + 연산자를 추가할 수 있어야 한다`() {
+    fun `'1' 수식이 있을 때, + 를 입력하면 화면에 "1 +"가 출력된다`() {
         // given
-        viewModel.addToExpression(1)
+        viewModel = CalculatorViewModel(Expression(listOf(1)))
 
         // when
         viewModel.addToExpression(Operator.Plus)
@@ -60,26 +62,35 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `'32 + 1' 수식이 있을 때, 마지막 1을 제거할 수 있어야 한다`() {
+    fun `'32' 수식이 있을 때, '3'을 입력하면 화면에 323이 출력된다`() {
         // given
+        viewModel = CalculatorViewModel(Expression(listOf(32)))
+
+        // when
         viewModel.addToExpression(3)
-        viewModel.addToExpression(2)
-        viewModel.addToExpression(Operator.Plus)
-        viewModel.addToExpression(1)
+
+        // then
+        assertThat(viewModel.result.value).isEqualTo("323")
+    }
+
+
+    @Test
+    fun `"32 + 1" 수식이 있을 때, 지우기 버튼을 클릭하면 화면에 "32 +"가 출력된다`() {
+        // given
+        viewModel = CalculatorViewModel(Expression(listOf(32, Operator.Plus, 1)))
 
         // when
         viewModel.removeLast()
 
         // then
+        println(viewModel.result)
         assertThat(viewModel.result.value).isEqualTo("32 +")
     }
 
     @Test
-    fun `'32 +' 수식이 있을 때, 마지막 +를 제거할 수 있어야 한다`() {
+    fun `'32 +' 수식이 있을 때, 지우기 버튼을 클릭하면 화면에 32가 출력된다`() {
         // given
-        viewModel.addToExpression(3)
-        viewModel.addToExpression(2)
-        viewModel.addToExpression(Operator.Plus)
+        viewModel = CalculatorViewModel(Expression(listOf(32, Operator.Plus)))
 
         // when
         viewModel.removeLast()
@@ -89,10 +100,9 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `'32' 수식이 있을 때, 마지막 2를 제거할 수 있어야 한다`() {
+    fun `'32' 수식이 있을 때, 지우기 버튼을 클릭하면 "3"이 화면에 출력된다`() {
         // given
-        viewModel.addToExpression(3)
-        viewModel.addToExpression(2)
+        viewModel = CalculatorViewModel(Expression(listOf(3, 2)))
 
         // when
         viewModel.removeLast()
@@ -102,9 +112,9 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `'3' 수식이 있을 때, 마지막 3을 제거할 수 있어야 한다`() {
+    fun `빈 수식일 때, 지우기 버튼을 클릭하면 그대로 빈 수식이 출력된다`() {
         // given
-        viewModel.addToExpression(3)
+        viewModel = CalculatorViewModel()
 
         // when
         viewModel.removeLast()
@@ -114,19 +124,9 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `빈 수식일 때, 마지막을 제거해도 빈 수식이어야 한다`() {
+    fun `3이 입력되었을 때, 지우기 버튼을 클릭하면 빈 수식이 출력된다`() {
         // given
-        // when
-        viewModel.removeLast()
-
-        // then
-        assertThat(viewModel.result.value).isEqualTo("")
-    }
-
-    @Test
-    fun `3이 입력되었을 때, 마지막을 제거하면 빈 수식이 된다`() {
-        // given
-        viewModel.addToExpression(3)
+        viewModel = CalculatorViewModel(Expression(listOf(3)))
 
         // when
         viewModel.removeLast()
