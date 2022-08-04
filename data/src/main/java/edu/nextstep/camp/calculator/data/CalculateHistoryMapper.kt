@@ -1,11 +1,11 @@
 package edu.nextstep.camp.calculator.data
 
-import edu.nextstep.camp.calculator.data.model.CalculateHistoryEntity
-import edu.nextstep.camp.calculator.domain.CalculateHistory
+import edu.nextstep.camp.calculator.data.model.CalculateResultEntity
+import edu.nextstep.camp.calculator.domain.CalculateResult
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 
-fun CalculateHistoryEntity.toCalculateHistory(): CalculateHistory {
+fun CalculateResultEntity.toCalculateResult(): CalculateResult {
     val list = mutableListOf<Any>()
 
     this.expression.split(" ").forEach {
@@ -20,5 +20,5 @@ fun CalculateHistoryEntity.toCalculateHistory(): CalculateHistory {
 
     val expression = Expression(list)
 
-    return CalculateHistory(expression = expression, result = this.result)
+    return CalculateResult(expression = expression, result = this.result)
 }

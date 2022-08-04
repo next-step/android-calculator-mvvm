@@ -5,9 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import edu.nextstep.camp.calculator.data.CalculatorDatabase
-import edu.nextstep.camp.calculator.data.model.CalculateHistoryEntity
-import edu.nextstep.camp.calculator.data.toCalculateHistory
+import edu.nextstep.camp.calculator.data.model.CalculateResultEntity
+import edu.nextstep.camp.calculator.data.toCalculateResult
 import edu.nextstep.camp.calculator.domain.CalculateHistory
+import edu.nextstep.camp.calculator.domain.CalculateResult
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
@@ -20,9 +21,9 @@ class CalculatorViewModel(
     private val calculator: Calculator = Calculator(),
 ) : ViewModel() {
 
-    private val _calculateHistories = MutableLiveData<List<CalculateHistory>>()
-    val calculateHistories: LiveData<List<CalculateHistory>>
-        get() = _calculateHistories
+    private val _calculateHistory = MutableLiveData<CalculateHistory>()
+    val calculateHistory: LiveData<CalculateHistory>
+        get() = _calculateHistory
 
     private val _calculatorText = MutableLiveData("")
     val calculatorText: LiveData<String>
@@ -72,7 +73,7 @@ class CalculatorViewModel(
 
     private fun putCalculateHistory(expression: Expression, result: Int) {
         viewModelScope.launch {
-            calculatorDatabase.calculateHistoryDao().insertCalculateHistory(CalculateHistoryEntity(
+            calculatorDatabase.calculateResultDao().insertCalculateResult(CalculateResultEntity(
                 expression = expression.toString(),
                 result = result,
             ))
@@ -81,17 +82,21 @@ class CalculatorViewModel(
 
     fun getCalculateHistories() {
         viewModelScope.launch {
-            calculatorDatabase.calculateHistoryDao().getCalculateHistories()
+            calculatorDatabase.calculateResultDao().getCalculateResults()
                 .map(::mapToCalculateHistory)
-                .collect(_calculateHistories::setValue)
+                .collect {
+                    _calculateHistory.value = CalculateHistory().apply {
+                        putCalculateResults(it)
+                    }
+                }
         }
     }
 
     private fun mapToCalculateHistory(
-        calculateHistoryEntities: List<CalculateHistoryEntity>?,
-    ): List<CalculateHistory> {
-        return calculateHistoryEntities?.map { calculateHistoryEntity ->
-            calculateHistoryEntity.toCalculateHistory()
+        calculateHistoryEntities: List<CalculateResultEntity>?,
+    ): List<CalculateResult> {
+        return calculateHistoryEntities?.map { calculateResultEntity ->
+            calculateResultEntity.toCalculateResult()
         } ?: listOf()
     }
 }
