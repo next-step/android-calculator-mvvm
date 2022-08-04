@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import edu.nextstep.camp.calculator.data.CalculationRecord
-import edu.nextstep.camp.calculator.data.DataInjector
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.CalculatorRepository
 import edu.nextstep.camp.calculator.domain.Expression
@@ -18,7 +17,7 @@ import kotlinx.coroutines.launch
  */
 class CalculatorViewModel(
     private var _expression: MutableLiveData<Expression> = MutableLiveData(Expression.EMPTY),
-    private var calculatorRepository: CalculatorRepository = DataInjector.provideCalculatorRepository()
+    private var calculatorRepository: CalculatorRepository
 ) : ViewModel() {
 
     private val calculator = Calculator()

@@ -9,7 +9,7 @@ import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
-    private val viewModel: CalculatorViewModel by viewModels()
+    private val viewModel: CalculatorViewModel by viewModels { ViewModelFactory(this) }
     private lateinit var calculationMemoryAdapter: CalculationMemoryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {

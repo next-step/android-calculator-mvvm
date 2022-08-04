@@ -1,5 +1,6 @@
 package edu.nextstep.camp.calculator.data
 
+import android.content.Context
 import edu.nextstep.camp.calculator.domain.CalculatorRepository
 
 /**
@@ -7,7 +8,10 @@ import edu.nextstep.camp.calculator.domain.CalculatorRepository
  * Created by jeongjinhong on 2022. 08. 03..
  */
 object DataInjector {
-    fun provideCalculatorRepository(): CalculatorRepository {
-        return CalculatorRepositoryImpl
+    private fun provideCalculatorDatabase(context: Context) = CalculatorDatabase.create(context)
+
+    fun provideCalculatorRepository(context: Context): CalculatorRepository {
+        val database = provideCalculatorDatabase(context)
+        return CalculatorRepositoryImpl(database.calculationRecordsDao())
     }
 }

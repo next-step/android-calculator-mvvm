@@ -1,7 +1,5 @@
 package edu.nextstep.camp.calculator.data
 
-import android.content.Context
-import androidx.room.Room
 import edu.nextstep.camp.calculator.domain.CalculatorRepository
 
 /**
@@ -9,28 +7,20 @@ import edu.nextstep.camp.calculator.domain.CalculatorRepository
  * Created by jeongjinhong on 2022. 07. 31..
  */
 
-internal object CalculatorRepositoryImpl : CalculatorRepository, RepositorySetting {
-
-    private lateinit var db: CalculatorDatabase
+internal class CalculatorRepositoryImpl(private val calculationRecordsDao: CalculationRecordDao) :
+    CalculatorRepository {
 
     private var _calculationRecordList: MutableList<CalculationRecord> = mutableListOf()
 
     override val calculationRecordList: List<CalculationRecord>
         get() = _calculationRecordList
 
-    override fun init(context: Context) {
-        db = Room.databaseBuilder(
-            context,
-            CalculatorDatabase::class.java, "calculationRecord.db"
-        ).build()
-    }
-
     private suspend fun getCalculationRecords(): List<CalculationRecord> {
-        return db.calculationRecordsDao().getAll()
+        return calculationRecordsDao.getAll()
     }
 
     private suspend fun insert(calculationRecord: CalculationRecord) {
-        return db.calculationRecordsDao().insert(calculationRecord)
+        return calculationRecordsDao.insert(calculationRecord)
     }
 
     override suspend fun storeCalculationMemory(expression: String, result: Int) {
