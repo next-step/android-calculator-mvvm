@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import edu.nextstep.camp.calculator.data.CalculationRecord
 import edu.nextstep.camp.calculator.databinding.ItemResultBinding
+import edu.nextstep.camp.calculator.domain.CalculationRecord
 
 /**
  * 계산기록리스트 adapter

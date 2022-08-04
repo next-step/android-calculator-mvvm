@@ -4,11 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import edu.nextstep.camp.calculator.data.CalculationRecord
-import edu.nextstep.camp.calculator.domain.Calculator
-import edu.nextstep.camp.calculator.domain.CalculatorRepository
-import edu.nextstep.camp.calculator.domain.Expression
-import edu.nextstep.camp.calculator.domain.Operator
+import edu.nextstep.camp.calculator.domain.*
 import kotlinx.coroutines.launch
 
 /**
@@ -63,7 +59,12 @@ class CalculatorViewModel(
 
     private fun storeCalculationMemory(result: Int) {
         viewModelScope.launch {
-            calculatorRepository.storeCalculationMemory(expression.value.toString(), result)
+            calculatorRepository.storeCalculationMemory(
+                CalculationRecord(
+                    expression.value.toString(),
+                    result
+                )
+            )
         }
     }
 

@@ -1,8 +1,8 @@
 package edu.nextstep.camp.calculator.calculationMemoryAdapter
 
 import androidx.recyclerview.widget.RecyclerView
-import edu.nextstep.camp.calculator.data.CalculationRecord
 import edu.nextstep.camp.calculator.databinding.ItemResultBinding
+import edu.nextstep.camp.calculator.domain.CalculationRecord
 
 /**
  * 클래스에 대한 간단한 설명이나 참고 url을 남겨주세요.

@@ -36,7 +36,7 @@ class CalculatorRecordDaoTest {
     fun insertCalculationRecord_checkCalculationRecord() = runBlocking {
         // given
         // when
-        val calculationRecordTmp = CalculationRecord("1 + 1", 2, 0)
+        val calculationRecordTmp = CalculationRecordEntity("1 + 1", 2, 0)
         dao.insert(calculationRecordTmp)
         val calculationRecord = dao.getAll().getOrNull(0)
 

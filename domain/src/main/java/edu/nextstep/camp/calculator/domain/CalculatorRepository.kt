@@ -8,6 +8,6 @@ package edu.nextstep.camp.calculator.domain
 interface CalculatorRepository {
     val calculationRecordList: List<Any>
 
-    suspend fun storeCalculationMemory(expression: String, result: Int)
+    suspend fun storeCalculationMemory(calculationRecord: CalculationRecord)
     suspend fun loadCalculationRecords()
 }

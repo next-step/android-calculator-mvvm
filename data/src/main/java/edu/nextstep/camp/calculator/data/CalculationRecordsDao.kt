@@ -11,11 +11,11 @@ import androidx.room.Query
  */
 @Dao
 interface CalculationRecordDao {
-    @Query("SELECT * FROM calculationRecord")
-    suspend fun getAll(): List<CalculationRecord>
+    @Query("SELECT * FROM calculationRecordEntity")
+    suspend fun getAll(): List<CalculationRecordEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(calculationRecord: CalculationRecord)
+    suspend fun insert(calculationRecordEntity: CalculationRecordEntity)
 
 
 }

@@ -1,5 +1,6 @@
 package edu.nextstep.camp.calculator.data
 
+import edu.nextstep.camp.calculator.domain.CalculationRecord
 import edu.nextstep.camp.calculator.domain.CalculatorRepository
 
 /**
@@ -16,17 +17,17 @@ internal class CalculatorRepositoryImpl(private val calculationRecordsDao: Calcu
         get() = _calculationRecordList
 
     private suspend fun getCalculationRecords(): List<CalculationRecord> {
-        return calculationRecordsDao.getAll()
+        return calculationRecordsDao.getAll().map { it.mapToDomain() }
     }
 
     private suspend fun insert(calculationRecord: CalculationRecord) {
-        return calculationRecordsDao.insert(calculationRecord)
+        return calculationRecordsDao.insert(CalculationRecordEntity.of(calculationRecord))
     }
 
-    override suspend fun storeCalculationMemory(expression: String, result: Int) {
-        _calculationRecordList.add(CalculationRecord(expression, result))
+    override suspend fun storeCalculationMemory(calculationRecord: CalculationRecord) {
+        _calculationRecordList.add(calculationRecord)
 
-        insert(CalculationRecord(expression, result))
+        insert(calculationRecord)
     }
 
     override suspend fun loadCalculationRecords() {
