@@ -31,22 +31,22 @@ class CalculatorViewModel(
         get() = _isShowHistory
 
     fun addToExpression(operand: Int) {
-        val expression = expression.value ?: return
+        val expression = expression.value ?: initExpression
         _expression.value = expression + operand
     }
 
     fun addToExpression(operator: Operator) {
-        val expression = expression.value ?: return
+        val expression = expression.value ?: initExpression
         _expression.value = expression + operator
     }
 
     fun removeLast() {
-        val expression = expression.value ?: return
+        val expression = expression.value ?: initExpression
         _expression.value = expression.removeLast()
     }
 
     fun calculate() {
-        val expression = expression.value ?: return
+        val expression = expression.value ?: initExpression
         val result = calculator.calculate(expression.toString())
 
         if (result == null) {
@@ -57,23 +57,25 @@ class CalculatorViewModel(
         }
     }
 
-    fun insertHistory(expression: Expression, result: Int) {
+    private fun insertHistory(expression: Expression, result: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.insertHistory(History(expression.toString(), result))
         }
     }
 
-    fun getHistoryList() {
+    private fun getHistoryList() {
         viewModelScope.launch(Dispatchers.IO) {
             val response = repository.getHistoryList()
             _historyList.postValue(response)
         }
     }
 
-    fun toggleHistory(isHistoryVisible: Boolean) {
-        _isShowHistory.value = !isHistoryVisible
-        if (!isHistoryVisible) {
+    fun toggleHistory() {
+        if (_isShowHistory.value == false) {
             getHistoryList()
+            _isShowHistory.value = true
+        } else {
+            _isShowHistory.value = false
         }
     }
 }

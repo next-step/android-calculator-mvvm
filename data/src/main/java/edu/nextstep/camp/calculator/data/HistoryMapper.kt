@@ -2,7 +2,7 @@ package edu.nextstep.camp.calculator.data
 
 import edu.nextstep.camp.calculator.domain.History
 
-class HistoryMapper {
+object HistoryMapper {
     fun getHistoryItem(historyEntity: HistoryEntity): History {
         return History(expression = historyEntity.expression, result = historyEntity.result)
     }

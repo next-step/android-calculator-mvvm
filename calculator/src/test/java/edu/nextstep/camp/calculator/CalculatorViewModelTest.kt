@@ -103,25 +103,26 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `등호 버튼을 누를 때마다 계산 기록에 저장된다`() {
+    fun `수식의 결과가 계산 기록에 저장된다`() {
         // given
-        viewModel = CalculatorViewModel(Expression(), Calculator(), repository)
+        viewModel =
+            CalculatorViewModel(Expression(listOf(1, Operator.Plus, 1)), Calculator(), repository)
 
         // when
-        viewModel.insertHistory(Expression(listOf(1, Operator.Plus, 1)), 2)
+        viewModel.calculate()
 
         // then
         coVerify { repository.insertHistory(History("1 + 1", 2)) }
     }
 
     @Test
-    fun `시계 버튼을 누르면 계산 기록을 가져온다`() {
+    fun `저장된 계산 기록을 가져온다`() {
         // given
         viewModel =
             CalculatorViewModel(Expression(listOf(1, Operator.Plus, 1)), Calculator(), repository)
 
         // when
-        viewModel.getHistoryList()
+        viewModel.toggleHistory()
 
         // then
         coVerify { repository.getHistoryList() }

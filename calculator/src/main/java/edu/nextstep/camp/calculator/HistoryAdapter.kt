@@ -34,7 +34,7 @@ class HistoryAdapter :
         )
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
-        holder.bind(currentList[position])
+        holder.bind(getItem(position))
     }
 
     class HistoryViewHolder(private val binding: ItemResultBinding) :

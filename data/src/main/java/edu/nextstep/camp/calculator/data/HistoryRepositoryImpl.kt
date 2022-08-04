@@ -7,12 +7,12 @@ internal class HistoryRepositoryImpl(private val historyDatabase: HistoryDatabas
     HistoryRepository {
     override suspend fun getHistoryList(): List<History> {
         return historyDatabase.historyDao().getHistoryList().map {
-            HistoryMapper().getHistoryItem(it)
+            HistoryMapper.getHistoryItem(it)
         }
     }
 
     override suspend fun insertHistory(history: History) {
-        historyDatabase.historyDao().insertHistory(HistoryMapper().getHistoryEntity(history))
+        historyDatabase.historyDao().insertHistory(HistoryMapper.getHistoryEntity(history))
     }
 
     companion object {
