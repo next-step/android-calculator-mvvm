@@ -28,7 +28,7 @@ class CounterViewModel : ViewModel() {
         }
     }
 
-    fun showToast(message: String) = viewModelScope.launch {
+    private fun showToast(message: String) = viewModelScope.launch {
         _showToastEvent.emit(message)
     }
 }
