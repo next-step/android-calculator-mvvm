@@ -18,6 +18,7 @@ import org.junit.runner.RunWith
 class CalculatorRecordDaoTest {
 
     private lateinit var appDatabase: CalculatorDatabase
+    private lateinit var dao: CalculationRecordDao
 
     @Before
     fun setUp() {
@@ -27,6 +28,8 @@ class CalculatorRecordDaoTest {
             appContext,
             CalculatorDatabase::class.java
         ).build()
+
+        dao = appDatabase.calculationRecordsDao()
     }
 
     @Test
@@ -34,8 +37,8 @@ class CalculatorRecordDaoTest {
         // given
         // when
         val calculationRecordTmp = CalculationRecord("1 + 1", 2, 0)
-        appDatabase.calculationRecordsDao().insert(calculationRecordTmp)
-        val calculationRecord = appDatabase.calculationRecordsDao().getAll().getOrNull(0)
+        dao.insert(calculationRecordTmp)
+        val calculationRecord = dao.getAll().getOrNull(0)
 
         // then
         assertEquals(calculationRecord?.expression, calculationRecordTmp.expression)
