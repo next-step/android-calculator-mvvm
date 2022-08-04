@@ -3,42 +3,84 @@ package edu.nextstep.camp.calculator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import edu.nextstep.camp.calculator.common.SingleLiveEvent
+import edu.nextstep.camp.calculator.memoryview.MemoryUIModel
+import edu.nextstep.camp.data.LogEntity
+import edu.nextstep.camp.data.LogRepository
 import edu.nextstep.camp.domain.Calculator
 import edu.nextstep.camp.domain.Expression
 import edu.nextstep.camp.domain.Operator
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CalculatorViewModel(private var expression: Expression = Expression.EMPTY) : ViewModel() {
+@HiltViewModel
+class CalculatorViewModel @Inject constructor(private val repository: LogRepository, initExpression: Expression) : ViewModel() {
     private val calculator = Calculator()
 
+    private var _isMemoryViewDisplayed = MutableLiveData(false)
+    val isMemoryViewDisplayed: LiveData<Boolean>
+        get() = _isMemoryViewDisplayed
 
-    private val _result = MutableLiveData(expression)
-    val result: LiveData<Expression>
-        get() = _result
+    private val _memoryLogs = MutableLiveData(listOf<MemoryUIModel>())
+    val memoryLogs: LiveData<List<MemoryUIModel>>
+        get() = _memoryLogs
+
+    private val _expression = MutableLiveData(initExpression)
+    val expression: LiveData<Expression>
+        get() = _expression
 
     private val _error = SingleLiveEvent<CalculatorErrorEvent>()
     val error: LiveData<CalculatorErrorEvent>
         get() = _error
 
     fun addOperandToExpression(operand: Int) {
-        _result.value = _result.value?.plus(operand)
+        _expression.value = _expression.value?.plus(operand)
     }
 
     fun addOperatorToExpression(operator: Operator) {
-        _result.value = _result.value?.plus(operator)
+        _expression.value = _expression.value?.plus(operator)
     }
 
     fun deleteExpression() {
-        expression = _result.value?.removeLast() ?: Expression.EMPTY
-        _result.value = expression
+        _expression.value = _expression.value?.removeLast() ?: Expression.EMPTY
     }
 
     fun calculateExpression() {
-        val result = calculator.calculate(_result.value?.toString() ?: Expression.EMPTY.toString())
+        val result = calculator.calculate(_expression.value?.toString() ?: Expression.EMPTY.toString())
         if (result == null) {
             _error.value = CalculatorErrorEvent.IncompleteExpressionError
-        } else {
-            expression = Expression(listOf(result))
-            _result.value = expression
+            return
+        }
+        val completeExpression = _expression.value
+        _expression.value = Expression(listOf(result))
+        saveExpression(completeExpression.toString(), result.toString())
+    }
+
+    private fun saveExpression(expression: String, result: String) {
+        viewModelScope.launch {
+            repository.insertLog(LogEntity(expression, result))
+        }
+    }
+
+    fun controlMemoryView() {
+        _isMemoryViewDisplayed.value = _isMemoryViewDisplayed.value?.not()
+        if (isMemoryViewDisplayed.value == true) {
+            fetchMemoryList()
+        }
+    }
+
+    private fun fetchMemoryList() {
+        viewModelScope.launch {
+            val list = repository.getLogs()
+            _memoryLogs.postValue(mapToMemoryUIModel(list))
+        }
+    }
+
+    private fun mapToMemoryUIModel(logs: List<LogEntity>): List<MemoryUIModel> {
+        return logs.map {
+            MemoryUIModel(it.id, it.expressionText, it.result)
         }
     }
 }
