@@ -6,13 +6,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
-import edu.nextstep.camp.calculator.domain.Expression
 import kotlinx.coroutines.launch
 
-class CalculatorActivity : AppCompatActivity(), CalculatorContract.View {
+class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
     private val calculatorVM by viewModels<CalculatorViewModel>()
-    override lateinit var presenter: CalculatorContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,26 +19,13 @@ class CalculatorActivity : AppCompatActivity(), CalculatorContract.View {
             viewModel = calculatorVM
         }
         setContentView(binding.root)
-        presenter = CalculatorPresenter(this)
 
         observeIncompleteExpressionErrorEvent()
     }
 
     private fun observeIncompleteExpressionErrorEvent() = lifecycleScope.launch {
         calculatorVM.incompleteExpressionErrorEvent.collect {
-            showIncompleteExpressionError()
+            Toast.makeText(this@CalculatorActivity, R.string.incomplete_expression, Toast.LENGTH_SHORT).show()
         }
-    }
-
-    override fun showExpression(expression: Expression) {
-        binding.textView.text = expression.toString()
-    }
-
-    override fun showResult(result: Int) {
-        binding.textView.text = result.toString()
-    }
-
-    override fun showIncompleteExpressionError() {
-        Toast.makeText(this, R.string.incomplete_expression, Toast.LENGTH_SHORT).show()
     }
 }

@@ -11,9 +11,12 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class CalculatorViewModel(private val calculator: Calculator = Calculator()) : ViewModel() {
+class CalculatorViewModel(
+    initialExpression: Expression = Expression.EMPTY,
+    private val calculator: Calculator = Calculator()
+) : ViewModel() {
 
-    private val _expression = MutableStateFlow(Expression.EMPTY)
+    private val _expression = MutableStateFlow(initialExpression)
     val expression = _expression.asStateFlow()
 
     private val _incompleteExpressionErrorEvent = MutableSharedFlow<Unit>()
