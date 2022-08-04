@@ -16,7 +16,6 @@ class MemoryRecyclerViewAdapter : ListAdapter<MemoryUIModel, MemoryViewHolder>(M
     }
 
     override fun onBindViewHolder(holder: MemoryViewHolder, position: Int) {
-        val item = if (position >= itemCount) return else getItem(position)
-        holder.bind(item)
+        holder.bind(getItem(position))
     }
 }
