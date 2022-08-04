@@ -6,10 +6,8 @@ import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import dagger.hilt.android.AndroidEntryPoint
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 
-@AndroidEntryPoint
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
 

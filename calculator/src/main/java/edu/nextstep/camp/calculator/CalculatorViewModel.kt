@@ -1,24 +1,24 @@
 package edu.nextstep.camp.calculator
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+import edu.nextstep.camp.calculator.data.di.RepositoryModule
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.model.EvaluationRecord
 import edu.nextstep.camp.calculator.domain.model.Expression
 import edu.nextstep.camp.calculator.domain.model.Operator
 import edu.nextstep.camp.calculator.domain.repository.EvaluationRecordRepository
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class CalculatorViewModel @Inject constructor(
-    private val evaluationRecordRepository: EvaluationRecordRepository,
-    ): ViewModel() {
+class CalculatorViewModel(application: Application) : AndroidViewModel(application) {
     private val calculator = Calculator()
     private var expression = Expression.EMPTY
+    private val evaluationRecordRepository: EvaluationRecordRepository =
+        RepositoryModule.provideEvaluationRecordStoreRepository(context = application)
 
     private val _state = MutableLiveData<State>(State.ShowExpression(Expression.EMPTY))
     val state = _state as LiveData<State>

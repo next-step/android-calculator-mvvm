@@ -31,7 +31,6 @@ class EvaluationHistoryAdapter : ListAdapter<EvaluationRecord, RecordViewHolder>
 
 class RecordViewHolder(private val binding: ItemResultBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(evaluationRecord: EvaluationRecord) {
-        binding.tvExpression.text = evaluationRecord.expression
-        binding.tvResult.text = binding.root.context.getString(R.string.evaluation_result, evaluationRecord.result)
+        binding.evaluationRecord = evaluationRecord
     }
 }

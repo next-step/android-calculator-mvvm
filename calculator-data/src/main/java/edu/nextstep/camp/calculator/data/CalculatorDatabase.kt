@@ -12,7 +12,18 @@ abstract class CalculatorDatabase : RoomDatabase() {
     companion object {
         private const val CALCULATOR_DB_NAME = "database_calculator"
 
-        fun buildDatabase(context: Context): CalculatorDatabase {
+        @Volatile
+        private var instance: CalculatorDatabase? = null
+
+        @JvmStatic
+        fun getInstance(context: Context): CalculatorDatabase =
+            instance ?: synchronized(this) {
+                instance ?: buildDatabase(context = context).also {
+                    instance = it
+                }
+            }
+
+        private fun buildDatabase(context: Context): CalculatorDatabase {
             return Room.databaseBuilder(
                 context,
                 CalculatorDatabase::class.java,
