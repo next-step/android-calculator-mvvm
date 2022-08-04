@@ -36,7 +36,7 @@ class HistoryDaoTest {
     @Test
     fun insertAllTest() = runBlocking {
         // given
-        historyDao.insertAll(listOf(History(expression = "2 + 2", result = 4)))
+        historyDao.insertAll(listOf(HistoryEntity(expression = "2 + 2", result = 4)))
         val histories = historyDao.getAll()
 
         // then
@@ -46,9 +46,9 @@ class HistoryDaoTest {
     @Test
     fun setHistoriesTest() = runBlocking {
         // given
-        historyDao.insertAll(listOf(History(expression = "2 + 2", result = 4)))
-        historyDao.setHistories(listOf(History(expression = "2 + 2", result = 4),
-            History(expression = "2 + 5", result = 7)
+        historyDao.insertAll(listOf(HistoryEntity(expression = "2 + 2", result = 4)))
+        historyDao.setHistories(listOf(HistoryEntity(expression = "2 + 2", result = 4),
+            HistoryEntity(expression = "2 + 5", result = 7)
         ))
         val histories = historyDao.getAll()
 
@@ -58,7 +58,7 @@ class HistoryDaoTest {
 
     @Test
     fun deleteAllTest() = runBlocking {
-        historyDao.insertAll(listOf(History(expression = "2 + 2", result = 4)))
+        historyDao.insertAll(listOf(HistoryEntity(expression = "2 + 2", result = 4)))
         historyDao.deleteAll()
         val histories = historyDao.getAll()
 

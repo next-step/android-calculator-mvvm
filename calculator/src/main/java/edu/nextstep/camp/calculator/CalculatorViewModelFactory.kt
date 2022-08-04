@@ -2,7 +2,7 @@ package edu.nextstep.camp.calculator
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import edu.nextstep.camp.calculator.data.HistoryRepository
+import edu.nextstep.camp.calculator.domain.HistoryRepository
 
 /**
  * Created by link.js on 2022. 08. 02..
