@@ -28,7 +28,7 @@ class CalculatorActivity : AppCompatActivity() {
     private fun initObserver() {
         viewModel.showErrorMessage.observe(this) {
             it.consume()?.let { it ->
-                Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         }
     }
