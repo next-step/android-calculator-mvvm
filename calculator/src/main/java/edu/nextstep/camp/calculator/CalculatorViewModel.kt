@@ -76,7 +76,7 @@ class CalculatorViewModel(
 
     fun updateCalculationMemory() {
         _toggleCalculationMemory.value = !(_toggleCalculationMemory.value ?: false)
-        _updateMemory.value = calculatorRepository.calculationRecordList as? List<CalculationRecord>
+        _updateMemory.value = calculatorRepository.getCalculationRecordList()
     }
 
     enum class ErrorEvent {

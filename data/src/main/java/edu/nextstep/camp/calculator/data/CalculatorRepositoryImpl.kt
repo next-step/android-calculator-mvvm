@@ -11,10 +11,7 @@ import edu.nextstep.camp.calculator.domain.CalculatorRepository
 internal class CalculatorRepositoryImpl(private val calculationRecordsDao: CalculationRecordDao) :
     CalculatorRepository {
 
-    private var _calculationRecordList: MutableList<CalculationRecord> = mutableListOf()
-
-    override val calculationRecordList: List<CalculationRecord>
-        get() = _calculationRecordList
+    private var calculationRecordList: MutableList<CalculationRecord> = mutableListOf()
 
     private suspend fun getCalculationRecords(): List<CalculationRecord> {
         return calculationRecordsDao.getAll().map { it.mapToDomain() }
@@ -25,14 +22,17 @@ internal class CalculatorRepositoryImpl(private val calculationRecordsDao: Calcu
     }
 
     override suspend fun storeCalculationMemory(calculationRecord: CalculationRecord) {
-        _calculationRecordList.add(calculationRecord)
+        calculationRecordList.add(calculationRecord)
 
         insert(calculationRecord)
     }
 
     override suspend fun loadCalculationRecords() {
-        _calculationRecordList = getCalculationRecords().toMutableList()
+        calculationRecordList = getCalculationRecords().toMutableList()
+    }
 
+    override fun getCalculationRecordList(): MutableList<CalculationRecord> {
+        return calculationRecordList
     }
 
 }

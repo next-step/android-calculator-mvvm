@@ -6,8 +6,7 @@ package edu.nextstep.camp.calculator.domain
  * Created by jeongjinhong on 2022. 08. 03..
  */
 interface CalculatorRepository {
-    val calculationRecordList: List<Any>
-
     suspend fun storeCalculationMemory(calculationRecord: CalculationRecord)
     suspend fun loadCalculationRecords()
+    fun getCalculationRecordList(): MutableList<CalculationRecord>
 }
