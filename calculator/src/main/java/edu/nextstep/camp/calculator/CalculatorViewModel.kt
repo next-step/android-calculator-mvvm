@@ -38,10 +38,6 @@ class CalculatorViewModel(
     val records: LiveData<List<Record>>
         get() = _records
 
-    init {
-        initRecords()
-    }
-
     fun addOperand(operand: Int) {
         addElement(Operand(operand))
     }
@@ -76,7 +72,7 @@ class CalculatorViewModel(
         _showRecords.value = showRecords.value?.not()
     }
 
-    private fun initRecords() {
+    fun initRecords() {
         viewModelScope.launch(dispatcher) {
             _records.postValue(recordsRepository.getAll())
         }

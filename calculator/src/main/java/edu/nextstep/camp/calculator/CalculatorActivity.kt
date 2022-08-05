@@ -20,6 +20,7 @@ class CalculatorActivity : AppCompatActivity() {
     }
 
     private fun initRecords() {
+        viewModel.initRecords()
         binding.recyclerView.adapter = recordsAdapter
     }
 

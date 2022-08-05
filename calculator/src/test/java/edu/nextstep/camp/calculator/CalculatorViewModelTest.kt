@@ -89,6 +89,7 @@ internal class CalculatorViewModelTest {
             state = StringExpressionState.of(givenExpression),
             dispatcher = UnconfinedTestDispatcher()
         )
+        calculatorViewModel.initRecords()
 
         // when
         calculatorViewModel.calculate()
@@ -154,6 +155,9 @@ internal class CalculatorViewModelTest {
             recordsRepository = recordsRepository,
             dispatcher = UnconfinedTestDispatcher()
         )
+
+        // when
+        calculatorViewModel.initRecords()
 
         // then
         coVerify { recordsRepository.getAll() }
