@@ -3,6 +3,7 @@ package edu.nextstep.camp.calculator
 import com.google.common.truth.Truth.assertThat
 import edu.nextstep.camp.calculator.data.HistoryRepository
 import edu.nextstep.camp.calculator.domain.Calculator
+import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -41,8 +42,8 @@ internal class CalculatorViewModelTest {
         calculatorViewModel.addToExpression(5)
 
         // then
-        val actual = calculatorViewModel.expressionLiveData.getOrAwaitValue().toString()
-        assertThat(actual).isEqualTo("5")
+        val actual = calculatorViewModel.expressionLiveData.getOrAwaitValue()
+        assertThat(actual).isEqualTo(Expression(listOf(5)))
     }
 
     @Test
@@ -54,8 +55,8 @@ internal class CalculatorViewModelTest {
         calculatorViewModel.addToExpression(Operator.Plus)
 
         // then
-        val actual = calculatorViewModel.expressionLiveData.getOrAwaitValue().toString()
-        assertThat(actual).isEqualTo("5 +")
+        val actual = calculatorViewModel.expressionLiveData.getOrAwaitValue()
+        assertThat(actual).isEqualTo(Expression(listOf(5, Operator.Plus)))
     }
 
     @Test
@@ -68,8 +69,8 @@ internal class CalculatorViewModelTest {
         calculatorViewModel.removeLast()
 
         // then
-        val actual = calculatorViewModel.expressionLiveData.getOrAwaitValue().toString()
-        assertThat(actual).isEqualTo("5")
+        val actual = calculatorViewModel.expressionLiveData.getOrAwaitValue()
+        assertThat(actual).isEqualTo(Expression(listOf(5)))
     }
 
     @Test
@@ -83,8 +84,8 @@ internal class CalculatorViewModelTest {
         calculatorViewModel.calculate()
 
         // then
-        val actual = calculatorViewModel.expressionLiveData.getOrAwaitValue().toString()
-        assertThat(actual).isEqualTo("10")
+        val actual = calculatorViewModel.expressionLiveData.getOrAwaitValue()
+        assertThat(actual).isEqualTo(Expression(listOf(10)))
     }
 
     @Test
