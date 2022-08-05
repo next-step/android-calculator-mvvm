@@ -17,8 +17,8 @@ import org.junit.Before
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-class CalculationHistoryDatabaseTest {
-    private lateinit var calculationHistoryDatabase: CalculationHistoryDatabase
+class CalculationResultDatabaseTest {
+    private lateinit var calculationResultDatabase: CalculationResultDatabase
 
     private val testDispatcher = StandardTestDispatcher()
     private val testScope = TestScope(testDispatcher)
@@ -29,9 +29,9 @@ class CalculationHistoryDatabaseTest {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("edu.nextstep.camp.calculator.data.test", appContext.packageName)
 
-        calculationHistoryDatabase = Room.inMemoryDatabaseBuilder(
+        calculationResultDatabase = Room.inMemoryDatabaseBuilder(
             appContext,
-            CalculationHistoryDatabase::class.java,
+            CalculationResultDatabase::class.java,
         ).setTransactionExecutor(testDispatcher.asExecutor())
             .setQueryExecutor(testDispatcher.asExecutor())
             .build()
@@ -41,16 +41,16 @@ class CalculationHistoryDatabaseTest {
     fun `DB에_계산결과를_저장하고_확인_할_수_있다`() = testScope.runTest {
         val entities =
             arrayOf(
-                CalculationHistoryEntity("1 + 1", 2),
-                CalculationHistoryEntity("2 + 2", 4)
+                CalculationResultEntity("1 + 1", 2),
+                CalculationResultEntity("2 + 2", 4)
             )
-        calculationHistoryDatabase.calculationHistoryDao().insert(*entities)
-        val savedDataList = calculationHistoryDatabase.calculationHistoryDao().getAll()
+        calculationResultDatabase.calculationResultDao().insert(*entities)
+        val savedDataList = calculationResultDatabase.calculationResultDao().getAll()
         assert(savedDataList[0].equalsWith(entities[0]))
         assert(savedDataList[1].equalsWith(entities[1]))
     }
 
-    private fun CalculationHistoryEntity.equalsWith(other: CalculationHistoryEntity) =
+    private fun CalculationResultEntity.equalsWith(other: CalculationResultEntity) =
         this.expression == other.expression && this.result == other.result
 
 }

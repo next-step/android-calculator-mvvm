@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import edu.nextstep.camp.calculator.CalculatorEvent.*
-import edu.nextstep.camp.calculator.data.CalculationHistoryDatabase
-import edu.nextstep.camp.calculator.data.CalculationHistoryEntity
+import edu.nextstep.camp.calculator.data.CalculationResultDatabase
+import edu.nextstep.camp.calculator.data.CalculationResultEntity
 import edu.nextstep.camp.calculator.domain.*
 import kotlinx.coroutines.launch
 
@@ -14,8 +14,8 @@ class CalculatorViewModel(
     private val calculator: Calculator = Calculator(),
     lastExpression: Expression = DEFAULT_EXPRESSION,
     private var calculationResultStorage: CalculationResultStorage = CalculationResultStorage(),
-    lastCalculationHistoryVisibility: Boolean = DEFAULT_CALCULATION_HISTORY_VISIBILITY,
-    private val calculationHistoryDB: CalculationHistoryDatabase
+    lastCalculationHistoryVisibility: Boolean = DEFAULT_calculation_result_VISIBILITY,
+    private val calculationResultDB: CalculationResultDatabase
 ) : ViewModel() {
     init {
         requestGetCalculationResultsFromDB()
@@ -53,7 +53,7 @@ class CalculatorViewModel(
     }
 
     fun toggleCalculationHistoryVisibility() {
-        if (isCalculationHistoryVisible.value ?: DEFAULT_CALCULATION_HISTORY_VISIBILITY) {
+        if (isCalculationHistoryVisible.value ?: DEFAULT_calculation_result_VISIBILITY) {
             _isCalculationHistoryVisible.value = false
             return
         }
@@ -77,11 +77,11 @@ class CalculatorViewModel(
 
     private fun requestGetCalculationResultsFromDB() {
         viewModelScope.launch {
-            val savedCalculationHistory =
-                calculationHistoryDB.calculationHistoryDao()
+                calculationResultDB.calculationResultDao()
                     .getAll()
-                    .map(CalculationHistoryEntity::toCalculationResult)
-            calculationResultStorage += savedCalculationHistory
+                    .map(CalculationResultEntity::toCalculationResult).forEach {
+                        calculationResultStorage += it
+                    }
         }
     }
 
@@ -93,14 +93,14 @@ class CalculatorViewModel(
     }
 
     private fun putCalculationResultToDB(calculatedResult: CalculationResult) {
-        fun CalculationResult.toCalculationHistoryEntity() =
-            CalculationHistoryEntity(
+        fun CalculationResult.toCalculationResultEntity() =
+            CalculationResultEntity(
                 expression.toString(),
                 result
             )
         viewModelScope.launch {
-            calculationHistoryDB.calculationHistoryDao()
-                .insert(calculatedResult.toCalculationHistoryEntity())
+            calculationResultDB.calculationResultDao()
+                .insert(calculatedResult.toCalculationResultEntity())
         }
     }
 
@@ -116,6 +116,6 @@ class CalculatorViewModel(
 
     companion object {
         private val DEFAULT_EXPRESSION = Expression.EMPTY
-        private const val DEFAULT_CALCULATION_HISTORY_VISIBILITY = false
+        private const val DEFAULT_calculation_result_VISIBILITY = false
     }
 }

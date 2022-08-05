@@ -6,8 +6,8 @@ import edu.nextstep.camp.calculator.domain.CalculationResult
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 
-@Entity(tableName = "calculation_history")
-data class CalculationHistoryEntity(
+@Entity(tableName = "calculation_result")
+data class CalculationResultEntity(
     val expression: String,
     val result: Int,
     @PrimaryKey(autoGenerate = true) val id: Long = 0

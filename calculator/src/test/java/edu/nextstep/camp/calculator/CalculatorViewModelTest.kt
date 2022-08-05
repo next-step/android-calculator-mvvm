@@ -18,7 +18,7 @@ class CalculatorViewModelTest {
     fun `빈 수식에 피연산자 1을 추가 하면 수식에 해당 피연산자 1이 추가된다`() {
         // given 수식이 빈상태에서
         viewModel =
-            CalculatorViewModel(lastExpression = Expression.EMPTY, calculationHistoryDB = mockk())
+            CalculatorViewModel(lastExpression = Expression.EMPTY, calculationResultDB = mockk())
 
         // when 피연산자 1이 추가 되면
         viewModel.addOperandToExpression(1)
@@ -34,7 +34,7 @@ class CalculatorViewModelTest {
         // given 수식에 1이 입력된 상태에서
         val inputtedExpression = Expression(listOf(1))
         viewModel =
-            CalculatorViewModel(lastExpression = inputtedExpression, calculationHistoryDB = mockk())
+            CalculatorViewModel(lastExpression = inputtedExpression, calculationResultDB = mockk())
 
         // when 피연산자 2가 추가 되면
         viewModel.addOperandToExpression(2)
@@ -50,7 +50,7 @@ class CalculatorViewModelTest {
         // given 수식에 피연산자 1이 추가된 상태
         val inputtedExpression = Expression(listOf(1))
         viewModel =
-            CalculatorViewModel(lastExpression = inputtedExpression, calculationHistoryDB = mockk())
+            CalculatorViewModel(lastExpression = inputtedExpression, calculationResultDB = mockk())
 
         // when 연산자 + 가 추가되면
         viewModel.addOperatorToExpression(Operator.Plus)
@@ -66,7 +66,7 @@ class CalculatorViewModelTest {
         // given 수식이 1 + 일 때
         val inputtedExpression = Expression(listOf(1, Operator.Plus))
         viewModel =
-            CalculatorViewModel(lastExpression = inputtedExpression, calculationHistoryDB = mockk())
+            CalculatorViewModel(lastExpression = inputtedExpression, calculationResultDB = mockk())
 
         // when 연산자 - 가 추가되면
         viewModel.addOperatorToExpression(Operator.Minus)
@@ -82,7 +82,7 @@ class CalculatorViewModelTest {
         // given 빈 수식인 경우
         val inputtedExpression = Expression.EMPTY
         viewModel =
-            CalculatorViewModel(lastExpression = inputtedExpression, calculationHistoryDB = mockk())
+            CalculatorViewModel(lastExpression = inputtedExpression, calculationResultDB = mockk())
 
         // when 연산자 - 가 추가되면
         viewModel.addOperatorToExpression(Operator.Minus)
@@ -98,7 +98,7 @@ class CalculatorViewModelTest {
         // given 수식이 12 + 34 인 경우
         val inputtedExpression = Expression(listOf(12, Operator.Plus, 34))
         viewModel =
-            CalculatorViewModel(lastExpression = inputtedExpression, calculationHistoryDB = mockk())
+            CalculatorViewModel(lastExpression = inputtedExpression, calculationResultDB = mockk())
 
         // when 삭제를 요청 할 경우
         viewModel.removeLastFromExpression()
@@ -114,7 +114,7 @@ class CalculatorViewModelTest {
         // given 수식이 12 + 인 경우
         val inputtedExpression = Expression(listOf(12, Operator.Plus))
         viewModel =
-            CalculatorViewModel(lastExpression = inputtedExpression, calculationHistoryDB = mockk())
+            CalculatorViewModel(lastExpression = inputtedExpression, calculationResultDB = mockk())
 
         // when 삭제를 요청 할 경우
         viewModel.removeLastFromExpression()
@@ -130,7 +130,7 @@ class CalculatorViewModelTest {
         // given 빈 수식인 경우
         val inputtedExpression = Expression.EMPTY
         viewModel =
-            CalculatorViewModel(lastExpression = inputtedExpression, calculationHistoryDB = mockk())
+            CalculatorViewModel(lastExpression = inputtedExpression, calculationResultDB = mockk())
 
         // when 삭제를 요청 할 경우
         viewModel.removeLastFromExpression()
@@ -146,7 +146,7 @@ class CalculatorViewModelTest {
         // given 완전한 수식인 경우
         val inputtedExpression = Expression(listOf(12, Operator.Plus, 34))
         viewModel =
-            CalculatorViewModel(lastExpression = inputtedExpression, calculationHistoryDB = mockk())
+            CalculatorViewModel(lastExpression = inputtedExpression, calculationResultDB = mockk())
 
         // when 계산요청시
         viewModel.requestCalculate()
@@ -162,7 +162,7 @@ class CalculatorViewModelTest {
         // given 연산자로 끝나는 불완전한 수식인 경우
         val inputtedExpression = Expression(listOf(12, Operator.Plus))
         viewModel =
-            CalculatorViewModel(lastExpression = inputtedExpression, calculationHistoryDB = mockk())
+            CalculatorViewModel(lastExpression = inputtedExpression, calculationResultDB = mockk())
 
         // when 계산요청시
         viewModel.requestCalculate()
@@ -178,7 +178,7 @@ class CalculatorViewModelTest {
         // given 연산자로 끝나는 불완전한 수식인 경우
         val inputtedExpression = Expression(listOf(12))
         viewModel =
-            CalculatorViewModel(lastExpression = inputtedExpression, calculationHistoryDB = mockk())
+            CalculatorViewModel(lastExpression = inputtedExpression, calculationResultDB = mockk())
 
         // when 계산요청시
         viewModel.requestCalculate()
@@ -194,7 +194,7 @@ class CalculatorViewModelTest {
         // given 계산 결과 목록의 visible 상태 값이 true일 때
         viewModel = CalculatorViewModel(
             lastCalculationHistoryVisibility = true,
-            calculationHistoryDB = mockk()
+            calculationResultDB = mockk()
         )
 
         // when 상태 값 변경 요청을 하면
@@ -210,7 +210,7 @@ class CalculatorViewModelTest {
         // given 계산 결과 목록의 visible 상태 값이 false일 때
         viewModel = CalculatorViewModel(
             lastCalculationHistoryVisibility = false,
-            calculationHistoryDB = mockk()
+            calculationResultDB = mockk()
         )
 
         // when 상태 값 변경 요청을 하면
@@ -232,7 +232,7 @@ class CalculatorViewModelTest {
         viewModel =
             CalculatorViewModel(
                 calculationResultStorage = CalculationResultStorage(expectedList),
-                calculationHistoryDB = mockk()
+                calculationResultDB = mockk()
             )
 
         // when 계산 결과 최신화 요청을 하면

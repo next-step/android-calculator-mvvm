@@ -6,8 +6,5 @@ class CalculationResultStorage(
     operator fun plus(newResult: CalculationResult): CalculationResultStorage =
         CalculationResultStorage(calculationResults + newResult)
 
-    operator fun plus(newResults: List<CalculationResult>): CalculationResultStorage =
-        CalculationResultStorage(calculationResults + newResults)
-
     fun getResultsAsList() = calculationResults.toList()
 }
