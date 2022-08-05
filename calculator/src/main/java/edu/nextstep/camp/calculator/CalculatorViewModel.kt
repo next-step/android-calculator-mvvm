@@ -58,7 +58,7 @@ class CalculatorViewModel(
             return
         }
         _isCalculationHistoryVisible.value = true
-        requestCalculationResultsUpdate()
+        sendCalculationResultsToView()
     }
 
     fun requestCalculate() {
@@ -110,7 +110,7 @@ class CalculatorViewModel(
         calculationResultStorage += calculationResult
     }
 
-    fun requestCalculationResultsUpdate() {
+    fun sendCalculationResultsToView() {
         _calculationResults.value = calculationResultStorage.getResultsAsList()
     }
 

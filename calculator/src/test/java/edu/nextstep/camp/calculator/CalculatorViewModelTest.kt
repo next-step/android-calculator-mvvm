@@ -236,7 +236,7 @@ class CalculatorViewModelTest {
             )
 
         // when 계산 결과 최신화 요청을 하면
-        viewModel.requestCalculationResultsUpdate()
+        viewModel.sendCalculationResultsToView()
 
         // then 저장된 계산 결과가 전달 된다
         val actual = viewModel.calculationResults.getOrAwaitValue()
