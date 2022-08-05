@@ -17,6 +17,9 @@ class CalculatorViewModel(
     lastCalculationHistoryVisibility: Boolean = DEFAULT_CALCULATION_HISTORY_VISIBILITY,
     private val calculationHistoryDB: CalculationHistoryDatabase
 ) : ViewModel() {
+    init {
+        requestGetCalculationResultsFromDB()
+    }
 
     private val _isCalculationHistoryVisible: MutableLiveData<Boolean> =
         MutableLiveData(lastCalculationHistoryVisibility)
@@ -58,16 +61,6 @@ class CalculatorViewModel(
         requestCalculationResultsUpdate()
     }
 
-    fun requestGetCalculationResultsFromDB() {
-        viewModelScope.launch {
-            val savedCalculationHistory =
-                calculationHistoryDB.calculationHistoryDao()
-                    .getAll()
-                    .map(CalculationHistoryEntity::toCalculationResult)
-            calculationResultStorage += savedCalculationHistory
-        }
-    }
-
     fun requestCalculate() {
         val inputtedExpression = getExpressionOrDefault()
         if (!inputtedExpression.isCompletedExpression()) {
@@ -80,6 +73,16 @@ class CalculatorViewModel(
             return
         }
         processCalculationResult(CalculationResult(inputtedExpression, result))
+    }
+
+    private fun requestGetCalculationResultsFromDB() {
+        viewModelScope.launch {
+            val savedCalculationHistory =
+                calculationHistoryDB.calculationHistoryDao()
+                    .getAll()
+                    .map(CalculationHistoryEntity::toCalculationResult)
+            calculationResultStorage += savedCalculationHistory
+        }
     }
 
     private fun processCalculationResult(calculationResult: CalculationResult) {

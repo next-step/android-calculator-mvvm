@@ -17,7 +17,6 @@ class CalculatorActivity : AppCompatActivity() {
         setContentView(binding.root)
         setBindingSettings()
         setViewModelObservers()
-        viewModel.requestGetCalculationResultsFromDB()
         setCalculationResultRecyclerView()
     }
 
