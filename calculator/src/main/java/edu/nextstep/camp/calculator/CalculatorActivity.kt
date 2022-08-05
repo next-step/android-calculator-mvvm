@@ -8,6 +8,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
+import edu.nextstep.camp.calculator.domain.IncompleteExpressionException
 import kotlinx.coroutines.launch
 
 class CalculatorActivity : AppCompatActivity() {
@@ -27,14 +28,17 @@ class CalculatorActivity : AppCompatActivity() {
 
     private fun observeIncompleteExpressionErrorEvent() = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
-            calculatorVM.incompleteExpressionErrorEvent
+            calculatorVM.errorEvent
                 .collect {
-                    Toast.makeText(
-                        this@CalculatorActivity,
-                        R.string.incomplete_expression,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    when (it.cause) {
+                        is IncompleteExpressionException -> showIncompleteExpressionToast()
+                    }
                 }
         }
+    }
+
+    private fun showIncompleteExpressionToast() {
+        Toast.makeText(this@CalculatorActivity, R.string.incomplete_expression, Toast.LENGTH_SHORT)
+            .show()
     }
 }
