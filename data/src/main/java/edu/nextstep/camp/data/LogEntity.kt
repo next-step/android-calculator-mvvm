@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-internal data class LogEntity(
+data class LogEntity(
     var expressionText: String,
     var result: String
 ): DataEntity {

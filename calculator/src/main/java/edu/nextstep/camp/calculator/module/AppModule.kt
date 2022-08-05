@@ -1,4 +1,4 @@
-package edu.nextstep.camp.calculator
+package edu.nextstep.camp.calculator.module
 
 import android.content.Context
 import dagger.Module
@@ -6,8 +6,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import edu.nextstep.camp.data.Injector
 import edu.nextstep.camp.data.LogDatabase
 import edu.nextstep.camp.domain.Expression
+import edu.nextstep.camp.domain.LogRepository
 import javax.inject.Singleton
 
 @Module
@@ -28,6 +30,6 @@ class AppModule {
     @Provides
     @Singleton
     fun provideLogRepository(db: LogDatabase): LogRepository {
-        return LogRepositoryImpl(db.logDao())
+        return Injector.provideLogRepository(db.logDao())
     }
 }
