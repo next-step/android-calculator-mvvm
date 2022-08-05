@@ -1,42 +1,62 @@
 package edu.nextstep.camp.calculator
 
-import android.view.View
-import android.widget.Button
-import androidx.core.text.isDigitsOnly
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import edu.nextstep.camp.calculator.data.di.RepositoryModule
 import edu.nextstep.camp.calculator.domain.Calculator
-import edu.nextstep.camp.calculator.domain.Expression
-import edu.nextstep.camp.calculator.domain.Operator
+import edu.nextstep.camp.calculator.domain.model.EvaluationRecord
+import edu.nextstep.camp.calculator.domain.model.Expression
+import edu.nextstep.camp.calculator.domain.model.Operator
+import edu.nextstep.camp.calculator.domain.repository.EvaluationRecordRepository
+import kotlinx.coroutines.launch
 
-class CalculatorViewModel : ViewModel() {
+class CalculatorViewModel(application: Application) : AndroidViewModel(application) {
     private val calculator = Calculator()
-    private val _expression = MutableLiveData(Expression.EMPTY)
-    val expression = _expression as LiveData<Expression>
+    private var expression = Expression.EMPTY
+    private val evaluationRecordRepository: EvaluationRecordRepository =
+        RepositoryModule.provideEvaluationRecordStoreRepository(context = application)
+
+    private val _state = MutableLiveData<State>(State.ShowExpression(Expression.EMPTY))
+    val state = _state as LiveData<State>
 
     private val _sideEffect : MutableLiveData<Event<SideEffect>> = MutableLiveData(Event(SideEffect.None))
     val sideEffect = _sideEffect as LiveData<Event<SideEffect>>
 
     fun addToExpression(operand: Int) {
-        _expression.value = getExpressionValue() + operand
+        processExpressionBlock {
+            _state.value = State.ShowExpression(it + operand)
+        }
     }
 
     fun addToExpression(operator: Operator) {
-        _expression.value = getExpressionValue() + operator
+        processExpressionBlock {
+            _state.value = State.ShowExpression(it + operator)
+        }
     }
 
     fun removeLast() {
-        _expression.value = getExpressionValue().removeLast()
+        processExpressionBlock {
+            _state.value = State.ShowExpression(it.removeLast())
+        }
     }
 
     fun calculate() {
-        kotlin.runCatching { calculator.calculate(getExpressionValue().toString()) }
-            .onSuccess {
-                if (it == null) {
+        processExpressionBlock { expression ->
+            runCatching {
+                calculator.calculate(expression.toString())
+            }
+            .onSuccess { result ->
+                if (result == null) {
                     _sideEffect.value = Event(SideEffect.IncompleteExpressionError)
                 } else {
-                    _expression.value = Expression(listOf(it))
+                    _state.value = State.ShowExpression(Expression(listOf(result)))
+                    viewModelScope.launch {
+                        evaluationRecordRepository.record(EvaluationRecord(expression.toString(), result.toString()))
+                    }
                 }
             }
             .onFailure {
@@ -46,14 +66,39 @@ class CalculatorViewModel : ViewModel() {
                     _sideEffect.value = Event(SideEffect.UnknownError)
                 }
             }
+        }
     }
 
-    private fun getExpressionValue() = _expression.value ?: Expression.EMPTY
+    fun toggleHistoryBtn() {
+        when (val currentState = _state.value) {
+            is State.ShowExpression -> {
+                expression = currentState.expression
+                viewModelScope.launch {
+                    _state.value = State.ShowHistory(evaluationRecordRepository.getEvaluationHistory())
+                }
+            }
+            is State.ShowHistory -> {
+                _state.value = State.ShowExpression(expression)
+            }
+            else -> {}
+        }
+    }
+
+    private inline fun processExpressionBlock(body: (Expression) -> Unit) {
+        (_state.value as? State.ShowExpression)?.let {
+            body.invoke(it.expression)
+        }
+    }
 
     sealed class SideEffect {
         object IncompleteExpressionError : SideEffect()
         object UnknownError : SideEffect()
         object DivideByZeroError : SideEffect()
         object None : SideEffect()
+    }
+
+    sealed class State {
+        data class ShowExpression(val expression: Expression) : State()
+        data class ShowHistory(val history: List<EvaluationRecord>) : State()
     }
 }

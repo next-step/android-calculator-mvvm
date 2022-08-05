@@ -2,9 +2,19 @@ package edu.nextstep.camp.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
+import edu.nextstep.camp.calculator.data.EvaluationRecordDao
+import edu.nextstep.camp.calculator.data.EvaluationRecordEntity
+import edu.nextstep.camp.calculator.data.repository.EvaluationRecordRepositoryImpl
 import edu.nextstep.camp.calculator.domain.Calculator
-import edu.nextstep.camp.calculator.domain.Expression
-import edu.nextstep.camp.calculator.domain.Operator
+import edu.nextstep.camp.calculator.domain.model.EvaluationRecord
+import edu.nextstep.camp.calculator.domain.model.Expression
+import edu.nextstep.camp.calculator.domain.model.Operator
+import io.mockk.every
+import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -16,14 +26,21 @@ import org.junit.runners.JUnit4
 class CalculatorViewModelTest {
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
+
+    @ExperimentalCoroutinesApi
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
+
     private lateinit var viewModel: CalculatorViewModel
     private lateinit var calculator: Calculator
+    private lateinit var dao: EvaluationRecordDao
 
+    @ExperimentalCoroutinesApi
     @Before
     fun setUp() {
         calculator = Calculator()
-        viewModel = CalculatorViewModel()
-        viewModel.expression.observeForever {  }
+        dao = mockk()
+        viewModel = CalculatorViewModel(EvaluationRecordRepositoryImpl(dao, StandardTestDispatcher()))
     }
 
     @Test
@@ -32,8 +49,9 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(1)
 
         // then
-        val expected = Expression.EMPTY.plus(1)
-        assertThat(viewModel.expression.value).isEqualTo(expected)
+        val expected = Expression(listOf(1))
+        val actual = (viewModel.state.value as? CalculatorViewModel.State.ShowExpression)?.expression
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
@@ -42,10 +60,10 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(1)
         viewModel.addToExpression(Operator.Plus)
 
-
         // then
-        val expected = Expression.EMPTY.plus(1).plus(Operator.Plus)
-        assertThat(viewModel.expression.value).isEqualTo(expected)
+        val expected = Expression(listOf(1, Operator.Plus))
+        val actual = (viewModel.state.value as? CalculatorViewModel.State.ShowExpression)?.expression
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
@@ -55,8 +73,9 @@ class CalculatorViewModelTest {
         viewModel.removeLast()
 
         // then
-        val expected = Expression.EMPTY.plus(1).removeLast()
-        assertThat(viewModel.expression.value).isEqualTo(expected)
+        val expected = Expression.EMPTY
+        val actual = (viewModel.state.value as? CalculatorViewModel.State.ShowExpression)?.expression
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
@@ -71,10 +90,9 @@ class CalculatorViewModelTest {
 
 
         // then
-        val expected = calculator.calculate("3")?.let {
-            Expression(listOf(it))
-        }
-        assertThat(viewModel.expression.value).isEqualTo(expected)
+        val expected = Expression(listOf(3))
+        val actual = (viewModel.state.value as? CalculatorViewModel.State.ShowExpression)?.expression
+        assertThat(actual).isEqualTo(expected)
     }
 
     @Test
@@ -120,7 +138,56 @@ class CalculatorViewModelTest {
 
 
         // then
-        val expected = Expression.EMPTY.plus(1).plus(Operator.Divide).plus(1).removeLast()
-        assertThat(viewModel.expression.value).isEqualTo(expected)
+        val expected = Expression(listOf(1, Operator.Divide))
+        val actual = (viewModel.state.value as? CalculatorViewModel.State.ShowExpression)?.expression
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `계산기 화면이 보일때, 히스토리 버튼을 누르면 계산 기록이 보인다`() = runTest {
+        // given
+        every { dao.getAll() } returns emptyList()
+
+        // when
+        viewModel.toggleHistoryBtn()
+        advanceUntilIdle()
+
+        // then
+        val expected = CalculatorViewModel.State.ShowHistory(emptyList())
+        val actual = viewModel.state.getOrAwaitValue()
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `계산 기록 화면이 보일 때, 히스토리 버튼을 누르면 계산기 화면이 보인다`() = runTest {
+        // given
+        viewModel.toggleHistoryBtn()
+
+        // when
+        viewModel.toggleHistoryBtn()
+        advanceUntilIdle()
+
+        // then
+        val expected = CalculatorViewModel.State.ShowExpression(Expression.EMPTY)
+        val actual = viewModel.state.getOrAwaitValue()
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `계산기록이 있을때, 히스토리 버튼을 누르면, 성공한 계산 기록이 보인다`() = runTest {
+        // given
+        every { dao.getAll() } returns listOf(EvaluationRecordEntity(id = 1, expression = "1 + 1", result = "1"))
+
+        // when
+        viewModel.toggleHistoryBtn()
+        advanceUntilIdle()
+
+        // then
+        val expected = CalculatorViewModel.State.ShowHistory(listOf(EvaluationRecord("1 + 1", "1")))
+        val actual = viewModel.state.getOrAwaitValue()
+        assertThat(actual).isEqualTo(expected)
     }
 }

@@ -1,5 +1,7 @@
 package edu.nextstep.camp.calculator.domain
 
+import edu.nextstep.camp.calculator.domain.model.Operator
+
 class Calculator {
     fun calculate(rawExpression: String): Int? {
         if (rawExpression.isBlank()) return null
