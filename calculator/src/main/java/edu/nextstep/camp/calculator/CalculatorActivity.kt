@@ -33,7 +33,7 @@ class CalculatorActivity : AppCompatActivity() {
             itemAnimator = null
         }
 
-        viewModel.expressionHistories.observe(this) { adapter.submitList(it) }
+        viewModel.expressionHistories.observe(this) { adapter.submitList(it.histories) }
     }
 
     private fun handleViewEvent(viewEvent: ViewEvent) {

@@ -13,20 +13,20 @@ import androidx.room.Transaction
 import edu.nextstep.camp.calculator.domain.ExpressionHistory
 
 @Entity
-data class ExpressionHistoryEntity(
+internal data class ExpressionHistoryEntity(
     val rawExpression: String,
     val result: Int,
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
 )
 
-fun ExpressionHistory.toEntry() =
+internal fun ExpressionHistory.toEntity() =
     ExpressionHistoryEntity(rawExpression, result)
 
-fun ExpressionHistoryEntity.toExpressionHistoryItem() =
+internal fun ExpressionHistoryEntity.toExpressionHistoryItem() =
     ExpressionHistory(rawExpression, result)
 
 @Dao
-abstract class ExpressionHistoryDao {
+internal abstract class ExpressionHistoryDao {
     @Query("SELECT * FROM expressionhistoryentity")
     abstract suspend fun getAll(): List<ExpressionHistoryEntity>
 
@@ -44,7 +44,7 @@ abstract class ExpressionHistoryDao {
 }
 
 @Database(entities = [ExpressionHistoryEntity::class], version = 2)
-abstract class AppDatabase : RoomDatabase() {
+internal abstract class AppDatabase : RoomDatabase() {
     abstract fun expressionHistoryDao(): ExpressionHistoryDao
 
     companion object {
