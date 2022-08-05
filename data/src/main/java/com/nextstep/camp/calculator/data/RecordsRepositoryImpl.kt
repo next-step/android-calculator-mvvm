@@ -3,13 +3,14 @@ package com.nextstep.camp.calculator.data
 import edu.nextstep.camp.calculator.domain.Record
 
 internal class RecordsRepositoryImpl(
-    private val recordDao: RecordDao
+    private val recordDao: RecordDao,
+    private val recordMapper: RecordMapper,
 ) : RecordsRepository {
 
     override suspend fun getAll(): List<Record> = recordDao
         .getAll()
-        .map { it.toDomain() }
+        .map(recordMapper::toDomain)
 
     override suspend fun insert(record: Record) = recordDao
-        .insert(record.toEntity())
+        .insert(recordMapper.toEntity(record))
 }

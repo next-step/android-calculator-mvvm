@@ -6,7 +6,8 @@ object RepositoryInjector {
     
     fun provideRecordsRepository(context: Context): RecordsRepository {
         return RecordsRepositoryImpl(
-            recordDao = RecordDatabase.getInstance(context).recordDao()
+            recordDao = RecordDatabase.getInstance(context).recordDao(),
+            recordMapper = RecordMapper(),
         )
     }
 }

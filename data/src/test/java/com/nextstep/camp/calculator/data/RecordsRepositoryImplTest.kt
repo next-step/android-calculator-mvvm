@@ -17,7 +17,10 @@ internal class RecordsRepositoryImplTest {
     @BeforeEach
     fun setUp() {
         recordDao = mockk(relaxed = true)
-        recordsRepository = RecordsRepositoryImpl(recordDao)
+        recordsRepository = RecordsRepositoryImpl(
+            recordDao = recordDao,
+            recordMapper = RecordMapper()
+        )
     }
 
     @Test
