@@ -1,4 +1,4 @@
-package edu.nextstep.camp.data
+package edu.nextstep.camp.domain
 
 interface LogRepository {
     suspend fun insertLog(log: LogEntity)

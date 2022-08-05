@@ -7,8 +7,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import edu.nextstep.camp.data.LogDatabase
-import edu.nextstep.camp.data.LogRepository
-import edu.nextstep.camp.data.LogRepositoryImpl
 import edu.nextstep.camp.domain.Expression
 import javax.inject.Singleton
 

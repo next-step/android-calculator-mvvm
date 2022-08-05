@@ -1,17 +1,10 @@
 package edu.nextstep.camp.calculator
 
-import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
-import edu.nextstep.camp.data.LogDatabase
-import edu.nextstep.camp.data.LogRepository
-import edu.nextstep.camp.data.LogRepositoryImpl
 import edu.nextstep.camp.domain.Expression
 import edu.nextstep.camp.domain.Operator
 import io.mockk.MockKAnnotations
-import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
 import org.junit.Rule
 
