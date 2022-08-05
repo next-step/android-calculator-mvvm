@@ -8,7 +8,14 @@
         <variable
             name="viewModel"
             type="edu.nextstep.camp.calculator.CalculatorViewModel" />
+        <variable
+            name="showExpression"
+            type="edu.nextstep.camp.calculator.CalculatorViewModel.State" />
+        <variable
+            name="showHistory"
+            type="edu.nextstep.camp.calculator.CalculatorViewModel.State" />
         <import type="edu.nextstep.camp.calculator.domain.model.Operator" />
+        <import type="android.view.View"/>
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -30,21 +37,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="HardcodedText"
+            android:text="@{viewModel.expressionState.toString()}"
+            android:visibility="@{viewModel.displayState == showExpression ? View.VISIBLE : View.GONE}"
             />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/textView"
-            app:layout_constraintEnd_toEndOf="@id/textView"
-            app:layout_constraintStart_toStartOf="@id/textView"
-            app:layout_constraintTop_toTopOf="@id/textView"
+            app:layout_constraintBottom_toBottomOf="@id/divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/item_result"
             tools:visibility="visible"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:background="@color/purple_200"
+            android:visibility="@{viewModel.displayState == showHistory ? View.VISIBLE : View.GONE}"
             />
 
         <View

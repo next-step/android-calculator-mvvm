@@ -6,6 +6,8 @@ import edu.nextstep.camp.calculator.data.toEvaluationRecordList
 import edu.nextstep.camp.calculator.domain.model.EvaluationRecord
 import edu.nextstep.camp.calculator.domain.repository.EvaluationRecordRepository
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class EvaluationRecordRepositoryImpl constructor(
@@ -16,7 +18,7 @@ class EvaluationRecordRepositoryImpl constructor(
         return withContext(ioDispatcher) { dao.insert(evaluationRecord.toEntity()) }
     }
 
-    override suspend fun getEvaluationHistory(): List<EvaluationRecord> {
-        return withContext(ioDispatcher) { dao.getAll().toEvaluationRecordList() }
+    override fun getEvaluationHistory(): Flow<List<EvaluationRecord>> {
+        return dao.getAll().map { it.toEvaluationRecordList() }
     }
 }

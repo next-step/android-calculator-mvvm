@@ -50,7 +50,7 @@ class CalculatorViewModelTest {
 
         // then
         val expected = Expression(listOf(1))
-        val actual = (viewModel.state.value as? CalculatorViewModel.State.ShowExpression)?.expression
+        val actual = (viewModel.displayState.value as? CalculatorViewModel.State.ShowExpression)?.expression
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -62,7 +62,7 @@ class CalculatorViewModelTest {
 
         // then
         val expected = Expression(listOf(1, Operator.Plus))
-        val actual = (viewModel.state.value as? CalculatorViewModel.State.ShowExpression)?.expression
+        val actual = (viewModel.displayState.value as? CalculatorViewModel.State.ShowExpression)?.expression
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -74,7 +74,7 @@ class CalculatorViewModelTest {
 
         // then
         val expected = Expression.EMPTY
-        val actual = (viewModel.state.value as? CalculatorViewModel.State.ShowExpression)?.expression
+        val actual = (viewModel.displayState.value as? CalculatorViewModel.State.ShowExpression)?.expression
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -91,7 +91,7 @@ class CalculatorViewModelTest {
 
         // then
         val expected = Expression(listOf(3))
-        val actual = (viewModel.state.value as? CalculatorViewModel.State.ShowExpression)?.expression
+        val actual = (viewModel.displayState.value as? CalculatorViewModel.State.ShowExpression)?.expression
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -139,7 +139,7 @@ class CalculatorViewModelTest {
 
         // then
         val expected = Expression(listOf(1, Operator.Divide))
-        val actual = (viewModel.state.value as? CalculatorViewModel.State.ShowExpression)?.expression
+        val actual = (viewModel.displayState.value as? CalculatorViewModel.State.ShowExpression)?.expression
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -155,7 +155,7 @@ class CalculatorViewModelTest {
 
         // then
         val expected = CalculatorViewModel.State.ShowHistory(emptyList())
-        val actual = viewModel.state.getOrAwaitValue()
+        val actual = viewModel.displayState.getOrAwaitValue()
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -171,7 +171,7 @@ class CalculatorViewModelTest {
 
         // then
         val expected = CalculatorViewModel.State.ShowExpression(Expression.EMPTY)
-        val actual = viewModel.state.getOrAwaitValue()
+        val actual = viewModel.displayState.getOrAwaitValue()
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -187,7 +187,7 @@ class CalculatorViewModelTest {
 
         // then
         val expected = CalculatorViewModel.State.ShowHistory(listOf(EvaluationRecord("1 + 1", "1")))
-        val actual = viewModel.state.getOrAwaitValue()
+        val actual = viewModel.displayState.getOrAwaitValue()
         assertThat(actual).isEqualTo(expected)
     }
 }
