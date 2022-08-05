@@ -13,22 +13,18 @@ class CounterViewModel : ViewModel() {
     private val _count = MutableStateFlow(0)
     val count = _count.asStateFlow()
 
-    private val _showToastEvent = MutableSharedFlow<String>()
-    val showToastEvent = _showToastEvent.asSharedFlow()
+    private val _errorEvent = MutableSharedFlow<Throwable>()
+    val errorEvent = _errorEvent.asSharedFlow()
 
-    fun increment() = viewModelScope.launch {
-        _count.emit(count.value + 1)
+    fun increment() {
+        _count.value = count.value + 1
     }
 
     fun decrement() = viewModelScope.launch {
         if (count.value > 0) {
-            _count.emit(count.value - 1)
+            _count.value = count.value - 1
         } else {
-            showToast("0 이하로 내릴 수 없습니다")
+            _errorEvent.emit(Throwable(DecrementMinimumValueException()))
         }
-    }
-
-    private fun showToast(message: String) = viewModelScope.launch {
-        _showToastEvent.emit(message)
     }
 }

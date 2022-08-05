@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import edu.nextstep.camp.counter.databinding.ActivityCounterBinding
 import kotlinx.coroutines.launch
 
@@ -21,12 +23,17 @@ class CounterActivity : AppCompatActivity() {
         }
         setContentView(binding.root)
 
-        observeShowToastEvent()
+        observeErrorEvent()
     }
 
-    private fun observeShowToastEvent() = lifecycleScope.launch {
-        counterVM.showToastEvent.collect { message ->
-            showToast(message)
+    private fun observeErrorEvent() = lifecycleScope.launch {
+        repeatOnLifecycle(Lifecycle.State.STARTED) {
+            counterVM.errorEvent
+                .collect {
+                    when (it.cause) {
+                        is DecrementMinimumValueException -> showToast(resources.getString(R.string.less_than_minimum))
+                    }
+                }
         }
     }
 

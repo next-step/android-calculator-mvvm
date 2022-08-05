@@ -31,14 +31,13 @@ class CalculatorActivity : AppCompatActivity() {
             calculatorVM.errorEvent
                 .collect {
                     when (it.cause) {
-                        is IncompleteExpressionException -> showIncompleteExpressionToast()
+                        is IncompleteExpressionException -> showToast(resources.getString(R.string.incomplete_expression))
                     }
                 }
         }
     }
 
-    private fun showIncompleteExpressionToast() {
-        Toast.makeText(this@CalculatorActivity, R.string.incomplete_expression, Toast.LENGTH_SHORT)
-            .show()
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }
