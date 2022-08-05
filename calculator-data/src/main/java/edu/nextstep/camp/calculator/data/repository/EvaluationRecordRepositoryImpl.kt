@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-class EvaluationRecordRepositoryImpl constructor(
+internal class EvaluationRecordRepositoryImpl constructor(
     private val dao: EvaluationRecordDao,
     private val ioDispatcher: CoroutineDispatcher
 ) : EvaluationRecordRepository {
