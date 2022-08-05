@@ -2,9 +2,9 @@ package edu.nextstep.camp.calculator
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import edu.nextstep.camp.calculator.domain.IncompleteExpressionException
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
+import edu.nextstep.camp.calculator.domain.IncompleteExpressionException
 import edu.nextstep.camp.calculator.domain.Operator
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,16 +23,16 @@ class CalculatorViewModel(
     private val _errorEvent = MutableSharedFlow<Throwable>()
     val errorEvent = _errorEvent.asSharedFlow()
 
-    fun addToExpression(operand: Int) = viewModelScope.launch {
-        _expression.emit(expression.value + operand)
+    fun addToExpression(operand: Int) {
+        _expression.value = expression.value + operand
     }
 
-    fun addToExpression(operator: Operator) = viewModelScope.launch {
-        _expression.emit(expression.value + operator)
+    fun addToExpression(operator: Operator) {
+        _expression.value = expression.value + operator
     }
 
-    fun removeLast() = viewModelScope.launch {
-        _expression.emit(expression.value.removeLast())
+    fun removeLast() {
+        _expression.value = expression.value.removeLast()
     }
 
     fun calculate() = viewModelScope.launch {
@@ -40,7 +40,7 @@ class CalculatorViewModel(
         if (result == null) {
             _errorEvent.emit(Throwable(IncompleteExpressionException()))
         } else {
-            _expression.emit(Expression(listOf(result)))
+            _expression.value = Expression(listOf(result))
         }
     }
 
