@@ -93,14 +93,9 @@ class CalculatorViewModel(
     }
 
     private fun putCalculationResultToDB(calculatedResult: CalculationResult) {
-        fun CalculationResult.toCalculationResultEntity() =
-            CalculationResultEntity(
-                expression.toString(),
-                result
-            )
         viewModelScope.launch {
             calculationResultDB.calculationResultDao()
-                .insert(calculatedResult.toCalculationResultEntity())
+                .insert(CalculationResultEntity.calculationResultToEntity(calculatedResult))
         }
     }
 

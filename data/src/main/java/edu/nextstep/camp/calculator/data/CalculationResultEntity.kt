@@ -24,4 +24,12 @@ data class CalculationResultEntity(
             return operatorOrNull
         return string.toInt()
     }
+
+    companion object {
+        fun calculationResultToEntity(calculationResult: CalculationResult) =
+            CalculationResultEntity(
+                calculationResult.expression.toString(),
+                calculationResult.result
+            )
+    }
 }
