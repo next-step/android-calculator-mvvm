@@ -6,7 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 
-class CalculatorActivity : AppCompatActivity(){
+class CalculatorActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityCalculatorBinding.inflate(layoutInflater) }
 
