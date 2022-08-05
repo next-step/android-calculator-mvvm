@@ -18,7 +18,7 @@ class CalculationResultStorageTest {
         val resultList = storage.getResultsAsList()
 
         // then 빈 list를 반환한다.
-        assertThat(resultList.isEmpty()).isEqualTo(true)
+        assertThat(resultList.isEmpty()).isTrue()
     }
 
     @Test

@@ -133,7 +133,7 @@ class ExpressionTest {
         val actual = expression.isCompletedExpression()
 
         // then false를 반환 한다.
-        assertThat(actual).isEqualTo(false)
+        assertThat(actual).isFalse()
     }
 
     @Test
@@ -145,7 +145,7 @@ class ExpressionTest {
         val actual = expression.isCompletedExpression()
 
         // then false를 반환 한다.
-        assertThat(actual).isEqualTo(false)
+        assertThat(actual).isFalse()
     }
 
     @Test
@@ -157,7 +157,7 @@ class ExpressionTest {
         val actual = expression.isCompletedExpression()
 
         // then false를 반환 한다.
-        assertThat(actual).isEqualTo(false)
+        assertThat(actual).isFalse()
     }
 
     @Test
@@ -169,7 +169,7 @@ class ExpressionTest {
         val actual = expression.isCompletedExpression()
 
         // then true 를 반환 한다.
-        assertThat(actual).isEqualTo(true)
+        assertThat(actual).isTrue()
     }
 
 }

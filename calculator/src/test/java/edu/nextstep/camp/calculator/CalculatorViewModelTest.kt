@@ -202,7 +202,7 @@ class CalculatorViewModelTest {
 
         // then 상태 값은 false 가 전달 된다
         val actual = viewModel.isCalculationHistoryVisible.getOrAwaitValue()
-        assertThat(actual).isEqualTo(false)
+        assertThat(actual).isFalse()
     }
 
     @Test
@@ -218,7 +218,7 @@ class CalculatorViewModelTest {
 
         // then 상태 값은 true 가 전달 된다
         val actual = viewModel.isCalculationHistoryVisible.getOrAwaitValue()
-        assertThat(actual).isEqualTo(true)
+        assertThat(actual).isTrue()
     }
 
     @Test
