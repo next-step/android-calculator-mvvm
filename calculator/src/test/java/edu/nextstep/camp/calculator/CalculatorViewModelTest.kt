@@ -3,12 +3,10 @@ package edu.nextstep.camp.calculator
 import com.google.common.truth.Truth.assertThat
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.*
-import org.junit.After
-import org.junit.Before
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
 
@@ -29,8 +27,9 @@ class CalculatorViewModelTest {
         calculatorVM.addToExpression(1)
         advanceUntilIdle()
         // then
-        val actual = calculatorVM.expression.first().toString()
-        assertThat(actual).isEqualTo("1")
+        val expectedExpression = Expression(listOf(1))
+        val actual = calculatorVM.expression.first()
+        assertThat(actual).isEqualTo(expectedExpression)
     }
 
     @Test
@@ -41,8 +40,9 @@ class CalculatorViewModelTest {
         calculatorVM.addToExpression(Operator.Plus)
         advanceUntilIdle()
         // then
-        val actual = calculatorVM.expression.first().toString()
-        assertThat(actual).isEqualTo("1 +")
+        val expectedExpression = Expression(listOf(1, Operator.Plus))
+        val actual = calculatorVM.expression.first()
+        assertThat(actual).isEqualTo(expectedExpression)
     }
 
     @Test
@@ -53,19 +53,22 @@ class CalculatorViewModelTest {
         calculatorVM.removeLast()
         advanceUntilIdle()
         // then
-        val actual = calculatorVM.expression.first().toString()
-        assertThat(actual).isEqualTo("")
+        val expectedExpression = Expression()
+        val actual = calculatorVM.expression.first()
+        assertThat(actual).isEqualTo(expectedExpression)
     }
 
     @Test
     fun 계산이_실행되면_계산기에_의해_계산되고_결과를_화면에_보여줘야_한다() = runTest {
         // given
-        calculatorVM = CalculatorViewModel(initialExpression = Expression(listOf(1, Operator.Plus, 2)))
+        calculatorVM =
+            CalculatorViewModel(initialExpression = Expression(listOf(1, Operator.Plus, 2)))
         // when
         calculatorVM.calculate()
         advanceUntilIdle()
         // then
-        val actual = calculatorVM.expression.first().toString()
-        assertThat(actual).isEqualTo("3")
+        val expectedExpression = Expression(listOf(3))
+        val actual = calculatorVM.expression.first()
+        assertThat(actual).isEqualTo(expectedExpression)
     }
 }
