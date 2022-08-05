@@ -17,7 +17,7 @@ import org.junit.Before
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-class ExampleInstrumentedTest {
+class CalculationHistoryDatabaseTest {
     private lateinit var calculationHistoryDatabase: CalculationHistoryDatabase
 
     private val testDispatcher = StandardTestDispatcher()
