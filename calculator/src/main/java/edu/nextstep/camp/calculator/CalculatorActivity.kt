@@ -27,13 +27,14 @@ class CalculatorActivity : AppCompatActivity() {
 
     private fun observeIncompleteExpressionErrorEvent() = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
-            calculatorVM.incompleteExpressionErrorEvent.collect {
-                Toast.makeText(
-                    this@CalculatorActivity,
-                    R.string.incomplete_expression,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+            calculatorVM.incompleteExpressionErrorEvent
+                .collect {
+                    Toast.makeText(
+                        this@CalculatorActivity,
+                        R.string.incomplete_expression,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
         }
     }
 }
