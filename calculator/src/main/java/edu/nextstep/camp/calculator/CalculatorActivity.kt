@@ -31,7 +31,7 @@ class CalculatorActivity : AppCompatActivity() {
     private fun observeData() {
         calculatorViewModel.failInfo.observe(this) {
             if (!it) return@observe
-            Toast.makeText(applicationContext, "완성되지 않은 수식입니다.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "완성되지 않은 수식입니다.", Toast.LENGTH_SHORT).show()
         }
 
         calculatorViewModel.historiesLiveData.observe(this) {
