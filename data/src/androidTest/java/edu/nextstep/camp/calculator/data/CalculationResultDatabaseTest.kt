@@ -2,6 +2,9 @@ package edu.nextstep.camp.calculator.data
 
 import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
+import edu.nextstep.camp.calculator.domain.CalculationResult
+import edu.nextstep.camp.calculator.domain.Expression
+import edu.nextstep.camp.calculator.domain.Operator
 import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
