@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.nextstep.camp.calculator.data.Record
 import edu.nextstep.camp.calculator.databinding.ItemResultBinding
+import edu.nextstep.camp.calculator.domain.Record
 
 class RecordsAdapter : ListAdapter<Record, RecordsAdapter.RecordsViewHolder>(diffCallback()) {
 
@@ -34,7 +34,7 @@ class RecordsAdapter : ListAdapter<Record, RecordsAdapter.RecordsViewHolder>(dif
             override fun areItemsTheSame(
                 oldItem: Record,
                 newItem: Record
-            ): Boolean = oldItem == newItem
+            ): Boolean = oldItem.expression == newItem.expression
 
             override fun areContentsTheSame(
                 oldItem: Record,

@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class Record(
+internal data class RecordEntity(
     val expression: String,
     val result: Double,
     @PrimaryKey(autoGenerate = true)
