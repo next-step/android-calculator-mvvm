@@ -15,21 +15,15 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class AppModule {
-    @Provides
-    @Singleton
-    fun provideLogDatabase(@ApplicationContext context: Context): LogDatabase {
-        return LogDatabase.getInstance(context)
-    }
+//    @Provides
+//    @Singleton
+//    fun provideLogDatabase(@ApplicationContext context: Context): LogDatabase {
+//        return LogDatabase.getInstance(context)
+//    }
 
     @Provides
     @Singleton
     fun provideExpression(): Expression {
         return Expression.EMPTY
-    }
-
-    @Provides
-    @Singleton
-    fun provideLogRepository(db: LogDatabase): LogRepository {
-        return Injector.provideLogRepository(db.logDao())
     }
 }
