@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import edu.nextstep.camp.calculator.domain.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
@@ -58,24 +57,23 @@ class CalculatorViewModel(
     }
 
     private fun insertHistory(expression: Expression, result: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             repository.insertHistory(History(expression.toString(), result))
         }
     }
 
     private fun getHistoryList() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val response = repository.getHistoryList()
-            _historyList.postValue(response)
+            _historyList.value = response
         }
     }
 
     fun toggleHistory() {
-        if (_isShowHistory.value == false) {
+        val isShowHistory = _isShowHistory.value ?: return
+        if (isShowHistory.not()) {
             getHistoryList()
-            _isShowHistory.value = true
-        } else {
-            _isShowHistory.value = false
         }
+        _isShowHistory.value = isShowHistory.not()
     }
 }
