@@ -6,13 +6,14 @@ import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import edu.nextstep.camp.calculator.data.di.RepositoryModule
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
 
     private val viewModel : CalculatorViewModel by viewModels {
-        CalculatorViewModelFactory(application)
+        CalculatorViewModelFactory(RepositoryModule.provideEvaluationRecordStoreRepository(applicationContext))
     }
     private val adapter: EvaluationHistoryAdapter by lazy { EvaluationHistoryAdapter() }
 
@@ -25,8 +26,6 @@ class CalculatorActivity : AppCompatActivity() {
             lifecycleOwner = this@CalculatorActivity
             viewModel = this@CalculatorActivity.viewModel
             recyclerView.adapter = this@CalculatorActivity.adapter
-            showExpression = CalculatorViewModel.State.ShowExpression
-            showHistory = CalculatorViewModel.State.ShowHistory
         }
 
         observeSideEffect()

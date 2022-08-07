@@ -12,10 +12,9 @@ import kotlinx.coroutines.withContext
 
 internal class EvaluationRecordRepositoryImpl constructor(
     private val dao: EvaluationRecordDao,
-    private val ioDispatcher: CoroutineDispatcher
 ) : EvaluationRecordRepository {
     override suspend fun record(evaluationRecord: EvaluationRecord) {
-        return withContext(ioDispatcher) { dao.insert(evaluationRecord.toEntity()) }
+        return dao.insert(evaluationRecord.toEntity())
     }
 
     override fun getEvaluationHistory(): Flow<List<EvaluationRecord>> {

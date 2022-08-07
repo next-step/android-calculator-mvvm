@@ -1,39 +1,25 @@
 package edu.nextstep.camp.calculator
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import edu.nextstep.camp.calculator.data.di.CoroutinesModule
-import edu.nextstep.camp.calculator.data.di.RepositoryModule
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.model.EvaluationRecord
 import edu.nextstep.camp.calculator.domain.model.Expression
 import edu.nextstep.camp.calculator.domain.model.Operator
 import edu.nextstep.camp.calculator.domain.repository.EvaluationRecordRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.dropWhile
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.takeWhile
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-class CalculatorViewModel(application: Application) : ViewModel() {
+class CalculatorViewModel(private val evaluationRecordRepository: EvaluationRecordRepository) : ViewModel() {
     private val calculator = Calculator()
-    private val evaluationRecordRepository: EvaluationRecordRepository =
-        RepositoryModule.provideEvaluationRecordStoreRepository(context = application)
 
     private val _expressionState : MutableLiveData<Expression> = MutableLiveData(Expression.EMPTY)
     val expressionState : LiveData<Expression> = _expressionState
 
-    val evaluationHistory = evaluationRecordRepository.getEvaluationHistory()
+    val evaluationHistory : Flow<List<EvaluationRecord>> = evaluationRecordRepository.getEvaluationHistory()
 
     private val _displayState = MutableLiveData<State>(State.ShowExpression)
     val displayState = _displayState as LiveData<State>
@@ -103,11 +89,11 @@ class CalculatorViewModel(application: Application) : ViewModel() {
     }
 }
 
-class CalculatorViewModelFactory(private val application: Application): ViewModelProvider.Factory {
+class CalculatorViewModelFactory(private val evaluationRecordRepository: EvaluationRecordRepository): ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CalculatorViewModel::class.java)) {
-            return CalculatorViewModel(application) as T
+            return CalculatorViewModel(evaluationRecordRepository) as T
         }
         throw IllegalArgumentException("Not found ViewModel class.")
     }

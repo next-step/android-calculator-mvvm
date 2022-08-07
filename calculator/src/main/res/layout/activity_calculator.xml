@@ -8,14 +8,7 @@
         <variable
             name="viewModel"
             type="edu.nextstep.camp.calculator.CalculatorViewModel" />
-        <variable
-            name="showExpression"
-            type="edu.nextstep.camp.calculator.CalculatorViewModel.State" />
-        <variable
-            name="showHistory"
-            type="edu.nextstep.camp.calculator.CalculatorViewModel.State" />
         <import type="edu.nextstep.camp.calculator.domain.model.Operator" />
-        <import type="android.view.View"/>
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -38,7 +31,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="HardcodedText"
             android:text="@{viewModel.expressionState.toString()}"
-            android:visibility="@{viewModel.displayState == showExpression ? View.VISIBLE : View.GONE}"
+            app:visibilityEvaluationView="@{viewModel.displayState}"
             />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -53,7 +46,7 @@
             tools:visibility="visible"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:background="@color/purple_200"
-            android:visibility="@{viewModel.displayState == showHistory ? View.VISIBLE : View.GONE}"
+            app:visibilityEvaluationHistoryView="@{viewModel.displayState}"
             />
 
         <View

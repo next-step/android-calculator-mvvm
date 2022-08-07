@@ -11,5 +11,5 @@ interface EvaluationRecordDao {
     fun getAll(): Flow<List<EvaluationRecordEntity>>
 
     @Insert
-    fun insert(record: EvaluationRecordEntity)
+    suspend fun insert(record: EvaluationRecordEntity)
 }
