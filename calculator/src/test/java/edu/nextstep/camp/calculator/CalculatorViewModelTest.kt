@@ -5,6 +5,12 @@ import com.google.common.truth.Truth.assertThat
 import edu.nextstep.camp.calculator.domain.*
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -16,9 +22,11 @@ class CalculatorViewModelTest {
     private lateinit var viewModel: CalculatorViewModel
     private lateinit var repository: HistoryRepository
 
+    @ExperimentalCoroutinesApi
     @Before
     fun setUp() {
         repository = mockk(relaxed = true)
+        Dispatchers.setMain(StandardTestDispatcher())
     }
 
     @Test
@@ -102,27 +110,33 @@ class CalculatorViewModelTest {
         assertThat(actual).isEqualTo(Event.CalculatorError)
     }
 
+    @ExperimentalCoroutinesApi
     @Test
-    fun `수식의 결과가 계산 기록에 저장된다`() {
+    fun `수식의 결과가 계산 기록에 저장된다`() = runTest {
         // given
         viewModel =
             CalculatorViewModel(Expression(listOf(1, Operator.Plus, 1)), Calculator(), repository)
 
         // when
+
         viewModel.calculate()
+        advanceUntilIdle()
 
         // then
         coVerify { repository.insertHistory(History("1 + 1", 2)) }
     }
 
+    @ExperimentalCoroutinesApi
     @Test
-    fun `저장된 계산 기록을 가져온다`() {
+    fun `저장된 계산 기록을 가져온다`() = runTest {
         // given
         viewModel =
             CalculatorViewModel(Expression(listOf(1, Operator.Plus, 1)), Calculator(), repository)
 
         // when
+
         viewModel.toggleHistory()
+        advanceUntilIdle()
 
         // then
         coVerify { repository.getHistoryList() }
