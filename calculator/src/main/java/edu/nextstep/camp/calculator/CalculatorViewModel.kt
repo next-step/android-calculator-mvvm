@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class CalculatorViewModel(private val evaluationRecordRepository: EvaluationRecordRepository) : ViewModel() {
-    private val calculator = Calculator()
+    private val calculator : Calculator = Calculator()
 
     private val _expressionState : MutableLiveData<Expression> = MutableLiveData(Expression.EMPTY)
     val expressionState : LiveData<Expression> = _expressionState
