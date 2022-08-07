@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 data class LogEntity(
     var expressionText: String,
     var result: String
-) {
+): DataEntity {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
 }

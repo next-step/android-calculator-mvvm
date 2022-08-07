@@ -7,10 +7,10 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.nextstep.camp.calculator.common.SingleLiveEvent
 import edu.nextstep.camp.calculator.memoryview.MemoryUIModel
-import edu.nextstep.camp.data.LogEntity
-import edu.nextstep.camp.data.LogRepository
 import edu.nextstep.camp.domain.Calculator
 import edu.nextstep.camp.domain.Expression
+import edu.nextstep.camp.domain.LogRepository
+import edu.nextstep.camp.domain.LogVO
 import edu.nextstep.camp.domain.Operator
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -60,7 +60,7 @@ class CalculatorViewModel @Inject constructor(private val repository: LogReposit
 
     private fun saveExpression(expression: String, result: String) {
         viewModelScope.launch {
-            repository.insertLog(LogEntity(expression, result))
+            repository.insertLog(LogVO(expressionText = expression, result = result))
         }
     }
 
@@ -78,7 +78,7 @@ class CalculatorViewModel @Inject constructor(private val repository: LogReposit
         }
     }
 
-    private fun mapToMemoryUIModel(logs: List<LogEntity>): List<MemoryUIModel> {
+    private fun mapToMemoryUIModel(logs: List<LogVO>): List<MemoryUIModel> {
         return logs.map {
             MemoryUIModel(it.id, it.expressionText, it.result)
         }
