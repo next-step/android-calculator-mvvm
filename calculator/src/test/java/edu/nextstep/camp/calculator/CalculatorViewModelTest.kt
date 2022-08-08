@@ -5,10 +5,18 @@ import com.google.common.truth.Truth.assertThat
 import edu.nextstep.camp.calculator.domain.Operator
 import edu.nextstep.camp.calculator.event.Event
 import edu.nextstep.camp.calculator.extension.getOrAwaitValue
+import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.jupiter.api.assertAll
 
+@ExperimentalCoroutinesApi
 class CalculatorViewModelTest {
 
     @get:Rule
@@ -18,7 +26,8 @@ class CalculatorViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = CalculatorViewModel()
+        viewModel = CalculatorViewModel(mockk(relaxed = true))
+        Dispatchers.setMain(UnconfinedTestDispatcher())
     }
 
     @Test
@@ -132,5 +141,41 @@ class CalculatorViewModelTest {
         //then
         val actual = viewModel.showEvent.getOrAwaitValue()
         assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun 계산_후_기록을_볼_수_있어야한다() = runBlocking {
+        //given
+        val expectedHistorySize = 1
+        setTestExpression(1, Operator.Plus, 2)
+        viewModel.calculate()
+
+        //when
+        viewModel.toggleHistory()
+
+        //then
+        val actualHistorySize = 1
+        assertAll(
+            { assertThat(actualHistorySize).isEqualTo(expectedHistorySize) },
+            { assertThat(viewModel.isHistoryVisible.getOrAwaitValue()).isEqualTo(true) }
+        )
+    }
+
+    private fun setTestExpression(vararg arg: Any) {
+        for(token in arg) {
+            addToken(token)
+        }
+    }
+
+    private fun addToken(token: Any) {
+        when(token) {
+            is Int -> {
+                viewModel.addOperand(token)
+            }
+
+            is Operator -> {
+                viewModel.addOperator(token)
+            }
+        }
     }
 }

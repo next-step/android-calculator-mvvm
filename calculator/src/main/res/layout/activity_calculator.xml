@@ -25,6 +25,7 @@
             android:textAlignment="viewEnd"
             android:textSize="24sp"
             android:text="@{viewModel.expression.toString()}"
+            app:visible="@{!viewModel.isHistoryVisible()}"
             app:layout_constraintBottom_toBottomOf="@id/divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -33,13 +34,15 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/textView"
+            android:layout_marginBottom="16dp"
+            app:visible="@{viewModel.isHistoryVisible()}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="@id/divider"
             app:layout_constraintEnd_toEndOf="@id/textView"
             app:layout_constraintStart_toStartOf="@id/textView"
-            app:layout_constraintTop_toTopOf="@id/textView"
+            app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/item_result"
             tools:visibility="visible" />
 
@@ -69,6 +72,7 @@
             style="@style/Widget.Calculator.Button.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.toggleHistory()}"
             app:icon="@drawable/ic_baseline_access_time_24"
             app:layout_constraintBottom_toBottomOf="@id/buttonDelete"
             app:layout_constraintStart_toStartOf="@id/input"
