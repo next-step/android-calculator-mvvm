@@ -5,6 +5,10 @@ import com.google.common.truth.Truth.assertThat
 import edu.nextstep.camp.calculator.CalculatorEvent.*
 import edu.nextstep.camp.calculator.domain.*
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.test.setMain
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -13,6 +17,12 @@ class CalculatorViewModelTest {
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
     lateinit var viewModel: CalculatorViewModel
+    val mainThreadSurrogate = newSingleThreadContext(CalculatorViewModel::class.java.simpleName)
+
+    @Before
+    fun setup() {
+        Dispatchers.setMain(mainThreadSurrogate)
+    }
 
     @Test
     fun `빈 수식에 피연산자 1을 추가 하면 수식에 해당 피연산자 1이 추가된다`() {
@@ -147,7 +157,6 @@ class CalculatorViewModelTest {
         val inputtedExpression = Expression(listOf(12, Operator.Plus, 34))
         viewModel =
             CalculatorViewModel(lastExpression = inputtedExpression, calculationResultDB = mockk())
-
         // when 계산요청시
         viewModel.requestCalculate()
 
@@ -222,8 +231,8 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `계산 결과 최신화 요청시 저장된 계산 결과를 전달 한다`() {
-        // given 이미 저장된 결과가 있을 시
+    fun `결과 목록의 Visibility 상태 값이 false에서 true로 변경 될때 계산결과 를 전달 한다`() {
+        // given 이미 저장된 결과가 있고 Visibility 가 false 일때
         val expectedList =
             mutableListOf(
                 CalculationResult(Expression(listOf("1", Operator.Plus, "1")), 2),
@@ -232,11 +241,12 @@ class CalculatorViewModelTest {
         viewModel =
             CalculatorViewModel(
                 calculationResultStorage = CalculationResultStorage(expectedList),
+                lastCalculationHistoryVisibility = false,
                 calculationResultDB = mockk()
             )
 
-        // when 계산 결과 최신화 요청을 하면
-        viewModel.sendCalculationResultsToView()
+        // when 계산 결과 Visibility 변경을 요청하면
+        viewModel.toggleCalculationHistoryVisibility()
 
         // then 저장된 계산 결과가 전달 된다
         val actual = viewModel.calculationResults.getOrAwaitValue()
