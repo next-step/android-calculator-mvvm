@@ -52,5 +52,21 @@ data class Expression(
 
     companion object {
         val EMPTY = Expression()
+
+        fun from(rawExpression: String): Expression {
+            var result = EMPTY
+            rawExpression.split(" ")
+                .forEach {
+                    val operator = Operator.of(it)
+                    val operand = it.toIntOrNull()
+                    when {
+                        operator != null -> result += operator
+                        operand != null -> result += operand
+                        else -> throw IllegalArgumentException()
+                    }
+                }
+            return result
+        }
+
     }
 }
