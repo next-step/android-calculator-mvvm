@@ -8,7 +8,6 @@ import edu.nextstep.camp.calculator.data.historyStorage.HistoryDatabase
 import edu.nextstep.camp.calculator.data.historyStorage.HistoryManager
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 import edu.nextstep.camp.calculator.event.Event
-import edu.nextstep.camp.calculator.extension.ViewModelFactory
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
