@@ -9,8 +9,20 @@ import edu.nextstep.camp.calculator.data.historyStorage.HistoryEntity
 import edu.nextstep.camp.calculator.databinding.ItemResultBinding
 
 class ExpressionHistoryListAdapter :
-    ListAdapter<HistoryEntity, ExpressionHistoryViewHolder>(object :
-        DiffUtil.ItemCallback<HistoryEntity>() {
+    ListAdapter<HistoryEntity, ExpressionHistoryViewHolder>(HistoryEntityDiffUtil()) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExpressionHistoryViewHolder {
+        val binding = ItemResultBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ExpressionHistoryViewHolder(binding)
+    }
+
+
+    override fun onBindViewHolder(holder: ExpressionHistoryViewHolder, position: Int) {
+        holder.onBind(getItem(position))
+    }
+
+
+    private class HistoryEntityDiffUtil : DiffUtil.ItemCallback<HistoryEntity>() {
         override fun areItemsTheSame(
             oldItem: HistoryEntity,
             newItem: HistoryEntity
@@ -24,16 +36,6 @@ class ExpressionHistoryListAdapter :
         ): Boolean {
             return oldItem == newItem
         }
-    }) {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExpressionHistoryViewHolder {
-        val binding = ItemResultBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ExpressionHistoryViewHolder(binding)
-    }
-
-
-    override fun onBindViewHolder(holder: ExpressionHistoryViewHolder, position: Int) {
-        holder.onBind(getItem(position))
     }
 
 }
