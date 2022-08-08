@@ -1,15 +1,9 @@
 package edu.nextstep.camp.calculator.data
 
-class HistoryRepository(
-    private val calculationHistoryDao: CalculationHistoryDao
-) {
+interface HistoryRepository {
 
-    suspend fun getAllHistories(): List<CalculationHistoryEntity> {
-        return calculationHistoryDao.getCalculationHistories()
-    }
+    suspend fun getAllHistories(): List<CalculationHistoryEntity>
 
-    suspend fun addHistory(historyEntity: CalculationHistoryEntity) {
-        calculationHistoryDao.insertCalculationHistory(historyEntity)
-    }
+    suspend fun addHistory(historyEntity: CalculationHistoryEntity): List<CalculationHistoryEntity>
 
 }

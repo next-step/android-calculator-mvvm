@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="calculatorViewModel"
             type="edu.nextstep.camp.calculator.CalculatorViewModel" />
@@ -26,7 +25,7 @@
             android:layout_height="0dp"
             android:layout_marginBottom="16dp"
             android:hint="0"
-            android:text="@{calculatorViewModel.expressionLiveData.toString()}"
+            android:text="@{calculatorViewModel.expression.toString()}"
             android:textAlignment="viewEnd"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="@id/divider"
@@ -39,7 +38,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:visibility="@{calculatorViewModel.isShowHistoriesLiveData() ?  View.VISIBLE : View.INVISIBLE}"
+            android:visibility="@{calculatorViewModel.isShowHistories() ?  View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="@id/textView"
             app:layout_constraintEnd_toEndOf="@id/textView"
             app:layout_constraintStart_toStartOf="@id/textView"
@@ -204,7 +203,6 @@
                 style="@style/Widget.Calculator.Button.BackgroundColored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> calculatorViewModel.calculate()}"
                 android:text="@string/calculator_equals" />
 
             <Button

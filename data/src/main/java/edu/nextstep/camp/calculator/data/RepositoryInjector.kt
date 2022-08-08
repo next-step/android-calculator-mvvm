@@ -5,7 +5,7 @@ import android.content.Context
 object RepositoryInjector {
 
     fun provideHistoryRepository(context: Context): HistoryRepository {
-        return HistoryRepository(AppDatabase.getInstance(context).calculationHistoryDao())
+        return HistoryRepositoryImpl(AppDatabase.getInstance(context).calculationHistoryDao())
     }
 
 }
