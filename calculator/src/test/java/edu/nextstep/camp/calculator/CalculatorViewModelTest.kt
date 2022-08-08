@@ -10,11 +10,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.jupiter.api.assertAll
 
 @ExperimentalCoroutinesApi
 class CalculatorViewModelTest {
@@ -156,8 +156,10 @@ class CalculatorViewModelTest {
 
         //then
         val actualHistorySize = 1
-        assertThat(actualHistorySize).isEqualTo(expectedHistorySize)
-        assertThat(viewModel.isHistoryVisible.getOrAwaitValue()).isEqualTo(true)
+        assertAll(
+            { assertThat(actualHistorySize).isEqualTo(expectedHistorySize) },
+            { assertThat(viewModel.isHistoryVisible.getOrAwaitValue()).isEqualTo(true) }
+        )
     }
 
     private fun setTestExpression(vararg arg: Any) {
