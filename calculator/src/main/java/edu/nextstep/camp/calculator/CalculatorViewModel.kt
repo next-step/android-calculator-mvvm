@@ -1,94 +1,80 @@
 package edu.nextstep.camp.calculator
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import edu.nextstep.camp.calculator.data.di.RepositoryModule
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.model.EvaluationRecord
 import edu.nextstep.camp.calculator.domain.model.Expression
 import edu.nextstep.camp.calculator.domain.model.Operator
 import edu.nextstep.camp.calculator.domain.repository.EvaluationRecordRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-class CalculatorViewModel(application: Application) : AndroidViewModel(application) {
-    private val calculator = Calculator()
-    private var expression = Expression.EMPTY
-    private val evaluationRecordRepository: EvaluationRecordRepository =
-        RepositoryModule.provideEvaluationRecordStoreRepository(context = application)
+class CalculatorViewModel(private val evaluationRecordRepository: EvaluationRecordRepository) : ViewModel() {
+    private val calculator : Calculator = Calculator()
 
-    private val _state = MutableLiveData<State>(State.ShowExpression(Expression.EMPTY))
-    val state = _state as LiveData<State>
+    private val _expressionState : MutableLiveData<Expression> = MutableLiveData(Expression.EMPTY)
+    val expressionState : LiveData<Expression> = _expressionState
+
+    val evaluationHistory : Flow<List<EvaluationRecord>> = evaluationRecordRepository.getEvaluationHistory()
+
+    private val _displayState = MutableLiveData<State>(State.ShowExpression)
+    val displayState = _displayState as LiveData<State>
 
     private val _sideEffect : MutableLiveData<Event<SideEffect>> = MutableLiveData(Event(SideEffect.None))
     val sideEffect = _sideEffect as LiveData<Event<SideEffect>>
 
     fun addToExpression(operand: Int) {
-        processExpressionBlock {
-            _state.value = State.ShowExpression(it + operand)
-        }
+        _expressionState.value = getExpressionStateValue() + operand
     }
 
     fun addToExpression(operator: Operator) {
-        processExpressionBlock {
-            _state.value = State.ShowExpression(it + operator)
-        }
+        _expressionState.value = getExpressionStateValue() + operator
     }
 
     fun removeLast() {
-        processExpressionBlock {
-            _state.value = State.ShowExpression(it.removeLast())
-        }
+        _expressionState.value = getExpressionStateValue().removeLast()
     }
 
     fun calculate() {
-        processExpressionBlock { expression ->
-            runCatching {
-                calculator.calculate(expression.toString())
-            }
-            .onSuccess { result ->
-                if (result == null) {
-                    _sideEffect.value = Event(SideEffect.IncompleteExpressionError)
-                } else {
-                    _state.value = State.ShowExpression(Expression(listOf(result)))
-                    viewModelScope.launch {
-                        evaluationRecordRepository.record(EvaluationRecord(expression.toString(), result.toString()))
-                    }
+        runCatching {
+            calculator.calculate(_expressionState.value.toString())
+        }
+        .onSuccess { result ->
+            if (result == null) {
+                _sideEffect.value = Event(SideEffect.IncompleteExpressionError)
+            } else {
+                viewModelScope.launch {
+                    evaluationRecordRepository.record(EvaluationRecord(_expressionState.value.toString(), result.toString()))
                 }
+                _expressionState.value = Expression(listOf(result))
             }
-            .onFailure {
-                if (it is ArithmeticException) {
-                    _sideEffect.value = Event(SideEffect.DivideByZeroError)
-                } else {
-                    _sideEffect.value = Event(SideEffect.UnknownError)
-                }
+        }
+        .onFailure {
+            if (it is ArithmeticException) {
+                _sideEffect.value = Event(SideEffect.DivideByZeroError)
+            } else {
+                _sideEffect.value = Event(SideEffect.UnknownError)
             }
         }
     }
 
     fun toggleHistoryBtn() {
-        when (val currentState = _state.value) {
-            is State.ShowExpression -> {
-                expression = currentState.expression
-                viewModelScope.launch {
-                    _state.value = State.ShowHistory(evaluationRecordRepository.getEvaluationHistory())
-                }
+        when (_displayState.value) {
+            State.ShowExpression -> {
+                _displayState.value = State.ShowHistory
             }
-            is State.ShowHistory -> {
-                _state.value = State.ShowExpression(expression)
+            State.ShowHistory -> {
+                _displayState.value = State.ShowExpression
             }
             else -> {}
         }
     }
 
-    private inline fun processExpressionBlock(body: (Expression) -> Unit) {
-        (_state.value as? State.ShowExpression)?.let {
-            body.invoke(it.expression)
-        }
-    }
+    private fun getExpressionStateValue() : Expression = _expressionState.value ?: Expression.EMPTY
 
     sealed class SideEffect {
         object IncompleteExpressionError : SideEffect()
@@ -98,7 +84,17 @@ class CalculatorViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     sealed class State {
-        data class ShowExpression(val expression: Expression) : State()
-        data class ShowHistory(val history: List<EvaluationRecord>) : State()
+        object ShowExpression : State()
+        object ShowHistory : State()
+    }
+}
+
+class CalculatorViewModelFactory(private val evaluationRecordRepository: EvaluationRecordRepository): ViewModelProvider.Factory {
+
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(CalculatorViewModel::class.java)) {
+            return CalculatorViewModel(evaluationRecordRepository) as T
+        }
+        throw IllegalArgumentException("Not found ViewModel class.")
     }
 }

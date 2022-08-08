@@ -8,6 +8,5 @@ object RepositoryModule {
     fun provideEvaluationRecordStoreRepository(context: Context): EvaluationRecordRepository =
         EvaluationRecordRepositoryImpl(
             dao = AppModule.provideEvaluationRecordDao(AppModule.provideCalculatorDatabase(context)),
-            ioDispatcher = CoroutinesModule.providesIoDispatcher()
         )
 }

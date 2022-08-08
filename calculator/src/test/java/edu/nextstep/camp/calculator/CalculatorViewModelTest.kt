@@ -1,23 +1,19 @@
 package edu.nextstep.camp.calculator
 
+import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
-import edu.nextstep.camp.calculator.data.EvaluationRecordDao
-import edu.nextstep.camp.calculator.data.EvaluationRecordEntity
-import edu.nextstep.camp.calculator.data.repository.EvaluationRecordRepositoryImpl
+import edu.nextstep.camp.calculator.data.di.RepositoryModule
 import edu.nextstep.camp.calculator.domain.Calculator
-import edu.nextstep.camp.calculator.domain.model.EvaluationRecord
 import edu.nextstep.camp.calculator.domain.model.Expression
 import edu.nextstep.camp.calculator.domain.model.Operator
-import io.mockk.every
-import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.jupiter.api.assertAll
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
@@ -33,14 +29,13 @@ class CalculatorViewModelTest {
 
     private lateinit var viewModel: CalculatorViewModel
     private lateinit var calculator: Calculator
-    private lateinit var dao: EvaluationRecordDao
 
     @ExperimentalCoroutinesApi
     @Before
     fun setUp() {
         calculator = Calculator()
-        dao = mockk()
-        viewModel = CalculatorViewModel(EvaluationRecordRepositoryImpl(dao, StandardTestDispatcher()))
+        viewModel =
+            CalculatorViewModel(RepositoryModule.provideEvaluationRecordStoreRepository(Application()))
     }
 
     @Test
@@ -50,8 +45,11 @@ class CalculatorViewModelTest {
 
         // then
         val expected = Expression(listOf(1))
-        val actual = (viewModel.state.value as? CalculatorViewModel.State.ShowExpression)?.expression
-        assertThat(actual).isEqualTo(expected)
+        val actual = viewModel.expressionState.value
+        assertAll(
+            { assertThat(actual).isEqualTo(expected) },
+            { assertThat(viewModel.displayState.getOrAwaitValue()).isEqualTo(CalculatorViewModel.State.ShowExpression) },
+        )
     }
 
     @Test
@@ -62,8 +60,11 @@ class CalculatorViewModelTest {
 
         // then
         val expected = Expression(listOf(1, Operator.Plus))
-        val actual = (viewModel.state.value as? CalculatorViewModel.State.ShowExpression)?.expression
-        assertThat(actual).isEqualTo(expected)
+        val actual = viewModel.expressionState.value
+        assertAll(
+            { assertThat(actual).isEqualTo(expected) },
+            { assertThat(viewModel.displayState.getOrAwaitValue()).isEqualTo(CalculatorViewModel.State.ShowExpression) }
+        )
     }
 
     @Test
@@ -74,8 +75,11 @@ class CalculatorViewModelTest {
 
         // then
         val expected = Expression.EMPTY
-        val actual = (viewModel.state.value as? CalculatorViewModel.State.ShowExpression)?.expression
-        assertThat(actual).isEqualTo(expected)
+        val actual = viewModel.expressionState.value
+        assertAll(
+            { assertThat(actual).isEqualTo(expected) },
+            { assertThat(viewModel.displayState.getOrAwaitValue()).isEqualTo(CalculatorViewModel.State.ShowExpression) }
+        )
     }
 
     @Test
@@ -91,8 +95,11 @@ class CalculatorViewModelTest {
 
         // then
         val expected = Expression(listOf(3))
-        val actual = (viewModel.state.value as? CalculatorViewModel.State.ShowExpression)?.expression
-        assertThat(actual).isEqualTo(expected)
+        val actual = viewModel.expressionState.value
+        assertAll(
+            { assertThat(actual).isEqualTo(expected) },
+            { assertThat(viewModel.displayState.getOrAwaitValue()).isEqualTo(CalculatorViewModel.State.ShowExpression) }
+        )
     }
 
     @Test
@@ -138,24 +145,28 @@ class CalculatorViewModelTest {
 
 
         // then
-        val expected = Expression(listOf(1, Operator.Divide))
-        val actual = (viewModel.state.value as? CalculatorViewModel.State.ShowExpression)?.expression
-        assertThat(actual).isEqualTo(expected)
+        val expectedExpression = Expression(listOf(1, Operator.Divide))
+        val actualExpression = viewModel.expressionState.value
+
+        val expectedDisplayState = CalculatorViewModel.State.ShowExpression
+        val actualDisplayState = viewModel.displayState.value
+
+        assertAll(
+            { assertThat(actualExpression).isEqualTo(expectedExpression) },
+            { assertThat(actualDisplayState).isEqualTo(expectedDisplayState) }
+        )
     }
 
     @ExperimentalCoroutinesApi
     @Test
     fun `계산기 화면이 보일때, 히스토리 버튼을 누르면 계산 기록이 보인다`() = runTest {
-        // given
-        every { dao.getAll() } returns emptyList()
-
         // when
         viewModel.toggleHistoryBtn()
         advanceUntilIdle()
 
         // then
-        val expected = CalculatorViewModel.State.ShowHistory(emptyList())
-        val actual = viewModel.state.getOrAwaitValue()
+        val expected = CalculatorViewModel.State.ShowHistory
+        val actual = viewModel.displayState.getOrAwaitValue()
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -170,24 +181,8 @@ class CalculatorViewModelTest {
         advanceUntilIdle()
 
         // then
-        val expected = CalculatorViewModel.State.ShowExpression(Expression.EMPTY)
-        val actual = viewModel.state.getOrAwaitValue()
-        assertThat(actual).isEqualTo(expected)
-    }
-
-    @ExperimentalCoroutinesApi
-    @Test
-    fun `계산기록이 있을때, 히스토리 버튼을 누르면, 성공한 계산 기록이 보인다`() = runTest {
-        // given
-        every { dao.getAll() } returns listOf(EvaluationRecordEntity(id = 1, expression = "1 + 1", result = "1"))
-
-        // when
-        viewModel.toggleHistoryBtn()
-        advanceUntilIdle()
-
-        // then
-        val expected = CalculatorViewModel.State.ShowHistory(listOf(EvaluationRecord("1 + 1", "1")))
-        val actual = viewModel.state.getOrAwaitValue()
+        val expected = CalculatorViewModel.State.ShowExpression
+        val actual = viewModel.displayState.value
         assertThat(actual).isEqualTo(expected)
     }
 }
