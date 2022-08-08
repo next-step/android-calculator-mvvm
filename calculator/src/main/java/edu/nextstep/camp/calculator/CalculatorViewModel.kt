@@ -14,7 +14,7 @@ class CalculatorViewModel(
     private val calculator: Calculator = Calculator(),
     lastExpression: Expression = DEFAULT_EXPRESSION,
     private var calculationResultStorage: CalculationResultStorage = CalculationResultStorage(),
-    lastCalculationHistoryVisibility: Boolean = DEFAULT_calculation_result_VISIBILITY,
+    lastCalculationHistoryVisibility: Boolean = DEFAULT_CALCULATION_RESULT_VISIBILITY,
     private val calculationResultDB: CalculationResultDatabase
 ) : ViewModel() {
     init {
@@ -53,7 +53,7 @@ class CalculatorViewModel(
     }
 
     fun toggleCalculationHistoryVisibility() {
-        if (isCalculationHistoryVisible.value ?: DEFAULT_calculation_result_VISIBILITY) {
+        if (isCalculationHistoryVisible.value ?: DEFAULT_CALCULATION_RESULT_VISIBILITY) {
             _isCalculationHistoryVisible.value = false
             return
         }
@@ -111,6 +111,6 @@ class CalculatorViewModel(
 
     companion object {
         private val DEFAULT_EXPRESSION = Expression.EMPTY
-        private const val DEFAULT_calculation_result_VISIBILITY = false
+        private const val DEFAULT_CALCULATION_RESULT_VISIBILITY = false
     }
 }
