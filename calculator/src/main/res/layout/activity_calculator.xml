@@ -26,7 +26,7 @@
             android:textAlignment="viewEnd"
             android:textSize="24sp"
             android:text="@{viewModel.expression.toString()}"
-            android:visibility="@{viewModel.isHistoryVisible() ? View.GONE : View.VISIBLE}"
+            android:visibility="@{viewModel.isHistoryVisible() ? View.INVISIBLE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@id/divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

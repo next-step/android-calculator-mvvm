@@ -1,10 +1,10 @@
 package edu.nextstep.camp.calculator
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import edu.nextstep.camp.calculator.ExpressionHistoryViewHolder
 import edu.nextstep.camp.calculator.data.historyStorage.HistoryEntity
 import edu.nextstep.camp.calculator.databinding.ItemResultBinding
 
@@ -27,7 +27,7 @@ class ExpressionHistoryListAdapter :
             oldItem: HistoryEntity,
             newItem: HistoryEntity
         ): Boolean {
-            return oldItem.expression.toString() == newItem.expression.toString()
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(

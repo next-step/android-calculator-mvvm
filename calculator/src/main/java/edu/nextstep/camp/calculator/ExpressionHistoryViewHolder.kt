@@ -8,7 +8,6 @@ import java.util.*
 class ExpressionHistoryViewHolder(private val binding: ItemResultBinding) :
     RecyclerView.ViewHolder(binding.root) {
     fun onBind(item: HistoryEntity) {
-        binding.tvExpression.text = item.expression
-        binding.tvResult.text = String.format(Locale.getDefault(), "= %d", item.result)
+        binding.history = item
     }
 }
