@@ -13,7 +13,7 @@ abstract class HistoryDatabase: RoomDatabase() {
         private var instance: HistoryDatabase? = null
 
         @Synchronized
-        fun getInstance(context: Context): HistoryDatabase? {
+        fun getInstance(context: Context): HistoryDatabase {
             if (instance == null) {
                 instance = Room.databaseBuilder(
                     context.applicationContext,
@@ -22,7 +22,7 @@ abstract class HistoryDatabase: RoomDatabase() {
                 ).build()
             }
 
-            return instance
+            return instance!!
         }
     }
 }

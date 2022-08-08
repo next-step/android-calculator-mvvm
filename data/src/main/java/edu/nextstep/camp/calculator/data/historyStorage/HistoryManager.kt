@@ -1,7 +1,7 @@
 package edu.nextstep.camp.calculator.data.historyStorage
 
 class HistoryManager(
-    private val historyDatabase: HistoryDatabase?
+    private val historyDAO: HistoryDAO
 ) {
     suspend fun insert(expression: String, result: Int) {
         val history = HistoryEntity(
@@ -9,10 +9,10 @@ class HistoryManager(
             result = result
         )
 
-        historyDatabase?.historyDao()?.insert(history)
+        historyDAO.insert(history)
     }
 
     suspend fun getAll(): List<HistoryEntity> {
-        return historyDatabase?.historyDao()?.getAll() ?: emptyList()
+        return historyDAO.getAll() ?: emptyList()
     }
 }

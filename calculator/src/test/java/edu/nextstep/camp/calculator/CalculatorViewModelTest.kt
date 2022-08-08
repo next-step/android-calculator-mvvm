@@ -24,7 +24,6 @@ class CalculatorViewModelTest {
 
     private lateinit var viewModel: CalculatorViewModel
 
-
     @Before
     fun setUp() {
         viewModel = CalculatorViewModel(mockk(relaxed = true))

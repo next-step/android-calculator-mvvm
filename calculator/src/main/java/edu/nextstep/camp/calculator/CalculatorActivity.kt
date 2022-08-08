@@ -16,7 +16,7 @@ class CalculatorActivity : AppCompatActivity() {
         val db = HistoryDatabase.getInstance(this)
 
         ViewModelFactory(
-            HistoryManager(db)
+            HistoryManager(db.historyDao())
         )
     }
 
