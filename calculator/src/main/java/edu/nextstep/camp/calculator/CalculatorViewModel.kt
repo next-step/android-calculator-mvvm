@@ -77,11 +77,10 @@ class CalculatorViewModel(
 
     private fun requestGetCalculationResultsFromDB() {
         viewModelScope.launch {
-                calculationResultDB.calculationResultDao()
-                    .getAll()
-                    .map(CalculationResultEntity::toCalculationResult).forEach {
-                        calculationResultStorage += it
-                    }
+            calculationResultDB.calculationResultDao()
+                .getAll()
+                .map(CalculationResultEntity::toCalculationResult)
+                .run { calculationResultStorage += this }
         }
     }
 
@@ -105,7 +104,7 @@ class CalculatorViewModel(
         calculationResultStorage += calculationResult
     }
 
-    fun sendCalculationResultsToView() {
+    private fun sendCalculationResultsToView() {
         _calculationResults.value = calculationResultStorage.getResultsAsList()
     }
 
