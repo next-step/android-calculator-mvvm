@@ -8,17 +8,31 @@ import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
-    private val viewModel: CalculatorViewModel by viewModels()
+    private val viewModel: CalculatorViewModel by viewModels { ViewModelFactory(application) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCalculatorBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setBindingSettings()
-        setViewModelObservers()
+        setUpBindingSettings()
+        setUpEventObserver()
+        setUpCalculationResult()
     }
 
-    private fun setViewModelObservers() {
+    private fun setUpCalculationResult() {
+        val adapter = CalculationHistoryAdapter()
+        binding.recyclerView.adapter = adapter
+        viewModel.calculationResults.observe(this@CalculatorActivity) {
+            it?.let(adapter::submitList)
+        }
+    }
+
+    private fun setUpBindingSettings() {
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this@CalculatorActivity
+    }
+
+    private fun setUpEventObserver() {
         viewModel.event.observe(this@CalculatorActivity) {
             it.consume()?.let(::showToastWithCalculatorEvent)
         }
@@ -28,8 +42,4 @@ class CalculatorActivity : AppCompatActivity() {
         Toast.makeText(this, event.stringId, Toast.LENGTH_SHORT).show()
     }
 
-    private fun setBindingSettings() {
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = this@CalculatorActivity
-    }
 }

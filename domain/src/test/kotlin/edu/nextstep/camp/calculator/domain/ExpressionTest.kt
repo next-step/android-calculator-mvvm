@@ -2,6 +2,7 @@ package edu.nextstep.camp.calculator.domain
 
 import com.google.common.truth.Truth.assertThat
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class ExpressionTest {
     @Test
@@ -133,7 +134,7 @@ class ExpressionTest {
         val actual = expression.isCompletedExpression()
 
         // then false를 반환 한다.
-        assertThat(actual).isEqualTo(false)
+        assertThat(actual).isFalse()
     }
 
     @Test
@@ -145,7 +146,7 @@ class ExpressionTest {
         val actual = expression.isCompletedExpression()
 
         // then false를 반환 한다.
-        assertThat(actual).isEqualTo(false)
+        assertThat(actual).isFalse()
     }
 
     @Test
@@ -157,7 +158,7 @@ class ExpressionTest {
         val actual = expression.isCompletedExpression()
 
         // then false를 반환 한다.
-        assertThat(actual).isEqualTo(false)
+        assertThat(actual).isFalse()
     }
 
     @Test
@@ -169,7 +170,26 @@ class ExpressionTest {
         val actual = expression.isCompletedExpression()
 
         // then true 를 반환 한다.
-        assertThat(actual).isEqualTo(true)
+        assertThat(actual).isTrue()
+    }
+
+    @Test
+    fun `수식의 형태(1 + 2)를 가진 string으로 수식을 생성 할수 있다`() {
+        // when "1 + 2" 수식의 형태의 문자열이 주어졌을때
+        val inputString = "1 + 2"
+
+        // then 수식을 만들 수 있다.
+        val expression = Expression.from(inputString)
+        assertThat(expression).isEqualTo(Expression(listOf(1, Operator.Plus, 2)))
+    }
+
+    @Test
+    fun `연산자, 피연산자가 아닌 문자가 포함된 string(a1 + 2)으로 부터 수식을 생성하려하면 IllegalArgumentException 예외가 발생한다`() {
+        // when "a1+2" 연산자, 피연산자가 아닌 문자가 포함된 문자열로
+        val inputString = "a1 + 2"
+
+        // then 수식을 만들려 하면 IllegalArgumentException이 발생한다
+        assertThrows<IllegalArgumentException> { Expression.from(inputString) }
     }
 
 }
