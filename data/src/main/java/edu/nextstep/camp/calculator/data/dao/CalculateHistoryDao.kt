@@ -7,7 +7,7 @@ import edu.nextstep.camp.calculator.data.model.CalculateResultEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface CalculateResultDao {
+internal interface CalculateResultDao {
     @Insert
     suspend fun insertCalculateResult(calculateResultEntity: CalculateResultEntity)
 

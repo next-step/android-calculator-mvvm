@@ -8,7 +8,7 @@ import edu.nextstep.camp.calculator.data.dao.CalculateResultDao
 import edu.nextstep.camp.calculator.data.model.CalculateResultEntity
 
 @Database(entities = [CalculateResultEntity::class], version = 1)
-abstract class CalculatorDatabase: RoomDatabase() {
+internal abstract class CalculatorDatabase: RoomDatabase() {
     abstract fun calculateResultDao(): CalculateResultDao
 
     companion object {
