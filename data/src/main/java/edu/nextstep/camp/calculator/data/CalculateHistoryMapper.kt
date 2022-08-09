@@ -5,7 +5,14 @@ import edu.nextstep.camp.calculator.domain.CalculateResult
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 
-internal fun CalculateResultEntity.toCalculateResult(): CalculateResult {
+internal fun CalculateResult.toDataModel(): CalculateResultEntity {
+    return CalculateResultEntity(
+        expression = this.expression.toString(),
+        result = this.result,
+    )
+}
+
+internal fun CalculateResultEntity.toDomainModel(): CalculateResult {
     val list = mutableListOf<Any>()
 
     this.expression.split(" ").forEach {

@@ -11,16 +11,13 @@ class CalculateRepositoryImpl(context: Context): CalculateRepository {
     private val calculateDatabase: CalculatorDatabase = CalculatorDatabase.getDatabase(context)
 
     override suspend fun insertCalculateResult(calculateResult: CalculateResult) {
-        calculateDatabase.calculateResultDao().insertCalculateResult(CalculateResultEntity(
-            expression = calculateResult.expression.toString(),
-            result = calculateResult.result,
-        ))
+        calculateDatabase.calculateResultDao().insertCalculateResult(calculateResult.toDataModel())
     }
 
     override suspend fun getCalculateResults(): Flow<List<CalculateResult>?> {
         return calculateDatabase.calculateResultDao().getCalculateResults().map {
             it?.map { calculateResultEntity ->
-                calculateResultEntity.toCalculateResult()
+                calculateResultEntity.toDomainModel()
             }
         }
     }
