@@ -1,7 +1,6 @@
 package edu.nextstep.camp.calculator.data
 
 import android.content.Context
-import edu.nextstep.camp.calculator.data.model.CalculateResultEntity
 import edu.nextstep.camp.calculator.domain.CalculateResult
 import edu.nextstep.camp.calculator.domain.repository.CalculateRepository
 import kotlinx.coroutines.flow.Flow
