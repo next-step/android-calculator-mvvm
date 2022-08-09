@@ -4,11 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import edu.nextstep.camp.calculator.data.CalculationHistoryEntity
-import edu.nextstep.camp.calculator.data.HistoryRepository
-import edu.nextstep.camp.calculator.domain.Calculator
-import edu.nextstep.camp.calculator.domain.Expression
-import edu.nextstep.camp.calculator.domain.Operator
+import edu.nextstep.camp.calculator.domain.*
 import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
@@ -25,8 +21,8 @@ class CalculatorViewModel(
     private val _isShowHistories = MutableLiveData(false)
     val isShowHistories: LiveData<Boolean> get() = _isShowHistories
 
-    private val _histories = MutableLiveData<List<CalculationHistoryEntity>>()
-    val histories: LiveData<List<CalculationHistoryEntity>> = _histories
+    private val _histories = MutableLiveData<List<History>>()
+    val histories: LiveData<List<History>> = _histories
 
     fun fetchHistories() = viewModelScope.launch {
         _histories.value = historyRepository.getAllHistories()
@@ -51,10 +47,7 @@ class CalculatorViewModel(
         }.onSuccess { result ->
             viewModelScope.launch {
                 _histories.value = historyRepository.addHistory(
-                    CalculationHistoryEntity(
-                        expression = expression.value ?: Expression(),
-                        result = result.toString()
-                    )
+                    History(expression.value ?: Expression(), result.toString())
                 )
             }
 

@@ -7,9 +7,9 @@ import edu.nextstep.camp.calculator.domain.Expression
 @Entity(
     tableName = "histories"
 )
-data class CalculationHistoryEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+internal data class CalculationHistoryEntity(
     val expression: Expression,
-    val result: String
+    val result: String,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0
 )
