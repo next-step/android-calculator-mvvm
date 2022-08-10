@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(entities = [CalculationResultEntity::class], version = 2)
-abstract class CalculationResultDatabase : RoomDatabase() {
+internal abstract class CalculationResultDatabase : RoomDatabase() {
     abstract fun calculationResultDao(): CalculationResultDao
 
     companion object {

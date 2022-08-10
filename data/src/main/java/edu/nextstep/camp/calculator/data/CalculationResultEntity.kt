@@ -6,7 +6,7 @@ import edu.nextstep.camp.calculator.domain.CalculationResult
 import edu.nextstep.camp.calculator.domain.Expression
 
 @Entity(tableName = "calculation_result")
-data class CalculationResultEntity internal constructor (
+internal data class CalculationResultEntity internal constructor (
     val expression: String,
     val result: Int,
     @PrimaryKey(autoGenerate = true) val id: Long = 0
