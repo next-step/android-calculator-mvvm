@@ -1,12 +1,10 @@
 package edu.nextstep.camp.calculator.data
 
-import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
 import edu.nextstep.camp.calculator.domain.CalculationResult
 import edu.nextstep.camp.calculator.domain.CalculationResultDataBaseRepository
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
-import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
@@ -38,7 +36,7 @@ class CalculationResultDatabaseRepositoryImplTest {
     }
 
     @Test
-    fun `DB에_계산결과를_저장하고_확인_할_수_있다`() = testScope.runTest {
+    fun `repository에_계산결과를_저장하고_확인_할_수_있다`() = testScope.runTest {
         val entities =
             arrayOf(
                 CalculationResult(Expression(listOf(1, Operator.Plus, 1)), 2),
