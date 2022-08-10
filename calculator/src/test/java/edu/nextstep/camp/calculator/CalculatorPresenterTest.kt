@@ -1,8 +1,8 @@
 package edu.nextstep.camp.calculator
 
 import com.google.common.truth.Truth.assertThat
-import edu.nextstep.camp.calculator.domain.Expression
-import edu.nextstep.camp.calculator.domain.Operator
+import edu.nextstep.camp.domain.calculator.Expression
+import edu.nextstep.camp.domain.calculator.Operator
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot

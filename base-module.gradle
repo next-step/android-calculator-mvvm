@@ -1,0 +1,9 @@
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:${versions.kotlin}"
+
+    testImplementation "junit:junit:${versions.junit}"
+    testImplementation "com.google.truth:truth:${versions.truth}"
+    testImplementation "io.mockk:mockk:${versions.mockk}"
+    testImplementation "org.junit.jupiter:junit-jupiter:${versions.jupiter}"
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:${versions.vintage}" // junit4 지원
+}

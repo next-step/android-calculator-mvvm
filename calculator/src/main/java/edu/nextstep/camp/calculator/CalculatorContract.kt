@@ -1,7 +1,7 @@
 package edu.nextstep.camp.calculator
 
-import edu.nextstep.camp.calculator.domain.Expression
-import edu.nextstep.camp.calculator.domain.Operator
+import edu.nextstep.camp.domain.calculator.Expression
+import edu.nextstep.camp.domain.calculator.Operator
 
 interface CalculatorContract {
     interface View {
