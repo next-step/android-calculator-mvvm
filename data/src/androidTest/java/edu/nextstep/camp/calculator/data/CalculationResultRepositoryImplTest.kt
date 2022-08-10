@@ -2,7 +2,7 @@ package edu.nextstep.camp.calculator.data
 
 import androidx.test.platform.app.InstrumentationRegistry
 import edu.nextstep.camp.calculator.domain.CalculationResult
-import edu.nextstep.camp.calculator.domain.CalculationResultDataBaseRepository
+import edu.nextstep.camp.calculator.domain.CalculationResultRepository
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -19,8 +19,8 @@ import org.junit.Before
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-class CalculationResultDatabaseRepositoryImplTest {
-    private lateinit var repositoryImpl: CalculationResultDataBaseRepository
+class CalculationResultRepositoryImplTest {
+    private lateinit var repositoryImpl: CalculationResultRepository
 
     private val testDispatcher = StandardTestDispatcher()
     private val testScope = TestScope(testDispatcher)
@@ -32,7 +32,7 @@ class CalculationResultDatabaseRepositoryImplTest {
         assertEquals("edu.nextstep.camp.calculator.data.test", appContext.packageName)
 
         repositoryImpl =
-            ResultDataBaseInjector.provideCalculationResultDataBaseRepository(appContext)
+            DataRepositoryInjector.provideCalculationResultRepository(appContext)
     }
 
     @Test
