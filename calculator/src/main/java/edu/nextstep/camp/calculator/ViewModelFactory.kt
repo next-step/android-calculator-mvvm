@@ -3,7 +3,7 @@ package edu.nextstep.camp.calculator
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import edu.nextstep.camp.calculator.data.CalculationResultDatabase
+import edu.nextstep.camp.calculator.data.DataRepositoryInjector
 import java.lang.IllegalArgumentException
 
 class ViewModelFactory(private val applicationContext: Context) : ViewModelProvider.Factory {
@@ -18,6 +18,8 @@ class ViewModelFactory(private val applicationContext: Context) : ViewModelProvi
 
     private fun createCalculatorViewModel(applicationContext: Context): CalculatorViewModel =
         CalculatorViewModel(
-            calculationResultDB = CalculationResultDatabase.create(applicationContext)
+            calculationResultRepository = DataRepositoryInjector.provideCalculationResultRepository(
+                applicationContext
+            )
         )
 }

@@ -5,8 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import edu.nextstep.camp.calculator.CalculatorEvent.*
-import edu.nextstep.camp.calculator.data.CalculationResultDatabase
-import edu.nextstep.camp.calculator.data.CalculationResultEntity
 import edu.nextstep.camp.calculator.domain.*
 import kotlinx.coroutines.launch
 
@@ -15,10 +13,10 @@ class CalculatorViewModel(
     lastExpression: Expression = DEFAULT_EXPRESSION,
     private var calculationResultStorage: CalculationResultStorage = CalculationResultStorage(),
     lastCalculationHistoryVisibility: Boolean = DEFAULT_CALCULATION_RESULT_VISIBILITY,
-    private val calculationResultDB: CalculationResultDatabase
+    private val calculationResultRepository: CalculationResultRepository
 ) : ViewModel() {
     init {
-        requestGetCalculationResultsFromDB()
+        requestGetCalculationResultsFromRepository()
     }
 
     private val _isCalculationHistoryVisible: MutableLiveData<Boolean> =
@@ -75,26 +73,24 @@ class CalculatorViewModel(
         processCalculationResult(CalculationResult(inputtedExpression, result))
     }
 
-    private fun requestGetCalculationResultsFromDB() {
+    private fun requestGetCalculationResultsFromRepository() {
         viewModelScope.launch {
-            calculationResultDB.calculationResultDao()
+            calculationResultRepository
                 .getAll()
-                .map(CalculationResultEntity::toCalculationResult)
                 .run { calculationResultStorage += this }
         }
     }
 
     private fun processCalculationResult(calculationResult: CalculationResult) {
         addCalculationResultToStorage(calculationResult)
-        putCalculationResultToDB(calculationResult)
+        putCalculationResultToRepository(calculationResult)
         val newExpression = Expression.EMPTY + calculationResult.result
         _expression.value = newExpression
     }
 
-    private fun putCalculationResultToDB(calculatedResult: CalculationResult) {
+    private fun putCalculationResultToRepository(calculatedResult: CalculationResult) {
         viewModelScope.launch {
-            calculationResultDB.calculationResultDao()
-                .insert(CalculationResultEntity.calculationResultToEntity(calculatedResult))
+            calculationResultRepository.insert(calculatedResult)
         }
     }
 
