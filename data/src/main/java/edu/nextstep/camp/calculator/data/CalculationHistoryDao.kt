@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
-interface CalculationHistoryDao {
+internal interface CalculationHistoryDao {
 
     @Query("SELECT * FROM histories")
     suspend fun getCalculationHistories(): List<CalculationHistoryEntity>

@@ -3,7 +3,7 @@ package edu.nextstep.camp.calculator.data
 import androidx.room.TypeConverter
 import edu.nextstep.camp.calculator.domain.Expression
 
-class Converters {
+internal class Converters {
 
     @TypeConverter
     fun expressionToString(expression: Expression): String = expression.toString()

@@ -26,6 +26,8 @@ class CalculatorActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
 
         binding.recyclerView.adapter = historyAdapter
+
+        calculatorViewModel.fetchHistories()
     }
 
     private fun observeData() {
@@ -34,7 +36,7 @@ class CalculatorActivity : AppCompatActivity() {
             Toast.makeText(this, "완성되지 않은 수식입니다.", Toast.LENGTH_SHORT).show()
         }
 
-        calculatorViewModel.historiesLiveData.observe(this) {
+        calculatorViewModel.histories.observe(this) {
             historyAdapter.submitList(it)
         }
     }

@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 
 @Database(entities = [CalculationHistoryEntity::class], version = 1)
 @TypeConverters(Converters::class)
-abstract class AppDatabase : RoomDatabase() {
+internal abstract class AppDatabase : RoomDatabase() {
 
     abstract fun calculationHistoryDao(): CalculationHistoryDao
 

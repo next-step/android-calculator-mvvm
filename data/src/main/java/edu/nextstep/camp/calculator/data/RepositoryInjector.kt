@@ -1,11 +1,12 @@
 package edu.nextstep.camp.calculator.data
 
 import android.content.Context
+import edu.nextstep.camp.calculator.domain.HistoryRepository
 
 object RepositoryInjector {
 
     fun provideHistoryRepository(context: Context): HistoryRepository {
-        return HistoryRepository(AppDatabase.getInstance(context).calculationHistoryDao())
+        return HistoryRepositoryImpl(AppDatabase.getInstance(context).calculationHistoryDao())
     }
 
 }

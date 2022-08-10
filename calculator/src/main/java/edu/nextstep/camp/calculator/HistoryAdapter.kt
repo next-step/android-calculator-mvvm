@@ -3,23 +3,20 @@ package edu.nextstep.camp.calculator
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import edu.nextstep.camp.calculator.data.CalculationHistoryEntity
+import edu.nextstep.camp.calculator.domain.History
 
-class HistoryAdapter : ListAdapter<CalculationHistoryEntity, HistoryViewHolder>(
-    object : DiffUtil.ItemCallback<CalculationHistoryEntity>() {
+class HistoryAdapter : ListAdapter<History, HistoryViewHolder>(
+    object : DiffUtil.ItemCallback<History>() {
         override fun areItemsTheSame(
-            oldItem: CalculationHistoryEntity,
-            newItem: CalculationHistoryEntity
-        ): Boolean =
-            oldItem.expression == newItem.expression
+            oldItem: History,
+            newItem: History
+        ) = oldItem.expression == newItem.expression
 
         override fun areContentsTheSame(
-            oldItem: CalculationHistoryEntity,
-            newItem: CalculationHistoryEntity
-        ): Boolean =
-            oldItem == newItem
+            oldItem: History,
+            newItem: History
+        ) = oldItem == newItem
     }) {
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         HistoryViewHolder.create(parent)
