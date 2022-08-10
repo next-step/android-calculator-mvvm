@@ -64,6 +64,8 @@ dependencies {
     testImplementation 'androidx.arch.core:core-testing:2.1.0'
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.2"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.2"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.2"
 
     // Room
     def room_version = "2.4.3"

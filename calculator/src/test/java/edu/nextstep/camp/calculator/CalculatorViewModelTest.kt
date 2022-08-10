@@ -3,19 +3,41 @@ package edu.nextstep.camp.calculator
 import com.google.common.truth.Truth.assertThat
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
+import edu.nextstep.camp.calculator.domain.repository.CalculateRepository
+import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 
+@ExperimentalCoroutinesApi
 @ExtendWith(value = [InstantExecutorExtension::class])
 class CalculatorViewModelTest {
     private lateinit var viewModel: CalculatorViewModel
+    private lateinit var repository: CalculateRepository
+
+    private val dispatcher = StandardTestDispatcher()
+    private val scope = TestScope(dispatcher)
+
+    @AfterEach
+    fun destroy() {
+        Dispatchers.resetMain()
+    }
 
     @BeforeEach
     fun setUp() {
-        viewModel = CalculatorViewModel()
+        Dispatchers.setMain(dispatcher)
+        repository = mockk()
+        viewModel = CalculatorViewModel(calculateRepository = repository)
     }
 
     @Test
@@ -30,7 +52,7 @@ class CalculatorViewModelTest {
     @Test
     fun `연산자가 입력되면 수식에 추가되고 변경된 수식을 보여줘야 한다`() {
         // given
-        viewModel = CalculatorViewModel(Expression(listOf(1)))
+        viewModel = CalculatorViewModel(Expression(listOf(1)), calculateRepository = repository)
 
         // when
         viewModel.addToExpression(Operator.Plus)
@@ -42,7 +64,7 @@ class CalculatorViewModelTest {
     @Test
     fun `지우기가 실행되면 수식의 마지막이 지워지고 변경된 수식을 보여줘야 한다`() {
         // given
-        viewModel = CalculatorViewModel(Expression(listOf(1)))
+        viewModel = CalculatorViewModel(Expression(listOf(1)), calculateRepository = repository)
 
         // when
         viewModel.removeLast()
@@ -52,9 +74,9 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `계산이 실행되면 계산기에 의해 계산되고 결과를 화면에 보여줘야 한다`() {
+    fun `계산이 실행되면 계산기에 의해 계산되고 결과를 화면에 보여줘야 한다`() = scope.runTest {
         // given
-        viewModel = CalculatorViewModel(Expression(listOf(1, Operator.Plus, 2)))
+        viewModel = CalculatorViewModel(Expression(listOf(1, Operator.Plus, 2)), calculateRepository = repository)
 
         // when
         viewModel.calculate()
@@ -84,27 +106,14 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `입력된 수식이 완전하지 않을 때, 사용자가 = 버튼을 눌렀을 때 완성되지 않은 수식입니다 토스트 메세지가 화면에 보여야 한다`() {
+    fun `입력된 수식이 완전하지 않을 때, 사용자가 = 버튼을 눌렀을 때 완성되지 않은 수식입니다 토스트 메세지가 화면에 보여야 한다`() = scope.runTest {
         // given
-        viewModel = CalculatorViewModel(Expression(listOf(1, Operator.Plus)))
+        viewModel = CalculatorViewModel(Expression(listOf(1, Operator.Plus)), calculateRepository = repository)
 
         // when
         viewModel.calculate()
 
         // then
         assertThat(viewModel.showIncompleteExpressionError.getOrAwaitValue()).isEqualTo(Unit)
-    }
-
-    @Test
-    fun `계산을 진행하면 수식과 결과의 기록이 남는다`() {
-        // given
-        viewModel = CalculatorViewModel(Expression(listOf(1, Operator.Plus, 4)))
-
-        // when
-        viewModel.calculate()
-
-        //
-        assertThat(viewModel.calculateHistories.getOrAwaitValue()[0].expression.toString()).isEqualTo("1 + 4")
-        assertThat(viewModel.calculateHistories.getOrAwaitValue()[0].result).isEqualTo(5)
     }
 }

@@ -3,7 +3,7 @@ package edu.nextstep.camp.calculator
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import edu.nextstep.camp.calculator.data.CalculatorDatabase
+import edu.nextstep.camp.calculator.data.Injector
 import edu.nextstep.camp.calculator.domain.Expression
 
 class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
@@ -19,7 +19,7 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
         val expression = Expression()
         return CalculatorViewModel(
             expression,
-            CalculatorDatabase.getDatabase(context),
+            Injector.provideCalculateRepository(context),
         )
     }
 }

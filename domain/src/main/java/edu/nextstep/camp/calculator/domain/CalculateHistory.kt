@@ -1,6 +1,12 @@
 package edu.nextstep.camp.calculator.domain
 
-data class CalculateHistory(
-    val expression: Expression,
-    val result: Int
-)
+class CalculateHistory {
+    private val _calculateResults = mutableListOf<CalculateResult>()
+    val calculateResults: List<CalculateResult>
+        get() = _calculateResults.toList()
+
+    fun putCalculateResults(calculateResults: List<CalculateResult>) {
+        _calculateResults.clear()
+        _calculateResults.addAll(calculateResults)
+    }
+}
