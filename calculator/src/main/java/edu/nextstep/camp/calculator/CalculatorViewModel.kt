@@ -4,19 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import edu.nextstep.camp.calculator.data.historyStorage.HistoryDatabase
-import edu.nextstep.camp.calculator.data.historyStorage.HistoryEntity
-import edu.nextstep.camp.calculator.data.historyStorage.HistoryManager
 import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
+import edu.nextstep.camp.calculator.domain.history.History
+import edu.nextstep.camp.calculator.domain.history.HistoryRepository
 import edu.nextstep.camp.calculator.event.Event
 import edu.nextstep.camp.calculator.event.SingleLiveEvent
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
-    private val historyManager: HistoryManager
+    private val historyRepository: HistoryRepository
 ) : ViewModel() {
 
     private val calculator = Calculator()
@@ -27,8 +25,8 @@ class CalculatorViewModel(
     private val _showEvent = SingleLiveEvent<Event>()
     val showEvent: LiveData<Event> = _showEvent
 
-    private val _history = MutableLiveData<List<HistoryEntity>>()
-    val history: LiveData<List<HistoryEntity>> = _history
+    private val _history = MutableLiveData<List<History>>()
+    val history: LiveData<List<History>> = _history
 
     private val _isHistoryVisible = MutableLiveData<Boolean>(false)
     val isHistoryVisible: LiveData<Boolean> = _isHistoryVisible
@@ -73,13 +71,13 @@ class CalculatorViewModel(
 
     private fun saveHistory(expression: String, result: Int) {
         viewModelScope.launch {
-            historyManager.insert(expression, result)
+            historyRepository.insert(expression, result)
         }
     }
 
     private fun getHistory() {
         viewModelScope.launch {
-            _history.value = historyManager.getAll()
+            _history.value = historyRepository.getAll()
         }
     }
 }

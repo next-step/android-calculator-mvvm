@@ -2,11 +2,10 @@ package edu.nextstep.camp.calculator
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import edu.nextstep.camp.calculator.data.historyStorage.HistoryManager
-import java.lang.IllegalArgumentException
+import edu.nextstep.camp.calculator.domain.history.HistoryRepository
 
 class ViewModelFactory(
-    private val historyManager: HistoryManager
+    private val historyManager: HistoryRepository
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(CalculatorViewModel::class.java)) {

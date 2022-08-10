@@ -7,7 +7,7 @@
 
         <variable
             name="history"
-            type="edu.nextstep.camp.calculator.data.historyStorage.HistoryEntity" />
+            type="edu.nextstep.camp.calculator.domain.history.History" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

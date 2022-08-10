@@ -4,8 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import edu.nextstep.camp.calculator.data.historyStorage.HistoryDatabase
-import edu.nextstep.camp.calculator.data.historyStorage.HistoryManager
+import edu.nextstep.camp.calculator.data.historyStorage.Injector
 import edu.nextstep.camp.calculator.databinding.ActivityCalculatorBinding
 import edu.nextstep.camp.calculator.event.Event
 
@@ -13,11 +12,8 @@ class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
 
     private val viewModel: CalculatorViewModel by viewModels {
-        val db = HistoryDatabase.getInstance(this)
-
-        ViewModelFactory(
-            HistoryManager(db.historyDao())
-        )
+        val historyRepository = Injector.provideHistoryRepository(this)
+        ViewModelFactory(historyRepository)
     }
 
     private val historyAdapter by lazy { ExpressionHistoryListAdapter() }

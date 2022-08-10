@@ -1,15 +1,14 @@
 package edu.nextstep.camp.calculator
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import edu.nextstep.camp.calculator.data.historyStorage.HistoryEntity
 import edu.nextstep.camp.calculator.databinding.ItemResultBinding
+import edu.nextstep.camp.calculator.domain.history.History
 
 class ExpressionHistoryListAdapter :
-    ListAdapter<HistoryEntity, ExpressionHistoryViewHolder>(HistoryEntityDiffUtil()) {
+    ListAdapter<History, ExpressionHistoryViewHolder>(HistoryDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExpressionHistoryViewHolder {
         val binding = ItemResultBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -22,17 +21,17 @@ class ExpressionHistoryListAdapter :
     }
 
 
-    private class HistoryEntityDiffUtil : DiffUtil.ItemCallback<HistoryEntity>() {
+    private class HistoryDiffUtil : DiffUtil.ItemCallback<History>() {
         override fun areItemsTheSame(
-            oldItem: HistoryEntity,
-            newItem: HistoryEntity
+            oldItem: History,
+            newItem: History
         ): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: HistoryEntity,
-            newItem: HistoryEntity
+            oldItem: History,
+            newItem: History
         ): Boolean {
             return oldItem == newItem
         }
