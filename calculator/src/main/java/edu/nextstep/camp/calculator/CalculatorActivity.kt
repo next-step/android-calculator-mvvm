@@ -23,14 +23,9 @@ class CalculatorActivity : AppCompatActivity() {
             viewModel = calculatorVM
         }
         setContentView(binding.root)
-        initView()
-
+        initRecyclerView()
         observeExpressionHistory()
         observeIncompleteExpressionErrorEvent()
-    }
-
-    private fun initView() {
-        initRecyclerView()
     }
 
     private fun initRecyclerView() {
