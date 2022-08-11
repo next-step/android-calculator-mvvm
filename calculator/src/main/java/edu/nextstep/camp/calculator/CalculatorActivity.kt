@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
     private val calculatorVM by viewModels<CalculatorViewModel> { CalculatorViewModelFactory(this) }
-    private val calculatorHistoryAdapter by lazy { CalculatorHistoryAdapter() }
+    private val calculatorHistoryAdapter = CalculatorHistoryAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
