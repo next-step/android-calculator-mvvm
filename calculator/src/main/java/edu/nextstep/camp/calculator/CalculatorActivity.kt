@@ -41,7 +41,7 @@ class CalculatorActivity : AppCompatActivity() {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
             calculatorVM.expressionHistory
                 .collect { history ->
-                    history?.let { calculatorHistoryAdapter.submitList(it) }
+                    history?.let(calculatorHistoryAdapter::submitList)
                 }
         }
     }
