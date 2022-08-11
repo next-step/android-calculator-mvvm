@@ -69,15 +69,15 @@ class CalculatorViewModel(
     fun getAllExpressionHistoryAndShowHistory() = viewModelScope.launch {
         if (isHistoryVisible.value) {
             _isHistoryVisible.value = false
-        } else {
-            expressionHistoryRepository.getAll()
-                .onSuccess {
-                    _expressionHistory.value = it
-                    _isHistoryVisible.value = true
-                }
-                .onFailure { throwable ->
-                    _errorEvent.emit(throwable)
-                }
+            return@launch
         }
+        expressionHistoryRepository.getAll()
+            .onSuccess {
+                _expressionHistory.value = it
+                _isHistoryVisible.value = true
+            }
+            .onFailure { throwable ->
+                _errorEvent.emit(throwable)
+            }
     }
 }
