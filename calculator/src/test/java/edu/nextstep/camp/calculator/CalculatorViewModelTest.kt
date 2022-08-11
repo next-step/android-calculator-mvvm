@@ -116,7 +116,7 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun 저장한_기록을_모두_가져온다() = runTest(mainDispatcherRule.testDispatcher.scheduler) {
+    fun 저장한_기록을_모두_가져온다() = runTest {
         //given
         calculatorVM =
             CalculatorViewModel(expressionHistoryRepository = expressionHistoryRepository)
