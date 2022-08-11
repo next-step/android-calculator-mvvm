@@ -39,10 +39,7 @@ class CalculatorActivity : AppCompatActivity() {
 
     private fun observeExpressionHistory() = lifecycleScope.launch {
         repeatOnLifecycle(Lifecycle.State.STARTED) {
-            calculatorVM.expressionHistory
-                .collect { history ->
-                    history?.let(calculatorHistoryAdapter::submitList)
-                }
+            calculatorVM.expressionHistory.collect(calculatorHistoryAdapter::submitList)
         }
     }
 

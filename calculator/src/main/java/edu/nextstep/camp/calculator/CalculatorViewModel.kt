@@ -26,7 +26,7 @@ class CalculatorViewModel(
     private val _errorEvent = MutableSharedFlow<Throwable>()
     val errorEvent = _errorEvent.asSharedFlow()
 
-    private val _expressionHistory = MutableStateFlow<List<ExpressionHistory>?>(null)
+    private val _expressionHistory = MutableStateFlow<List<ExpressionHistory>>(emptyList())
     val expressionHistory = _expressionHistory.asStateFlow()
 
     private val _isHistoryVisible = MutableStateFlow(false)
