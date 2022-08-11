@@ -61,7 +61,6 @@ class CalculatorViewModel(
 
     private fun insertExpressionHistory(history: ExpressionHistory) = viewModelScope.launch {
         expressionHistoryRepository.insert(history)
-            .onSuccess {}
             .onFailure { throwable ->
                 _errorEvent.emit(throwable)
             }
