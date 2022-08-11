@@ -33,6 +33,10 @@ android {
     }
     buildFeatures {
         viewBinding true
+        dataBinding true
+    }
+    testOptions {
+        animationsDisabled = true
     }
 }
 
@@ -47,9 +51,11 @@ dependencies {
     implementation "androidx.appcompat:appcompat:${versions.appcompat}"
     implementation "com.google.android.material:material:${versions.material}"
     implementation "androidx.constraintlayout:constraintlayout:${versions.contraintlayout}"
+    implementation "androidx.fragment:fragment-ktx:${versions.fragmentKtx}"
 
+    testImplementation "androidx.arch.core:core-testing:${versions.androidXArch}"
     androidTestImplementation "androidx.test.ext:junit:${versions.androidJunitExt}"
-    androidTestImplementation "androidx.test.espresso:espresso-core:${versions.expresso}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${versions.espresso}"
     androidTestImplementation "androidx.test:runner:${versions.androidXTestRunner}"
     androidTestImplementation "org.junit.jupiter:junit-jupiter-api:${versions.jupiter}"
     androidTestImplementation "de.mannodermaus.junit5:android-test-core:${versions.androidJunit5Core}"
