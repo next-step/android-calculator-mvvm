@@ -10,39 +10,28 @@ import edu.nextstep.camp.domain.counter.NegativeCountNotSupported
 class CounterViewModel(
     private val counter: Counter
 ) : ViewModel() {
-    private val _counterUiState = MutableLiveData(CounterUiState(counter.currentCount, null))
-    val counterUiState: LiveData<CounterUiState> get() = _counterUiState
+    private val _count = MutableLiveData(counter.currentCount)
+    val count: LiveData<Int> get() = _count
+
+    private val _errorMessage = SingleLiveEvent<UiText>()
+    val errorMessage: LiveData<UiText> get() = _errorMessage
 
     fun countUp() {
-        _counterUiState.value = _counterUiState.value?.copy(
-            count = counter.countUp()
-        )
+        _count.value = counter.countUp()
     }
 
     fun countDown() {
-        try {
-            tryCountDown()
-        } catch (e: NegativeCountNotSupported) {
-            showNegativeCountNotSupportedErrorMessage()
+        runCatching {
+            _count.value = counter.countDown()
+        }.onFailure {
+            showErrorMessage(it)
         }
     }
 
-    private fun tryCountDown() {
-        _counterUiState.value = _counterUiState.value?.copy(
-            count = counter.countDown()
-        )
-    }
-
-    private fun showNegativeCountNotSupportedErrorMessage() {
-        _counterUiState.value = _counterUiState.value?.copy(
-            errorMessage = UiText.StringResource(R.string.negative_count_not_supported)
-        )
-    }
-
-    fun shownErrorMessage() {
-        _counterUiState.value = _counterUiState.value?.copy(
-            errorMessage = null
-        )
+    private fun showErrorMessage(it: Throwable) {
+        if (it is NegativeCountNotSupported) {
+            _errorMessage.value = UiText.StringResource(R.string.negative_count_not_supported)
+        }
     }
 }
 

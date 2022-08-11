@@ -3,6 +3,7 @@ package edu.nextstep.camp.counter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import edu.nextstep.camp.counter.databinding.ActivityCounterBinding
@@ -10,21 +11,18 @@ import edu.nextstep.camp.domain.counter.Counter
 
 class CounterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCounterBinding
-    private lateinit var viewModel: CounterViewModel
+    private val viewModel: CounterViewModel by viewModels { CounterViewModelFactory(Counter()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_counter)
 
-        initViewModel()
+        binding = ActivityCounterBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
 
         initBinding()
 
         observeUiState()
-    }
-
-    private fun initViewModel() {
-        viewModel = ViewModelProvider(this, CounterViewModelFactory(Counter()))[CounterViewModel::class.java]
     }
 
     private fun initBinding() {
@@ -33,18 +31,14 @@ class CounterActivity : AppCompatActivity() {
     }
 
     private fun observeUiState() {
-        viewModel.counterUiState.observe(this) { counterUiState ->
-            counterUiState ?: return@observe
+        viewModel.errorMessage.observe(this) { errorMessage ->
+            errorMessage ?: return@observe
 
-            showErrorMessage(counterUiState.errorMessage)
+            showErrorMessage(errorMessage)
         }
     }
 
-    private fun showErrorMessage(errorMessage: UiText?) {
-        errorMessage ?: return
-
+    private fun showErrorMessage(errorMessage: UiText) {
         Toast.makeText(this, errorMessage.asString(this), Toast.LENGTH_LONG).show()
-
-        viewModel.shownErrorMessage()
     }
 }
