@@ -34,9 +34,7 @@ class CalculatorActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerView() {
-        binding.recyclerView.apply {
-            adapter = calculatorHistoryAdapter
-        }
+        binding.recyclerView.adapter = calculatorHistoryAdapter
     }
 
     private fun observeExpressionHistory() = lifecycleScope.launch {
