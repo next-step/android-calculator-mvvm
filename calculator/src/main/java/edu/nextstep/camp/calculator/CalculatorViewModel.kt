@@ -72,7 +72,7 @@ class CalculatorViewModel(
 
     private fun saveHistory(expression: String, result: Int) {
         viewModelScope.launch {
-            historyRepository.insert(expression, result)
+            historyRepository.insert(History(expression, result))
         }
     }
 

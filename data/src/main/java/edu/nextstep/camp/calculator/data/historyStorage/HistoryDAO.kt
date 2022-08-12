@@ -11,4 +11,7 @@ internal interface HistoryDAO {
 
     @Query("SELECT * FROM history")
     suspend fun getAll(): List<HistoryEntity>
+
+    @Query("DELETE FROM history")
+    fun deleteAll()
 }

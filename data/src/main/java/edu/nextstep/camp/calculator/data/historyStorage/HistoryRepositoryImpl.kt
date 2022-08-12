@@ -5,20 +5,18 @@ import edu.nextstep.camp.calculator.domain.history.History
 import edu.nextstep.camp.calculator.domain.history.HistoryGroups
 import edu.nextstep.camp.calculator.domain.history.HistoryRepository
 
-internal class HistoryRepositoryImpl(private val context: Context) : HistoryRepository {
+internal class HistoryRepositoryImpl(private val historyDao: HistoryDAO) : HistoryRepository {
 
-    private val db = HistoryDatabase.getInstance(context)
-
-    override suspend fun insert(expression: String, result: Int) {
-        db.historyDao().insert(
+    override suspend fun insert(history: History) {
+        historyDao.insert(
             HistoryEntity(
-                expression = expression,
-                result = result
+                expression = history.expression,
+                result = history.result
             )
         )
     }
 
     override suspend fun getAll(): HistoryGroups {
-        return HistoryGroups(db.historyDao().getAll().map { it.toDomainModel() })
+        return HistoryGroups(historyDao.getAll().map { it.toDomainModel() })
     }
 }

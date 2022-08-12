@@ -5,6 +5,6 @@ import edu.nextstep.camp.calculator.domain.history.HistoryRepository
 
 object Injector {
     fun provideHistoryRepository(context: Context): HistoryRepository {
-        return HistoryRepositoryImpl(context)
+        return HistoryRepositoryImpl(HistoryDatabase.getInstance(context).historyDao())
     }
 }
