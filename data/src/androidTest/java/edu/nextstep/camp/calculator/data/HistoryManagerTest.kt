@@ -1,24 +1,25 @@
-package edu.nextstep.camp.calculator.data.historyStorage
+package edu.nextstep.camp.calculator.data
 
+import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
-import io.mockk.mockk
+import edu.nextstep.camp.calculator.data.historyStorage.HistoryDatabase
+import edu.nextstep.camp.calculator.data.historyStorage.HistoryManager
 import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.RegisterExtension
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
 
 internal class HistoryManagerTest{
-
-    @JvmField
-    @RegisterExtension
-    val instantTaskExecutorExtension = InstantTaskExecutorExtension()
 
     lateinit var historyDatabase: HistoryDatabase
     lateinit var historyManager: HistoryManager
 
-    @BeforeEach
+    var historySize = 1
+
+    @Before
     fun setUp() {
-        historyDatabase = HistoryDatabase.getInstance(mockk(relaxed = true))
+        historyDatabase = HistoryDatabase.getInstance(InstrumentationRegistry.getInstrumentation().targetContext)
+        historyDatabase.historyDao().deleteAll()
         historyManager = HistoryManager(historyDatabase.historyDao())
     }
 
