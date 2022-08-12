@@ -5,12 +5,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion buildConfig.compileSdk
 
     defaultConfig {
         applicationId "edu.nextstep.camp.calculator"
-        minSdkVersion 21
-        targetSdkVersion 31
+        minSdkVersion buildConfig.minSdk
+        targetSdkVersion buildConfig.targetSdk
         versionCode 1
         versionName "1.0"
 
