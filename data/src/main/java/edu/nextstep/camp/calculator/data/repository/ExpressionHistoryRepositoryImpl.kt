@@ -7,7 +7,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class ExpressionHistoryRepositoryImpl(
+internal class ExpressionHistoryRepositoryImpl(
     private val expressionHistoryLocalDataSource: ExpressionHistoryLocalDataSource,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ExpressionHistoryRepository {

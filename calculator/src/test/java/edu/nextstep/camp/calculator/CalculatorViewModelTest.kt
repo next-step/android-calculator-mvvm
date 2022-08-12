@@ -2,7 +2,7 @@ package edu.nextstep.camp.calculator
 
 import com.google.common.truth.Truth.assertThat
 import edu.nextstep.camp.calculator.data.datasource.local.ExpressionHistoryLocalDataSource
-import edu.nextstep.camp.calculator.data.repository.ExpressionHistoryRepositoryImpl
+import edu.nextstep.camp.calculator.data.di.RepositoryInjector
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 import edu.nextstep.camp.calculator.domain.model.ExpressionHistory
@@ -31,7 +31,7 @@ class CalculatorViewModelTest {
     @Before
     fun setUp() {
         val expressionHistoryLocalDataSource: ExpressionHistoryLocalDataSource = mockk()
-        expressionHistoryRepository = ExpressionHistoryRepositoryImpl(
+        expressionHistoryRepository = RepositoryInjector.provideExpressionHistoryRepository(
             ioDispatcher = UnconfinedTestDispatcher(mainDispatcherRule.testDispatcher.scheduler),
             expressionHistoryLocalDataSource = expressionHistoryLocalDataSource
         )
