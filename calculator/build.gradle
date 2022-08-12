@@ -54,10 +54,21 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:${versions.fragmentKtx}"
 
     testImplementation "androidx.arch.core:core-testing:${versions.androidXArch}"
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${versions.jupiter}")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${versions.jupiter}")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-params:${versions.jupiter}")
+
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:${versions.vintage}")
+
     androidTestImplementation "androidx.test.ext:junit:${versions.androidJunitExt}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${versions.espresso}"
     androidTestImplementation "androidx.test:runner:${versions.androidXTestRunner}"
+
     androidTestImplementation "org.junit.jupiter:junit-jupiter-api:${versions.jupiter}"
+    androidTestImplementation "org.junit.jupiter:junit-jupiter-params:${versions.jupiter}"
+
     androidTestImplementation "de.mannodermaus.junit5:android-test-core:${versions.androidJunit5Core}"
     androidTestRuntimeOnly "de.mannodermaus.junit5:android-test-runner:${versions.androidJunit5Runner}"
 }
