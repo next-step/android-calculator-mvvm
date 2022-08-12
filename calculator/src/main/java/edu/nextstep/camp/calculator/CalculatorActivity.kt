@@ -37,7 +37,7 @@ class CalculatorActivity : AppCompatActivity() {
         }
 
         viewModel.history.observe(this) {
-            historyAdapter.submitList(it)
+            historyAdapter.submitList(it.getHistoryList())
         }
     }
 

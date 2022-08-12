@@ -8,6 +8,7 @@ import edu.nextstep.camp.calculator.domain.Calculator
 import edu.nextstep.camp.calculator.domain.Expression
 import edu.nextstep.camp.calculator.domain.Operator
 import edu.nextstep.camp.calculator.domain.history.History
+import edu.nextstep.camp.calculator.domain.history.HistoryGroups
 import edu.nextstep.camp.calculator.domain.history.HistoryRepository
 import edu.nextstep.camp.calculator.event.Event
 import edu.nextstep.camp.calculator.event.SingleLiveEvent
@@ -25,8 +26,8 @@ class CalculatorViewModel(
     private val _showEvent = SingleLiveEvent<Event>()
     val showEvent: LiveData<Event> = _showEvent
 
-    private val _history = MutableLiveData<List<History>>()
-    val history: LiveData<List<History>> = _history
+    private val _history = MutableLiveData<HistoryGroups>()
+    val history: LiveData<HistoryGroups> = _history
 
     private val _isHistoryVisible = MutableLiveData<Boolean>(false)
     val isHistoryVisible: LiveData<Boolean> = _isHistoryVisible

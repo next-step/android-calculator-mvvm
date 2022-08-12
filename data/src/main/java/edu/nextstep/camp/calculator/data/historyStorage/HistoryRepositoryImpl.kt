@@ -2,6 +2,7 @@ package edu.nextstep.camp.calculator.data.historyStorage
 
 import android.content.Context
 import edu.nextstep.camp.calculator.domain.history.History
+import edu.nextstep.camp.calculator.domain.history.HistoryGroups
 import edu.nextstep.camp.calculator.domain.history.HistoryRepository
 
 internal class HistoryRepositoryImpl(private val context: Context) : HistoryRepository {
@@ -17,7 +18,7 @@ internal class HistoryRepositoryImpl(private val context: Context) : HistoryRepo
         )
     }
 
-    override suspend fun getAll(): List<History> {
-        return db.historyDao().getAll().map { it.toDomainModel() }
+    override suspend fun getAll(): HistoryGroups {
+        return HistoryGroups(db.historyDao().getAll().map { it.toDomainModel() })
     }
 }
