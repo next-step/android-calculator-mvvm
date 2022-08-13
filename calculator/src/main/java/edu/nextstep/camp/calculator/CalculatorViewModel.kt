@@ -7,7 +7,6 @@ import edu.nextstep.camp.domain.calculator.Expression
 import edu.nextstep.camp.domain.calculator.Operator
 import edu.nextstep.camp.domain.calculator.usecase.GetAllCalculationHistoryUseCase
 import edu.nextstep.camp.domain.calculator.usecase.InsertCalculationHistoryUseCase
-import edu.nextstep.camp.domain.counter.Counter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -64,14 +63,14 @@ class CalculatorViewModel(
         if (result == null) {
             showIncompleteExpressionError()
         } else {
-            saveCalculationHistory(getCurrentExpression(), result)
+            saveCalculationHistory(rawExpressionString, result)
             _expression.value = Expression(listOf(result))
         }
     }
 
-    private fun saveCalculationHistory(currentExpression: Expression, result: Int) {
+    private fun saveCalculationHistory(currentExpressionText: String, result: Int) {
         viewModelScope.launch {
-            insertCalculationHistory(CalculationHistory(CalculationHistory.DEFAULT_ID, currentExpression, result))
+            insertCalculationHistory(CalculationHistory(CalculationHistory.DEFAULT_ID, currentExpressionText, result))
         }
     }
 
