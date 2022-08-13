@@ -1,6 +1,6 @@
 package edu.nextstep.camp.calculator.data.historyStorage
 
-class HistoryManager(
+internal class HistoryManager(
     private val historyDAO: HistoryDAO
 ) {
     suspend fun insert(expression: String, result: Int) {
