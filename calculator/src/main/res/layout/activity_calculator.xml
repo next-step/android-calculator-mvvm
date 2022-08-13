@@ -2,6 +2,7 @@
 <layout>
     <data>
         <import type="edu.nextstep.camp.domain.calculator.Operator" />
+        <import type="edu.nextstep.camp.calculator.CalculatorUiMode" />
         <variable
                 name="viewModel"
                 type="edu.nextstep.camp.calculator.CalculatorViewModel" />
@@ -37,7 +38,7 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:visibility="gone"
+                app:calculatorUiMode="@{viewModel.uiMode}"
                 app:layout_constraintBottom_toBottomOf="@id/textView"
                 app:layout_constraintEnd_toEndOf="@id/textView"
                 app:layout_constraintStart_toStartOf="@id/textView"
@@ -74,6 +75,7 @@
                 style="@style/Widget.Calculator.Button.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{() -> viewModel.toggleUiBetweenCalculatorOrHistory()}"
                 app:icon="@drawable/ic_baseline_access_time_24"
                 app:layout_constraintBottom_toBottomOf="@id/buttonDelete"
                 app:layout_constraintStart_toStartOf="@id/input"
