@@ -1,15 +1,13 @@
 package edu.nextstep.camp.calculator
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import edu.nextstep.camp.domain.calculator.CalculationHistory
 import edu.nextstep.camp.domain.calculator.Calculator
 import edu.nextstep.camp.domain.calculator.Expression
 import edu.nextstep.camp.domain.calculator.Operator
 import edu.nextstep.camp.domain.calculator.usecase.GetAllCalculationHistoryUseCase
 import edu.nextstep.camp.domain.calculator.usecase.InsertCalculationHistoryUseCase
+import edu.nextstep.camp.domain.counter.Counter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -82,4 +80,16 @@ class CalculatorViewModel(
     }
 
     private fun getCurrentExpression() = _expression.value ?: Expression.EMPTY
+}
+
+class CalculatorViewModelFactory(
+    private val insertCalculationHistoryUseCase: InsertCalculationHistoryUseCase,
+    private val getAllCalculationHistoryUseCase: GetAllCalculationHistoryUseCase
+): ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(CalculatorViewModel::class.java)) {
+            return CalculatorViewModel(insertCalculationHistoryUseCase, getAllCalculationHistoryUseCase) as T
+        }
+        throw IllegalArgumentException("Not found ViewModel class.")
+    }
 }
