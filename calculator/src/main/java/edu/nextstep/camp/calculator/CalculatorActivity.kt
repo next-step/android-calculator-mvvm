@@ -66,6 +66,8 @@ class CalculatorActivity : AppCompatActivity() {
     }
 
     private fun setCalculationHistoryList(calculationHistoryList: List<CalculationHistory>) {
-        calculationHistoryAdapter.submitList(calculationHistoryList)
+        calculationHistoryAdapter.submitList(calculationHistoryList) {
+            binding.recyclerView.scrollToPosition(calculationHistoryList.lastIndex)
+        }
     }
 }

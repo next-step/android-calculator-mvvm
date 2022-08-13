@@ -9,6 +9,6 @@ interface CalculationHistoryEntityDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(calculationHistory: CalculationHistoryEntity)
 
-    @Query("SELECT * FROM CalculationHistoryEntity ORDER BY id DESC")
+    @Query("SELECT * FROM CalculationHistoryEntity ORDER BY id ASC")
     fun getAllCalculationHistoryEntity(): Flow<List<CalculationHistoryEntity>>
 }
