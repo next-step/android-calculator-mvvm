@@ -4,10 +4,11 @@ import android.app.Application
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import edu.nextstep.camp.data.local.entity.CalculationHistoryEntity
 import edu.nextstep.camp.domain.calculator.CalculationHistory
 
 @Database(
-    entities = [CalculationHistory::class],
+    entities = [CalculationHistoryEntity::class],
     version = 1
 )
 abstract class CalculatorDatabase: RoomDatabase() {
