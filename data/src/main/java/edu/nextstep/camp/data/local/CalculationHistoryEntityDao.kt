@@ -5,7 +5,7 @@ import edu.nextstep.camp.data.local.entity.CalculationHistoryEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface CalculationHistoryDao {
+interface CalculationHistoryEntityDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(calculationHistory: CalculationHistoryEntity)
 
