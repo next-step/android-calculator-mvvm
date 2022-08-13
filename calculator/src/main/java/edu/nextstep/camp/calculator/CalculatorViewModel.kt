@@ -71,7 +71,7 @@ class CalculatorViewModel(
 
     private fun saveCalculationHistory(currentExpression: Expression, result: Int) {
         viewModelScope.launch {
-            insertCalculationHistory(CalculationHistory(CalculationHistory.INVALID_ID, currentExpression, result))
+            insertCalculationHistory(CalculationHistory(CalculationHistory.DEFAULT_ID, currentExpression, result))
         }
     }
 

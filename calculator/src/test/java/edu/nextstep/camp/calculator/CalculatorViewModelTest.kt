@@ -112,7 +112,7 @@ class CalculatorViewModelTest {
         val expectedExpression = Expression.EMPTY + 1 + Operator.Plus + 2
 
         coEvery {
-            insertCalculationHistoryUseCase(CalculationHistory(CalculationHistory.INVALID_ID, expectedExpression, 3))
+            insertCalculationHistoryUseCase(CalculationHistory(CalculationHistory.DEFAULT_ID, expectedExpression.toString(), 3))
         } just runs
 
         calculatorViewModel.addToExpression(1)
@@ -124,7 +124,7 @@ class CalculatorViewModelTest {
 
         // then
         coVerify {
-            insertCalculationHistoryUseCase(CalculationHistory(CalculationHistory.INVALID_ID, expectedExpression, 3))
+            insertCalculationHistoryUseCase(CalculationHistory(CalculationHistory.DEFAULT_ID, expectedExpression.toString(), 3))
         }
     }
 
@@ -173,9 +173,9 @@ class CalculatorViewModelTest {
 
     companion object {
         private val dummyCalculationHistoryList = listOf(
-            CalculationHistory(1, Expression.EMPTY + 1 + Operator.Plus + 1, 2),
-            CalculationHistory(2, Expression.EMPTY + 1 + Operator.Minus + 1, 0),
-            CalculationHistory(3, Expression.EMPTY + 1 + Operator.Multiply + 1, 1),
+            CalculationHistory(1, "1 + 1", 2),
+            CalculationHistory(2, "1 - 1", 0),
+            CalculationHistory(3, "1 * 1", 1),
         )
     }
 }
