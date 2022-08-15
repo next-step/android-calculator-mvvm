@@ -1,16 +1,17 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
     id 'de.mannodermaus.android-junit5'
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion buildConfig.compileSdk
 
     defaultConfig {
         applicationId "edu.nextstep.camp.calculator"
-        minSdkVersion 21
-        targetSdkVersion 31
+        minSdkVersion buildConfig.minSdk
+        targetSdkVersion buildConfig.targetSdk
         versionCode 1
         versionName "1.0"
 
@@ -38,6 +39,9 @@ android {
     testOptions {
         animationsDisabled = true
     }
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+        kotlinOptions.freeCompilerArgs += ["-opt-in=kotlin.RequiresOptIn"]
+    }
 }
 
 apply {
@@ -46,6 +50,7 @@ apply {
 
 dependencies {
     implementation(project(":domain"))
+    implementation(project(":data"))
 
     implementation "androidx.core:core-ktx:${versions.coreKtx}"
     implementation "androidx.appcompat:appcompat:${versions.appcompat}"
@@ -53,11 +58,28 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:${versions.contraintlayout}"
     implementation "androidx.fragment:fragment-ktx:${versions.fragmentKtx}"
 
+    kapt "androidx.room:room-compiler:$versions.room"
+    implementation "androidx.room:room-runtime:$versions.room"
+    implementation "androidx.room:room-ktx:$versions.room"
+
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutine"
+
     testImplementation "androidx.arch.core:core-testing:${versions.androidXArch}"
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${versions.jupiter}")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${versions.jupiter}")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-params:${versions.jupiter}")
+
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:${versions.vintage}")
+
     androidTestImplementation "androidx.test.ext:junit:${versions.androidJunitExt}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${versions.espresso}"
     androidTestImplementation "androidx.test:runner:${versions.androidXTestRunner}"
+
     androidTestImplementation "org.junit.jupiter:junit-jupiter-api:${versions.jupiter}"
+    androidTestImplementation "org.junit.jupiter:junit-jupiter-params:${versions.jupiter}"
+
     androidTestImplementation "de.mannodermaus.junit5:android-test-core:${versions.androidJunit5Core}"
     androidTestRuntimeOnly "de.mannodermaus.junit5:android-test-runner:${versions.androidJunit5Runner}"
 }

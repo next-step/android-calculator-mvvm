@@ -1,43 +1,94 @@
 package edu.nextstep.camp.calculator
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import edu.nextstep.camp.domain.calculator.CalculationHistory
 import edu.nextstep.camp.domain.calculator.Calculator
 import edu.nextstep.camp.domain.calculator.Expression
 import edu.nextstep.camp.domain.calculator.Operator
+import edu.nextstep.camp.domain.calculator.usecase.GetAllCalculationHistoryUseCase
+import edu.nextstep.camp.domain.calculator.usecase.InsertCalculationHistoryUseCase
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
-class CalculatorViewModel: ViewModel() {
+class CalculatorViewModel(
+    private val insertCalculationHistory: InsertCalculationHistoryUseCase,
+    private val getAllCalculationHistory: GetAllCalculationHistoryUseCase
+): ViewModel() {
     private val calculator = Calculator()
     private val _expression = MutableLiveData(Expression.EMPTY)
-    val expression: LiveData<Expression> get() = _expression
+    val expression: LiveData<Expression> = _expression
 
     private val _errorMessage = SingleLiveEvent<UiText>()
-    val errorMessage: LiveData<UiText> get() = _errorMessage
+    val errorMessage: LiveData<UiText> = _errorMessage
+
+    private val _calculationHistoryList = MutableLiveData<List<CalculationHistory>>()
+    val calculationHistoryList: LiveData<List<CalculationHistory>> = _calculationHistoryList
+
+    private val _uiMode = MutableLiveData(CalculatorUiMode.CALCULATOR)
+    val uiMode: LiveData<CalculatorUiMode> = _uiMode
+
+    init {
+        loadCalculationHistory()
+    }
+
+    private fun loadCalculationHistory() {
+        getAllCalculationHistory()
+            .onEach { _calculationHistoryList.value = it }
+            .launchIn(viewModelScope)
+    }
+
+    fun toggleUiBetweenCalculatorOrHistory() {
+        _uiMode.value = when (uiMode.value) {
+            CalculatorUiMode.CALCULATOR -> CalculatorUiMode.CALCULATION_HISTORY
+            else -> CalculatorUiMode.CALCULATOR
+        }
+    }
 
     fun addToExpression(number: Int) {
-        _expression.value = _expression.value?.plus(number) ?: Expression.EMPTY
+        _expression.value = getCurrentExpression() + number
     }
 
     fun addToExpression(operator: Operator) {
-        _expression.value = _expression.value?.plus(operator) ?: Expression.EMPTY
+        _expression.value = getCurrentExpression() + operator
     }
 
     fun removeLast() {
-        _expression.value = _expression.value?.removeLast() ?: Expression.EMPTY
+        _expression.value = getCurrentExpression().removeLast()
     }
 
     fun calculate() {
-        val rawExpressionString = _expression.value?.toString() ?: ""
+        val rawExpressionString = getCurrentExpression().toString()
         val result = calculator.calculate(rawExpressionString)
         if (result == null) {
             showIncompleteExpressionError()
         } else {
+            saveCalculationHistory(rawExpressionString, result)
             _expression.value = Expression(listOf(result))
+        }
+    }
+
+    private fun saveCalculationHistory(currentExpressionText: String, result: Int) {
+        viewModelScope.launch {
+            insertCalculationHistory(CalculationHistory(CalculationHistory.DEFAULT_ID, currentExpressionText, result))
         }
     }
 
     private fun showIncompleteExpressionError() {
         _errorMessage.value = UiText.StringResource(R.string.incomplete_expression)
+    }
+
+    private fun getCurrentExpression() = _expression.value ?: Expression.EMPTY
+}
+
+class CalculatorViewModelFactory(
+    private val insertCalculationHistoryUseCase: InsertCalculationHistoryUseCase,
+    private val getAllCalculationHistoryUseCase: GetAllCalculationHistoryUseCase
+): ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(CalculatorViewModel::class.java)) {
+            return CalculatorViewModel(insertCalculationHistoryUseCase, getAllCalculationHistoryUseCase) as T
+        }
+        throw IllegalArgumentException("Not found ViewModel class.")
     }
 }

@@ -10,3 +10,7 @@ java {
 apply {
     from("$rootDir/base-module.gradle")
 }
+
+dependencies {
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutine"
+}
