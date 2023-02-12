@@ -10,6 +10,11 @@ class CounterViewModel : ViewModel() {
     val count: LiveData<Int>
         get() = _count
 
+    private val _tryCountDownWhenZero = SingleLiveEvent<Boolean>()
+
+    val tryCountDownWhenZero: LiveData<Boolean>
+        get() = _tryCountDownWhenZero
+
     fun countUp() {
         val nowCount = _count.value ?: 0
         _count.value = nowCount + 1
@@ -17,6 +22,10 @@ class CounterViewModel : ViewModel() {
 
     fun countDown() {
         val nowCount = _count.value ?: 0
+        if (nowCount == 0) {
+            _tryCountDownWhenZero.value = true
+            return
+        }
         _count.value = nowCount - 1
     }
 }
