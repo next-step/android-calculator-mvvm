@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
+
         <variable
             name="viewModel"
             type="camp.nextstep.edu.counter.CounterViewModel" />
@@ -20,12 +22,13 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="24sp"
-            tools:text="11" />
+            tools:text="@{viewModel.upDownUiState.toString()}" />
 
         <Button
             android:id="@+id/buttonUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{()->viewModel.increaseNumber()}"
             android:text="Up"
             tools:ignore="HardcodedText" />
 
@@ -33,6 +36,7 @@
             android:id="@+id/buttonDown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{()->viewModel.decreaseNumber()}"
             android:text="Down"
             tools:ignore="HardcodedText" />
     </LinearLayout>
