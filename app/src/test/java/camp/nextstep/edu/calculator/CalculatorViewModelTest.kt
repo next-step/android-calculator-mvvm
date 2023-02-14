@@ -112,6 +112,44 @@ class CalculatorViewModelTest {
         // when
         viewModel.calculate()
 
+        // then
         assertEquals(viewModel.exceptionMessage.getOrAwaitValue(), "완성되지 않은 수식입니다.")
+    }
+
+    @Test
+    fun `0으로 나누면 에러`() {
+        // given
+        viewModel.addTerm(1)
+        viewModel.addTerm(Operator.DIVIDE)
+        viewModel.addTerm(0)
+        assertEquals(viewModel.text.getOrAwaitValue(), "1 / 0")
+
+        // when
+        viewModel.calculate()
+
+        // then
+        assertEquals(viewModel.exceptionMessage.getOrAwaitValue(), "0으로 나눌 수 없습니다.")
+    }
+
+    @Test
+    fun `Int의 범위를 넘어서면 에러`() {
+        // given
+        viewModel.addTerm(1)
+        viewModel.addTerm(1)
+        viewModel.addTerm(1)
+        viewModel.addTerm(1)
+        viewModel.addTerm(1)
+        viewModel.addTerm(1)
+        viewModel.addTerm(1)
+        viewModel.addTerm(1)
+        viewModel.addTerm(1)
+        viewModel.addTerm(1)
+        assertEquals(viewModel.text.getOrAwaitValue(), "1111111111")
+
+        // when
+        viewModel.addTerm(1)
+
+        // then
+        assertEquals(viewModel.exceptionMessage.getOrAwaitValue(), "숫자로 변환 불가능한 문자입니다.")
     }
 }

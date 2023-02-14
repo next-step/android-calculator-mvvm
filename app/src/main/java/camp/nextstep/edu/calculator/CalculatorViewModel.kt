@@ -28,8 +28,12 @@ class CalculatorViewModel : ViewModel() {
     }
 
     fun addTerm(term: Int){
-        statement.addTerm(Operand(term))
-        _text.value = statement.termsToString()
+        try {
+            statement.addTerm(Operand(term))
+            _text.value = statement.termsToString()
+        } catch (e: Throwable){
+            _exceptionMessage.value = e.message
+        }
     }
 
     fun removeTerm() {
