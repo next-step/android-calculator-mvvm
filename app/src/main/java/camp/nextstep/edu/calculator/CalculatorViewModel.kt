@@ -1,9 +1,11 @@
 package camp.nextstep.edu.calculator
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.domain.Calculator
+import com.example.domain.Operand
 import com.example.domain.OperationTerm
 import com.example.domain.Statement
 
@@ -22,6 +24,11 @@ class CalculatorViewModel : ViewModel() {
 
     fun addTerm(term: OperationTerm) {
         statement.addTerm(term)
+        _text.value = statement.termsToString()
+    }
+
+    fun addTerm(term: Int){
+        statement.addTerm(Operand(term))
         _text.value = statement.termsToString()
     }
 
