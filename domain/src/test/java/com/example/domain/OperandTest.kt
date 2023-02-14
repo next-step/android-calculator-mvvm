@@ -37,6 +37,14 @@ class OperandTest {
     }
 
     @Test
+    fun `인티저의_범위보다_큰_숫자_문자열_을_넣으면_IllegalArgumentException_을_던진다`() {
+        val exception = assertThrows(IllegalArgumentException::class.java) {
+            Operand.fromTerm("111111111111111111")
+        }
+        assertEquals("숫자로 변환 불가능한 문자입니다.", exception.message)
+    }
+
+    @Test
     fun `10_미만_이면_false를_반환한다`() {
         val operand = Operand(9)
 
