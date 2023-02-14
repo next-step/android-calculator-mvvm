@@ -16,9 +16,16 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        init()
+        observeException()
+    }
+
+    private fun init() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+    }
 
+    private fun observeException() {
         viewModel.exceptionMessage.observe(this) {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
