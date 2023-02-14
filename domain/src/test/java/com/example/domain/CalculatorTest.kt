@@ -41,11 +41,11 @@ class CalculatorTest {
 
     @Test
     fun `0으로_나누면_에러를_던진다`() {
-        val exception = assertThrows(ArithmeticException::class.java) {
+        val exception = assertThrows(IllegalArgumentException::class.java) {
             calculator.calculate("1 / 0")
         }
 
-        assertEquals("/ by zero", exception.message)
+        assertEquals("0으로 나눌 수 없습니다.", exception.message)
     }
 
     @Test

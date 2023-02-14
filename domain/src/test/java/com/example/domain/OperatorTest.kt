@@ -64,11 +64,11 @@ class TestClass {
         }
 
         @Test
-        fun `나눗셈_0_으로_나누면_ArithmeticException_을_던진다`() {
-            val exception = assertThrows(ArithmeticException::class.java) {
+        fun `나눗셈_0_으로_나누면_IllegalArgumentException_을_던진다`() {
+            val exception = assertThrows(IllegalArgumentException::class.java) {
                 Operator.DIVIDE.execute(4, 0)
             }
-            assertEquals("/ by zero", exception.message)
+            assertEquals("0으로 나눌 수 없습니다.", exception.message)
         }
 
         @Test

@@ -11,7 +11,12 @@ enum class Operator(val prime: String) : OperationTerm {
         override fun execute(preOperand: Int, postOperand: Int): Int = preOperand * postOperand
     },
     DIVIDE("/") {
-        override fun execute(preOperand: Int, postOperand: Int): Int = preOperand / postOperand
+        override fun execute(preOperand: Int, postOperand: Int): Int {
+            require(postOperand != 0){
+                "0으로 나눌 수 없습니다."
+            }
+            return preOperand / postOperand
+        }
     };
 
     companion object {
