@@ -4,9 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="com.example.domain.OperationTerm"/>
-        <import type="com.example.domain.Operand"/>
-        <import type="com.example.domain.Operator"/>
+
+        <import type="com.example.domain.OperationTerm" />
+
+        <import type="com.example.domain.Operand" />
+
+        <import type="com.example.domain.Operator" />
 
         <variable
             name="viewModel"
@@ -25,9 +28,9 @@
             android:layout_height="0dp"
             android:layout_marginBottom="16dp"
             android:hint="0"
+            android:text="@{viewModel.text.toString()}"
             android:textAlignment="viewEnd"
             android:textSize="24sp"
-            android:text="@{viewModel.text.toString()}"
             app:layout_constraintBottom_toBottomOf="@id/divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,8 +65,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:icon="@drawable/ic_baseline_keyboard_backspace_24"
             android:onClick="@{()->viewModel.removeTerm()}"
+            app:icon="@drawable/ic_baseline_keyboard_backspace_24"
             app:layout_constraintBottom_toTopOf="@id/input"
             app:layout_constraintEnd_toEndOf="@id/input" />
 

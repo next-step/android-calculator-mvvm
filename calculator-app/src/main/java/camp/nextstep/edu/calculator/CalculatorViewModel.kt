@@ -1,6 +1,5 @@
 package camp.nextstep.edu.calculator
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,11 +26,11 @@ class CalculatorViewModel : ViewModel() {
         _text.value = statement.termsToString()
     }
 
-    fun addTerm(term: Int){
+    fun addTerm(term: Int) {
         try {
             statement.addTerm(Operand(term))
             _text.value = statement.termsToString()
-        } catch (e: Throwable){
+        } catch (e: Throwable) {
             _exceptionMessage.value = e.message
         }
     }
