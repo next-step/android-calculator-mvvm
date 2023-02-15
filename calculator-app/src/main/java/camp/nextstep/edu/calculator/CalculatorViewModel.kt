@@ -8,12 +8,12 @@ import com.example.domain.Operand
 import com.example.domain.OperationTerm
 import com.example.domain.Statement
 
-class CalculatorViewModel : ViewModel() {
+class CalculatorViewModel(terms: List<OperationTerm> = listOf()) : ViewModel() {
 
     private val calculator = Calculator()
-    private val statement = Statement()
+    private val statement = Statement(terms.toMutableList())
 
-    private val _text: MutableLiveData<String> = MutableLiveData("")
+    private val _text: MutableLiveData<String> = MutableLiveData(statement.termsToString())
     val text: LiveData<String>
         get() = _text
 

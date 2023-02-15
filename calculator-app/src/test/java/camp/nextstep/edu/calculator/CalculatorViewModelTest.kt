@@ -1,6 +1,9 @@
 package camp.nextstep.edu.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.example.domain.Operand
+import com.example.domain.OperationParser
+import com.example.domain.OperationTerm
 import com.example.domain.Operator
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -43,9 +46,8 @@ class CalculatorViewModelTest {
     @Test
     fun `'1 + 2' 수식에서 마지막을 제거하면 '1 +'`() {
         // given
-        viewModel.addTerm(1)
-        viewModel.addTerm(Operator.ADD)
-        viewModel.addTerm(2)
+        val initialValue = OperationParser.parse("1 + 2")
+        val viewModel = CalculatorViewModel(initialValue)
         assertEquals(viewModel.text.getOrAwaitValue(), "1 + 2")
 
         // when
@@ -58,9 +60,8 @@ class CalculatorViewModelTest {
     @Test
     fun `'1 + 2' 수식을 계산하면 3`() {
         // given
-        viewModel.addTerm(1)
-        viewModel.addTerm(Operator.ADD)
-        viewModel.addTerm(2)
+        val initialValue = OperationParser.parse("1 + 2")
+        val viewModel = CalculatorViewModel(initialValue)
         assertEquals(viewModel.text.getOrAwaitValue(), "1 + 2")
 
         // when
@@ -73,8 +74,8 @@ class CalculatorViewModelTest {
     @Test
     fun `'1 +' 수식을 계산하면 에러`() {
         // given
-        viewModel.addTerm(1)
-        viewModel.addTerm(Operator.ADD)
+        val initialValue = OperationParser.parse("1 +")
+        val viewModel = CalculatorViewModel(initialValue)
         assertEquals(viewModel.text.getOrAwaitValue(), "1 +")
 
         // when
@@ -87,9 +88,8 @@ class CalculatorViewModelTest {
     @Test
     fun `0으로 나누면 에러`() {
         // given
-        viewModel.addTerm(1)
-        viewModel.addTerm(Operator.DIVIDE)
-        viewModel.addTerm(0)
+        val initialValue = OperationParser.parse("1 / 0")
+        val viewModel = CalculatorViewModel(initialValue)
         assertEquals(viewModel.text.getOrAwaitValue(), "1 / 0")
 
         // when
@@ -102,16 +102,8 @@ class CalculatorViewModelTest {
     @Test
     fun `Int의 범위를 넘어서면 에러`() {
         // given
-        viewModel.addTerm(1)
-        viewModel.addTerm(1)
-        viewModel.addTerm(1)
-        viewModel.addTerm(1)
-        viewModel.addTerm(1)
-        viewModel.addTerm(1)
-        viewModel.addTerm(1)
-        viewModel.addTerm(1)
-        viewModel.addTerm(1)
-        viewModel.addTerm(1)
+        val initialValue = OperationParser.parse("1111111111")
+        val viewModel = CalculatorViewModel(initialValue)
         assertEquals(viewModel.text.getOrAwaitValue(), "1111111111")
 
         // when
@@ -119,5 +111,20 @@ class CalculatorViewModelTest {
 
         // then
         assertEquals(viewModel.exceptionMessage.getOrAwaitValue(), "숫자로 변환 불가능한 문자입니다.")
+    }
+
+    @Test
+    fun `초기값을 주입한 뒤 외부의 Statement를 변경해도 내부의 값이 영향을 받지 않는다`() {
+        // given
+
+        val terms: MutableList<OperationTerm> = mutableListOf()
+        val viewModel = CalculatorViewModel(terms)
+
+        // when
+        terms.add(Operand(1))
+        viewModel.addTerm(1)
+
+        // then
+        assertEquals("1", viewModel.text.getOrAwaitValue())
     }
 }
