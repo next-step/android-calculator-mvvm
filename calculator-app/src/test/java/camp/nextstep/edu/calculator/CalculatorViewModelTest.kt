@@ -1,12 +1,23 @@
 package camp.nextstep.edu.calculator
 
+import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.test.core.app.ApplicationProvider
 import camp.nextstep.edu.calculator.domain.Operator
+import camp.nextstep.edu.calculator.domain.usecase.GetCalculatorResultUseCase
+import camp.nextstep.edu.calculator.domain.usecase.SaveCalculatorResultUseCase
+import camp.nextstep.edu.calculator.local.di.InjectDatabase
+import camp.nextstep.edu.calculator.local.impl.CalculatorResultRepositoryImpl
 import com.google.common.truth.Truth
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
+import java.util.concurrent.Executors
 
+@RunWith(RobolectricTestRunner::class)
 class CalculatorViewModelTest {
     private lateinit var viewModel: CalculatorViewModel
 
@@ -15,7 +26,15 @@ class CalculatorViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = CalculatorViewModel()
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val dao = InjectDatabase.getDB(context)?.calculatorResultDao()!!
+        val repository = CalculatorResultRepositoryImpl(
+            dao = dao,
+            Executors.newSingleThreadExecutor()
+        )
+        val get = GetCalculatorResultUseCase(repository)
+        val save = SaveCalculatorResultUseCase(repository)
+        viewModel = CalculatorViewModel(get, save)
     }
 
     @Test
