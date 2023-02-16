@@ -12,12 +12,14 @@ class CounterViewModel : ViewModel() {
     val onError: LiveData<Boolean> = _onError
 
     fun upCount() {
-        _count.value = _count.value?.plus(1)
+        val count = _count.value!!
+        _count.value = count.plus(1)
     }
 
     fun downCount() {
+        val count = _count.value!!
         if (_count.value!! > 0) {
-            _count.value = _count.value?.minus(1)
+            _count.value = count.minus(1)
         } else {
             _onError.call()
         }
