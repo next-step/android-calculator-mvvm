@@ -19,9 +19,9 @@
 
         <TextView
             android:id="@+id/textView"
-            android:text="@{viewModel.count.toString()}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{viewModel.count.toString()}"
             android:textColor="@color/black"
             android:textSize="24sp"
             tools:text="11" />
@@ -30,16 +30,16 @@
             android:id="@+id/buttonUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Up"
             android:onClick="@{()->viewModel.countUp()}"
+            android:text="Up"
             tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/buttonDown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Down"
             android:onClick="@{()->viewModel.countDown()}"
+            android:text="Down"
             tools:ignore="HardcodedText" />
     </LinearLayout>
 

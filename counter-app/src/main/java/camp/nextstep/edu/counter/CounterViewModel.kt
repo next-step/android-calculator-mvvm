@@ -6,12 +6,10 @@ import androidx.lifecycle.ViewModel
 
 class CounterViewModel : ViewModel() {
     private val _count: MutableLiveData<Int> = MutableLiveData(0)
-
     val count: LiveData<Int>
         get() = _count
 
     private val _tryCountDownWhenZero = SingleLiveEvent<Boolean>()
-
     val tryCountDownWhenZero: LiveData<Boolean>
         get() = _tryCountDownWhenZero
 

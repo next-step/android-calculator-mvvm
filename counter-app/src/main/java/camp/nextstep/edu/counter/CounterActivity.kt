@@ -16,9 +16,16 @@ class CounterActivity : AppCompatActivity() {
         binding = ActivityCounterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        init()
+        observeError()
+    }
+
+    private fun init() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+    }
 
+    private fun observeError() {
         viewModel.tryCountDownWhenZero.observe(this) {
             if (it) {
                 Toast.makeText(this, "0 이하로 내릴 수 없습니다.", Toast.LENGTH_SHORT).show()
