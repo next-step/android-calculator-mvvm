@@ -19,21 +19,18 @@ class CalculatorViewModel : ViewModel() {
     private val calculator = Calculator()
 
     fun addToExpression(operand: Int) {
-        val newExpression = expression + operand
-        expression = newExpression
+        expression += operand
         _calcText.value = expression.toString()
     }
 
     fun addToExpression(`operator`: Operator) {
-        val newExpression = expression + `operator`
-        expression = newExpression
+        expression += `operator`
         _calcText.value = expression.toString()
 
     }
 
     fun removeLast() {
-        val newExpression = expression.removeLast()
-        expression = newExpression
+        expression = expression.removeLast()
         _calcText.value = expression.toString()
     }
 
@@ -46,6 +43,7 @@ class CalculatorViewModel : ViewModel() {
             return
         }
 
-        _calcText.value = (Expression.EMPTY + newExpression).toString()
+        expression = Expression.EMPTY + newExpression
+        _calcText.value = expression.toString()
     }
 }
