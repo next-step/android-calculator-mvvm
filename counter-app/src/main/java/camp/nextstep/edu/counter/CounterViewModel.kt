@@ -24,4 +24,8 @@ class CounterViewModel : ViewModel() {
             _onError.call()
         }
     }
+
+    fun setCount(count: Int) {
+        _count.value = count
+    }
 }
