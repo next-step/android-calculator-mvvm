@@ -1,7 +1,8 @@
-package camp.nextstep.edu.calculator
+package camp.nextstep.edu.calculator.local.di
 
 import android.content.Context
 import androidx.room.Room
+import camp.nextstep.edu.calculator.local.db.CalculatorDatabase
 
 object InjectDatabase {
 

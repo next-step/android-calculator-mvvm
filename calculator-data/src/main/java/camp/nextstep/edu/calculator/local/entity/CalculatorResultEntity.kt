@@ -1,10 +1,10 @@
-package camp.nextstep.edu.calculator
+package camp.nextstep.edu.calculator.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class CalculatorResultData(
+data class CalculatorResultEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 1,
 
