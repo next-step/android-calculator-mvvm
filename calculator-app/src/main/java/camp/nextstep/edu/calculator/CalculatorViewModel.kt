@@ -8,7 +8,7 @@ import camp.nextstep.edu.calculator.domain.Calculator
 import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
 
-class CalculatorViewModel : ViewModel() {
+class CalculatorViewModel(database: CalculatorDatabase) : ViewModel() {
     private val _calcText = MutableLiveData<String>("")
     val calcText: LiveData<String> get() = _calcText
 
