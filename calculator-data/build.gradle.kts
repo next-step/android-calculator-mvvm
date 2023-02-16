@@ -37,4 +37,7 @@ dependencies {
 
     // optional - Test helpers
     testImplementation("androidx.room:room-testing:${Version.room}")
+
+    implementation ("com.google.code.gson:gson:${Version.gson}") // gson
+
 }

@@ -6,4 +6,5 @@ object Version {
     const val targetSdk = 33
 
     const val room = "2.5.0"
+    const val gson = "2.9.0"
 }
