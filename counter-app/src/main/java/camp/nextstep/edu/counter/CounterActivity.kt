@@ -1,10 +1,10 @@
 package camp.nextstep.edu.counter
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import camp.nextstep.edu.counter.databinding.ActivityCounterBinding
 
 class CounterActivity : AppCompatActivity() {
@@ -12,24 +12,28 @@ class CounterActivity : AppCompatActivity() {
     lateinit var binding: ActivityCounterBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_counter)
+        binding = ActivityCounterBinding.inflate(layoutInflater)
         with(binding) {
             viewModel = counterViewModel
+            activity = this@CounterActivity
             lifecycleOwner = this@CounterActivity
         }
-        setupListener()
+        setContentView(binding.root)
     }
 
-    private fun setupListener() {
-        binding.buttonDown.setOnClickListener {
-            val result = counterViewModel.downCount()
-            if (!result.isSuccess) {
-                Toast.makeText(this, "0 이하로 내릴 수 없습니다", Toast.LENGTH_SHORT).show()
-            }
+    fun onClickButtonDown(view: View) {
+        val result = counterViewModel.downCount()
+        if (!result) {
+            showToastIfNumberBelow0()
         }
-        binding.buttonUp.setOnClickListener {
-            counterViewModel.upCount()
-        }
+    }
+
+    fun onClickButtonUp(view: View) {
+        counterViewModel.upCount()
+    }
+
+    private fun showToastIfNumberBelow0() {
+        Toast.makeText(this, "0 이하로 내릴 수 없습니다", Toast.LENGTH_SHORT).show()
     }
 
 }

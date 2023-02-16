@@ -13,12 +13,12 @@ class CounterViewModel : ViewModel() {
         _count.value = _count.value?.plus(1)
     }
 
-    fun downCount(): Result {
+    fun downCount(): Boolean {
         if (_count.value == 0) {
-            return Result(false, "count must be positive number")
+            return false
         }
         _count.value = _count.value?.minus(1)
-        return Result(true, "")
+        return true
     }
 }
 

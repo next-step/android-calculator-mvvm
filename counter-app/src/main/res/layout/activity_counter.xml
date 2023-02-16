@@ -5,6 +5,10 @@
     <data>
 
         <variable
+            name="activity"
+            type="camp.nextstep.edu.counter.CounterActivity" />
+
+        <variable
             name="viewModel"
             type="camp.nextstep.edu.counter.CounterViewModel" />
     </data>
@@ -31,6 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Up"
+            android:onClick="@{activity::onClickButtonUp}"
             tools:ignore="HardcodedText" />
 
         <Button
@@ -38,6 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Down"
+            android:onClick="@{activity::onClickButtonDown}"
             tools:ignore="HardcodedText" />
     </LinearLayout>
 </layout>
