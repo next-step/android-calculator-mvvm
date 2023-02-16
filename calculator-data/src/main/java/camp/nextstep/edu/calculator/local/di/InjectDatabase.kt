@@ -14,7 +14,7 @@ object InjectDatabase {
                 db = Room.databaseBuilder(
                     context = context,
                     klass = CalculatorDatabase::class.java,
-                    name = "database-name"
+                    name = "test"
                 ).build()
             }
         }

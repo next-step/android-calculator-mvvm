@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import camp.nextstep.edu.calculator.domain.Calculator
 import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
+import camp.nextstep.edu.calculator.domain.model.CalculatorResultData
 import camp.nextstep.edu.calculator.domain.usecase.GetCalculatorResultUseCase
 import camp.nextstep.edu.calculator.domain.usecase.SaveCalculatorResultUseCase
 
@@ -23,6 +24,9 @@ class CalculatorViewModel(
 
     private val _isCalculatorResultShow = MutableLiveData(false)
     val isCalculatorResultShow: LiveData<Boolean> get() = _isCalculatorResultShow
+
+    private val _calculatorResultList = MutableLiveData<List<CalculatorResultData>?>(emptyList())
+    val calculatorResultList: LiveData<List<CalculatorResultData>?> get() = _calculatorResultList
 
     private var expression: Expression = Expression.EMPTY
 
@@ -63,9 +67,9 @@ class CalculatorViewModel(
     }
 
     fun getResultList() {
-        _isCalculatorResultShow.value = !(_isCalculatorResultShow.value ?: false)
+        _isCalculatorResultShow.value = (_isCalculatorResultShow.value?.not()) ?: return
 
         if (_isCalculatorResultShow.value == true)
-            getCalculatorResultUseCase()
+            _calculatorResultList.value = getCalculatorResultUseCase()
     }
 }
