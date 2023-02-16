@@ -21,16 +21,9 @@ class CalculatorViewModelTest {
     @Test
     fun `입력된 피연산자가 없을 때, 사용자가 피연산자 0 ~ 9 입력시 해당 숫자가 입력되어야 한다`() {
         // when
-        viewModel.addToExpression(0)
-        viewModel.addToExpression(1)
-        viewModel.addToExpression(2)
-        viewModel.addToExpression(3)
-        viewModel.addToExpression(4)
-        viewModel.addToExpression(5)
-        viewModel.addToExpression(6)
-        viewModel.addToExpression(7)
-        viewModel.addToExpression(8)
-        viewModel.addToExpression(9)
+        (0..9).forEach {
+            viewModel.addToExpression(it)
+        }
 
         //then
         val actual = viewModel.calcText.getOrAwaitValue()
@@ -66,8 +59,10 @@ class CalculatorViewModelTest {
 
     @Test
     fun `입력된 피연산자가 있을 때, 연산자 +, -, ×, ÷ 입력을 하면 입력되어야 한다`() {
-        // 1 -> '+ 입력' -> 1 +
-        // 1 + -> '- 입력' -> 1 -
+        /*
+        * 1 -> '+ 입력' -> 1 +
+        * 1 + -> '- 입력' -> 1 -
+        * */
         // given
         viewModel.addToExpression(1)
 
@@ -99,12 +94,14 @@ class CalculatorViewModelTest {
 
     @Test
     fun `입력된 수식이 있을 때, 사용자가 지우기를 하면 수식에 마지막으로 입력된 연산자 또는 피연산자가 지워져야 한다`() {
-        // 32 + 1 -> 지우기
-        // 32 +  -> 지우기
-        // 32 -> 지우기
-        // 3 -> 지우기
-        // EMPTY -> 지우기
-        // EMPTY
+        /*
+        * 32 + 1 -> 지우기
+        * 32 +  -> 지우기
+        * 32 -> 지우기
+        * 3 -> 지우기
+        * EMPTY -> 지우기
+        * EMPTY
+        */
 
         // given
         viewModel.addToExpression(3)
