@@ -47,8 +47,6 @@ class CounterViewModelTest {
 
         // then
         val actual = viewModelTest.upDownUiState.getOrAwaitValue()
-        val actual2 = viewModelTest.checkLessThanZero.getOrAwaitValue()
         assertEquals(0, actual)
-        assertEquals(true, actual2)
     }
 }

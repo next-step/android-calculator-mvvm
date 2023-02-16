@@ -8,8 +8,8 @@ class CounterViewModel : ViewModel() {
     private var _upDownUiState = MutableLiveData<Int>()
     val upDownUiState: LiveData<Int> get() = _upDownUiState
 
-    private var _checkLessThanZero = SingleLiveEvent<Boolean>()
-    val checkLessThanZero: LiveData<Boolean> get() = _checkLessThanZero
+    private var _stopDecreaseEvent = SingleLiveEvent<Unit>()
+    val stopDecreaseEvent: LiveData<Unit> get() = _stopDecreaseEvent
 
     init {
         _upDownUiState.value = 0
@@ -21,7 +21,7 @@ class CounterViewModel : ViewModel() {
 
     fun decreaseNumber() {
         if (_upDownUiState.value == 0) {
-            _checkLessThanZero.value = true
+            _stopDecreaseEvent.call()
             return
         }
 

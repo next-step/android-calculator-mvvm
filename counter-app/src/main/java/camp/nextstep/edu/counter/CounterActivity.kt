@@ -28,8 +28,8 @@ class CounterActivity : AppCompatActivity() {
     }
 
     private fun initObservers() {
-        viewModel.checkLessThanZero.observe(this) {
-            if (it) { showToastMessage() }
+        viewModel.stopDecreaseEvent.observe(this) {
+            showToastMessage()
         }
     }
 
