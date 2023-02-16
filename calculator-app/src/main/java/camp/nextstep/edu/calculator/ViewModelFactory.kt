@@ -3,6 +3,7 @@ package camp.nextstep.edu.calculator
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import camp.nextstep.edu.calculator.local.di.InjectDatabase
 
 class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
 
