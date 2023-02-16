@@ -5,10 +5,12 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import camp.nextstep.edu.calculator.databinding.ActivityCalculatorBinding
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
-    private val calculatorViewModel: CalculatorViewModel by viewModels { ViewModelFactory(this) }
+    private val calculatorViewModel: CalculatorViewModel by viewModels { ViewModelFactory(this, provideExecutorService()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,5 +27,10 @@ class CalculatorActivity : AppCompatActivity() {
         calculatorViewModel.calculatorErrorMessage.observe(this) { errorMessageStringResourceId ->
             Toast.makeText(this, getString(errorMessageStringResourceId), Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun provideExecutorService() : ExecutorService {
+        val threadCount = Runtime.getRuntime().availableProcessors() * 2
+        return Executors.newFixedThreadPool(threadCount)
     }
 }

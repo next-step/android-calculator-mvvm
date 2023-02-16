@@ -5,5 +5,5 @@ import camp.nextstep.edu.calculator.domain.model.CalculatorResultData
 
 interface CalculatorResultRepository {
     fun saveResult(calculatorResultData: CalculatorResultData)
-    fun getAllResult(): List<CalculatorResultData>
+    fun getAllResult(): List<CalculatorResultData>?
 }

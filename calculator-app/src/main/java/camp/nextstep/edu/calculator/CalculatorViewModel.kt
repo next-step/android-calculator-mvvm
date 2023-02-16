@@ -7,11 +7,12 @@ import androidx.lifecycle.ViewModel
 import camp.nextstep.edu.calculator.domain.Calculator
 import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
-import camp.nextstep.edu.calculator.domain.usecase.CalculatorResultUseCase
-import camp.nextstep.edu.calculator.local.db.CalculatorDatabase
+import camp.nextstep.edu.calculator.domain.usecase.GetCalculatorResultUseCase
+import camp.nextstep.edu.calculator.domain.usecase.SaveCalculatorResultUseCase
 
 class CalculatorViewModel(
-    private val useCase: CalculatorResultUseCase
+    private val getCalculatorResultUseCase: GetCalculatorResultUseCase,
+    private val saveCalculatorResultUseCase: SaveCalculatorResultUseCase,
 ) : ViewModel() {
     private val _calcText: MutableLiveData<String> = MutableLiveData("")
     val calcText: LiveData<String> get() = _calcText
@@ -19,6 +20,9 @@ class CalculatorViewModel(
     @IdRes
     private val _calculatorErrorMessage = SingleLiveEvent<Int>()
     val calculatorErrorMessage: LiveData<Int> get() = _calculatorErrorMessage
+
+    private val _isCalculatorResultShow = MutableLiveData(false)
+    val isCalculatorResultShow: LiveData<Boolean> get() = _isCalculatorResultShow
 
     private var expression: Expression = Expression.EMPTY
 
@@ -49,7 +53,19 @@ class CalculatorViewModel(
             return
         }
 
+        saveResult(expression, newExpression)
         expression = Expression.EMPTY + newExpression
         _calcText.value = expression.toString()
+    }
+
+    private fun saveResult(expression: Expression, result: Int) {
+        saveCalculatorResultUseCase(expression.toString(), result)
+    }
+
+    fun getResultList() {
+        _isCalculatorResultShow.value = !(_isCalculatorResultShow.value ?: false)
+
+        if (_isCalculatorResultShow.value == true)
+            getCalculatorResultUseCase()
     }
 }
