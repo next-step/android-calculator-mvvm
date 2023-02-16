@@ -3,7 +3,9 @@ package camp.nextstep.edu.calculator
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import camp.nextstep.edu.calculator.domain.usecase.CalculatorResultUseCase
 import camp.nextstep.edu.calculator.local.di.InjectDatabase
+import camp.nextstep.edu.calculator.local.di.InjectRepositoryImpl.repositoryImpl
 
 class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
 
@@ -18,7 +20,8 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
     }
 
     private fun createCalculatorViewModel(): CalculatorViewModel {
-        val db = InjectDatabase.getDB(context) ?: throw NullPointerException("Database Not Found")
-        return CalculatorViewModel(db)
+        val repository = repositoryImpl(context)
+        val useCase = CalculatorResultUseCase(repository)
+        return CalculatorViewModel(useCase)
     }
 }

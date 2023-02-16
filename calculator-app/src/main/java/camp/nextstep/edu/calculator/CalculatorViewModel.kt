@@ -7,10 +7,13 @@ import androidx.lifecycle.ViewModel
 import camp.nextstep.edu.calculator.domain.Calculator
 import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
+import camp.nextstep.edu.calculator.domain.usecase.CalculatorResultUseCase
 import camp.nextstep.edu.calculator.local.db.CalculatorDatabase
 
-class CalculatorViewModel(database: CalculatorDatabase) : ViewModel() {
-    private val _calcText = MutableLiveData<String>("")
+class CalculatorViewModel(
+    private val useCase: CalculatorResultUseCase
+) : ViewModel() {
+    private val _calcText: MutableLiveData<String> = MutableLiveData("")
     val calcText: LiveData<String> get() = _calcText
 
     @IdRes
