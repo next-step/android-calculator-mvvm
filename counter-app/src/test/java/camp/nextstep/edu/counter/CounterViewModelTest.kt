@@ -23,7 +23,7 @@ class CounterViewModelTest {
         viewModelTest.increaseNumber()
 
         // then
-        val actual = viewModelTest.upDownUiState.getOrAwaitValue()
+        val actual = viewModelTest.upDownText.getOrAwaitValue()
         assertEquals(1, actual)
     }
 
@@ -36,7 +36,7 @@ class CounterViewModelTest {
         viewModelTest.decreaseNumber()
 
         // then
-        val actual = viewModelTest.upDownUiState.getOrAwaitValue()
+        val actual = viewModelTest.upDownText.getOrAwaitValue()
         assertEquals(0, actual)
     }
 
@@ -46,7 +46,7 @@ class CounterViewModelTest {
         viewModelTest.decreaseNumber()
 
         // then
-        val actual = viewModelTest.upDownUiState.getOrAwaitValue()
+        val actual = viewModelTest.upDownText.getOrAwaitValue()
         assertEquals(0, actual)
     }
 }
