@@ -3,7 +3,6 @@ package camp.nextstep.edu.calculator
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import camp.nextstep.edu.calculator.domain.Operator
 import com.google.common.truth.Truth
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -172,6 +171,6 @@ class CalculatorViewModelTest {
 
         //then: 완성되지 않은 수식입니다 출력
         val actual = viewModel.calculatorErrorMessage.getOrAwaitValue()
-        Truth.assertThat(actual).isEqualTo("완성되지 않은 수식입니다")
+        Truth.assertThat(actual).isEqualTo(R.string.incomplete_expression)
     }
 }

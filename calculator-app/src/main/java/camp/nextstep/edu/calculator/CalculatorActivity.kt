@@ -22,8 +22,8 @@ class CalculatorActivity : AppCompatActivity() {
     }
 
     private fun addObserve() {
-        calculatorViewModel.calculatorErrorMessage.observe(this) { errorMessage ->
-            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+        calculatorViewModel.calculatorErrorMessage.observe(this) { errorMessageStringResourceId ->
+            Toast.makeText(this, getString(errorMessageStringResourceId), Toast.LENGTH_SHORT).show()
         }
     }
 }
