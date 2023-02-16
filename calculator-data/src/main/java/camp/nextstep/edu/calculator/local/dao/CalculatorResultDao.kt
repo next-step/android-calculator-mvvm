@@ -11,6 +11,6 @@ interface CalculatorResultDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun save(calculatorResultData: CalculatorResultEntity)
 
-    @Query("select * from calculatorResultData")
+    @Query("select * from calculatorResult")
     fun getResultList(): List<CalculatorResultEntity>
 }
