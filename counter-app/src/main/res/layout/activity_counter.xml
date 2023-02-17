@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Up"
-            android:onClick="@{activity::onClickButtonUp}"
+            android:onClick="@{()-> viewModel.upCount()}"
             tools:ignore="HardcodedText" />
 
         <Button
@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Down"
-            android:onClick="@{activity::onClickButtonDown}"
+            android:onClick="@{() -> viewModel.downCount() }"
             tools:ignore="HardcodedText" />
     </LinearLayout>
 </layout>

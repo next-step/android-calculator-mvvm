@@ -1,7 +1,6 @@
 package camp.nextstep.edu.counter
 
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -19,17 +18,13 @@ class CounterActivity : AppCompatActivity() {
             lifecycleOwner = this@CounterActivity
         }
         setContentView(binding.root)
+        observerViewMode()
     }
 
-    fun onClickButtonDown(view: View) {
-        val result = counterViewModel.downCount()
-        if (!result) {
+    private fun observerViewMode() {
+        counterViewModel.showToastMessage.observe(this) {
             showToastIfNumberBelow0()
         }
-    }
-
-    fun onClickButtonUp(view: View) {
-        counterViewModel.upCount()
     }
 
     private fun showToastIfNumberBelow0() {
