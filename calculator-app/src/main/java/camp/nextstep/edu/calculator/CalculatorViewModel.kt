@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import camp.nextstep.edu.calculator.domain.Calculator
 import camp.nextstep.edu.calculator.domain.Expression
+import camp.nextstep.edu.calculator.domain.Operator
 
 class CalculatorViewModel : ViewModel() {
 
@@ -25,6 +26,12 @@ class CalculatorViewModel : ViewModel() {
         subExpression?.let { showExpression(it) }
     }
 
+    fun addToExpression(operator: Operator) {
+        var subExpression = _expression.value
+        subExpression = subExpression?.plus(operator)
+        subExpression?.let { showExpression(it) }
+    }
+
     fun removeLast() {
         var subExpression = _expression.value
         subExpression = subExpression?.removeLast()
@@ -32,7 +39,7 @@ class CalculatorViewModel : ViewModel() {
     }
 
     fun calculate() {
-        val result = calculator.calculate(expression.toString())
+        val result = calculator.calculate(_expression.value.toString())
         if (result == null) {
             _showIncompleteExpressionError.value = true
         } else {
