@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="24sp"
-            tools:text="@{viewModel.upDownUiState.toString()}" />
+            tools:text="@{viewModel.upDownText.toString()}" />
 
         <Button
             android:id="@+id/buttonUp"

@@ -5,26 +5,26 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class CounterViewModel : ViewModel() {
-    private var _upDownUiState = MutableLiveData<Int>()
-    val upDownUiState: LiveData<Int> get() = _upDownUiState
+    private var _upDownText = MutableLiveData<Int>()
+    val upDownText: LiveData<Int> get() = _upDownText
 
-    private var _checkLessThanZero = SingleLiveEvent<Boolean>()
-    val checkLessThanZero: LiveData<Boolean> get() = _checkLessThanZero
+    private var _stopDecreaseEvent = SingleLiveEvent<Unit>()
+    val stopDecreaseEvent: LiveData<Unit> get() = _stopDecreaseEvent
 
     init {
-        _upDownUiState.value = 0
+        _upDownText.value = 0
     }
 
     fun increaseNumber() {
-        _upDownUiState.value = _upDownUiState.value?.plus(1)
+        _upDownText.value = _upDownText.value?.plus(1)
     }
 
     fun decreaseNumber() {
-        if (_upDownUiState.value == 0) {
-            _checkLessThanZero.value = true
+        if (_upDownText.value == 0) {
+            _stopDecreaseEvent.call()
             return
         }
 
-        _upDownUiState.value = _upDownUiState.value?.minus(1)
+        _upDownText.value = _upDownText.value?.minus(1)
     }
 }
