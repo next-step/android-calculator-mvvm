@@ -135,7 +135,7 @@ class CalculatorActivityTest {
 
         // then: '1+1'이 보여야 한다
         Espresso.onView(ViewMatchers.withId(R.id.textView))
-            .check(ViewAssertions.matches(ViewMatchers.withText("1+1")))
+            .check(ViewAssertions.matches(ViewMatchers.withText("1 + 1")))
     }
 
     @Test
@@ -173,7 +173,7 @@ class CalculatorActivityTest {
 
         // then: '1+'가 보여야 한다
         Espresso.onView(ViewMatchers.withId(R.id.textView))
-            .check(ViewAssertions.matches(ViewMatchers.withText("1+")))
+            .check(ViewAssertions.matches(ViewMatchers.withText("1 +")))
     }
 
     @Test
@@ -187,7 +187,7 @@ class CalculatorActivityTest {
 
         // then: '1-'가 보여야 한다
         Espresso.onView(ViewMatchers.withId(R.id.textView))
-            .check(ViewAssertions.matches(ViewMatchers.withText("1-")))
+            .check(ViewAssertions.matches(ViewMatchers.withText("1 -")))
     }
 
     @Test
@@ -215,7 +215,7 @@ class CalculatorActivityTest {
 
         // then: '32+'가 보여야 한다
         Espresso.onView(ViewMatchers.withId(R.id.textView))
-            .check(ViewAssertions.matches(ViewMatchers.withText("32+")))
+            .check(ViewAssertions.matches(ViewMatchers.withText("32 +")))
     }
 
     @Test
