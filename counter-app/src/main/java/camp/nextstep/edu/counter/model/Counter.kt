@@ -1,20 +1,23 @@
 package camp.nextstep.edu.counter.model
 
 class Counter {
-    var value = 0
+    var value: Int = 0
+        private set
 
     fun add() {
         value++
     }
 
-    fun sub() {
+    fun sub(): Boolean {
         value--
         if (isNegative()) {
             value = 0
+            return false
         }
+        return true
     }
 
-    fun isNegative(): Boolean {
+    private fun isNegative(): Boolean {
         return value < 0
     }
 }
