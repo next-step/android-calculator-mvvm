@@ -1,16 +1,18 @@
 package camp.nextstep.edu.calculator
 
+import android.os.Looper.getMainLooper
 import android.widget.Button
 import android.widget.TextView
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import camp.nextstep.edu.calculator.domain.Calculator
-import com.google.common.truth.Truth
+import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.Shadows.shadowOf
 import org.robolectric.android.controller.ActivityController
 
 @RunWith(RobolectricTestRunner::class)
@@ -43,8 +45,9 @@ class CalculatorActivityTest {
         activity.findViewById<Button>(R.id.button9).performClick()
 
         // then
+        shadowOf(getMainLooper()).idle()
         val result = activity.findViewById<TextView>(R.id.textView).text.toString()
-        Truth.assertThat(result).isEqualTo("123456789")
+        assertThat(result).isEqualTo("123456789")
     }
 
     @Test
@@ -56,8 +59,9 @@ class CalculatorActivityTest {
         activity.findViewById<Button>(R.id.button9).performClick()
 
         // then
+        shadowOf(getMainLooper()).idle()
         val result = activity.findViewById<TextView>(R.id.textView).text
-        Truth.assertThat(result).isEqualTo("89")
+        assertThat(result).isEqualTo("89")
     }
 
     @Test
@@ -68,8 +72,9 @@ class CalculatorActivityTest {
         activity.findViewById<Button>(R.id.buttonPlus).performClick()
 
         // then
+        shadowOf(getMainLooper()).idle()
         val result = activity.findViewById<TextView>(R.id.textView).text
-        Truth.assertThat(result).isEqualTo("")
+        assertThat(result).isEqualTo("")
     }
 
     @Test
@@ -81,15 +86,19 @@ class CalculatorActivityTest {
         activity.findViewById<Button>(R.id.button1).performClick()
         activity.findViewById<Button>(R.id.buttonPlus).performClick()
 
+        // then
+        shadowOf(getMainLooper()).idle()
         var result = activity.findViewById<TextView>(R.id.textView).text
-        Truth.assertThat(result).isEqualTo("1 +")
+        assertThat(result).isEqualTo("1 +")
 
-        // 1 + -> - 클릭 -> 1 -
+        // 1 + ->
+        //        // when - 클릭 -> 1 -
         activity.findViewById<Button>(R.id.buttonMinus).performClick()
 
         // then
+        shadowOf(getMainLooper()).idle()
         result = activity.findViewById<TextView>(R.id.textView).text
-        Truth.assertThat(result).isEqualTo("1 -")
+        assertThat(result).isEqualTo("1 -")
     }
 
     @Test
@@ -100,8 +109,9 @@ class CalculatorActivityTest {
         activity.findViewById<Button>(R.id.buttonDelete).performClick()
 
         // then
+        shadowOf(getMainLooper()).idle()
         val result = activity.findViewById<TextView>(R.id.textView).text
-        Truth.assertThat(result).isEqualTo("")
+        assertThat(result).isEqualTo("")
     }
 
     @Test
@@ -117,29 +127,34 @@ class CalculatorActivityTest {
 
         // then
         activity.findViewById<Button>(R.id.buttonDelete).performClick()
+        shadowOf(getMainLooper()).idle()
 
         var result = activity.findViewById<TextView>(R.id.textView).text
-        Truth.assertThat(result).isEqualTo("32 +")
+        assertThat(result).isEqualTo("32 +")
 
         activity.findViewById<Button>(R.id.buttonDelete).performClick()
+        shadowOf(getMainLooper()).idle()
 
         result = activity.findViewById<TextView>(R.id.textView).text
-        Truth.assertThat(result).isEqualTo("32")
+        assertThat(result).isEqualTo("32")
 
         activity.findViewById<Button>(R.id.buttonDelete).performClick()
+        shadowOf(getMainLooper()).idle()
 
         result = activity.findViewById<TextView>(R.id.textView).text
-        Truth.assertThat(result).isEqualTo("3")
+        assertThat(result).isEqualTo("3")
 
         activity.findViewById<Button>(R.id.buttonDelete).performClick()
+        shadowOf(getMainLooper()).idle()
 
         result = activity.findViewById<TextView>(R.id.textView).text
-        Truth.assertThat(result).isEqualTo("")
+        assertThat(result).isEqualTo("")
 
         activity.findViewById<Button>(R.id.buttonDelete).performClick()
+        shadowOf(getMainLooper()).idle()
 
         result = activity.findViewById<TextView>(R.id.textView).text
-        Truth.assertThat(result).isEqualTo("")
+        assertThat(result).isEqualTo("")
     }
 
     @Test
@@ -155,9 +170,9 @@ class CalculatorActivityTest {
 
 
         //then
-        val result = Calculator().calculate("3 + 2")
-        activity.findViewById<TextView>(R.id.textView).text
+        shadowOf(getMainLooper()).idle()
+        val result = activity.findViewById<TextView>(R.id.textView).text
 
-        Truth.assertThat(result).isEqualTo("5")
+        assertThat(result).isEqualTo("5")
     }
 }
