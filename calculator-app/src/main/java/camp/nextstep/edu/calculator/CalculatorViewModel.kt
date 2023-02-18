@@ -46,7 +46,7 @@ class CalculatorViewModel : ViewModel() {
         }
     }
 
-    fun showExpression(expression: Expression) {
+    private fun showExpression(expression: Expression) {
         _expression.value = expression
     }
 }
