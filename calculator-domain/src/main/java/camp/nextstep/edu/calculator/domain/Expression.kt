@@ -1,5 +1,6 @@
 package camp.nextstep.edu.calculator.domain
 
+
 data class Expression(
     private val values: List<Any> = emptyList()
 ) {
