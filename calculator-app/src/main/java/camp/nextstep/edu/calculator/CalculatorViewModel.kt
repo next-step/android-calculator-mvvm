@@ -21,21 +21,18 @@ class CalculatorViewModel : ViewModel() {
     val showIncompleteExpressionError: LiveData<Boolean> = _showIncompleteExpressionError
 
     fun addToExpression(operand: Int) {
-        var subExpression = _expression.value
-        subExpression = subExpression?.plus(operand)
-        subExpression?.let { showExpression(it) }
+        val expression = _expression.value ?: Expression.EMPTY
+        showExpression(expression.plus(operand))
     }
 
     fun addToExpression(operator: Operator) {
-        var subExpression = _expression.value
-        subExpression = subExpression?.plus(operator)
-        subExpression?.let { showExpression(it) }
+        val expression = _expression.value ?: return
+        showExpression(expression.plus(operator))
     }
 
     fun removeLast() {
-        var subExpression = _expression.value
-        subExpression = subExpression?.removeLast()
-        subExpression?.let { showExpression(it) }
+        val expression = _expression.value ?: return
+        showExpression(expression.removeLast())
     }
 
     fun calculate() {
@@ -43,16 +40,13 @@ class CalculatorViewModel : ViewModel() {
         if (result == null) {
             _showIncompleteExpressionError.value = true
         } else {
-            _expression.value = Expression(listOf(result))
-            showResult(result)
+            val expression = Expression(listOf(result))
+            showExpression(expression)
+            _showIncompleteExpressionError.value = false
         }
     }
 
-    private fun showExpression(expression: Expression) {
+    fun showExpression(expression: Expression) {
         _expression.value = expression
-    }
-
-    private fun showResult(result: Int) {
-        _result.value = result.toString()
     }
 }

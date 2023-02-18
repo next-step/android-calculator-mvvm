@@ -26,10 +26,6 @@ class CalculatorActivity : AppCompatActivity() {
             binding.textView.text = expression.toString()
         }
 
-        viewModel.result.observe(this) { result ->
-            binding.textView.text = result
-        }
-
         viewModel.showIncompleteExpressionError.observe(this) { isShow ->
             if (isShow) Toast.makeText(this, R.string.incomplete_expression, Toast.LENGTH_SHORT)
                 .show()
