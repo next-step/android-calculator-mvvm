@@ -1,15 +1,22 @@
 package com.example.domain
 
 import com.example.domain.models.Calculator
+import com.example.domain.models.History
 import com.example.domain.repositories.HistoryRepository
+import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertThrows
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class CalculatorTest {
@@ -22,6 +29,36 @@ class CalculatorTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val testScope = TestScope(testDispatcher)
+
+    @Test
+    fun `계산에_성공하면_레포지터리에_계산_결과가_기록된다`() = testScope.runTest {
+        // Given
+        verify(exactly = 0) { runBlocking { historyRepository.saveHistory(any()) } }
+        val rawStatement = "1 + 1"
+
+        // When
+        val result: Int = calculator.calculate(rawStatement)
+        every { historyRepository.getHistories() } returns flow {
+            emit(
+                listOf(
+                    History(
+                        rawStatement,
+                        result
+                    )
+                )
+            )
+        }
+        // Then
+        verify(exactly = 1) { runBlocking { historyRepository.saveHistory(any()) } }
+        assertTrue(
+            historyRepository.getHistories().first() == listOf(
+                History(
+                    rawStatement,
+                    result
+                )
+            )
+        )
+    }
 
     @Test
     fun `덧셈_1_더하기_1은_2`() = testScope.runTest {
@@ -52,7 +89,6 @@ class CalculatorTest {
         val result: Int = calculator.calculate("2 + 3 * 4 / 2")
         assertEquals(10, result)
     }
-
 
     @Test
     fun `0으로_나누면_에러를_던진다`() = testScope.runTest {
