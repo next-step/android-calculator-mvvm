@@ -2,12 +2,17 @@ package camp.nextstep.edu.calculator
 
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.room.withTransaction
 import androidx.test.core.app.ApplicationProvider
 import camp.nextstep.edu.calculator.domain.Operator
+import camp.nextstep.edu.calculator.domain.model.CalculatorResultData
 import camp.nextstep.edu.calculator.domain.usecase.GetCalculatorResultUseCase
 import camp.nextstep.edu.calculator.domain.usecase.SaveCalculatorResultUseCase
+import camp.nextstep.edu.calculator.local.db.CalculatorDatabase
+import camp.nextstep.edu.calculator.local.di.InjectDatabase.getDB
 import camp.nextstep.edu.calculator.local.di.InjectRepositoryImpl
 import com.google.common.truth.Truth
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -19,19 +24,30 @@ import java.util.concurrent.Executors
 class CalculatorViewModelTest {
     private lateinit var viewModel: CalculatorViewModel
 
+    private lateinit var db : CalculatorDatabase
+
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun setUp() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        val repository = InjectRepositoryImpl.repositoryImpl(
-            context,
-            Executors.newSingleThreadExecutor()
-        )
+
+        db = getDB(context)!!
+        val repository =
+            InjectRepositoryImpl.repositoryImpl(context, Executors.newSingleThreadExecutor())
+
         val get = GetCalculatorResultUseCase(repository)
         val save = SaveCalculatorResultUseCase(repository)
         viewModel = CalculatorViewModel(get, save)
+    }
+
+    @After
+    fun tearDown() {
+        Executors.newSingleThreadExecutor().submit {
+            db.clearAllTables()
+        }
+        db.close()
     }
 
     @Test
@@ -185,5 +201,51 @@ class CalculatorViewModelTest {
         //then: 완성되지 않은 수식입니다 출력
         val actual = viewModel.calculatorErrorMessage.getOrAwaitValue()
         Truth.assertThat(actual).isEqualTo(R.string.incomplete_expression)
+    }
+
+    @Test
+    fun `계산기록 보기의 초기값은 false여야 한다`() {
+        // when
+        val actual = viewModel.isCalculatorResultShow.getOrAwaitValue()
+
+        //then
+        Truth.assertThat(actual).isEqualTo(false)
+    }
+
+    @Test
+    fun `계산기록 보기함수 호출 후 값은 기존의 값에서 not한 상태여야한다`() {
+        // when
+        val expected = viewModel.isCalculatorResultShow.getOrAwaitValue()
+        viewModel.loadResultList()
+
+        //then
+        val actual = viewModel.isCalculatorResultShow.getOrAwaitValue()
+        Truth.assertThat(actual).isEqualTo(expected?.not())
+    }
+
+    @Test
+    fun `초기 계산기록의 값은 빈 리스트여야 한다`() {
+        // when
+        viewModel.loadResultList()
+
+        //then
+        val actual = viewModel.calculatorResultList.getOrAwaitValue()
+        Truth.assertThat(actual).isEqualTo(emptyList<CalculatorResultData>())
+    }
+
+    @Test
+    fun `1 + 1 입력된 상태에서 calculator() 호출 후 계산기록 리스트의 값이 존재해야 한다`() {
+        // given
+        viewModel.addToExpression(1)
+        viewModel.addToExpression(Operator.Plus)
+        viewModel.addToExpression(1)
+        viewModel.calculate()
+
+        // when
+        viewModel.loadResultList()
+
+        //then
+        val actual = viewModel.calculatorResultList.getOrAwaitValue()?.get(0)
+        Truth.assertThat(actual).isEqualTo(CalculatorResultData("1 + 1", 2))
     }
 }
