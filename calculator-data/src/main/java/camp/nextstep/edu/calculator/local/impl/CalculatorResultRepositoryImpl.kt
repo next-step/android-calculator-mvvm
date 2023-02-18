@@ -6,7 +6,7 @@ import camp.nextstep.edu.calculator.local.dao.CalculatorResultDao
 import camp.nextstep.edu.calculator.local.entity.CalculatorResultEntity
 import java.util.concurrent.ExecutorService
 
-class CalculatorResultRepositoryImpl(
+internal class CalculatorResultRepositoryImpl(
     private val dao: CalculatorResultDao,
     private val executorService: ExecutorService,
 ) : CalculatorResultRepository {
