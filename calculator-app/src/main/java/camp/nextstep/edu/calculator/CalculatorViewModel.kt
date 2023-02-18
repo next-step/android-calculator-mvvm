@@ -66,7 +66,7 @@ class CalculatorViewModel(
         saveCalculatorResultUseCase(expression.toString(), result)
     }
 
-    fun getResultList() {
+    fun loadResultList() {
         _isCalculatorResultShow.value = (_isCalculatorResultShow.value?.not()) ?: return
 
         if (_isCalculatorResultShow.value == true)
