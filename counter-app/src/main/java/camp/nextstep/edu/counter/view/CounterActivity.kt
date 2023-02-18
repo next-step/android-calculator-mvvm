@@ -1,6 +1,7 @@
 package camp.nextstep.edu.counter.view
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -17,5 +18,13 @@ class CounterActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_counter)
         binding.lifecycleOwner = this
         binding.counterView = viewModel
+
+        setOnErrorListener()
+    }
+
+    private fun setOnErrorListener() {
+        viewModel.downError.observe(this) {
+            Toast.makeText(this, "0 이하로 내릴 수 없습니다", Toast.LENGTH_LONG).show()
+        }
     }
 }
