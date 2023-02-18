@@ -1,4 +1,4 @@
-package com.example.domain
+package com.example.domain.models
 
 @JvmInline
 value class Operand(val value: Int) : OperationTerm {

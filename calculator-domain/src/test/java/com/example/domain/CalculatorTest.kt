@@ -1,5 +1,6 @@
 package com.example.domain
 
+import com.example.domain.models.Calculator
 import junit.framework.TestCase.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Test

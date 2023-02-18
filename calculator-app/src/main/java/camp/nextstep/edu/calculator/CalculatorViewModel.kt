@@ -3,10 +3,10 @@ package camp.nextstep.edu.calculator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.domain.Calculator
-import com.example.domain.Operand
-import com.example.domain.OperationTerm
-import com.example.domain.Statement
+import com.example.domain.models.Calculator
+import com.example.domain.models.Operand
+import com.example.domain.models.OperationTerm
+import com.example.domain.models.Statement
 
 class CalculatorViewModel(terms: List<OperationTerm> = listOf()) : ViewModel() {
 

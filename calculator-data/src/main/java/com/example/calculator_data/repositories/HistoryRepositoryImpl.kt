@@ -2,7 +2,7 @@ package com.example.calculator_data.repositories
 
 import com.example.calculator_data.database.HistoryDao
 import com.example.calculator_data.database.HistoryEntity
-import com.example.domain.History
+import com.example.domain.models.History
 import com.example.domain.repositories.HistoryRepository
 
 class HistoryRepositoryImpl(private val dao: HistoryDao) : HistoryRepository {

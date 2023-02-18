@@ -1,6 +1,4 @@
-package com.example.domain
-
-private const val tens = 10
+package com.example.domain.models
 
 class Statement(terms: List<OperationTerm> = emptyList()) {
 

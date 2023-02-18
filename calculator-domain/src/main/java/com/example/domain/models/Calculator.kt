@@ -1,4 +1,4 @@
-package com.example.domain
+package com.example.domain.models
 
 class Calculator(private val operationParser: OperationParser = OperationParser) {
     fun calculate(operation: String): Int {

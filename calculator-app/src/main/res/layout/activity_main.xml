@@ -5,11 +5,11 @@
 
     <data>
 
-        <import type="com.example.domain.OperationTerm" />
+        <import type="com.example.domain.models.OperationTerm" />
 
-        <import type="com.example.domain.Operand" />
+        <import type="com.example.domain.models.Operand" />
 
-        <import type="com.example.domain.Operator" />
+        <import type="com.example.domain.models.Operator" />
 
         <variable
             name="viewModel"

@@ -1,4 +1,4 @@
-package com.example.domain
+package com.example.domain.models
 
 enum class Operator(val prime: String) : OperationTerm {
     ADD("+") {

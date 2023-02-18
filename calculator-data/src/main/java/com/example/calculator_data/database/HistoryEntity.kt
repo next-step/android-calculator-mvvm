@@ -2,7 +2,7 @@ package com.example.calculator_data.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.domain.History
+import com.example.domain.models.History
 
 @Entity
 data class HistoryEntity(

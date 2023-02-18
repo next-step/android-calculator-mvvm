@@ -1,5 +1,8 @@
 package com.example.domain
 
+import com.example.domain.models.Operand
+import com.example.domain.models.OperationParser
+import com.example.domain.models.Operator
 import org.junit.Assert.*
 import org.junit.Test
 

@@ -1,10 +1,10 @@
 package camp.nextstep.edu.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.domain.Operand
-import com.example.domain.OperationParser
-import com.example.domain.OperationTerm
-import com.example.domain.Operator
+import com.example.domain.models.Operand
+import com.example.domain.models.OperationParser
+import com.example.domain.models.OperationTerm
+import com.example.domain.models.Operator
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
