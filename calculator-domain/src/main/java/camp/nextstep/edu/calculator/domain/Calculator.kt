@@ -1,6 +1,8 @@
 package camp.nextstep.edu.calculator.domain
 
+
 class Calculator {
+
     fun calculate(rawExpression: String): Int? {
         if (rawExpression.isBlank()) return null
 
