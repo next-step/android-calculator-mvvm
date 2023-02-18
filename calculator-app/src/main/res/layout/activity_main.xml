@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <import type="com.example.domain.models.OperationTerm" />
 
         <import type="com.example.domain.models.Operand" />
@@ -31,6 +33,7 @@
             android:text="@{viewModel.text.toString()}"
             android:textAlignment="viewEnd"
             android:textSize="24sp"
+            android:visibility="@{viewModel.showHistory == true ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@id/divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,11 +44,12 @@
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/textView"
-            app:layout_constraintEnd_toEndOf="@id/textView"
-            app:layout_constraintStart_toStartOf="@id/textView"
-            app:layout_constraintTop_toTopOf="@id/textView"
+            android:visibility="@{viewModel.showHistory == true ? View.VISIBLE : View.GONE}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="@id/divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/item_result"
             tools:visibility="visible" />
 
@@ -75,6 +79,7 @@
             style="@style/Widget.Calculator.Button.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{()->viewModel.toggleHistory()}"
             app:icon="@drawable/ic_baseline_access_time_24"
             app:layout_constraintBottom_toBottomOf="@id/buttonDelete"
             app:layout_constraintStart_toStartOf="@id/input"
