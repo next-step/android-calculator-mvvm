@@ -22,12 +22,13 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="24sp"
-            tools:text="11" />
+            tools:text="@{counterView.count.toString()}" />
 
         <Button
             android:id="@+id/buttonUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> counterView.up()}"
             android:text="Up"
             tools:ignore="HardcodedText" />
 
@@ -35,6 +36,7 @@
             android:id="@+id/buttonDown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> counterView.down()}"
             android:text="Down"
             tools:ignore="HardcodedText" />
     </LinearLayout>
