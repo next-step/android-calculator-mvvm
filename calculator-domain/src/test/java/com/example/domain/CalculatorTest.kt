@@ -48,6 +48,7 @@ class CalculatorTest {
                 )
             )
         }
+
         // Then
         verify(exactly = 1) { runBlocking { historyRepository.saveHistory(any()) } }
         assertTrue(
