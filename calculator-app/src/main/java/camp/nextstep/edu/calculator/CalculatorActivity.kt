@@ -23,6 +23,7 @@ class CalculatorActivity : AppCompatActivity() {
             setContentView(root)
             lifecycleOwner = this@CalculatorActivity
             viewModel = calculatorViewModel
+            recyclerView.adapter = calculatorResultAdapter
         }
 
         addObserve()
@@ -35,7 +36,6 @@ class CalculatorActivity : AppCompatActivity() {
 
         calculatorViewModel.calculatorResultList.observe(this) {
             calculatorResultAdapter.submitList(it?.toMutableList())
-            binding.recyclerView.adapter = calculatorResultAdapter
         }
     }
 
