@@ -1,37 +1,61 @@
 package camp.nextstep.edu.calculator
 
+import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.room.withTransaction
+import androidx.test.core.app.ApplicationProvider
 import camp.nextstep.edu.calculator.domain.Operator
+import camp.nextstep.edu.calculator.domain.model.CalculatorResultData
+import camp.nextstep.edu.calculator.domain.usecase.GetCalculatorResultUseCase
+import camp.nextstep.edu.calculator.domain.usecase.SaveCalculatorResultUseCase
+import camp.nextstep.edu.calculator.local.db.CalculatorDatabase
+import camp.nextstep.edu.calculator.local.di.InjectDatabase.getDB
+import camp.nextstep.edu.calculator.local.di.InjectRepositoryImpl
 import com.google.common.truth.Truth
-import org.junit.Assert.*
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import java.util.concurrent.Executors
 
+@RunWith(RobolectricTestRunner::class)
 class CalculatorViewModelTest {
     private lateinit var viewModel: CalculatorViewModel
+
+    private lateinit var db : CalculatorDatabase
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun setUp() {
-        viewModel = CalculatorViewModel()
+        val context = ApplicationProvider.getApplicationContext<Context>()
+
+        db = getDB(context)!!
+        val repository =
+            InjectRepositoryImpl.repositoryImpl(context, Executors.newSingleThreadExecutor())
+
+        val get = GetCalculatorResultUseCase(repository)
+        val save = SaveCalculatorResultUseCase(repository)
+        viewModel = CalculatorViewModel(get, save)
+    }
+
+    @After
+    fun tearDown() {
+        Executors.newSingleThreadExecutor().submit {
+            db.clearAllTables()
+        }
+        db.close()
     }
 
     @Test
     fun `입력된 피연산자가 없을 때, 사용자가 피연산자 0 ~ 9 입력시 해당 숫자가 입력되어야 한다`() {
         // when
-        viewModel.addToExpression(0)
-        viewModel.addToExpression(1)
-        viewModel.addToExpression(2)
-        viewModel.addToExpression(3)
-        viewModel.addToExpression(4)
-        viewModel.addToExpression(5)
-        viewModel.addToExpression(6)
-        viewModel.addToExpression(7)
-        viewModel.addToExpression(8)
-        viewModel.addToExpression(9)
+        (0..9).forEach {
+            viewModel.addToExpression(it)
+        }
 
         //then
         val actual = viewModel.calcText.getOrAwaitValue()
@@ -67,8 +91,10 @@ class CalculatorViewModelTest {
 
     @Test
     fun `입력된 피연산자가 있을 때, 연산자 +, -, ×, ÷ 입력을 하면 입력되어야 한다`() {
-        // 1 -> '+ 입력' -> 1 +
-        // 1 + -> '- 입력' -> 1 -
+        /*
+        * 1 -> '+ 입력' -> 1 +
+        * 1 + -> '- 입력' -> 1 -
+        * */
         // given
         viewModel.addToExpression(1)
 
@@ -100,12 +126,14 @@ class CalculatorViewModelTest {
 
     @Test
     fun `입력된 수식이 있을 때, 사용자가 지우기를 하면 수식에 마지막으로 입력된 연산자 또는 피연산자가 지워져야 한다`() {
-        // 32 + 1 -> 지우기
-        // 32 +  -> 지우기
-        // 32 -> 지우기
-        // 3 -> 지우기
-        // EMPTY -> 지우기
-        // EMPTY
+        /*
+        * 32 + 1 -> 지우기
+        * 32 +  -> 지우기
+        * 32 -> 지우기
+        * 3 -> 지우기
+        * EMPTY -> 지우기
+        * EMPTY
+        */
 
         // given
         viewModel.addToExpression(3)
@@ -172,6 +200,52 @@ class CalculatorViewModelTest {
 
         //then: 완성되지 않은 수식입니다 출력
         val actual = viewModel.calculatorErrorMessage.getOrAwaitValue()
-        Truth.assertThat(actual).isEqualTo("완성되지 않은 수식입니다")
+        Truth.assertThat(actual).isEqualTo(R.string.incomplete_expression)
+    }
+
+    @Test
+    fun `계산기록 보기의 초기값은 false여야 한다`() {
+        // when
+        val actual = viewModel.isCalculatorResultShow.getOrAwaitValue()
+
+        //then
+        Truth.assertThat(actual).isEqualTo(false)
+    }
+
+    @Test
+    fun `계산기록 보기함수 호출 후 값은 기존의 값에서 not한 상태여야한다`() {
+        // when
+        val expected = viewModel.isCalculatorResultShow.getOrAwaitValue()
+        viewModel.loadResultList()
+
+        //then
+        val actual = viewModel.isCalculatorResultShow.getOrAwaitValue()
+        Truth.assertThat(actual).isEqualTo(expected?.not())
+    }
+
+    @Test
+    fun `초기 계산기록의 값은 빈 리스트여야 한다`() {
+        // when
+        viewModel.loadResultList()
+
+        //then
+        val actual = viewModel.calculatorResultList.getOrAwaitValue()
+        Truth.assertThat(actual).isEqualTo(emptyList<CalculatorResultData>())
+    }
+
+    @Test
+    fun `1 + 1 입력된 상태에서 calculator() 호출 후 계산기록 리스트의 값이 존재해야 한다`() {
+        // given
+        viewModel.addToExpression(1)
+        viewModel.addToExpression(Operator.Plus)
+        viewModel.addToExpression(1)
+        viewModel.calculate()
+
+        // when
+        viewModel.loadResultList()
+
+        //then
+        val actual = viewModel.calculatorResultList.getOrAwaitValue()?.get(0)
+        Truth.assertThat(actual).isEqualTo(CalculatorResultData("1 + 1", 2))
     }
 }
