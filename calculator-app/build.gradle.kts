@@ -8,7 +8,11 @@ plugins {
 
 android {
     compileSdk = Version.compileSdk
-
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
     defaultConfig {
         applicationId = "camp.nextstep.edu.calculator"
         minSdk = Version.minSdk
@@ -42,18 +46,40 @@ android {
 }
 
 dependencies {
+    implementation(project(":calculator-data"))
     implementation(project(":calculator-domain"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Version.kotlin}")
     implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.6.0")
-    implementation("com.google.android.material:material:1.7.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.8.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.fragment:fragment-ktx:1.5.5")
 
+    // Test
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.google.truth:truth:1.1.3")
     testImplementation("androidx.arch.core:core-testing:2.1.0")
+    testImplementation("androidx.test.ext:junit:1.1.5")
+    testImplementation("org.robolectric:robolectric:4.9")
+    testImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+    androidTestImplementation("junit:junit:4.13.2")
+    androidTestImplementation("com.google.truth:truth:1.1.3")
+    androidTestImplementation("androidx.arch.core:core-testing:2.1.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("org.robolectric:robolectric:4.9")
+
+    // Room
+    implementation("androidx.room:room-runtime:2.5.0")
+    implementation("androidx.room:room-ktx:2.5.0")
+
+    // Mockk
+    testImplementation("io.mockk:mockk:1.13.4")
+    androidTestImplementation("io.mockk:mockk-android:1.13.4")
+
+    // Live data testing
+    testImplementation("androidx.arch.core:core-testing:2.1.0")
+
 }

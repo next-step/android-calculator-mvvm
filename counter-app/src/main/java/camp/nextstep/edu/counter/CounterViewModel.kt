@@ -20,8 +20,10 @@ class CounterViewModel : ViewModel() {
     fun downCount() {
         if (_count.value == 0) {
             _showToastMessage.value = Unit
+            return
         }
         _count.value = _count.value?.minus(1)
+
     }
 }
 
