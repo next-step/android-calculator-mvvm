@@ -12,21 +12,21 @@ import org.junit.Test
 
 class GetCalculatorResultUseCaseTest {
     private lateinit var getUseCase: GetCalculatorResultUseCase
+    private lateinit var repository : CalculatorResultRepository
 
     @Before
     fun setUp() {
-        val repository = mockk<CalculatorResultRepository>(relaxed = true)
+        repository = mockk(relaxed = true)
         getUseCase = GetCalculatorResultUseCase(repository)
     }
 
     @Test
     fun `load 함수 호출 테스트`() {
         // when
-        val result = CalculatorResultData("1 + 2", 3)
-        every { getUseCase() } returns listOf(result)
+        every { repository.getAllResult() } returns listOf(CalculatorResultData("1 + 2", 3))
 
-        val actual = getUseCase()?.get(0)
-
+        val result = repository.getAllResult()
+        val actual = getUseCase()
         //then
         assertThat(actual).isEqualTo(result)
         verify { getUseCase() }
