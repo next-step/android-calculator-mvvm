@@ -51,9 +51,7 @@ class CalculatorViewModel(
         viewModelScope.launch {
             try {
                 val result = calculator.calculate(statement.termsToString())
-                withContext(Dispatchers.Main) {
-                    _text.value = result.toString()
-                }
+                _text.value = result.toString()
             } catch (e: Throwable) {
                 _exceptionMessage.value = e.message
             }
@@ -62,5 +60,20 @@ class CalculatorViewModel(
 
     fun toggleHistory() {
         _showHistory.value = !showHistory.value!!
+    }
+}
+
+class CalculatorViewModelFactory(
+    private val calculator: Calculator,
+    private val getHistoriesUseCase: GetHistoriesUseCase
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return when (modelClass) {
+            CalculatorViewModel::class.java -> CalculatorViewModel(
+                calculator = calculator,
+                getHistoriesUseCase = getHistoriesUseCase
+            )
+            else -> throw IllegalArgumentException("Unknown ViewModel class")
+        } as T
     }
 }
