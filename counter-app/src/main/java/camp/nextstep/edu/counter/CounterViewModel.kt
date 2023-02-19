@@ -9,16 +9,19 @@ class CounterViewModel : ViewModel() {
 
     val count: LiveData<Int> get() = _count
 
+    private val _showToastMessage = MutableLiveData<Unit>()
+    val showToastMessage: LiveData<Unit>
+        get() = _showToastMessage
+
     fun upCount() {
         _count.value = _count.value?.plus(1)
     }
 
-    fun downCount(): Result {
+    fun downCount() {
         if (_count.value == 0) {
-            return Result(false, "count must be positive number")
+            _showToastMessage.value = Unit
         }
         _count.value = _count.value?.minus(1)
-        return Result(true, "")
     }
 }
 
