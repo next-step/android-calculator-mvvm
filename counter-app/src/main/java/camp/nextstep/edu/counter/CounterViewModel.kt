@@ -9,8 +9,8 @@ class CounterViewModel : ViewModel() {
 
     val count: LiveData<Int> get() = _count
 
-    private val _showToastMessage = MutableLiveData<Boolean>()
-    val showToastMessage: LiveData<Boolean>
+    private val _showToastMessage = MutableLiveData<Unit>()
+    val showToastMessage: LiveData<Unit>
         get() = _showToastMessage
 
     fun upCount() {
@@ -19,7 +19,7 @@ class CounterViewModel : ViewModel() {
 
     fun downCount() {
         if (_count.value == 0) {
-            _showToastMessage.value = true
+            _showToastMessage.value = Unit
         }
         _count.value = _count.value?.minus(1)
     }

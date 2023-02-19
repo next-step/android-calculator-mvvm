@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import camp.nextstep.edu.calculator.databinding.ActivityCalculatorBinding
-import camp.nextstep.edu.calculator.domain.Operator
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
@@ -22,14 +21,6 @@ class CalculatorActivity : AppCompatActivity() {
             vm = viewModel
             lifecycleOwner = this@CalculatorActivity
         }
-
-
-        binding.buttonPlus.setOnClickListener { viewModel.addToExpression(Operator.Plus) }
-        binding.buttonMinus.setOnClickListener { viewModel.addToExpression(Operator.Minus) }
-        binding.buttonMultiply.setOnClickListener { viewModel.addToExpression(Operator.Multiply) }
-        binding.buttonDivide.setOnClickListener { viewModel.addToExpression(Operator.Divide) }
-        binding.buttonDelete.setOnClickListener { viewModel.removeLast() }
-        binding.buttonEquals.setOnClickListener { viewModel.calculate() }
 
         observerViewModel()
     }

@@ -3,11 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-        <variable
-            name="activity"
-            type="camp.nextstep.edu.counter.CounterActivity" />
-
         <variable
             name="viewModel"
             type="camp.nextstep.edu.counter.CounterViewModel" />
