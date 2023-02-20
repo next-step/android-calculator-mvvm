@@ -17,7 +17,7 @@ class CounterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_counter)
         binding.lifecycleOwner = this
-        binding.counterView = viewModel
+        binding.counterViewModel = viewModel
 
         setOnErrorListener()
     }
