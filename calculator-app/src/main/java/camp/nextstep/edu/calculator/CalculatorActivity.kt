@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import camp.nextstep.edu.calculator.databinding.ActivityCalculatorBinding
 import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
+import camp.nextstep.edu.calculator.recyclerview.ResultListAdapter
 
 
 class CalculatorActivity : AppCompatActivity() {
@@ -15,6 +16,8 @@ class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
 
     private val viewModel: CalculatorViewModel by viewModels()
+
+    private val resultAdapter = ResultListAdapter()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +35,7 @@ class CalculatorActivity : AppCompatActivity() {
             this, R.layout.activity_calculator
         ).apply {
             lifecycleOwner = this@CalculatorActivity
+            list.adapter = resultAdapter
         }
     }
 
