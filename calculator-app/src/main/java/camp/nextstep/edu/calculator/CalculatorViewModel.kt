@@ -1,25 +1,32 @@
 package camp.nextstep.edu.calculator
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.example.domain.Calculator
-import com.example.domain.Operand
-import com.example.domain.OperationTerm
-import com.example.domain.Statement
+import androidx.lifecycle.*
+import com.example.domain.models.*
+import com.example.domain.usecases.GetHistoriesUseCase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class CalculatorViewModel(terms: List<OperationTerm> = listOf()) : ViewModel() {
-
-    private val calculator = Calculator()
+class CalculatorViewModel(
+    terms: List<OperationTerm> = listOf(),
+    private val calculator: Calculator = CalculatorApplication.calculator,
+    getHistoriesUseCase: GetHistoriesUseCase = CalculatorApplication.getHistoriesUseCase
+) : ViewModel() {
     private val statement = Statement(terms.toMutableList())
 
     private val _text: MutableLiveData<String> = MutableLiveData(statement.termsToString())
     val text: LiveData<String>
         get() = _text
 
+    val histories: LiveData<List<History>> = getHistoriesUseCase().asLiveData()
+
     private val _exceptionMessage = SingleLiveEvent<String>()
     val exceptionMessage: LiveData<String>
         get() = _exceptionMessage
+
+    private val _showHistory: MutableLiveData<Boolean> = MutableLiveData(false)
+    val showHistory: LiveData<Boolean>
+        get() = _showHistory
 
     fun addTerm(term: OperationTerm) {
         statement.addTerm(term)
@@ -41,11 +48,32 @@ class CalculatorViewModel(terms: List<OperationTerm> = listOf()) : ViewModel() {
     }
 
     fun calculate() {
-        try {
-            val result = calculator.calculate(statement.termsToString())
-            _text.value = result.toString()
-        } catch (e: Throwable) {
-            _exceptionMessage.value = e.message
+        viewModelScope.launch {
+            try {
+                val result = calculator.calculate(statement.termsToString())
+                _text.value = result.toString()
+            } catch (e: Throwable) {
+                _exceptionMessage.value = e.message
+            }
         }
+    }
+
+    fun toggleHistory() {
+        _showHistory.value = !showHistory.value!!
+    }
+}
+
+class CalculatorViewModelFactory(
+    private val calculator: Calculator,
+    private val getHistoriesUseCase: GetHistoriesUseCase
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return when (modelClass) {
+            CalculatorViewModel::class.java -> CalculatorViewModel(
+                calculator = calculator,
+                getHistoriesUseCase = getHistoriesUseCase
+            )
+            else -> throw IllegalArgumentException("Unknown ViewModel class")
+        } as T
     }
 }

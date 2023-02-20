@@ -1,7 +1,12 @@
-package com.example.domain
+package com.example.domain.models
 
-class Calculator(private val operationParser: OperationParser = OperationParser) {
-    fun calculate(operation: String): Int {
+import com.example.domain.repositories.HistoryRepository
+
+class Calculator(
+    private val operationParser: OperationParser = OperationParser,
+    private val historyRepository: HistoryRepository
+) {
+    suspend fun calculate(operation: String): Int {
         val terms = operationParser.parse(operation)
 
         require(isCompleteOperation(terms.size)) {
@@ -15,6 +20,7 @@ class Calculator(private val operationParser: OperationParser = OperationParser)
 
             accumulator = operator.execute(accumulator, (operand as Operand).value)
         }
+        historyRepository.saveHistory(History(operation, accumulator))
         return accumulator
     }
 

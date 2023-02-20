@@ -1,10 +1,19 @@
 package camp.nextstep.edu.calculator
 
+import androidx.activity.viewModels
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import com.example.calculator_data.DaoModule
+import com.example.calculator_data.DatabaseModule
+import com.example.calculator_data.RepositoryModule
+import com.example.domain.models.Calculator
+import com.example.domain.usecases.GetHistoriesUseCase
+import org.hamcrest.Matchers.not
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -13,6 +22,28 @@ class MainActivityTest {
     @get:Rule
     var activityScenarioRule = ActivityScenarioRule(MainActivity::class.java)
 
+
+    @Before
+    fun setUp() {
+        activityScenarioRule.scenario.onActivity {
+
+            val repository = RepositoryModule.providerHistoryRepository(
+                historyDao = DaoModule.provideHistoryDao(
+                    DatabaseModule.provideDatabase(
+                        ApplicationProvider.getApplicationContext()
+                    )
+                )
+            )
+
+            val factory = CalculatorViewModelFactory(
+                calculator = Calculator(
+                    historyRepository = repository
+                ),
+                getHistoriesUseCase = GetHistoriesUseCase(historyRepository = repository)
+            )
+            it.viewModels<CalculatorViewModel>(factoryProducer = { factory })
+        }
+    }
 
     @Test
     fun `사용자가_피연산자_0_버튼을_누르면_화면에_0이_보여야_한다`() {
@@ -243,5 +274,45 @@ class MainActivityTest {
 
         // Then
         onView(withId(R.id.textView)).check(matches(withText("3 +")))
+    }
+
+    @Test
+    fun `메모리버튼을_누르면_현재계산식이_사라지고_기록화면이_보인다`() {
+        // Given
+        onView(withId(R.id.textView)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+        onView(withId(R.id.recyclerView)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+
+        onView(withId(R.id.buttonMemory)).perform(click())
+
+        onView(withId(R.id.recyclerView)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+        onView(withId(R.id.textView)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+    }
+
+    @Test
+    fun `처음_메모리버튼을_누르면_빈_기록화면이_보인다`() {
+        // GIVEN
+        onView(withId(R.id.buttonMemory)).perform(click())
+
+        // When
+        onView(withId(R.id.recyclerView)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+        onView(withId(R.id.textView)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+        onView(withId(R.id.list_item)).check(matches(not(isDisplayed())))
+    }
+
+    @Test
+    fun `계산_후_메모리버튼을_누르면_기록화면에서_기록이_보인다`() {
+        // GIVEN
+        onView(withId(R.id.button3)).perform(click())
+        onView(withId(R.id.buttonPlus)).perform(click())
+        onView(withId(R.id.button2)).perform(click())
+
+
+        // When
+        onView(withId(R.id.buttonEquals)).perform(click())
+
+        // Then
+        onView(withId(R.id.recyclerView)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+        onView(withId(R.id.textView)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+        onView(withId(R.id.list_item)).check(matches(not(isDisplayed())))
     }
 }

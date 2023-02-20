@@ -1,28 +1,60 @@
 package camp.nextstep.edu.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.domain.Operand
-import com.example.domain.OperationParser
-import com.example.domain.OperationTerm
-import com.example.domain.Operator
+import androidx.test.core.app.ApplicationProvider
+import com.example.calculator_data.DaoModule
+import com.example.calculator_data.DatabaseModule
+import com.example.calculator_data.RepositoryModule
+import com.example.domain.models.*
+import com.example.domain.usecases.GetHistoriesUseCase
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import java.util.concurrent.TimeUnit
 
+@RunWith(RobolectricTestRunner::class)
 class CalculatorViewModelTest {
     private lateinit var viewModel: CalculatorViewModel
+    private lateinit var calculator: Calculator
+    private lateinit var getHistoriesUseCase: GetHistoriesUseCase
 
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val testDispatcher = StandardTestDispatcher()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val testScope = TestScope(testDispatcher)
+
     @Before
     fun setUp() {
-        viewModel = CalculatorViewModel()
+
+        val repository = RepositoryModule.providerHistoryRepository(
+            historyDao = DaoModule.provideHistoryDao(
+                DatabaseModule.provideDatabase(
+                    ApplicationProvider.getApplicationContext()
+                )
+            )
+        )
+
+        calculator = Calculator(historyRepository = repository)
+        getHistoriesUseCase = GetHistoriesUseCase(historyRepository = repository)
     }
 
     @Test
     fun `피연산자를 수식에 추가`() {
+        // given
+        viewModel =
+            CalculatorViewModel(calculator = calculator, getHistoriesUseCase = getHistoriesUseCase)
+
         // when
         viewModel.addTerm(1)
 
@@ -33,6 +65,8 @@ class CalculatorViewModelTest {
     @Test
     fun `연산자를 수식에 추가`() {
         // given
+        viewModel =
+            CalculatorViewModel(calculator = calculator, getHistoriesUseCase = getHistoriesUseCase)
         viewModel.addTerm(1)
         assertEquals(viewModel.text.getOrAwaitValue(), "1")
 
@@ -47,7 +81,7 @@ class CalculatorViewModelTest {
     fun `'1 + 2' 수식에서 마지막을 제거하면 '1 +'`() {
         // given
         val initialValue = OperationParser.parse("1 + 2")
-        val viewModel = CalculatorViewModel(initialValue)
+        viewModel = CalculatorViewModel(initialValue, calculator, getHistoriesUseCase)
         assertEquals(viewModel.text.getOrAwaitValue(), "1 + 2")
 
         // when
@@ -58,24 +92,60 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `'1 + 2' 수식을 계산하면 3`() {
+    fun `'1 + 2' 수식을 계산하면 3`() = testScope.runTest {
         // given
         val initialValue = OperationParser.parse("1 + 2")
-        val viewModel = CalculatorViewModel(initialValue)
-        assertEquals(viewModel.text.getOrAwaitValue(), "1 + 2")
+        viewModel = CalculatorViewModel(initialValue, calculator, getHistoriesUseCase)
+        assertEquals("1 + 2", viewModel.text.getOrAwaitValue())
 
         // when
         viewModel.calculate()
 
         // then
-        assertEquals(viewModel.text.getOrAwaitValue(), "3")
+        assertEquals("3", viewModel.text.getOrAwaitValue())
+    }
+
+    @Test
+    fun `계산을 완료하면 기록이 추가된다`() = testScope.runTest {
+        // given
+        val initialValue = OperationParser.parse("1 + 2")
+        viewModel = CalculatorViewModel(initialValue, calculator, getHistoriesUseCase)
+        assertEquals("1 + 2", viewModel.text.getOrAwaitValue())
+
+        // when
+        viewModel.calculate()
+
+        // then
+        assertEquals(listOf(History("1 + 2", 3)), viewModel.histories.getOrAwaitValue())
+    }
+
+    @Test
+    fun `처음 showHistory 값은 false다`() {
+        // given
+        viewModel =
+            CalculatorViewModel(calculator = calculator, getHistoriesUseCase = getHistoriesUseCase)
+
+        // then
+        assertEquals(false, viewModel.showHistory.getOrAwaitValue())
+    }
+
+    @Test
+    fun `토글하면 showHistory가 반대로된다`() {
+        // given
+        viewModel =
+            CalculatorViewModel(calculator = calculator, getHistoriesUseCase = getHistoriesUseCase)
+        assertEquals(false, viewModel.showHistory.getOrAwaitValue())
+        // when
+        viewModel.toggleHistory()
+        // then
+        assertEquals(true, viewModel.showHistory.getOrAwaitValue())
     }
 
     @Test
     fun `'1 +' 수식을 계산하면 에러`() {
         // given
         val initialValue = OperationParser.parse("1 +")
-        val viewModel = CalculatorViewModel(initialValue)
+        viewModel = CalculatorViewModel(initialValue, calculator, getHistoriesUseCase)
         assertEquals(viewModel.text.getOrAwaitValue(), "1 +")
 
         // when
@@ -89,7 +159,7 @@ class CalculatorViewModelTest {
     fun `0으로 나누면 에러`() {
         // given
         val initialValue = OperationParser.parse("1 / 0")
-        val viewModel = CalculatorViewModel(initialValue)
+        viewModel = CalculatorViewModel(initialValue, calculator, getHistoriesUseCase)
         assertEquals(viewModel.text.getOrAwaitValue(), "1 / 0")
 
         // when
@@ -103,7 +173,7 @@ class CalculatorViewModelTest {
     fun `Int의 범위를 넘어서면 에러`() {
         // given
         val initialValue = OperationParser.parse("1111111111")
-        val viewModel = CalculatorViewModel(initialValue)
+        viewModel = CalculatorViewModel(initialValue, calculator, getHistoriesUseCase)
         assertEquals(viewModel.text.getOrAwaitValue(), "1111111111")
 
         // when
@@ -118,7 +188,7 @@ class CalculatorViewModelTest {
         // given
 
         val terms: MutableList<OperationTerm> = mutableListOf()
-        val viewModel = CalculatorViewModel(terms)
+        viewModel = CalculatorViewModel(terms, calculator, getHistoriesUseCase)
 
         // when
         terms.add(Operand(1))
