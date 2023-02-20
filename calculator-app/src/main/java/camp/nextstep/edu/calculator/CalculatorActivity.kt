@@ -15,7 +15,7 @@ class CalculatorActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCalculatorBinding
 
-    private val viewModel: CalculatorViewModel by viewModels()
+    private val viewModel: CalculatorViewModel by viewModels { ViewModelFactory() }
 
     private val resultAdapter = ResultListAdapter()
 

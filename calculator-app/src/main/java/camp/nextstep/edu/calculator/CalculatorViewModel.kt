@@ -6,9 +6,14 @@ import androidx.lifecycle.ViewModel
 import camp.nextstep.edu.calculator.domain.Calculator
 import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
+import camp.nextstep.edu.calculator.domain.usecase.GetAllResultsUseCase
+import camp.nextstep.edu.calculator.domain.usecase.SaveResultUseCase
 
 
-class CalculatorViewModel : ViewModel() {
+class CalculatorViewModel(
+    private val saveResultUseCase: SaveResultUseCase,
+    private val getAllResultsUseCase: GetAllResultsUseCase
+) : ViewModel() {
 
     private val calculator = Calculator()
 
