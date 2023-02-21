@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import camp.nextstep.edu.calculator.domain.RecordRepository
 
-class CalculatorViewModelProviderFactory(
+class CalculatorViewModelFactory(
     private val recordRepository: RecordRepository,
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

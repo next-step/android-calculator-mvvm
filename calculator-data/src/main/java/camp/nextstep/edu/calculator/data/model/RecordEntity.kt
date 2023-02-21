@@ -2,23 +2,23 @@ package camp.nextstep.edu.calculator.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.model.Record
-import java.util.*
 
 @Entity(tableName = "records")
 data class RecordEntity(
-    @PrimaryKey val id: UUID = UUID.randomUUID(),
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val expression: String,
     val result: Int
 ) {
     fun toDomain(): Record = Record(
-        expression = expression,
+        expression = Expression(expression.split(" ")),
         result = result,
     )
 
     companion object {
         fun from(record: Record): RecordEntity = RecordEntity(
-            expression = record.expression,
+            expression = record.expression.toString(),
             result = record.result,
         )
     }

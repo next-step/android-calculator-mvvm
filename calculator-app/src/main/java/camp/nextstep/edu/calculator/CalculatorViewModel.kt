@@ -47,7 +47,7 @@ class CalculatorViewModel(
 
     fun getRecords() {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = recordRepository.getRecord()
+            val result = recordRepository.getRecords()
                 .joinToString("\n") { "${it.expression}\n = ${it.result}" }
             _text.postValue(result)
         }
@@ -62,7 +62,7 @@ class CalculatorViewModel(
     fun calculate() {
         val result = calculator.calculate(expression.toString())
         if (result != null) {
-            saveRecord(Record(expression.toString(), result))
+            saveRecord(Record(expression, result))
             expression = Expression(listOf(result))
             _text.value = expression.toString()
         } else {

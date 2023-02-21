@@ -1,6 +1,7 @@
 package camp.nextstep.edu.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
 import camp.nextstep.edu.calculator.domain.RecordRepository
 import camp.nextstep.edu.calculator.domain.model.Record
@@ -27,10 +28,6 @@ class CalculatorViewModelTest {
     @Before
     fun setUp() {
         recordRepository = mockk(relaxed = true)
-        coEvery { recordRepository.getRecord() } returns listOf(
-            Record("1 + 2", 3),
-            Record("2 + 3", 5)
-        )
         viewModel = CalculatorViewModel(recordRepository)
     }
 
@@ -57,13 +54,17 @@ class CalculatorViewModelTest {
 
     @Test
     fun `저장된 record값을 읽어와서 text에 출력해야 한다`() {
+        coEvery { recordRepository.getRecords() } returns listOf(
+            Record(Expression("1 + 2".split(" ")), 3),
+            Record(Expression("2 + 3".split(" ")), 5)
+        )
         val expected = "1 + 2\n = 3\n2 + 3\n = 5"
         runBlocking {
             viewModel.getRecords()
         }
         assertEquals(expected, viewModel.text.getOrAwaitValue())
         coVerify {
-            recordRepository.getRecord()
+            recordRepository.getRecords()
         }
 
     }

@@ -9,5 +9,5 @@ interface RecordRepository {
 
     suspend fun deleteRecord(record: Record)
 
-    suspend fun getRecord(): List<Record>
+    suspend fun getRecords(): List<Record>
 }

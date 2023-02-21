@@ -5,6 +5,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import camp.nextstep.edu.calculator.data.db.RecordDatabase
+import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.RecordRepository
 import camp.nextstep.edu.calculator.domain.model.Record
 import junit.framework.TestCase.assertTrue
@@ -25,7 +26,7 @@ class RecordRepositoryImplTest {
             .inMemoryDatabaseBuilder(context, RecordDatabase::class.java)
             .build()
         recordRepository = RecordRepositoryImpl(
-            recordDatabase,
+            recordDatabase.recordDao(),
         )
 
     }
@@ -33,11 +34,11 @@ class RecordRepositoryImplTest {
     @Test
     fun 계산_결과_저장하고_가져오기() {
         // given
-        val record = Record("1 + 2", 3)
+        val record = Record(Expression("1 + 2".split(" ")), 3)
         // when
         runBlocking {
             recordRepository.insertRecord(record)
-            val actual = recordRepository.getRecord()
+            val actual = recordRepository.getRecords()
             //than
             assertTrue(actual.contains(record))
         }

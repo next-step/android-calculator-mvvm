@@ -39,6 +39,7 @@ data class Expression(
         }
     }
 
+
     companion object {
         val EMPTY = Expression()
     }
