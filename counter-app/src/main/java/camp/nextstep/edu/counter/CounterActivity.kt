@@ -14,7 +14,6 @@ class CounterActivity : AppCompatActivity() {
         binding = ActivityCounterBinding.inflate(layoutInflater)
         with(binding) {
             viewModel = counterViewModel
-            activity = this@CounterActivity
             lifecycleOwner = this@CounterActivity
         }
         setContentView(binding.root)

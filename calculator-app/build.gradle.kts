@@ -8,7 +8,11 @@ plugins {
 
 android {
     compileSdk = Version.compileSdk
-
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
     defaultConfig {
         applicationId = "camp.nextstep.edu.calculator"
         minSdk = Version.minSdk
@@ -42,18 +46,42 @@ android {
 }
 
 dependencies {
+    implementation(project(":calculator-data"))
     implementation(project(":calculator-domain"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Version.kotlin}")
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.6.0")
-    implementation("com.google.android.material:material:1.7.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.fragment:fragment-ktx:1.5.5")
+    implementation("androidx.core:core-ktx:${Version.CORE_KTX}")
+    implementation("androidx.appcompat:appcompat:${Version.APP_COMPAT}")
+    implementation("com.google.android.material:material:${Version.MATERIAL}")
+    implementation("androidx.constraintlayout:constraintlayout:${Version.CONSTRAINT_LAYOUT}")
+    implementation("androidx.fragment:fragment-ktx:${Version.FRAGMENT_KTX}")
 
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("com.google.truth:truth:1.1.3")
-    testImplementation("androidx.arch.core:core-testing:2.1.0")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    // Junit
+    testImplementation("junit:junit:${Version.JUNIT4}")
+    testImplementation("com.google.truth:truth:${Version.TRUTH}")
+    testImplementation("androidx.test.ext:junit:${Version.EXT_JUNIT}")
+    // Live data test
+    testImplementation("androidx.arch.core:core-testing:${Version.CORE_TESTING}")
+
+    // Ui test
+    testImplementation("org.robolectric:robolectric:${Version.ROBOLECTRIC}")
+    testImplementation("androidx.test.espresso:espresso-core:${Version.ESPRESSO_CORE}")
+
+    //Android test
+    androidTestImplementation("junit:junit:${Version.JUNIT4}")
+    androidTestImplementation("com.google.truth:truth:${Version.TRUTH}")
+    androidTestImplementation("androidx.arch.core:core-testing:${Version.CORE_TESTING}")
+    androidTestImplementation("androidx.test.ext:junit:${Version.EXT_JUNIT}")
+    androidTestImplementation("androidx.test.espresso:espresso-core:${Version.ESPRESSO_CORE}")
+    androidTestImplementation("org.robolectric:robolectric:${Version.ROBOLECTRIC}")
+
+    // Room
+    implementation("androidx.room:room-runtime:${Version.ROOM}")
+    implementation("androidx.room:room-ktx:${Version.ROOM}")
+
+    // Mockk
+    testImplementation("io.mockk:mockk:${Version.MOCKK}")
+    androidTestImplementation("io.mockk:mockk-android:${Version.MOCKK}")
+
+
 }

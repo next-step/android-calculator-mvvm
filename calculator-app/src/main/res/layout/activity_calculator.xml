@@ -74,6 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:icon="@drawable/ic_baseline_access_time_24"
+            android:onClick="@{() -> vm.getRecords()}"
             app:layout_constraintBottom_toBottomOf="@id/buttonDelete"
             app:layout_constraintStart_toStartOf="@id/input"
             app:layout_constraintTop_toTopOf="@id/buttonDelete" />
