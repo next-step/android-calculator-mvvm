@@ -282,8 +282,10 @@ class MainActivityTest {
         onView(withId(R.id.textView)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
         onView(withId(R.id.recyclerView)).check(matches(withEffectiveVisibility(Visibility.GONE)))
 
+        // When
         onView(withId(R.id.buttonMemory)).perform(click())
 
+        // Then
         onView(withId(R.id.recyclerView)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
         onView(withId(R.id.textView)).check(matches(withEffectiveVisibility(Visibility.GONE)))
     }
@@ -293,7 +295,7 @@ class MainActivityTest {
         // GIVEN
         onView(withId(R.id.buttonMemory)).perform(click())
 
-        // When
+        // Then
         onView(withId(R.id.recyclerView)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
         onView(withId(R.id.textView)).check(matches(withEffectiveVisibility(Visibility.GONE)))
         onView(withId(R.id.list_item)).check(matches(not(isDisplayed())))
