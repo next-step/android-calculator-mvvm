@@ -23,6 +23,10 @@ class CalculatorViewModel(
     val text: LiveData<String>
         get() = _text
 
+    private val _shouldShowResults: MutableLiveData<Boolean> = MutableLiveData(false)
+    val shouldShowResults: LiveData<Boolean>
+        get() = _shouldShowResults
+
     private val _warning = SingleLiveEvent<Unit>()
     val warning: LiveData<Unit>
         get() = _warning
@@ -52,9 +56,9 @@ class CalculatorViewModel(
         } else {
             viewModelScope.launch(context = Dispatchers.IO) {
                 saveResultUseCase(expression, result)
+                expression = Expression(listOf(result))
+                showResult(result)
             }
-            expression = Expression(listOf(result))
-            showResult(result)
         }
     }
 
@@ -69,5 +73,9 @@ class CalculatorViewModel(
 
     private fun showIncompleteExpressionError() {
         _warning.postValue(Unit)
+    }
+
+    fun showResults() {
+        _shouldShowResults.postValue(_shouldShowResults.value?.not())
     }
 }
