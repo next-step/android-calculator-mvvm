@@ -16,6 +16,10 @@
         <variable
             name="viewModel"
             type="camp.nextstep.edu.calculator.CalculatorViewModel" />
+
+        <variable
+            name="handler"
+            type="camp.nextstep.edu.calculator.MainActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,10 +34,10 @@
             android:layout_height="0dp"
             android:layout_marginBottom="16dp"
             android:hint="0"
+            android:setTextViewVisibility="@{viewModel.showHistory}"
             android:text="@{viewModel.text.toString()}"
             android:textAlignment="viewEnd"
             android:textSize="24sp"
-            android:visibility="@{viewModel.showHistory == true ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@id/divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +48,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:visibility="@{viewModel.showHistory == true ? View.VISIBLE : View.GONE}"
+            android:setHistoryViewVisibility="@{viewModel.showHistory}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="@id/divider"
             app:layout_constraintEnd_toEndOf="parent"

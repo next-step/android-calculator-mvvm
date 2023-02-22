@@ -3,9 +3,7 @@ package camp.nextstep.edu.calculator
 import androidx.lifecycle.*
 import com.example.domain.models.*
 import com.example.domain.usecases.GetHistoriesUseCase
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class CalculatorViewModel(
     terms: List<OperationTerm> = listOf(),

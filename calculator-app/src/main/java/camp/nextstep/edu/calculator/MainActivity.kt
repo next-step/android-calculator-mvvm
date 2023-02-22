@@ -1,11 +1,11 @@
 package camp.nextstep.edu.calculator
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.BindingAdapter
 import camp.nextstep.edu.calculator.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -42,4 +42,14 @@ class MainActivity : AppCompatActivity() {
             historyAdapter.submitList(it)
         }
     }
+}
+
+@BindingAdapter("android:setHistoryViewVisibility")
+fun setHistoryViewVisibility(view: View?, showHistory: Boolean?) {
+    view?.visibility = if (showHistory == true) View.VISIBLE else View.GONE
+}
+
+@BindingAdapter("android:setTextViewVisibility")
+fun setTextViewVisibility(view: View?, showHistory: Boolean?) {
+    view?.visibility = if (showHistory == true) View.GONE else View.VISIBLE
 }
