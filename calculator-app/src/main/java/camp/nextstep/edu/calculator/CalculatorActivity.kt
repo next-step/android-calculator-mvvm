@@ -28,8 +28,6 @@ class CalculatorActivity : AppCompatActivity() {
         setBindingVariables()
 
         observeViewModel()
-
-        setListData(resultAdapter)
     }
 
     private fun initBinding() {
@@ -50,11 +48,10 @@ class CalculatorActivity : AppCompatActivity() {
         viewModel.warning.observe(this) {
             makeToast()
         }
-    }
 
-    private fun setListData(listAdapter: ResultListAdapter) {
-        listAdapter.submitList(null)
-        listAdapter.submitList(viewModel.getResults())
+        viewModel.allResults.observe(this) {
+            resultAdapter.submitList(it)
+        }
     }
 
     private fun makeToast() {

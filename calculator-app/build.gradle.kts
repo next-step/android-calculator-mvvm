@@ -46,6 +46,8 @@ dependencies {
     implementation(project(":calculator-data"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Version.kotlin}")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
+
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.0")
     implementation("com.google.android.material:material:1.7.0")
@@ -53,6 +55,8 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:1.5.5")
 
     testImplementation("junit:junit:4.13.2")
+    testImplementation("androidx.test:core-ktx:1.5.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
     testImplementation("com.google.truth:truth:1.1.3")
     testImplementation("androidx.arch.core:core-testing:2.1.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import camp.nextstep.edu.calculator.data.db.entity.ResultEntity
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
@@ -14,5 +15,5 @@ interface ResultRecordsDao {
     fun saveResult(result: ResultEntity)
 
     @Query("select * from result_records")
-    fun getAllResultRecords(): List<ResultEntity>?
+    fun getAllResultRecords(): Flow<List<ResultEntity>>
 }

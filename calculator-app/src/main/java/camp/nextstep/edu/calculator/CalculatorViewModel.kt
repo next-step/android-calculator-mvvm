@@ -1,18 +1,18 @@
 package camp.nextstep.edu.calculator
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import camp.nextstep.edu.calculator.domain.Calculator
 import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
 import camp.nextstep.edu.calculator.domain.usecase.GetAllResultsUseCase
 import camp.nextstep.edu.calculator.domain.usecase.SaveResultUseCase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class CalculatorViewModel(
     private val saveResultUseCase: SaveResultUseCase,
-    private val getAllResultsUseCase: GetAllResultsUseCase
+    getAllResultsUseCase: GetAllResultsUseCase
 ) : ViewModel() {
 
     private val calculator = Calculator()
@@ -27,8 +27,8 @@ class CalculatorViewModel(
     val warning: LiveData<Unit>
         get() = _warning
 
+    val allResults = getAllResultsUseCase().asLiveData()
 
-    fun getResults() = getAllResultsUseCase()
 
     fun addToExpression(operand: Int) {
         expression += operand
@@ -50,7 +50,9 @@ class CalculatorViewModel(
         if (result == null) {
             showIncompleteExpressionError()
         } else {
-            saveResultUseCase(expression, result)
+            viewModelScope.launch(context = Dispatchers.IO) {
+                saveResultUseCase(expression, result)
+            }
             expression = Expression(listOf(result))
             showResult(result)
         }

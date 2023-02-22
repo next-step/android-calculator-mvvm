@@ -6,6 +6,7 @@ import camp.nextstep.edu.calculator.data.toDto
 import camp.nextstep.edu.calculator.data.toEntity
 import camp.nextstep.edu.calculator.domain.model.CalculatorResult
 import camp.nextstep.edu.calculator.domain.repository.ResultRepository
+import kotlinx.coroutines.flow.map
 
 
 internal class ResultRepositoryImpl(
@@ -17,5 +18,9 @@ internal class ResultRepositoryImpl(
     }
 
     override fun getAllResults() =
-        db.resultRecordsDao().getAllResultRecords()?.map(ResultEntity::toDto) ?: listOf()
+        db.resultRecordsDao()
+            .getAllResultRecords()
+            .map { results ->
+                results.map(ResultEntity::toDto)
+            }
 }
