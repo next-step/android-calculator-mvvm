@@ -6,17 +6,13 @@ import androidx.lifecycle.ViewModel
 
 class CounterViewModel : ViewModel() {
 
-    private var _count = MutableLiveData<Int>()
+    private var _count = MutableLiveData<Int>(0)
     val count: LiveData<Int>
         get() = _count
 
     private var _isCountNegative = SingleLiveEvent<Boolean>()
     val isCountNegative
         get() = _isCountNegative
-
-    init {
-        _count.value = 0
-    }
 
     fun upCount() {
         val currentCount = _count.value ?: 0
