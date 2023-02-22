@@ -1,25 +1,30 @@
 package camp.nextstep.edu.calculator
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import camp.nextstep.edu.calculator.data.Injector
 
 
-class ViewModelFactory : ViewModelProvider.Factory {
+class ViewModelFactory(
+    private val applicationContext: Context
+) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST", "IMPLICIT_CAST_TO_ANY")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when (modelClass) {
             CalculatorViewModel::class.java ->
-                provideCalculatorViewModel()
+                provideCalculatorViewModel(applicationContext)
             else ->
                 error("UnSupported ViewModel")
         } as T
     }
 
-    private fun provideCalculatorViewModel(): CalculatorViewModel {
+    private fun provideCalculatorViewModel(
+        applicationContext: Context
+    ): CalculatorViewModel {
         val (saveResultUseCase, getAllResultsResultUseCase) =
-            Injector.provideDependenciesForCalculateViewModel()
+            Injector.provideDependenciesForCalculateViewModel(applicationContext)
 
         return CalculatorViewModel(
             saveResultUseCase,

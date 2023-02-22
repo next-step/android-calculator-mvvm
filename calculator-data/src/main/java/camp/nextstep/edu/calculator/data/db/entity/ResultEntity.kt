@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class ResultEntity(
 
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int? = null,
     val expression: String,
     val answer: String
 )
