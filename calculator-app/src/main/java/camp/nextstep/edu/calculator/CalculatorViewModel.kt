@@ -59,7 +59,7 @@ class CalculatorViewModel(
     }
 
     fun toggleHistory() {
-        _showHistory.value = !showHistory.value!!
+        _showHistory.value = !(showHistory.value ?: false)
     }
 }
 
