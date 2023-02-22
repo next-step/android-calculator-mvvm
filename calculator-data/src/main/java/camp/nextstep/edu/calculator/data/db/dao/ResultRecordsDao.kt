@@ -14,5 +14,5 @@ interface ResultRecordsDao {
     fun saveResult(result: ResultEntity)
 
     @Query("select * from result_records")
-    fun getAllResultRecords(): List<ResultEntity>
+    fun getAllResultRecords(): List<ResultEntity>?
 }

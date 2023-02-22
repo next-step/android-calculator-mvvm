@@ -28,6 +28,8 @@ class CalculatorViewModel(
         get() = _warning
 
 
+    fun getResults() = getAllResultsUseCase()
+
     fun addToExpression(operand: Int) {
         expression += operand
         showExpression(expression)
@@ -48,6 +50,7 @@ class CalculatorViewModel(
         if (result == null) {
             showIncompleteExpressionError()
         } else {
+            saveResultUseCase(expression, result)
             expression = Expression(listOf(result))
             showResult(result)
         }

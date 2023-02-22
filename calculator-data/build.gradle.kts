@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "camp.nextstep.edu.calculator"
+    namespace = "camp.nextstep.edu.calculator.data"
     compileSdk = Version.compileSdk
 
     defaultConfig {

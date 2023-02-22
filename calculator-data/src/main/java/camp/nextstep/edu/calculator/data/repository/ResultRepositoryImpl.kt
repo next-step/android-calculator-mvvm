@@ -17,5 +17,5 @@ internal class ResultRepositoryImpl(
     }
 
     override fun getAllResults() =
-        db.resultRecordsDao().getAllResultRecords().map(ResultEntity::toDto)
+        db.resultRecordsDao().getAllResultRecords()?.map(ResultEntity::toDto) ?: listOf()
 }

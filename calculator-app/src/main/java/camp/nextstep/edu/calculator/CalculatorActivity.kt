@@ -6,8 +6,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import camp.nextstep.edu.calculator.databinding.ActivityCalculatorBinding
-import camp.nextstep.edu.calculator.domain.Expression
-import camp.nextstep.edu.calculator.domain.Operator
 import camp.nextstep.edu.calculator.recyclerview.ResultListAdapter
 
 
@@ -30,6 +28,8 @@ class CalculatorActivity : AppCompatActivity() {
         setBindingVariables()
 
         observeViewModel()
+
+        setListData(resultAdapter)
     }
 
     private fun initBinding() {
@@ -50,6 +50,11 @@ class CalculatorActivity : AppCompatActivity() {
         viewModel.warning.observe(this) {
             makeToast()
         }
+    }
+
+    private fun setListData(listAdapter: ResultListAdapter) {
+        listAdapter.submitList(null)
+        listAdapter.submitList(viewModel.getResults())
     }
 
     private fun makeToast() {
