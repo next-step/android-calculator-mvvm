@@ -57,8 +57,8 @@ class CalculatorViewModel(
             viewModelScope.launch(context = Dispatchers.IO) {
                 saveResultUseCase(expression, result)
                 expression = Expression(listOf(result))
-                showResult(result)
             }
+            showResult(result)
         }
     }
 
