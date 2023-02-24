@@ -10,7 +10,12 @@ import camp.nextstep.edu.calculator.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val viewModel: CalculatorViewModel by viewModels()
+    private val viewModel: CalculatorViewModel by viewModels {
+        CalculatorViewModelFactory(
+            Injector.provideCalculator(applicationContext),
+            Injector.providerGetHistoriesUseCase(applicationContext)
+        )
+    }
     private val historyAdapter: HistoryAdapter by lazy {
         HistoryAdapter()
     }

@@ -7,8 +7,8 @@ import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
     terms: List<OperationTerm> = listOf(),
-    private val calculator: Calculator = CalculatorApplication.calculator,
-    getHistoriesUseCase: GetHistoriesUseCase = CalculatorApplication.getHistoriesUseCase
+    private val calculator: Calculator,
+    getHistoriesUseCase: GetHistoriesUseCase
 ) : ViewModel() {
     private val statement = Statement(terms.toMutableList())
 
