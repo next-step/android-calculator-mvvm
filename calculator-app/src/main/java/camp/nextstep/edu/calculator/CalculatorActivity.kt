@@ -7,9 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import camp.nextstep.edu.calculator.databinding.ActivityCalculatorBinding
 import camp.nextstep.edu.calculator.domain.Expression
 
-class CalculatorActivity : AppCompatActivity(), CalculatorContract.View {
+class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
-    override lateinit var presenter: CalculatorContract.Presenter
     private val viewModel: CalculatorViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,15 +21,7 @@ class CalculatorActivity : AppCompatActivity(), CalculatorContract.View {
         observeLiveData()
     }
 
-    override fun showExpression(expression: Expression) {
-        binding.textView.text = expression.toString()
-    }
-
-    override fun showResult(result: Int) {
-        binding.textView.text = result.toString()
-    }
-
-    override fun showIncompleteExpressionError() {
+    private fun showIncompleteExpressionError() {
         Toast.makeText(this, R.string.incomplete_expression, Toast.LENGTH_SHORT).show()
     }
 
