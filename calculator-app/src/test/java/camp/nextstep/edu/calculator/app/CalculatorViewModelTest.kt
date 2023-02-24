@@ -64,7 +64,7 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `32_더하기_1이_있을때_지우기_버튼을_누르면_32_더하기가_된다`(){
+    fun `32_더하기_1이_있을때_지우기_버튼을_누르면_32_더하기가_된다`() {
         // given
         calculatorViewModel.addToExpression(3)
         calculatorViewModel.addToExpression(2)
@@ -109,7 +109,7 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `3이_있을때_지우기_버튼을_누르면_화면에_아무것도_없게_된다`(){
+    fun `3이_있을때_지우기_버튼을_누르면_화면에_아무것도_없게_된다`() {
         // given
         calculatorViewModel.addToExpression(3)
 
@@ -122,7 +122,7 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `3_더하기_2가_있을때_=_버튼을_누르면_5가_된다`(){
+    fun `3_더하기_2가_있을때_=_버튼을_누르면_5가_된다`() {
         // given
         calculatorViewModel.addToExpression(3)
         calculatorViewModel.addToExpression(Operator.Plus)
@@ -137,7 +137,7 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `3_더하기가_있을때_=_버튼을_누르면_아무_변화가_없다`(){
+    fun `3_더하기가_있을때_=_버튼을_누르면_아무_변화가_없다`() {
         // given
         calculatorViewModel.addToExpression(3)
         calculatorViewModel.addToExpression(Operator.Plus)
