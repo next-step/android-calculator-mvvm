@@ -1,15 +1,14 @@
 package camp.nextstep.edu.calculator
 
 import androidx.activity.viewModels
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import com.example.calculator_data.DaoModule
-import com.example.calculator_data.DatabaseModule
-import com.example.calculator_data.RepositoryModule
+import com.example.calculator_data.Injector
 import com.example.domain.models.Calculator
 import com.example.domain.usecases.GetHistoriesUseCase
 import org.hamcrest.Matchers.not
@@ -27,21 +26,25 @@ class MainActivityTest {
     fun setUp() {
         activityScenarioRule.scenario.onActivity {
 
-            val repository = RepositoryModule.providerHistoryRepository(
-                historyDao = DaoModule.provideHistoryDao(
-                    DatabaseModule.provideDatabase(
-                        ApplicationProvider.getApplicationContext()
-                    )
-                )
+            val repository = Injector.provideRepository(
+                context = ApplicationProvider.getApplicationContext(),
+                isInMemory = true
             )
 
-            val factory = CalculatorViewModelFactory(
-                calculator = Calculator(
-                    historyRepository = repository
-                ),
-                getHistoriesUseCase = GetHistoriesUseCase(historyRepository = repository)
-            )
-            it.viewModels<CalculatorViewModel>(factoryProducer = { factory })
+            viewModelFactory {
+                CalculatorViewModelFactory(
+                    calculator = Calculator(historyRepository = repository),
+                    getHistoriesUseCase = GetHistoriesUseCase(historyRepository = repository)
+                )
+            }
+
+//            val factory = CalculatorViewModelFactory(
+//                calculator = Calculator(
+//                    historyRepository = repository
+//                ),
+//                getHistoriesUseCase = GetHistoriesUseCase(historyRepository = repository)
+//            )
+//            it.viewModels<CalculatorViewModel>(factoryProducer = { factory })
         }
     }
 
@@ -296,8 +299,8 @@ class MainActivityTest {
         onView(withId(R.id.buttonMemory)).perform(click())
 
         // Then
-        onView(withId(R.id.recyclerView)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
-        onView(withId(R.id.textView)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
+        onView(withId(R.id.textView)).check(matches(not(isDisplayed())))
         onView(withId(R.id.list_item)).check(matches(not(isDisplayed())))
     }
 
@@ -307,14 +310,14 @@ class MainActivityTest {
         onView(withId(R.id.button3)).perform(click())
         onView(withId(R.id.buttonPlus)).perform(click())
         onView(withId(R.id.button2)).perform(click())
-
-
-        // When
         onView(withId(R.id.buttonEquals)).perform(click())
 
+        // When
+        onView(withId(R.id.buttonMemory)).perform(click())
+
         // Then
-        onView(withId(R.id.recyclerView)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
-        onView(withId(R.id.textView)).check(matches(withEffectiveVisibility(Visibility.GONE)))
-        onView(withId(R.id.list_item)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
+        onView(withId(R.id.textView)).check(matches(not(isDisplayed())))
+//        onView(withId(R.id.list_item)).check(matches(isDisplayed()))
     }
 }

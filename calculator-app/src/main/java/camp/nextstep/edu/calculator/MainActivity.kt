@@ -7,13 +7,17 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.BindingAdapter
 import camp.nextstep.edu.calculator.databinding.ActivityMainBinding
+import com.example.calculator_data.Injector
+import com.example.domain.models.Calculator
+import com.example.domain.usecases.GetHistoriesUseCase
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: CalculatorViewModel by viewModels {
+        val repository = Injector.provideRepository(applicationContext, false)
         CalculatorViewModelFactory(
-            Injector.provideCalculator(applicationContext),
-            Injector.providerGetHistoriesUseCase(applicationContext)
+            Calculator(historyRepository = repository),
+            GetHistoriesUseCase(historyRepository = repository),
         )
     }
     private val historyAdapter: HistoryAdapter by lazy {
