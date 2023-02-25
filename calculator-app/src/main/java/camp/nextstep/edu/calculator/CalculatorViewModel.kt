@@ -3,14 +3,12 @@ package camp.nextstep.edu.calculator
 import androidx.lifecycle.*
 import com.example.domain.models.*
 import com.example.domain.usecases.GetHistoriesUseCase
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class CalculatorViewModel(
     terms: List<OperationTerm> = listOf(),
-    private val calculator: Calculator = CalculatorApplication.calculator,
-    getHistoriesUseCase: GetHistoriesUseCase = CalculatorApplication.getHistoriesUseCase
+    private val calculator: Calculator,
+    getHistoriesUseCase: GetHistoriesUseCase
 ) : ViewModel() {
     private val statement = Statement(terms.toMutableList())
 
@@ -59,7 +57,7 @@ class CalculatorViewModel(
     }
 
     fun toggleHistory() {
-        _showHistory.value = !showHistory.value!!
+        _showHistory.value = !(showHistory.value ?: false)
     }
 }
 

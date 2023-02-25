@@ -28,7 +28,7 @@ class HistoryAdapter :
 
 object HistoryDiffCallback : DiffUtil.ItemCallback<History>() {
     override fun areItemsTheSame(oldItem: History, newItem: History): Boolean {
-        return oldItem == newItem
+        return oldItem === newItem
     }
 
     override fun areContentsTheSame(oldItem: History, newItem: History): Boolean {

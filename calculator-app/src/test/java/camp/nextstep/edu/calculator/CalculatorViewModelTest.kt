@@ -2,9 +2,7 @@ package camp.nextstep.edu.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
-import com.example.calculator_data.DaoModule
-import com.example.calculator_data.DatabaseModule
-import com.example.calculator_data.RepositoryModule
+import com.example.calculator_data.Injector
 import com.example.domain.models.*
 import com.example.domain.usecases.GetHistoriesUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -17,7 +15,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import java.util.concurrent.TimeUnit
 
 @RunWith(RobolectricTestRunner::class)
 class CalculatorViewModelTest {
@@ -37,12 +34,9 @@ class CalculatorViewModelTest {
     @Before
     fun setUp() {
 
-        val repository = RepositoryModule.providerHistoryRepository(
-            historyDao = DaoModule.provideHistoryDao(
-                DatabaseModule.provideDatabase(
-                    ApplicationProvider.getApplicationContext()
-                )
-            )
+        val repository = Injector.provideRepository(
+            context = ApplicationProvider.getApplicationContext(),
+            isInMemory = true
         )
 
         calculator = Calculator(historyRepository = repository)
@@ -106,7 +100,7 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `계산을 완료하면 기록이 추가된다`() = testScope.runTest {
+    fun `계산을 완료하면 기록이 추가된다`() {
         // given
         val initialValue = OperationParser.parse("1 + 2")
         viewModel = CalculatorViewModel(initialValue, calculator, getHistoriesUseCase)
