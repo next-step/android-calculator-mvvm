@@ -16,10 +16,6 @@
         <variable
             name="viewModel"
             type="camp.nextstep.edu.calculator.CalculatorViewModel" />
-
-        <variable
-            name="handler"
-            type="camp.nextstep.edu.calculator.MainActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
