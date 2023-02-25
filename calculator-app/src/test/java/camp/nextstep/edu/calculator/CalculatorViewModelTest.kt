@@ -1,23 +1,52 @@
 package camp.nextstep.edu.calculator
 
+import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.test.core.app.ApplicationProvider
+import camp.nextstep.edu.calculator.data.Injector
+import camp.nextstep.edu.calculator.data.db.Database
 import camp.nextstep.edu.calculator.domain.Operator
+import camp.nextstep.edu.calculator.domain.model.CalculatorResult
+import com.google.common.truth.Truth
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
 
+@RunWith(RobolectricTestRunner::class)
 class CalculatorViewModelTest {
 
     private lateinit var viewModel: CalculatorViewModel
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val testDispatcher = StandardTestDispatcher()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val testScope = TestScope(testDispatcher)
+
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
+
     @Before
     fun setUp() {
-        viewModel = CalculatorViewModel()
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val (saveResultUseCase, getAllResultsUseCase) =
+            Injector.provideDependenciesForCalculateViewModel(
+                Database.getDatabase(context)
+            )
+
+        viewModel = CalculatorViewModel(saveResultUseCase, getAllResultsUseCase)
     }
 
     @Test
@@ -74,21 +103,41 @@ class CalculatorViewModelTest {
     }
 
     @Test
-    fun `입력된 수신이 완전할 때, 사용자가 = 버튼을 누르면 입력된 수식의 결과가 화면에 보여야 한다`() {
-        viewModel.addToExpression(3)
-        viewModel.addToExpression(Operator.Plus)
-        viewModel.addToExpression(2)
-        viewModel.calculate()
-
-        assertEquals(viewModel.text.getOrAwaitValue(), "5")
-    }
-
-    @Test
     fun `입력된 수식이 완전하지 않을 때, 사용자가 = 버튼을 눌렀을 때 완성되지 않은 수식입니다 토스트 메세지가 화면에 보여야 한다`() {
         viewModel.addToExpression(3)
         viewModel.addToExpression(Operator.Plus)
         viewModel.calculate()
 
         assertEquals(viewModel.warning.getOrAwaitValue(), Unit)
+    }
+
+    @Test
+    fun `입력된 수신이 완전할 때, 사용자가 = 버튼을 누르면 입력된 수식의 결과가 화면에 보여야 한다`() =
+        runTest {
+            viewModel.addToExpression(3)
+            viewModel.addToExpression(Operator.Plus)
+            viewModel.addToExpression(2)
+
+            assertEquals("3 + 2", viewModel.text.getOrAwaitValue())
+
+            viewModel.calculate()
+            assertEquals("5", viewModel.text.getOrAwaitValue())
+        }
+
+    @Test
+    fun `1 + 1 입력된 상태에서 = 클릭하면 계산기록에 보여야 한다`() {
+        runBlocking {
+            launch(Dispatchers.IO) {
+                val actual = viewModel.allResults.getOrAwaitValue()
+
+                viewModel.addToExpression(1)
+                viewModel.addToExpression(Operator.Plus)
+                viewModel.addToExpression(1)
+                viewModel.calculate()
+                viewModel.showResults()
+
+                Truth.assertThat(actual).isEqualTo(CalculatorResult("1 + 1", "2"))
+            }
+        }
     }
 }
