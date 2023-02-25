@@ -7,7 +7,7 @@ import com.example.domain.repositories.HistoryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class HistoryRepositoryImpl(private val dao: HistoryDao) : HistoryRepository {
+internal class HistoryRepositoryImpl(private val dao: HistoryDao) : HistoryRepository {
     override suspend fun saveHistory(history: History) {
         dao.insert(HistoryEntity.fromHistory(history))
     }

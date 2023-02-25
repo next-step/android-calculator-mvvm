@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.example.domain.models.History
 
 @Entity
-data class HistoryEntity(
+internal data class HistoryEntity(
     @PrimaryKey(autoGenerate = true) var uid: Int = 0,
     var statement: String?,
     var result: Int

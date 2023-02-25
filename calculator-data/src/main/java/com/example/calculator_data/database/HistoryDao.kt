@@ -6,7 +6,7 @@ import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface HistoryDao {
+internal interface HistoryDao {
 
     @Query("SELECT * FROM HistoryEntity")
     fun getAll(): Flow<List<HistoryEntity>>
