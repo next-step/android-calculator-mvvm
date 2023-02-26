@@ -1,3 +1,7 @@
+### 2단계
+- [x] MVVM 패턴으로 변경
+- [x] ViewModel 단위 테스트 작성
+
 ### 1단계
 - [x] 패키지 구조 설정
 - [x] Databinding을 위한 View 연결
