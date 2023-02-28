@@ -5,7 +5,7 @@ import camp.nextstep.edu.calculator.data.model.RecordEntity
 import camp.nextstep.edu.calculator.domain.RecordRepository
 import camp.nextstep.edu.calculator.domain.model.Record
 
-class RecordRepositoryImpl(
+internal class RecordRepositoryImpl(
     private val dao: RecordDao
 ) : RecordRepository {
     override suspend fun insertRecord(record: Record) {

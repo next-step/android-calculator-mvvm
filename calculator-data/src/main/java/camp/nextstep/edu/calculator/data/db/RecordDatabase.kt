@@ -12,7 +12,7 @@ import camp.nextstep.edu.calculator.data.model.RecordEntity
     version = 1,
     exportSchema = false
 )
-abstract class RecordDatabase : RoomDatabase() {
+internal abstract class RecordDatabase : RoomDatabase() {
 
     abstract fun recordDao(): RecordDao
 
