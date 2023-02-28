@@ -5,7 +5,7 @@ import camp.nextstep.edu.calculator.data.model.RecordEntity
 
 
 @Dao
-interface RecordDao {
+internal interface RecordDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRecord(record: RecordEntity)

@@ -6,7 +6,7 @@ import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.model.Record
 
 @Entity(tableName = "records")
-data class RecordEntity(
+internal data class RecordEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val expression: String,
     val result: Int
