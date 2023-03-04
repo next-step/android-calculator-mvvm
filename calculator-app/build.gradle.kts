@@ -43,6 +43,7 @@ android {
 
 dependencies {
     implementation(project(":calculator-domain"))
+    implementation(project(":calculator-data"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Version.kotlin}")
     implementation("androidx.core:core-ktx:1.9.0")

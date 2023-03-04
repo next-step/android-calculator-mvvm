@@ -6,8 +6,11 @@ import androidx.lifecycle.ViewModel
 import camp.nextstep.edu.calculator.domain.Calculator
 import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
+import camp.nextstep.edu.calculator.domain.repository.CalculatorRepository
 
-class CalculatorViewModel : ViewModel() {
+class CalculatorViewModel(
+    calculatorRepository: CalculatorRepository
+) : ViewModel() {
     private var _textInTextView = MutableLiveData<String>()
     val textInTextView: LiveData<String>
         get() = _textInTextView
