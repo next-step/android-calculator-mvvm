@@ -74,7 +74,8 @@
             app:icon="@drawable/ic_baseline_access_time_24"
             app:layout_constraintBottom_toBottomOf="@id/buttonDelete"
             app:layout_constraintStart_toStartOf="@id/input"
-            app:layout_constraintTop_toTopOf="@id/buttonDelete" />
+            app:layout_constraintTop_toTopOf="@id/buttonDelete"
+            android:onClick="@{() -> viewModel.showMemoryMode ? viewModel.showPrevExpression() : viewModel.showAllRecords()}"/>
 
         <GridLayout
             android:id="@+id/input"

@@ -4,8 +4,12 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import camp.nextstep.edu.calculator.databinding.ActivityCalculatorBinding
 import camp.nextstep.edu.calculator.di.ViewModelFactory
+import kotlinx.coroutines.launch
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
@@ -19,6 +23,7 @@ class CalculatorActivity : AppCompatActivity() {
 
         setContentView(binding.root)
         observeLiveData()
+        setSavedRecords()
     }
 
     private fun showIncompleteExpressionError() {
@@ -29,5 +34,19 @@ class CalculatorActivity : AppCompatActivity() {
         viewModel.onCalculationErrorEvent.observe(this) {
             showIncompleteExpressionError()
         }
+    }
+
+    private fun setSavedRecords() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.savedRecords.collect {
+                    // set adapter
+                }
+            }
+        }
+    }
+
+    companion object {
+        private val TAG = CalculatorActivity::class.java.simpleName
     }
 }
