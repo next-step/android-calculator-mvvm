@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import camp.nextstep.edu.calculator.databinding.ActivityCalculatorBinding
-import camp.nextstep.edu.calculator.domain.Expression
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
@@ -26,15 +25,7 @@ class CalculatorActivity : AppCompatActivity() {
     }
 
     private fun observeLiveData() {
-        viewModel.expression.observe(this) {
-            binding.textView.text = it.toString()
-        }
-
-        viewModel.result.observe(this) {
-            binding.textView.text = it.toString()
-        }
-
-        viewModel.isCalculatePossible.observe(this) {
+        viewModel.onCalculationErrorEvent.observe(this) {
             showIncompleteExpressionError()
         }
     }
