@@ -47,13 +47,18 @@ class CalculatorViewModel(
         get() = _showMemoryMode
 
     private var _prevExpression = MutableLiveData<String>()
+    private var _stateToReceiveNewInput = MutableLiveData<Boolean>(false) // 새로운 입력을 받을 상태
 
     fun addToExpression(operand: Int) {
+        initStatement()
+
         _expression.value = _expression.value?.plus(operand)
         _textInTextView.value = _expression.value.toString()
     }
 
     fun addToExpression(operator: Operator) {
+        initStatement()
+
         _expression.value = _expression.value?.plus(operator)
         _textInTextView.value = _expression.value.toString()
     }
@@ -73,6 +78,8 @@ class CalculatorViewModel(
             _textInTextView.value = _result.value.toString()
             insertRecord()
         }
+
+        _stateToReceiveNewInput.value = true
     }
 
     private fun insertRecord() {
@@ -90,6 +97,7 @@ class CalculatorViewModel(
     }
 
     fun showAllRecords() {
+        changeMemoryMode()
         setTextView()
 
         viewModelScope.launch {
@@ -101,12 +109,11 @@ class CalculatorViewModel(
                 _savedRecords.emit(it)
             }
         }
-        changeMemoryMode()
     }
 
     fun showPrevExpression() {
-        _textInTextView.value = _prevExpression.value
         changeMemoryMode()
+        _textInTextView.value = _prevExpression.value
     }
 
     private fun setTextView() {
@@ -116,5 +123,18 @@ class CalculatorViewModel(
 
     private fun changeMemoryMode() {
         _showMemoryMode.value = _showMemoryMode.value != true
+    }
+
+    private fun initStatement() {
+        if (_stateToReceiveNewInput.value == true) {
+            resetStatement()
+        }
+        _stateToReceiveNewInput.value = false
+    }
+
+    private fun resetStatement() {
+        _expression.value = Expression.EMPTY
+        _result.value = 0
+        _textInTextView.value = ""
     }
 }

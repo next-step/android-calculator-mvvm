@@ -14,7 +14,7 @@ class CalculatorAdapter : ListAdapter<Record, CalculatorAdapter.CalculatorViewHo
 
         fun bind(record: Record) {
             binding.tvExpression.text = record.statement
-            binding.tvExpression.text = "= ${record.result}"
+            binding.tvResult.text = "= ${record.result}"
         }
     }
 
