@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
     private val viewModel: CalculatorViewModel by viewModels { ViewModelFactory(this) }
+    private lateinit var calculatorAdapter: CalculatorAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,8 +23,15 @@ class CalculatorActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
 
         setContentView(binding.root)
+        setRecyclerViewAdapter()
+
         observeLiveData()
         setSavedRecords()
+    }
+
+    private fun setRecyclerViewAdapter() {
+        calculatorAdapter = CalculatorAdapter()
+        binding.recyclerView.adapter = calculatorAdapter
     }
 
     private fun showIncompleteExpressionError() {
@@ -40,13 +48,9 @@ class CalculatorActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.savedRecords.collect {
-                    // set adapter
+                    calculatorAdapter.submitList(it)
                 }
             }
         }
-    }
-
-    companion object {
-        private val TAG = CalculatorActivity::class.java.simpleName
     }
 }

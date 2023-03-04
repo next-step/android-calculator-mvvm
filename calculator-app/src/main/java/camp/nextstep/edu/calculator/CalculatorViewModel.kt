@@ -80,6 +80,7 @@ class CalculatorViewModel(
             CoroutineScope(Dispatchers.IO).launch {
                 calculatorRepository.insertRecord(
                     Record(
+                        0,
                         expression.value.toString(),
                         result.value ?: 0
                     )
