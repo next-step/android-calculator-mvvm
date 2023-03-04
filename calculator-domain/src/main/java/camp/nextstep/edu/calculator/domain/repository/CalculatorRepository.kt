@@ -5,4 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface CalculatorRepository {
     fun getAllRecords(): Flow<List<Record>>
+    fun insertRecord(record: Record)
 }
