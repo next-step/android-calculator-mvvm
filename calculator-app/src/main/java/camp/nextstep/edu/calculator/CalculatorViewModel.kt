@@ -35,6 +35,9 @@ class CalculatorViewModel(
         if (result == null) {
             _isExpressionError.value = true
         } else {
+            _expression.value?.let {
+                saveRecord(Record(it, result))
+            }
             _expression.value = Expression(listOf(result))
         }
     }
@@ -44,6 +47,6 @@ class CalculatorViewModel(
     }
 
     private fun loadRecord() {
-//        return recordRepository.loadRecords()
+        recordRepository.loadRecords()
     }
 }

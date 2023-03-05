@@ -13,7 +13,7 @@ data class RecordEntity(
 ) {
 
     fun toRecord(): Record = Record(
-        expression = Expression(expression.split("")),
+        expression = Expression(expression.split(" ")),
         result = result
     )
 
