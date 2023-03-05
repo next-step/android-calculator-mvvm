@@ -7,13 +7,12 @@ import camp.nextstep.edu.calculator.domain.model.Record
 
 @Entity(tableName = "RecordEntity")
 data class RecordEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @PrimaryKey(autoGenerate = true) val id: Long,
     @ColumnInfo(name = "statement") val statement: String,
     @ColumnInfo(name = "result") val result: Int
 ) {
     fun toDomain(): Record {
         return Record(
-            id = id,
             statement = statement,
             result = result
         )
@@ -28,7 +27,7 @@ data class RecordEntity(
 
         fun from(record: Record): RecordEntity =
             RecordEntity(
-                id = record.id,
+                id = 0,
                 statement = record.statement,
                 result = record.result
             )

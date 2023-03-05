@@ -30,7 +30,7 @@ class CalculatorAdapter : ListAdapter<Record, CalculatorAdapter.CalculatorViewHo
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<Record>() {
             override fun areItemsTheSame(oldItem: Record, newItem: Record): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem == newItem
             }
 
             override fun areContentsTheSame(oldItem: Record, newItem: Record): Boolean {
