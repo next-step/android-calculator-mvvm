@@ -3,11 +3,14 @@ package camp.nextstep.edu.calculator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import camp.nextstep.edu.calculator.domain.model.Calculator
 import camp.nextstep.edu.calculator.domain.model.Expression
 import camp.nextstep.edu.calculator.domain.model.Operator
 import camp.nextstep.edu.calculator.domain.model.Record
 import camp.nextstep.edu.calculator.domain.repository.RecordRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
     private val recordRepository: RecordRepository
@@ -17,6 +20,9 @@ class CalculatorViewModel(
     val expression: LiveData<Expression> = _expression
     private val _isExpressionError: SingleLiveEvent<Boolean> = SingleLiveEvent()
     val isExpressionError: LiveData<Boolean> = _isExpressionError
+    private val _record = MutableLiveData<String>()
+    val record: LiveData<String>
+        get() = _record
 
     fun addToExpression(operand: Int) {
         _expression.value = _expression.value?.plus(operand)
@@ -43,10 +49,19 @@ class CalculatorViewModel(
     }
 
     private fun saveRecord(record: Record) {
-        recordRepository.saveRecord(record)
+        viewModelScope.launch(Dispatchers.IO) {
+            recordRepository.saveRecord(record)
+        }
     }
 
-    private fun loadRecord() {
-        recordRepository.loadRecords()
+    fun loadRecords() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val record: List<Char> = recordRepository.loadRecords()
+                .joinToString("\n") {
+                    "${it.expression}\n = ${it.result}"
+                }.toList()
+
+            _expression.postValue(Expression(record))
+        }
     }
 }

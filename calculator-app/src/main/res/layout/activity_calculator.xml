@@ -71,6 +71,7 @@
             style="@style/Widget.Calculator.Button.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> calculatorViewModel.loadRecords()}"
             app:icon="@drawable/ic_baseline_access_time_24"
             app:layout_constraintBottom_toBottomOf="@id/buttonDelete"
             app:layout_constraintStart_toStartOf="@id/input"
