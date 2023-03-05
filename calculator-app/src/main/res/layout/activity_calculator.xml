@@ -5,7 +5,7 @@
 
     <data>
 
-        <import type="camp.nextstep.edu.calculator.domain.Operator" />
+        <import type="camp.nextstep.edu.calculator.domain.model.Operator" />
 
         <variable
             name="calculatorViewModel"

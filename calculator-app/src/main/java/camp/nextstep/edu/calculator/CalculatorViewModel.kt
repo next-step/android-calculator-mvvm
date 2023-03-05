@@ -3,11 +3,15 @@ package camp.nextstep.edu.calculator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import camp.nextstep.edu.calculator.domain.Calculator
-import camp.nextstep.edu.calculator.domain.Expression
-import camp.nextstep.edu.calculator.domain.Operator
+import camp.nextstep.edu.calculator.domain.model.Calculator
+import camp.nextstep.edu.calculator.domain.model.Expression
+import camp.nextstep.edu.calculator.domain.model.Operator
+import camp.nextstep.edu.calculator.domain.model.Record
+import camp.nextstep.edu.calculator.domain.repository.RecordRepository
 
-class CalculatorViewModel : ViewModel() {
+class CalculatorViewModel(
+    private val recordRepository: RecordRepository
+) : ViewModel() {
     private val calculator = Calculator()
     private val _expression: MutableLiveData<Expression> = MutableLiveData(Expression.EMPTY)
     val expression: LiveData<Expression> = _expression
@@ -33,5 +37,13 @@ class CalculatorViewModel : ViewModel() {
         } else {
             _expression.value = Expression(listOf(result))
         }
+    }
+
+    private fun saveRecord(record: Record) {
+        recordRepository.saveRecord(record)
+    }
+
+    private fun loadRecord() {
+//        return recordRepository.loadRecords()
     }
 }

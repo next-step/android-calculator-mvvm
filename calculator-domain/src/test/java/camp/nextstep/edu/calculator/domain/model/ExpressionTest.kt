@@ -1,5 +1,7 @@
-package camp.nextstep.edu.calculator.domain
+package camp.nextstep.edu.calculator.domain.model
 
+import camp.nextstep.edu.calculator.domain.model.Expression
+import camp.nextstep.edu.calculator.domain.model.Operator
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 

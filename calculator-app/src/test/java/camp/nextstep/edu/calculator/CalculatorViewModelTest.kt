@@ -1,7 +1,7 @@
 package camp.nextstep.edu.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import camp.nextstep.edu.calculator.domain.Operator
+import camp.nextstep.edu.calculator.domain.model.Operator
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Rule
