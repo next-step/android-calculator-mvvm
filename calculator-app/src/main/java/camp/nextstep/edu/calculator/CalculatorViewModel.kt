@@ -20,20 +20,24 @@ class CalculatorViewModel(
     val expression: LiveData<Expression> = _expression
     private val _isExpressionError: SingleLiveEvent<Boolean> = SingleLiveEvent()
     val isExpressionError: LiveData<Boolean> = _isExpressionError
-    private val _record = MutableLiveData<String>()
-    val record: LiveData<String>
-        get() = _record
+    private var isShowRecord: Boolean = false
 
     fun addToExpression(operand: Int) {
-        _expression.value = _expression.value?.plus(operand)
+        if (!isShowRecord) {
+            _expression.value = _expression.value?.plus(operand)
+        }
     }
 
     fun addToExpression(operator: Operator) {
-        _expression.value = _expression.value?.plus(operator)
+        if (!isShowRecord) {
+            _expression.value = _expression.value?.plus(operator)
+        }
     }
 
     fun removeLast() {
-        _expression.value = _expression.value?.removeLast()
+        if (!isShowRecord) {
+            _expression.value = _expression.value?.removeLast()
+        }
     }
 
     fun calculate() {
@@ -55,13 +59,18 @@ class CalculatorViewModel(
     }
 
     fun loadRecords() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val record: List<Char> = recordRepository.loadRecords()
-                .joinToString("\n") {
-                    "${it.expression}\n = ${it.result}"
-                }.toList()
+        if (!isShowRecord) {
+            viewModelScope.launch(Dispatchers.IO) {
+                val record: List<Char> = recordRepository.loadRecords()
+                    .joinToString("\n") {
+                        "${it.expression}\n = ${it.result}"
+                    }.toList()
 
-            _expression.postValue(Expression(record))
+                _expression.postValue(Expression(record))
+            }
+        } else {
+            _expression.value = Expression.EMPTY
         }
+        isShowRecord = !isShowRecord
     }
 }
