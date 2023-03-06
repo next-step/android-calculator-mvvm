@@ -6,11 +6,11 @@ import camp.nextstep.edu.calculator.domain.model.Record
 import camp.nextstep.edu.calculator.domain.repository.RecordRepository
 
 class RecordRepositoryImpl(private val recordDao: RecordDao) : RecordRepository {
-    override fun saveRecord(record: Record) {
+    override suspend fun saveRecord(record: Record) {
         recordDao.saveRecord(RecordEntity.create(record))
     }
 
-    override fun loadRecords(): List<Record> {
+    override suspend fun loadRecords(): List<Record> {
         return recordDao.loadRecords().map { it.toRecord() }
     }
 }

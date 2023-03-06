@@ -1,21 +1,43 @@
 package camp.nextstep.edu.calculator
 
+import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.room.Room
+import androidx.test.core.app.ApplicationProvider
+import camp.nextstep.edu.calculator.data.database.RecordDatabase
+import camp.nextstep.edu.calculator.data.repository.Injector
+import camp.nextstep.edu.calculator.domain.model.Expression
 import camp.nextstep.edu.calculator.domain.model.Operator
+import camp.nextstep.edu.calculator.domain.model.Record
+import camp.nextstep.edu.calculator.domain.repository.RecordRepository
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
 
+@RunWith(RobolectricTestRunner::class)
 internal class CalculatorViewModelTest {
     private lateinit var calculatorViewModel: CalculatorViewModel
+    private lateinit var recordRepository: RecordRepository
 
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun setUp() {
-        calculatorViewModel = CalculatorViewModel()
+        val context: Context = ApplicationProvider.getApplicationContext()
+        val recordDatabase = Room
+            .inMemoryDatabaseBuilder(context, RecordDatabase::class.java)
+            .build()
+
+        recordRepository = Injector.provideRecordRepository(
+            context,
+            recordDatabase
+        )
+        calculatorViewModel = CalculatorViewModel(recordRepository)
     }
 
     @Test
@@ -129,4 +151,22 @@ internal class CalculatorViewModelTest {
         //then
         assertThat(calculatorViewModel.expression.value.toString()).isEqualTo("")
     }
+
+//    @Test
+//    fun `저장된 계산 기록을 가져온다`() {
+//        //given
+//        val record = Record(Expression(listOf("1 + 2")), 3)
+//
+//        //when
+//        Thread(Runnable {
+//            runBlocking {
+//                withContext(Dispatchers.IO) { calculatorViewModel.saveRecord(record) }
+//                withContext(Dispatchers.IO) { calculatorViewModel.loadRecords() }
+//            }
+//        }).start()
+//
+//        //then
+//        val expected = "${record.expression}\n = ${record.result}"
+//        assertThat(calculatorViewModel.expression.value.toString()).isEqualTo(expected)
+//    }
 }

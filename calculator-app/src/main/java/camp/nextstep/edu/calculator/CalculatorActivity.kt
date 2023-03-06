@@ -9,7 +9,7 @@ import camp.nextstep.edu.calculator.databinding.ActivityCalculatorBinding
 
 class CalculatorActivity : AppCompatActivity() {
     private val viewModel: CalculatorViewModel by viewModels {
-        CalculatorViewModelFactory(Injector.provideRecordRepository(this))
+        CalculatorViewModelFactory(this)
     }
     private lateinit var binding: ActivityCalculatorBinding
 

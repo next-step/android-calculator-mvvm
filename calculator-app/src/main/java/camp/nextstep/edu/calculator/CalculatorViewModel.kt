@@ -17,7 +17,8 @@ class CalculatorViewModel(
 ) : ViewModel() {
     private val calculator = Calculator()
     private val _expression: MutableLiveData<Expression> = MutableLiveData(Expression.EMPTY)
-    val expression: LiveData<Expression> = _expression
+    val expression: LiveData<Expression>
+        get() = _expression
     private val _isExpressionError: SingleLiveEvent<Boolean> = SingleLiveEvent()
     val isExpressionError: LiveData<Boolean> = _isExpressionError
     private var isShowRecord: Boolean = false
@@ -52,7 +53,7 @@ class CalculatorViewModel(
         }
     }
 
-    private fun saveRecord(record: Record) {
+    fun saveRecord(record: Record) {
         viewModelScope.launch(Dispatchers.IO) {
             recordRepository.saveRecord(record)
         }
@@ -65,7 +66,6 @@ class CalculatorViewModel(
                     .joinToString("\n") {
                         "${it.expression}\n = ${it.result}"
                     }.toList()
-
                 _expression.postValue(Expression(record))
             }
         } else {
