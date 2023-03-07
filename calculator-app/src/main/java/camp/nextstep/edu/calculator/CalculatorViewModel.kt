@@ -84,6 +84,7 @@ class CalculatorViewModel(
         viewModelScope.launch {
             calculatorRepository.insertRecord(
                 Record(
+                    0,
                     expression.value.toString(),
                     result.value ?: 0
                 )

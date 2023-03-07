@@ -32,7 +32,7 @@ class CalculatorRepositoryImplTest {
 
     @Test
     fun `계산_결과_저장하고_가져오기`() {
-        val record = Record(statement = "1 + 2", result = 3)
+        val record = Record(id = 1, statement = "1 + 2", result = 3)
 
         runBlocking {
             calculatorRepository.insertRecord(record)

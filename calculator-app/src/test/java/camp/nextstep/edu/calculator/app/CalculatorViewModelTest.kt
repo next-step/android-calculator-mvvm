@@ -182,7 +182,7 @@ class CalculatorViewModelTest {
                     calculatorViewModel.calculate()
 
                     val actual = calculatorRepository.getAllRecords().first()
-                    val expected = listOf(Record("1 + 1", 2))
+                    val expected = listOf(Record(1, "1 + 1", 2))
                     assertEquals(expected, actual)
                 }
             }

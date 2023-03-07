@@ -13,6 +13,7 @@ data class RecordEntity(
 ) {
     fun toDomain(): Record {
         return Record(
+            id = id,
             statement = statement,
             result = result
         )
@@ -27,6 +28,7 @@ data class RecordEntity(
 
         fun from(record: Record): RecordEntity =
             RecordEntity(
+                id = record.id,
                 statement = record.statement,
                 result = record.result
             )
