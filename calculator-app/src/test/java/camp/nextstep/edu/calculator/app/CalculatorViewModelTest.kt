@@ -1,6 +1,7 @@
 package camp.nextstep.edu.calculator.app
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.viewModelScope
 import androidx.test.core.app.ApplicationProvider
 import camp.nextstep.edu.calculator.CalculatorViewModel
 import camp.nextstep.edu.calculator.data.di.DataInjector
@@ -10,6 +11,7 @@ import camp.nextstep.edu.calculator.domain.model.Record
 import camp.nextstep.edu.calculator.domain.repository.CalculatorRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.junit.Assert.assertEquals
@@ -175,19 +177,15 @@ class CalculatorViewModelTest {
         calculatorViewModel.addToExpression(1)
 
         runBlocking {
-            withContext(Dispatchers.IO) {
-                calculatorViewModel.calculate()
-                calculatorRepository.insertRecord(
-                    Record(
-                        calculatorViewModel.expression.value.toString(),
-                        calculatorViewModel.result.value ?: 0
-                    )
-                )
-            }
+            calculatorViewModel.viewModelScope.launch {
+                withContext(Dispatchers.IO) {
+                    calculatorViewModel.calculate()
 
-            val actual = calculatorRepository.getAllRecords().first()
-            val expected = listOf(Record("1 + 1", 2))
-            assertEquals(expected, actual)
+                    val actual = calculatorRepository.getAllRecords().first()
+                    val expected = listOf(Record("1 + 1", 2))
+                    assertEquals(expected, actual)
+                }
+            }
         }
     }
 
