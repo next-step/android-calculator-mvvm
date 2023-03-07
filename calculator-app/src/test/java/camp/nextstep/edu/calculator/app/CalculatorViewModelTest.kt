@@ -180,11 +180,11 @@ class CalculatorViewModelTest {
             calculatorViewModel.viewModelScope.launch {
                 withContext(Dispatchers.IO) {
                     calculatorViewModel.calculate()
-
-                    val actual = calculatorRepository.getAllRecords().first()
-                    val expected = listOf(Record(1, "1 + 1", 2))
-                    assertEquals(expected, actual)
                 }
+
+                val actual = calculatorRepository.getAllRecords().first()
+                val expected = listOf(Record(1, "1 + 1", 2))
+                assertEquals(expected, actual)
             }
         }
     }
@@ -194,14 +194,21 @@ class CalculatorViewModelTest {
         // given
         calculatorViewModel.addToExpression(1)
         calculatorViewModel.addToExpression(Operator.Plus)
-        calculatorViewModel.showAllRecords()
 
-        // when
-        calculatorViewModel.showPrevExpression()
+        runBlocking {
+            calculatorViewModel.viewModelScope.launch {
+                withContext(Dispatchers.IO) {
+                    calculatorViewModel.showAllRecords()
+                }
 
-        // then
-        val actual = calculatorViewModel.textInTextView.value
-        assertEquals("1 +", actual)
+                // when
+                calculatorViewModel.showPrevExpression()
+
+                // then
+                val actual = calculatorViewModel.textInTextView.value
+                assertEquals("1 +", actual)
+            }
+        }
     }
 
     @Test
