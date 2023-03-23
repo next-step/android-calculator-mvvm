@@ -3,27 +3,44 @@ package camp.nextstep.edu.calculator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import camp.nextstep.edu.calculator.domain.Calculator
-import camp.nextstep.edu.calculator.domain.Expression
-import camp.nextstep.edu.calculator.domain.Operator
+import androidx.lifecycle.viewModelScope
+import camp.nextstep.edu.calculator.domain.model.Calculator
+import camp.nextstep.edu.calculator.domain.model.Expression
+import camp.nextstep.edu.calculator.domain.model.Operator
+import camp.nextstep.edu.calculator.domain.model.Record
+import camp.nextstep.edu.calculator.domain.repository.RecordRepository
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class CalculatorViewModel : ViewModel() {
+class CalculatorViewModel(
+    private val recordRepository: RecordRepository,
+    private val dispatcher: CoroutineDispatcher
+) : ViewModel() {
     private val calculator = Calculator()
     private val _expression: MutableLiveData<Expression> = MutableLiveData(Expression.EMPTY)
-    val expression: LiveData<Expression> = _expression
+    val expression: LiveData<Expression>
+        get() = _expression
     private val _isExpressionError: SingleLiveEvent<Boolean> = SingleLiveEvent()
     val isExpressionError: LiveData<Boolean> = _isExpressionError
+    private var isShowRecord: Boolean = false
 
     fun addToExpression(operand: Int) {
-        _expression.value = _expression.value?.plus(operand)
+        if (!isShowRecord) {
+            _expression.value = _expression.value?.plus(operand)
+        }
     }
 
     fun addToExpression(operator: Operator) {
-        _expression.value = _expression.value?.plus(operator)
+        if (!isShowRecord) {
+            _expression.value = _expression.value?.plus(operator)
+        }
     }
 
     fun removeLast() {
-        _expression.value = _expression.value?.removeLast()
+        if (!isShowRecord) {
+            _expression.value = _expression.value?.removeLast()
+        }
     }
 
     fun calculate() {
@@ -31,7 +48,31 @@ class CalculatorViewModel : ViewModel() {
         if (result == null) {
             _isExpressionError.value = true
         } else {
+            _expression.value?.let {
+                saveRecord(Record(it, result))
+            }
             _expression.value = Expression(listOf(result))
         }
+    }
+
+    fun saveRecord(record: Record) {
+        viewModelScope.launch(dispatcher) {
+            recordRepository.saveRecord(record)
+        }
+    }
+
+    fun loadRecords() {
+        if (!isShowRecord) {
+            viewModelScope.launch(dispatcher) {
+                val record = recordRepository.loadRecords()
+                    .map {
+                        "${it.expression}\n = ${it.result}\n"
+                    }
+                _expression.postValue(Expression(record))
+            }
+        } else {
+            _expression.value = Expression.EMPTY
+        }
+        isShowRecord = !isShowRecord
     }
 }
