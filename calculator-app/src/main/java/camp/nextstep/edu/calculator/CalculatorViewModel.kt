@@ -66,7 +66,7 @@ class CalculatorViewModel(
             viewModelScope.launch(dispatcher) {
                 val record = recordRepository.loadRecords()
                     .map {
-                        "${it.expression}\n = ${it.result}"
+                        "${it.expression}\n = ${it.result}\n"
                     }
                 _expression.postValue(Expression(record))
             }

@@ -173,7 +173,7 @@ internal class CalculatorViewModelTest {
         calculatorViewModel.loadRecords()
 
         //then
-        val expected = "${record.expression}\n = ${record.result}"
+        val expected = "${record.expression}\n = ${record.result}\n"
         assertThat(calculatorViewModel.expression.value.toString()).isEqualTo(expected)
     }
 }
