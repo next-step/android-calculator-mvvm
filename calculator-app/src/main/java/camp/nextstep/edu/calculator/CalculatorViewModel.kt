@@ -9,11 +9,13 @@ import camp.nextstep.edu.calculator.domain.model.Expression
 import camp.nextstep.edu.calculator.domain.model.Operator
 import camp.nextstep.edu.calculator.domain.model.Record
 import camp.nextstep.edu.calculator.domain.repository.RecordRepository
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
-    private val recordRepository: RecordRepository
+    private val recordRepository: RecordRepository,
+    private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
     private val calculator = Calculator()
     private val _expression: MutableLiveData<Expression> = MutableLiveData(Expression.EMPTY)
@@ -54,18 +56,18 @@ class CalculatorViewModel(
     }
 
     fun saveRecord(record: Record) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(dispatcher) {
             recordRepository.saveRecord(record)
         }
     }
 
     fun loadRecords() {
         if (!isShowRecord) {
-            viewModelScope.launch(Dispatchers.IO) {
-                val record: List<Char> = recordRepository.loadRecords()
-                    .joinToString("\n") {
+            viewModelScope.launch(dispatcher) {
+                val record = recordRepository.loadRecords()
+                    .map {
                         "${it.expression}\n = ${it.result}"
-                    }.toList()
+                    }
                 _expression.postValue(Expression(record))
             }
         } else {

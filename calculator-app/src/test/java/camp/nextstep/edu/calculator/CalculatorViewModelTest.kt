@@ -12,6 +12,8 @@ import camp.nextstep.edu.calculator.domain.model.Record
 import camp.nextstep.edu.calculator.domain.repository.RecordRepository
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.*
+import kotlinx.coroutines.test.*
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -31,13 +33,22 @@ internal class CalculatorViewModelTest {
         val context: Context = ApplicationProvider.getApplicationContext()
         val recordDatabase = Room
             .inMemoryDatabaseBuilder(context, RecordDatabase::class.java)
+            .allowMainThreadQueries()
             .build()
 
+//        val testDispatcher = StandardTestDispatcher()
+        val testDispatcher = UnconfinedTestDispatcher()
+        //Dispatchers.setMain(testDispatcher)
         recordRepository = Injector.provideRecordRepository(
             context,
             recordDatabase
         )
-        calculatorViewModel = CalculatorViewModel(recordRepository)
+        calculatorViewModel = CalculatorViewModel(recordRepository, testDispatcher)
+    }
+
+    @After
+    fun tearDown() {
+        //Dispatchers.resetMain()
     }
 
     @Test
@@ -152,21 +163,17 @@ internal class CalculatorViewModelTest {
         assertThat(calculatorViewModel.expression.value.toString()).isEqualTo("")
     }
 
-//    @Test
-//    fun `저장된 계산 기록을 가져온다`() {
-//        //given
-//        val record = Record(Expression(listOf("1 + 2")), 3)
-//
-//        //when
-//        Thread(Runnable {
-//            runBlocking {
-//                withContext(Dispatchers.IO) { calculatorViewModel.saveRecord(record) }
-//                withContext(Dispatchers.IO) { calculatorViewModel.loadRecords() }
-//            }
-//        }).start()
-//
-//        //then
-//        val expected = "${record.expression}\n = ${record.result}"
-//        assertThat(calculatorViewModel.expression.value.toString()).isEqualTo(expected)
-//    }
+    @Test
+    fun `저장된 계산 기록을 가져온다`() = runTest{
+        //given
+        val record = Record(Expression(listOf("11 + 2")), 13)
+        calculatorViewModel.saveRecord(record)
+
+        //when
+        calculatorViewModel.loadRecords()
+
+        //then
+        val expected = "${record.expression}\n = ${record.result}"
+        assertThat(calculatorViewModel.expression.value.toString()).isEqualTo(expected)
+    }
 }
