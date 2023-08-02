@@ -23,7 +23,7 @@ class CounterActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
-                when(uiState) {
+                when (uiState) {
                     is CounterUiState.Error ->
                         Toast.makeText(this@CounterActivity, uiState.exception, Toast.LENGTH_SHORT).show()
                 }

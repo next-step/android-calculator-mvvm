@@ -29,12 +29,12 @@ class MainViewModel : ViewModel() {
             _counter.value = data - 1
         }.getOrElse {
             viewModelScope.launch {
-                _uiState.emit(CounterUiState.Error( "0 이하로 내릴 수 없습니다"))
+                _uiState.emit(CounterUiState.Error("0 이하로 내릴 수 없습니다"))
             }
         }
     }
 }
 
 sealed class CounterUiState {
-    data class Error(val exception: String = ""): CounterUiState()
+    data class Error(val exception: String = "") : CounterUiState()
 }
