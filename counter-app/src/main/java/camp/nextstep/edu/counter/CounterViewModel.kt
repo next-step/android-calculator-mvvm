@@ -9,20 +9,23 @@ class CounterViewModel : ViewModel() {
     private val _number: MutableLiveData<Int> = MutableLiveData(0)
     val number: LiveData<Int> = _number
 
-    private val _underZeroToastMessage: MutableLiveData<Event<Unit>> = MutableLiveData()
-    val underZeroToastMessage: LiveData<Event<Unit>> = _underZeroToastMessage
+    private val _numberUnderZero: MutableLiveData<Event<Unit>> = MutableLiveData()
+    val numberUnderZero: LiveData<Event<Unit>> = _numberUnderZero
 
-    fun onUpButtonClicked() {
+    fun numberPlusOne() {
         _number.value = _number.value?.plus(1)
     }
 
-    fun onDownButtonClicked() {
-        if (number.value == 0) {
-            _underZeroToastMessage.value = Event(Unit)
+    fun numberMinusOne() {
+        if (number.value == NUM_ZERO_DIVIDER) {
+            _numberUnderZero.value = Event(Unit)
             return
         }
         _number.value = _number.value?.minus(1)
     }
 
 
+    companion object {
+        const val NUM_ZERO_DIVIDER = 0
+    }
 }

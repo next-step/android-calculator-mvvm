@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:text="Up"
             tools:ignore="HardcodedText"
-            android:onClick="@{() -> viewmodel.onUpButtonClicked()}" />
+            android:onClick="@{() -> viewmodel.numberPlusOne()}" />
 
         <Button
             android:id="@+id/buttonDown"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:text="Down"
             tools:ignore="HardcodedText"
-            android:onClick="@{() -> viewmodel.onDownButtonClicked()}" />
+            android:onClick="@{() -> viewmodel.numberMinusOne()}" />
     </LinearLayout>
 
 </layout>

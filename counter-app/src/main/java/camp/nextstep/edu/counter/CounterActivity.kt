@@ -23,7 +23,7 @@ class CounterActivity : AppCompatActivity() {
     }
 
     private fun observeUnderZeroToastMessage() {
-        viewModel.underZeroToastMessage.observe(this) {
+        viewModel.numberUnderZero.observe(this) {
             it.consume()?.let {
                 Toast.makeText(this, getString(R.string.under_zero_message), Toast.LENGTH_SHORT).show()
             }
