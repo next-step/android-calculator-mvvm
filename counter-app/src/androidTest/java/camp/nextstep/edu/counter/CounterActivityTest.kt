@@ -14,30 +14,61 @@ class CounterActivityTest {
     var activityScenarioRule = ActivityScenarioRule(CounterActivity::class.java)
 
     @Test
-    fun up() {
-        // when
+    fun `0일때_UP버튼을_누르면_1`() {
+        // given: 0
+
+        // when: Up 버튼을 누르면
         onView(withId(R.id.buttonUp)).perform(click())
 
-        // then
+        // then: 1이 된다
         onView(withId(R.id.textView)).check(matches(withText("1")))
     }
 
     @Test
-    fun down_1_to_0() {
-        // when
+    fun `0일때_UP_DOWN버튼을_누르면_0`() {
+        // given: 0
+
+        // when: Up Down 버튼을 누르면
         onView(withId(R.id.buttonUp)).perform(click())
         onView(withId(R.id.buttonDown)).perform(click())
 
-        // then
+        // then: 0이 된다
         onView(withId(R.id.textView)).check(matches(withText("0")))
     }
 
     @Test
-    fun down_0_to_0() {
-        // when
+    fun `0일때_DOWN버튼을_누르면_0`() {
+        // given: 0
+
+        // when: Down 버튼을 누르면
         onView(withId(R.id.buttonDown)).perform(click())
 
-        // then
+        // then: 0이 유지된다.
         onView(withId(R.id.textView)).check(matches(withText("0")))
+    }
+
+    @Test
+    fun `0일때_UP_UP버튼을_누르면_2`() {
+        // given: 0
+
+        // when: Up Up 버튼을 누르면
+        onView(withId(R.id.buttonUp)).perform(click())
+        onView(withId(R.id.buttonUp)).perform(click())
+
+        // then: 2가 된다.
+        onView(withId(R.id.textView)).check(matches(withText("2")))
+    }
+
+    @Test
+    fun `0일때_UP_UP_DOWN버튼을_누르면_1`() {
+        // given: 0
+
+        // when: Up Up Down 버튼을 누르면
+        onView(withId(R.id.buttonUp)).perform(click())
+        onView(withId(R.id.buttonUp)).perform(click())
+        onView(withId(R.id.buttonDown)).perform(click())
+
+        // then: 1가 된다.
+        onView(withId(R.id.textView)).check(matches(withText("1")))
     }
 }
