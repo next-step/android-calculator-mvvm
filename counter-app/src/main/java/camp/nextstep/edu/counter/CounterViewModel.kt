@@ -6,26 +6,26 @@ import androidx.lifecycle.ViewModel
 
 class CounterViewModel : ViewModel() {
 
-    private val _number: MutableLiveData<Int> = MutableLiveData(0)
-    val number: LiveData<Int> = _number
+    private val _count: MutableLiveData<Int> = MutableLiveData(0)
+    val count: LiveData<Int> = _count
 
-    private val _numberUnderZero: MutableLiveData<Event<Unit>> = MutableLiveData()
-    val numberUnderZero: LiveData<Event<Unit>> = _numberUnderZero
+    private val _countUnderZero: MutableLiveData<Event<Unit>> = MutableLiveData()
+    val countUnderZero: LiveData<Event<Unit>> = _countUnderZero
 
-    fun numberPlusOne() {
-        _number.value = _number.value?.plus(1)
+    fun countPlusOne() {
+        _count.value = _count.value?.plus(1)
     }
 
-    fun numberMinusOne() {
-        if (number.value == NUM_ZERO_DIVIDER) {
-            _numberUnderZero.value = Event(Unit)
+    fun countMinusOne() {
+        if (count.value == COUNT_ZERO) {
+            _countUnderZero.value = Event(Unit)
             return
         }
-        _number.value = _number.value?.minus(1)
+        _count.value = _count.value?.minus(1)
     }
 
 
     companion object {
-        const val NUM_ZERO_DIVIDER = 0
+        const val COUNT_ZERO = 0
     }
 }

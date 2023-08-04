@@ -17,10 +17,10 @@ internal class CounterViewModelTest {
         // given: 0
 
         // when: Up 버튼을 누르면
-        viewModel.numberPlusOne()
+        viewModel.countPlusOne()
 
         // then: 1이 된다
-        val actual = viewModel.number.getOrAwaitValue()
+        val actual = viewModel.count.getOrAwaitValue()
         assertThat(actual).isEqualTo(1)
     }
 
@@ -29,11 +29,11 @@ internal class CounterViewModelTest {
         // given: 0
 
         // when: Up Down 버튼을 누르면
-        viewModel.numberPlusOne()
-        viewModel.numberMinusOne()
+        viewModel.countPlusOne()
+        viewModel.countMinusOne()
 
         // then: 0이 된다
-        val actual = viewModel.number.getOrAwaitValue()
+        val actual = viewModel.count.getOrAwaitValue()
         assertThat(actual).isEqualTo(0)
     }
 
@@ -42,10 +42,10 @@ internal class CounterViewModelTest {
         // given: 0
 
         // when: Down 버튼을 누르면
-        viewModel.numberMinusOne()
+        viewModel.countMinusOne()
 
         // then: 0이 유지된다.
-        val actual = viewModel.number.getOrAwaitValue()
+        val actual = viewModel.count.getOrAwaitValue()
         assertThat(actual).isEqualTo(0)
     }
 
@@ -54,11 +54,11 @@ internal class CounterViewModelTest {
         // given: 0
 
         // when: Up Up 버튼을 누르면
-        viewModel.numberPlusOne()
-        viewModel.numberPlusOne()
+        viewModel.countPlusOne()
+        viewModel.countPlusOne()
 
         // then: 2가 된다.
-        val actual = viewModel.number.getOrAwaitValue()
+        val actual = viewModel.count.getOrAwaitValue()
         assertThat(actual).isEqualTo(2)
     }
 
@@ -67,12 +67,12 @@ internal class CounterViewModelTest {
         // given: 0
 
         // when: Up Up Down 버튼을 누르면
-        viewModel.numberPlusOne()
-        viewModel.numberPlusOne()
-        viewModel.numberMinusOne()
+        viewModel.countPlusOne()
+        viewModel.countPlusOne()
+        viewModel.countMinusOne()
 
         // then: 1가 된다.
-        val actual = viewModel.number.getOrAwaitValue()
+        val actual = viewModel.count.getOrAwaitValue()
         assertThat(actual).isEqualTo(1)
     }
 }

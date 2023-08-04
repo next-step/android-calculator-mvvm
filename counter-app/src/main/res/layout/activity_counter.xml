@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="24sp"
-            tools:text="@{viewmodel.number.toString()}" />
+            tools:text="@{viewmodel.count.toString()}" />
 
         <Button
             android:id="@+id/buttonUp"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:text="Up"
             tools:ignore="HardcodedText"
-            android:onClick="@{() -> viewmodel.numberPlusOne()}" />
+            android:onClick="@{() -> viewmodel.countPlusOne()}" />
 
         <Button
             android:id="@+id/buttonDown"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:text="Down"
             tools:ignore="HardcodedText"
-            android:onClick="@{() -> viewmodel.numberMinusOne()}" />
+            android:onClick="@{() -> viewmodel.countMinusOne()}" />
     </LinearLayout>
 
 </layout>
