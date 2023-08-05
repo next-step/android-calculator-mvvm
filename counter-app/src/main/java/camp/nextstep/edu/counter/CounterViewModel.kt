@@ -13,7 +13,7 @@ class CounterViewModel : ViewModel() {
     val countUnderZero: LiveData<Event<Unit>> = _countUnderZero
 
     fun countPlusOne() {
-        _count.value = _count.value?.plus(1)
+        _count.value = _count.value?.plus(COUNT_ONE)
     }
 
     fun countMinusOne() {
@@ -21,11 +21,12 @@ class CounterViewModel : ViewModel() {
             _countUnderZero.value = Event(Unit)
             return
         }
-        _count.value = _count.value?.minus(1)
+        _count.value = _count.value?.minus(COUNT_ONE)
     }
 
 
     companion object {
         const val COUNT_ZERO = 0
+        const val COUNT_ONE = 1
     }
 }

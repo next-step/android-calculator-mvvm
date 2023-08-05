@@ -18,10 +18,10 @@ class CounterActivityTest {
         // given: 0
 
         // when: Up 버튼을 누르면
-        onView(withId(R.id.buttonUp)).perform(click())
+        onUpButtonClicked()
 
         // then: 1이 된다
-        onView(withId(R.id.textView)).check(matches(withText("1")))
+        onCheckCount(1)
     }
 
     @Test
@@ -29,11 +29,11 @@ class CounterActivityTest {
         // given: 0
 
         // when: Up Down 버튼을 누르면
-        onView(withId(R.id.buttonUp)).perform(click())
-        onView(withId(R.id.buttonDown)).perform(click())
+        onUpButtonClicked()
+        onDownButtonClicked()
 
         // then: 0이 된다
-        onView(withId(R.id.textView)).check(matches(withText("0")))
+        onCheckCount(0)
     }
 
     @Test
@@ -41,10 +41,10 @@ class CounterActivityTest {
         // given: 0
 
         // when: Down 버튼을 누르면
-        onView(withId(R.id.buttonDown)).perform(click())
+        onDownButtonClicked()
 
         // then: 0이 유지된다.
-        onView(withId(R.id.textView)).check(matches(withText("0")))
+        onCheckCount(0)
     }
 
     @Test
@@ -52,11 +52,11 @@ class CounterActivityTest {
         // given: 0
 
         // when: Up Up 버튼을 누르면
-        onView(withId(R.id.buttonUp)).perform(click())
-        onView(withId(R.id.buttonUp)).perform(click())
+        onUpButtonClicked()
+        onUpButtonClicked()
 
         // then: 2가 된다.
-        onView(withId(R.id.textView)).check(matches(withText("2")))
+        onCheckCount(2)
     }
 
     @Test
@@ -64,11 +64,23 @@ class CounterActivityTest {
         // given: 0
 
         // when: Up Up Down 버튼을 누르면
-        onView(withId(R.id.buttonUp)).perform(click())
-        onView(withId(R.id.buttonUp)).perform(click())
-        onView(withId(R.id.buttonDown)).perform(click())
+        onUpButtonClicked()
+        onUpButtonClicked()
+        onDownButtonClicked()
 
         // then: 1가 된다.
-        onView(withId(R.id.textView)).check(matches(withText("1")))
+        onCheckCount(1)
+    }
+
+    fun onUpButtonClicked() {
+        onView(withId(R.id.buttonUp)).perform(click())
+    }
+
+    fun onDownButtonClicked() {
+        onView(withId(R.id.buttonDown)).perform(click())
+    }
+
+    fun onCheckCount(count: Int) {
+        onView(withId(R.id.textView)).check(matches(withText(count.toString())))
     }
 }
