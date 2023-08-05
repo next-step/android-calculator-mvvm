@@ -13,6 +13,13 @@ internal class CounterViewModelTest {
     val instantExecutorRule = InstantTaskExecutorRule()
 
     @Test
+    fun `초기_값은_0이다`() {
+        // given: 0
+        val actual = viewModel.count.getOrAwaitValue()
+        assertThat(actual).isEqualTo(0)
+    }
+
+    @Test
     fun `0일때_UP버튼을_누르면_1`() {
         // given: 0
 
@@ -74,5 +81,19 @@ internal class CounterViewModelTest {
         // then: 1가 된다.
         val actual = viewModel.count.getOrAwaitValue()
         assertThat(actual).isEqualTo(1)
+    }
+
+    @Test
+    fun `0일때_UP_DOWN_DOWN버튼을_누르면_0`() {
+        // given: 0
+
+        // when: Up Down Down버튼을 누르면
+        viewModel.countPlusOne()
+        viewModel.countMinusOne()
+        viewModel.countMinusOne()
+
+        // then: 0이 된다
+        val actual = viewModel.count.getOrAwaitValue()
+        assertThat(actual).isEqualTo(0)
     }
 }
