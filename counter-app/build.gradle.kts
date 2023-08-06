@@ -4,6 +4,7 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-kapt")
+    id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
 }
 
 android {
