@@ -39,6 +39,11 @@ android {
         viewBinding = true
         dataBinding = true
     }
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -51,16 +56,24 @@ dependencies {
     implementation("com.google.android.material:material:1.7.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.fragment:fragment-ktx:1.5.5")
+    implementation("androidx.test:core-ktx:1.4.0")
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.google.truth:truth:1.1.3")
     testImplementation("androidx.arch.core:core-testing:2.1.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("org.robolectric:robolectric:${Version.robolectric}")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
 
+    // Room
     kapt("androidx.room:room-compiler:${Version.room}")
     annotationProcessor("androidx.room:room-compiler:${Version.room}")
     implementation("androidx.room:room-runtime:${Version.room}")
     implementation("androidx.room:room-ktx:${Version.room}")
     testImplementation("androidx.room:room-testing:${Version.room}")
+
+    // Mockk
+    testImplementation("io.mockk:mockk:${Version.mockk}")
+    androidTestImplementation("io.mockk:mockk-android:${Version.mockk}")
 }
