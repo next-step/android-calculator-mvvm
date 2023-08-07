@@ -5,14 +5,14 @@ import camp.nextstep.edu.calculator.domain.model.History
 
 fun HistoryEntity.toDomain(): History {
     return History(
-        statement = this.statement ?: "",
+        expressions = this.expressions ?: "",
         result = this.result
     )
 }
 
 fun History.toData(): HistoryEntity {
     return HistoryEntity(
-        statement = this.statement,
+        expressions = this.expressions,
         result = this.result
     )
 }

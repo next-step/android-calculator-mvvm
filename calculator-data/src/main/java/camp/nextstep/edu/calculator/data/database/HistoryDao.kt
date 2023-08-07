@@ -10,10 +10,7 @@ import androidx.room.Query
 interface HistoryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertHistory(historyEntity: HistoryEntity)
-
-    @Delete
-    suspend fun deleteHistory(historyEntity: HistoryEntity)
+    fun insertHistory(historyEntity: HistoryEntity)
 
     @Query("SELECT * FROM HistoryEntity")
     fun getHistories(): List<HistoryEntity>

@@ -13,10 +13,6 @@ class HistoryRepositoryImpl(
         historyDao.insertHistory(history.toData())
     }
 
-    override suspend fun deleteHistory(history: History) {
-        historyDao.deleteHistory(history.toData())
-    }
-
     override suspend fun getHistories(): List<History> {
         return historyDao.getHistories().map { it.toDomain() }
     }
