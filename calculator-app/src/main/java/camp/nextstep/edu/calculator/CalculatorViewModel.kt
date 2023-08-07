@@ -6,8 +6,15 @@ import androidx.lifecycle.ViewModel
 import camp.nextstep.edu.calculator.domain.Calculator
 import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
+import camp.nextstep.edu.calculator.domain.usecase.DeleteHistoryUseCase
+import camp.nextstep.edu.calculator.domain.usecase.GetHistoriesUseCase
+import camp.nextstep.edu.calculator.domain.usecase.InsertHistoryUseCase
 
-class CalculatorViewModel: ViewModel() {
+class CalculatorViewModel(
+    insertHistoryUseCase: InsertHistoryUseCase,
+    deleteHistoryUseCase: DeleteHistoryUseCase,
+    getHistoriesUseCase: GetHistoriesUseCase
+): ViewModel() {
 
     private val calculator = Calculator()
     private var expression: Expression = Expression.EMPTY
