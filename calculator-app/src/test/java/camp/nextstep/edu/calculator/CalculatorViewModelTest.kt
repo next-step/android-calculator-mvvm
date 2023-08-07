@@ -161,12 +161,12 @@ internal class CalculatorViewModelTest {
         viewModel.addToExpression(2)
         viewModel.calculate()
 
-        testScope.launch {
-            // when: 메모리 버튼을 누르면
-            viewModel.toggleHistory()
+        // when: 메모리 버튼을 누르면
+        viewModel.toggleHistory()
 
-            // then
-            assertEquals(listOf(History("1 + 2", 3)), viewModel.histories.getOrAwaitValue())
+        // then: 12 + 12 = 의 기록이 추가된다.
+        testScope.launch {
+            assertEquals(listOf(History("12 + 12", 24)), viewModel.histories.getOrAwaitValue())
         }
     }
 
