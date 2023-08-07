@@ -1,9 +1,19 @@
 package camp.nextstep.edu.calculator
 
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import org.hamcrest.Matchers.not
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class CalculatorActivityTest {
 
     @get:Rule
@@ -115,5 +125,32 @@ class CalculatorActivityTest {
         // then: 동작을 안한다
         val actual = ""
         onShowTextView(actual = actual, viewId = R.id.textView)
+    }
+
+    @Test
+    fun `메모리_버튼을_누르면_기록이_화면에_보인다`() {
+        // given
+
+        // when: 메모리 버튼을 누르면
+        onButtonClicked(R.id.buttonMemory)
+
+        // Then: 계산 기록이 화면에 보인다.
+        onView(withId(R.id.recyclerView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
+        onView(withId(R.id.textView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)))
+        onView(withId(R.id.list_item)).check(matches(not(isDisplayed())))
+    }
+
+    @Test
+    fun `메모리_버튼을_두번_누르면_기록이_화면에서_보였다_사라진다`() {
+        // given
+
+        // when: 메모리 버튼을 두번 누르면
+        onButtonClicked(R.id.buttonMemory)
+        onButtonClicked(R.id.buttonMemory)
+
+        // Then: 계산 기록이 화면에 보였다 사라진다
+        onView(withId(R.id.recyclerView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
+        onView(withId(R.id.textView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)))
+        onView(withId(R.id.list_item)).check(matches(not(isDisplayed())))
     }
 }
