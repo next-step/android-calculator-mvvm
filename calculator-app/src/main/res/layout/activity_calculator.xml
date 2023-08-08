@@ -32,6 +32,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="HardcodedText"
             android:text="@{viewmodel.text}"
+            app:isVisible="@{!viewmodel.historyVisible}"
             />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -44,7 +45,9 @@
             app:layout_constraintStart_toStartOf="@id/textView"
             app:layout_constraintTop_toTopOf="@id/textView"
             tools:listitem="@layout/item_result"
-            tools:visibility="visible"
+            app:isVisible="@{viewmodel.historyVisible}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"
             />
 
         <View
@@ -79,7 +82,7 @@
             app:layout_constraintBottom_toBottomOf="@id/buttonDelete"
             app:layout_constraintStart_toStartOf="@id/input"
             app:layout_constraintTop_toTopOf="@id/buttonDelete"
-            android:onClick="@{() -> viewmodel.removeMemory()}"
+            android:onClick="@{() -> viewmodel.toggleHistory()}"
             />
 
         <GridLayout

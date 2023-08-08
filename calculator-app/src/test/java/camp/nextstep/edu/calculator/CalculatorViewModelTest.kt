@@ -2,16 +2,41 @@ package camp.nextstep.edu.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import camp.nextstep.edu.calculator.domain.Operator
+import camp.nextstep.edu.calculator.domain.model.History
+import camp.nextstep.edu.calculator.domain.usecase.GetHistoriesUseCase
+import camp.nextstep.edu.calculator.domain.usecase.InsertHistoryUseCase
 import com.google.common.truth.Truth.assertThat
+import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestScope
+import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 internal class CalculatorViewModelTest {
 
-    private val viewModel = CalculatorViewModel()
+    private lateinit var viewModel: CalculatorViewModel
 
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val testDispatcher = StandardTestDispatcher()
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val testScope = TestScope(testDispatcher)
+
+
+    @Before
+    fun setUp() {
+        val getHistoriesUseCase = GetHistoriesUseCase(mockk(relaxed = true))
+        val insertHistoryUseCase = InsertHistoryUseCase(mockk(relaxed = true))
+        viewModel = CalculatorViewModel(insertHistoryUseCase = insertHistoryUseCase, getHistoriesUseCase = getHistoriesUseCase)
+    }
 
     @Test
     fun `1을_누르면_1이_보인다`() {
@@ -75,8 +100,10 @@ internal class CalculatorViewModelTest {
         viewModel.calculate()
 
         // then: 24이 나온다
-        val actual = viewModel.text.getOrAwaitValue()
-        assertThat(actual).isEqualTo("24")
+        testScope.launch {
+            val actual = viewModel.text.getOrAwaitValue()
+            assertThat(actual).isEqualTo("24")
+        }
     }
 
     @Test
@@ -94,24 +121,6 @@ internal class CalculatorViewModelTest {
     }
 
     @Test
-    fun `12더하기12결과_누르고_리셋버튼을_누르면_빈문자열_보인다`() {
-        // given: 12 + 12 =
-        viewModel.addToExpression(1)
-        viewModel.addToExpression(2)
-        viewModel.addToExpression(Operator.Plus)
-        viewModel.addToExpression(1)
-        viewModel.addToExpression(2)
-        viewModel.calculate()
-
-        // when: 리셋 누르면
-        viewModel.removeMemory()
-
-        // then: 빈문자열이 나온다
-        val actual = viewModel.text.getOrAwaitValue()
-        assertThat(actual).isEqualTo("")
-    }
-
-    @Test
     fun `초기상태에서_더하기를_누르면_동작을_안한다`() {
         // when: +를 누르면
         viewModel.addToExpression(Operator.Plus)
@@ -119,5 +128,58 @@ internal class CalculatorViewModelTest {
         // then: 동작을 안한다
         val actual = viewModel.text.getOrAwaitValue()
         assertThat(actual).isEqualTo("")
+    }
+
+    @Test
+    fun `초기상태에서_historyVisible_값은_False다`() {
+        // given: 초기 상태
+
+        // then: historyVisible값은 false다
+        val actual = viewModel.historyVisible.getOrAwaitValue()
+        assertThat(actual).isEqualTo(false)
+    }
+
+    @Test
+    fun `초기상태에서_메모리_버튼을_누르면_historyVisible_값은_true다`() {
+        // given: 초기 상태
+
+        // when: 메모리 버튼을 누르면
+        viewModel.toggleHistory()
+
+        // then: historyVisible값은 true다
+        val actual = viewModel.historyVisible.getOrAwaitValue()
+        assertThat(actual).isEqualTo(true)
+    }
+
+    @Test
+    fun `계산을_완료하고_메모리_버튼을_누르면_기록에_추가된다`() {
+        // given: 12 + 12 = 를 누르고
+        viewModel.addToExpression(1)
+        viewModel.addToExpression(2)
+        viewModel.addToExpression(Operator.Plus)
+        viewModel.addToExpression(1)
+        viewModel.addToExpression(2)
+        viewModel.calculate()
+
+        // when: 메모리 버튼을 누르면
+        viewModel.toggleHistory()
+
+        // then: 12 + 12 = 의 기록이 추가된다.
+        testScope.launch {
+            assertEquals(listOf(History("12 + 12", 24)), viewModel.histories.getOrAwaitValue())
+        }
+    }
+
+    @Test
+    fun `초기상태에서_메모리_버튼을_두번_누르면_historyVisible_값은_true다`() {
+        // given: 초기 상태
+
+        // when: 메모리 버튼을 두번 누르면
+        viewModel.toggleHistory()
+        viewModel.toggleHistory()
+
+        // then: historyVisible값은 false다
+        val actual = viewModel.historyVisible.getOrAwaitValue()
+        assertThat(actual).isEqualTo(false)
     }
 }

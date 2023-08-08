@@ -1,3 +1,14 @@
+# Step3(2023-08-07) #
+    * 계산 기록
+        * [x] = 버튼을 누를 때마다 계산 기록에 저장되어야 한다.
+        * [x] 시계 버튼을 누르면 계산 기록을 볼 수 있는 UI가 보여야 한다.
+        * [x] 앱을 종료하고 켜도 이전 계산 기록들은 남아있어야 한다.
+        * [x] 계산 기록 UI가 떠 있는 상태에서 시계 버튼을 다시 누르면 계산 기록 UI가 사라져야 한다.
+        * [x] ViewModel의 모든 로직에 대한 단위 테스트를 작성해야 한다.
+        * [x] Data 모듈의 계산기록을 저장하고 불러오는 코드에 대해 단위 테스트를 작성
+        * [x] 계산 기록에 대한 Ui 테스트를 작성한다.
+        
+
 # Step2(2023-08-05) #
     * Calculator MVVM 구현
         * [x] 사용자가 클릭한 값에 따라서 사칙 연산을 수행하는 계산기 구현 및 테스트 코드 추가
@@ -11,6 +22,10 @@
         * [x] 입력된 수식이 완전하지 않을 때, = 을 누르면 토스트 메세지가 나와야 한다.
         * [x] CalculatorActivity 테스트 코드 추가
         * [x] CalculatorViewModel 테스트 코드 추가
+    * 1차 피드백
+        * [x] onNumberButtonClicked(number: Int) 함수 -> onButtonClicked(viewId: Int)
+        * [] MutableLiveData<String> -> MutableLiveData<Expression>
+        * [] 테스트 코드 viewModel.removeLast() 메서드 앞에 viewModel.addToExpression()에 의존성을 가지던 내용
 
 # Step1(2023-08-03) #
     * Counter MVVM 구현
