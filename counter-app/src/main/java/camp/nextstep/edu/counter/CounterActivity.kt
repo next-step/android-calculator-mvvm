@@ -23,14 +23,17 @@ class CounterActivity : AppCompatActivity() {
 			counterViewModel.countUp()
 		}
 		binding.buttonDown.setOnClickListener {
-			val isSuccess = counterViewModel.countDown()
-			showCountDownFailMessageIfNeed(isSuccess)
+			counterViewModel.countDown()
+		}
+		counterViewModel.countDownFailure.observe(this) { countDownFailure ->
+			if (countDownFailure) {
+				showCountDownFailureMessage()
+			}
 		}
 	}
 
-	private fun showCountDownFailMessageIfNeed(isSuccess: Boolean) {
-		if (isSuccess.not()) {
-			Toast.makeText(this, "0 이하로 내릴 수 없습니다", Toast.LENGTH_LONG).show()
-		}
+	private fun showCountDownFailureMessage() {
+		Toast.makeText(this, "0 이하로 내릴 수 없습니다", Toast.LENGTH_LONG).show()
+		counterViewModel.resetCountDownFailure()
 	}
 }

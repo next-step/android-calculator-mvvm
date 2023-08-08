@@ -10,20 +10,28 @@ class CounterViewModel : ViewModel() {
 	val count: LiveData<Int>
 		get() = _count
 
+
+	private val _countDownFailure: MutableLiveData<Boolean> = SingleLiveEvent(false)
+	val countDownFailure: LiveData<Boolean>
+		get() = _countDownFailure
+
 	fun countUp() {
 		val countSnapshot = _count.value ?: return
 
 		_count.value = countSnapshot + 1
 	}
 
-	fun countDown(): Boolean {
-		val countSnapshot = _count.value ?: return false
+	fun countDown() {
+		val countSnapshot = _count.value ?: return
 
-		return if (countSnapshot <= 0) {
-			false
+		if (countSnapshot <= 0) {
+			_countDownFailure.value = true
 		} else {
 			_count.value = countSnapshot - 1
-			true
 		}
+	}
+
+	fun resetCountDownFailure() {
+		_countDownFailure.value = false
 	}
 }
