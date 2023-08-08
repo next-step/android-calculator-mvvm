@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import camp.nextstep.edu.counter.Constants.EVENT_SHOW_TOAST
 import camp.nextstep.edu.counter.databinding.ActivityCounterBinding
 
 class CounterActivity : AppCompatActivity() {
@@ -25,7 +24,7 @@ class CounterActivity : AppCompatActivity() {
         viewModel.event.observe(this) { event ->
             event.consume()?.let {
                 when (it) {
-                    EVENT_SHOW_TOAST -> {
+                    MainViewModel.EventType.SHOW_TOAST -> {
                         Toast.makeText(
                             this@CounterActivity, "0 이하로 내릴 수 없습니다", Toast.LENGTH_SHORT
                         ).show()
