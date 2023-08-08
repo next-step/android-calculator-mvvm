@@ -28,6 +28,7 @@
                 android:id="@+id/buttonUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{() -> viewModel.countUp()}"
                 android:text="Up"
                 tools:ignore="HardcodedText" />
 
@@ -35,6 +36,7 @@
                 android:id="@+id/buttonDown"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{() -> viewModel.countDown()}"
                 android:text="Down"
                 tools:ignore="HardcodedText" />
     </LinearLayout>

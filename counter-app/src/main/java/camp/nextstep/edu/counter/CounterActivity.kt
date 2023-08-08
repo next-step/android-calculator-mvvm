@@ -19,12 +19,6 @@ class CounterActivity : AppCompatActivity() {
 		binding.lifecycleOwner = this
 		binding.viewModel = counterViewModel
 
-		binding.buttonUp.setOnClickListener {
-			counterViewModel.countUp()
-		}
-		binding.buttonDown.setOnClickListener {
-			counterViewModel.countDown()
-		}
 		counterViewModel.countDownFailure.observe(this) { countDownFailure ->
 			if (countDownFailure) {
 				showCountDownFailureMessage()
