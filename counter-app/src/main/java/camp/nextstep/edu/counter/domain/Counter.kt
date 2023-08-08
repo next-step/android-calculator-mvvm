@@ -22,6 +22,7 @@ value class Counter(val number: Int = MINIMUM_NUMBER) {
     }
 
     companion object {
+        val ZERO = Counter()
         const val MINIMUM_NUMBER = 0
     }
 }
