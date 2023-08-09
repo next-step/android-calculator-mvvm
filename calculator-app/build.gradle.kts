@@ -39,11 +39,6 @@ android {
         viewBinding = true
         dataBinding = true
     }
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-        }
-    }
 }
 
 dependencies {
@@ -68,4 +63,7 @@ dependencies {
     // Mockk
     testImplementation("io.mockk:mockk:${Version.mockk}")
     androidTestImplementation("io.mockk:mockk-android:${Version.mockk}")
+
+    // Robotic
+    testImplementation("org.robolectric:robolectric:${Version.robolectric}")
 }

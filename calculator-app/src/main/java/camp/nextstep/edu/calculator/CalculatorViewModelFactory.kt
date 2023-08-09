@@ -7,12 +7,11 @@ import camp.nextstep.edu.calculator.di.AppModule
 import java.util.concurrent.ExecutorService
 
 class CalculatorViewModelFactory(
-    private val context: Context,
-    private val executorService: ExecutorService
+    private val context: Context
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when (modelClass) {
-            CalculatorViewModel::class.java -> AppModule.provideCalculatorViewModel(context = context, executorService)
+            CalculatorViewModel::class.java -> AppModule.provideCalculatorViewModel(context = context)
             else -> throw IllegalArgumentException("Unknown ViewModel class")
         } as T
     }

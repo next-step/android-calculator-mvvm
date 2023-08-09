@@ -11,7 +11,7 @@ import java.util.concurrent.Executors
 class CalculatorActivity : AppCompatActivity() {
 
     private lateinit var viewDataBinding: ActivityCalculatorBinding
-    private val viewModel: CalculatorViewModel by viewModels { CalculatorViewModelFactory(context = this, executorService = provideExecutorService()) }
+    private val viewModel: CalculatorViewModel by viewModels { CalculatorViewModelFactory(context = this) }
     private val historyAdapter by lazy { HistoryAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,10 +43,5 @@ class CalculatorActivity : AppCompatActivity() {
                 Toast.makeText(this, R.string.incomplete_expression, Toast.LENGTH_SHORT).show()
             }
         }
-    }
-
-    private fun provideExecutorService(): ExecutorService {
-        val threadCount = Runtime.getRuntime().availableProcessors() * 2
-        return Executors.newFixedThreadPool(threadCount)
     }
 }

@@ -32,11 +32,6 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-        }
-    }
 }
 
 dependencies {
@@ -50,7 +45,7 @@ dependencies {
 
     testImplementation("com.google.truth:truth:1.1.3")
     testImplementation("androidx.arch.core:core-testing:2.1.0")
-    androidTestImplementation("org.robolectric:robolectric:${Version.robolectric}")
+    testImplementation("org.robolectric:robolectric:${Version.robolectric}")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
 
     // Room
