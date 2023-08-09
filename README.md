@@ -1,3 +1,8 @@
+# Step4(2023-08-09) #
+    * 리팩토링
+        * [x] calculator 모듈은 data 모듈의 구현체에 의존하지 않아야 한다.
+        * [x] data 모듈의 구현체는 모두 internal class여야 한다.
+
 # Step3(2023-08-07) #
     * 계산 기록
         * [x] = 버튼을 누를 때마다 계산 기록에 저장되어야 한다.
@@ -7,7 +12,11 @@
         * [x] ViewModel의 모든 로직에 대한 단위 테스트를 작성해야 한다.
         * [x] Data 모듈의 계산기록을 저장하고 불러오는 코드에 대해 단위 테스트를 작성
         * [x] 계산 기록에 대한 Ui 테스트를 작성한다.
-        
+    * 1차 피드백
+        * [x] List 삼항 연산자 -> 확장함수 사용
+        * [x] UseCase 클래스명 통일 (유저 관점으로 Calculate로)
+        * [x] DiffCallback 동일성 비교 수정 (유일한 값으로)
+        * [x] ViewModel에서 Dispatcher.IO로 설정하던 부분 Data 모듈이 담당하도록 이전
 
 # Step2(2023-08-05) #
     * Calculator MVVM 구현
