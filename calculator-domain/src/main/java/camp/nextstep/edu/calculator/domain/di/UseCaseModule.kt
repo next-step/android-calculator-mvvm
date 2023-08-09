@@ -1,17 +1,17 @@
 package camp.nextstep.edu.calculator.domain.di
 
 import camp.nextstep.edu.calculator.domain.repository.HistoryRepository
-import camp.nextstep.edu.calculator.domain.usecase.GetHistoriesUseCase
-import camp.nextstep.edu.calculator.domain.usecase.InsertHistoryUseCase
+import camp.nextstep.edu.calculator.domain.usecase.GetCalculateHistoriesUseCase
+import camp.nextstep.edu.calculator.domain.usecase.PostCalculateUseCase
 
 object UseCaseModule {
-    fun provideGetHistoriesUseCase(
+    fun provideGetCalculateHistoriesUseCase(
         repository: HistoryRepository
-    ): GetHistoriesUseCase =
-        GetHistoriesUseCase(repository = repository)
+    ): GetCalculateHistoriesUseCase =
+        GetCalculateHistoriesUseCase(repository = repository)
 
-    fun provideInsertHistoryUseCase(
+    fun providePostCalculateUseCase(
         repository: HistoryRepository
-    ): InsertHistoryUseCase =
-        InsertHistoryUseCase(repository = repository)
+    ): PostCalculateUseCase =
+        PostCalculateUseCase(repository = repository)
 }

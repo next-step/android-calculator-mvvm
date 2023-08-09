@@ -12,12 +12,12 @@ object AppModule {
 
         val repository = DataModule.provideHistoryRepository(context)
 
-        val getHistoriesUseCase by lazy { UseCaseModule.provideGetHistoriesUseCase(repository) }
-        val insertHistoryUseCase by lazy { UseCaseModule.provideInsertHistoryUseCase(repository) }
+        val getCalculateHistoriesUseCase by lazy { UseCaseModule.provideGetCalculateHistoriesUseCase(repository) }
+        val postCalculateUseCase by lazy { UseCaseModule.providePostCalculateUseCase(repository) }
 
         return CalculatorViewModel(
-            getHistoriesUseCase = getHistoriesUseCase,
-            insertHistoryUseCase = insertHistoryUseCase
+            getCalculateHistoriesUseCase = getCalculateHistoriesUseCase,
+            postCalculateUseCase = postCalculateUseCase
         )
     }
 }

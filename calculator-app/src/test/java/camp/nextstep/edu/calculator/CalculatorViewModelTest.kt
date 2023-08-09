@@ -3,8 +3,8 @@ package camp.nextstep.edu.calculator
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import camp.nextstep.edu.calculator.domain.Operator
 import camp.nextstep.edu.calculator.domain.model.History
-import camp.nextstep.edu.calculator.domain.usecase.GetHistoriesUseCase
-import camp.nextstep.edu.calculator.domain.usecase.InsertHistoryUseCase
+import camp.nextstep.edu.calculator.domain.usecase.GetCalculateHistoriesUseCase
+import camp.nextstep.edu.calculator.domain.usecase.PostCalculateUseCase
 import com.google.common.truth.Truth.assertThat
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -33,9 +33,9 @@ internal class CalculatorViewModelTest {
 
     @Before
     fun setUp() {
-        val getHistoriesUseCase = GetHistoriesUseCase(mockk(relaxed = true))
-        val insertHistoryUseCase = InsertHistoryUseCase(mockk(relaxed = true))
-        viewModel = CalculatorViewModel(insertHistoryUseCase = insertHistoryUseCase, getHistoriesUseCase = getHistoriesUseCase)
+        val getCalculateHistoriesUseCase = GetCalculateHistoriesUseCase(mockk(relaxed = true))
+        val postCalculateUseCase = PostCalculateUseCase(mockk(relaxed = true))
+        viewModel = CalculatorViewModel(postCalculateUseCase = postCalculateUseCase, getCalculateHistoriesUseCase = getCalculateHistoriesUseCase)
     }
 
     @Test

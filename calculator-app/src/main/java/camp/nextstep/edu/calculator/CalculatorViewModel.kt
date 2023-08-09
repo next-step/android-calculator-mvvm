@@ -8,14 +8,14 @@ import camp.nextstep.edu.calculator.domain.Calculator
 import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
 import camp.nextstep.edu.calculator.domain.model.History
-import camp.nextstep.edu.calculator.domain.usecase.GetHistoriesUseCase
-import camp.nextstep.edu.calculator.domain.usecase.InsertHistoryUseCase
+import camp.nextstep.edu.calculator.domain.usecase.GetCalculateHistoriesUseCase
+import camp.nextstep.edu.calculator.domain.usecase.PostCalculateUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
-    private val insertHistoryUseCase: InsertHistoryUseCase,
-    private val getHistoriesUseCase: GetHistoriesUseCase
+    private val postCalculateUseCase: PostCalculateUseCase,
+    private val getCalculateHistoriesUseCase: GetCalculateHistoriesUseCase
 ): ViewModel() {
 
     private val calculator = Calculator()
@@ -54,7 +54,7 @@ class CalculatorViewModel(
             if (result == null) {
                 _inCompleteExpressionError.value = Event(Unit)
             } else {
-                insertHistoryUseCase(History(expressions = expression.toString(), result = result))
+                postCalculateUseCase(History(expressions = expression.toString(), result = result))
                 expression = Expression(listOf(result))
                 setText(expression)
             }
@@ -71,7 +71,7 @@ class CalculatorViewModel(
 
     private fun getHistories() {
         viewModelScope.launch(Dispatchers.IO) {
-            _histories.postValue(getHistoriesUseCase().orEmpty())
+            _histories.postValue(getCalculateHistoriesUseCase().orEmpty())
         }
     }
 
