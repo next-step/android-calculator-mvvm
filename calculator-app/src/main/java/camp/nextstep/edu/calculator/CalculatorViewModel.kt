@@ -71,7 +71,7 @@ class CalculatorViewModel(
 
     private fun getHistories() {
         viewModelScope.launch(Dispatchers.IO) {
-            _histories.postValue(getHistoriesUseCase() ?: emptyList())
+            _histories.postValue(getHistoriesUseCase().orEmpty())
         }
     }
 
