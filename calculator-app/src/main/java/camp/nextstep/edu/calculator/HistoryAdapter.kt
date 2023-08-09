@@ -40,7 +40,7 @@ class HistoryAdapter : ListAdapter<History, HistoryAdapter.ViewHolder>(HistoryDi
 
     internal object HistoryDiffCallback : DiffUtil.ItemCallback<History>() {
         override fun areItemsTheSame(oldItem: History, newItem: History) =
-            oldItem == newItem
+            (oldItem.result == newItem.result) && (oldItem.expressions == newItem.expressions)
 
         override fun areContentsTheSame(oldItem: History, newItem: History) =
             oldItem == newItem
