@@ -6,7 +6,7 @@ import camp.nextstep.edu.calculator.domain.repository.HistoryRepository
 class PostCalculateUseCase(
     private val repository: HistoryRepository
 ) {
-    suspend operator fun invoke(history: History) {
+    operator fun invoke(history: History) {
         return repository.insertHistory(history)
     }
 }

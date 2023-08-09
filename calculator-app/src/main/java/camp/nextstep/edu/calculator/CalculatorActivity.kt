@@ -5,11 +5,13 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import camp.nextstep.edu.calculator.databinding.ActivityCalculatorBinding
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class CalculatorActivity : AppCompatActivity() {
 
     private lateinit var viewDataBinding: ActivityCalculatorBinding
-    private val viewModel: CalculatorViewModel by viewModels { CalculatorViewModelFactory(this) }
+    private val viewModel: CalculatorViewModel by viewModels { CalculatorViewModelFactory(context = this, executorService = provideExecutorService()) }
     private val historyAdapter by lazy { HistoryAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,5 +43,10 @@ class CalculatorActivity : AppCompatActivity() {
                 Toast.makeText(this, R.string.incomplete_expression, Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun provideExecutorService(): ExecutorService {
+        val threadCount = Runtime.getRuntime().availableProcessors() * 2
+        return Executors.newFixedThreadPool(threadCount)
     }
 }

@@ -3,15 +3,12 @@ package camp.nextstep.edu.calculator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import camp.nextstep.edu.calculator.domain.Calculator
 import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
 import camp.nextstep.edu.calculator.domain.model.History
 import camp.nextstep.edu.calculator.domain.usecase.GetCalculateHistoriesUseCase
 import camp.nextstep.edu.calculator.domain.usecase.PostCalculateUseCase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
     private val postCalculateUseCase: PostCalculateUseCase,
@@ -49,15 +46,13 @@ class CalculatorViewModel(
     }
 
     fun calculate() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = calculator.calculate(expression.toString())
-            if (result == null) {
-                _inCompleteExpressionError.value = Event(Unit)
-            } else {
-                postCalculateUseCase(History(expressions = expression.toString(), result = result))
-                expression = Expression(listOf(result))
-                setText(expression)
-            }
+        val result = calculator.calculate(expression.toString())
+        if (result == null) {
+            _inCompleteExpressionError.value = Event(Unit)
+        } else {
+            postCalculateUseCase(History(expressions = expression.toString(), result = result))
+            expression = Expression(listOf(result))
+            setText(expression)
         }
     }
 
@@ -70,9 +65,7 @@ class CalculatorViewModel(
     }
 
     private fun getHistories() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _histories.postValue(getCalculateHistoriesUseCase().orEmpty())
-        }
+        _histories.postValue(getCalculateHistoriesUseCase().orEmpty())
     }
 
     private fun setText(expression: Expression) {
