@@ -19,15 +19,12 @@ class CounterActivity : AppCompatActivity() {
 		binding.lifecycleOwner = this
 		binding.viewModel = counterViewModel
 
-		counterViewModel.countDownFailure.observe(this) { countDownFailure ->
-			if (countDownFailure) {
-				showCountDownFailureMessage()
-			}
+		counterViewModel.countDownFailure.observe(this) {
+			showCountDownFailureMessage()
 		}
 	}
 
 	private fun showCountDownFailureMessage() {
 		Toast.makeText(this, "0 이하로 내릴 수 없습니다", Toast.LENGTH_LONG).show()
-		counterViewModel.resetCountDownFailure()
 	}
 }
