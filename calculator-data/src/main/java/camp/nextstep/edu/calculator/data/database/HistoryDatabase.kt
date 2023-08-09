@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import camp.nextstep.edu.calculator.data.database.HistoryDatabase.Companion.ROOM_VERSION
 
 @Database(entities = [HistoryEntity::class], version = ROOM_VERSION)
-abstract class HistoryDatabase : RoomDatabase() {
+internal abstract class HistoryDatabase : RoomDatabase() {
 
     abstract fun historyDao(): HistoryDao
 
