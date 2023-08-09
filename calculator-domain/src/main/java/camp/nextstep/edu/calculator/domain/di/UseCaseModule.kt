@@ -1,4 +1,4 @@
-package camp.nextstep.edu.calculator.domain.module
+package camp.nextstep.edu.calculator.domain.di
 
 import camp.nextstep.edu.calculator.domain.repository.HistoryRepository
 import camp.nextstep.edu.calculator.domain.usecase.GetHistoriesUseCase

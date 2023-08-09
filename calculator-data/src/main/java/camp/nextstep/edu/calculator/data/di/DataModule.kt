@@ -1,4 +1,4 @@
-package camp.nextstep.edu.calculator.data.module
+package camp.nextstep.edu.calculator.data.di
 
 import android.content.Context
 import camp.nextstep.edu.calculator.data.database.HistoryDatabase

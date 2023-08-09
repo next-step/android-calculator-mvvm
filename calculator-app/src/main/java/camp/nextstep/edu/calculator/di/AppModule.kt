@@ -2,8 +2,8 @@ package camp.nextstep.edu.calculator.di
 
 import android.content.Context
 import camp.nextstep.edu.calculator.CalculatorViewModel
-import camp.nextstep.edu.calculator.data.module.DataModule
-import camp.nextstep.edu.calculator.domain.module.UseCaseModule
+import camp.nextstep.edu.calculator.data.di.DataModule
+import camp.nextstep.edu.calculator.domain.di.UseCaseModule
 
 object AppModule {
     fun provideCalculatorViewModel(
