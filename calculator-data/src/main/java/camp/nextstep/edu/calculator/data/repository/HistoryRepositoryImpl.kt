@@ -6,7 +6,7 @@ import camp.nextstep.edu.calculator.data.mapper.toDomain
 import camp.nextstep.edu.calculator.domain.model.History
 import camp.nextstep.edu.calculator.domain.repository.HistoryRepository
 
-class HistoryRepositoryImpl(
+internal class HistoryRepositoryImpl(
     private val historyDao: HistoryDao
 ) : HistoryRepository {
     override suspend fun insertHistory(history: History) {
