@@ -4,7 +4,6 @@ import android.content.Context
 import camp.nextstep.edu.calculator.data.database.HistoryDatabase
 import camp.nextstep.edu.calculator.data.repository.HistoryRepositoryImpl
 import camp.nextstep.edu.calculator.domain.repository.HistoryRepository
-import java.util.concurrent.ExecutorService
 
 object DataModule {
 
@@ -13,9 +12,8 @@ object DataModule {
     }
 
     fun provideHistoryRepository(
-        context: Context,
-        executorService: ExecutorService
+        context: Context
     ): HistoryRepository {
-        return HistoryRepositoryImpl(historyDao = provideHistoryDataBase(context).historyDao(), executorService = executorService)
+        return HistoryRepositoryImpl(historyDao = provideHistoryDataBase(context).historyDao())
     }
 }

@@ -5,21 +5,23 @@ import camp.nextstep.edu.calculator.data.mapper.toData
 import camp.nextstep.edu.calculator.data.mapper.toDomain
 import camp.nextstep.edu.calculator.domain.model.History
 import camp.nextstep.edu.calculator.domain.repository.HistoryRepository
-import java.util.concurrent.ExecutorService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 internal class HistoryRepositoryImpl(
-    private val historyDao: HistoryDao,
-    private val executorService: ExecutorService
+    private val historyDao: HistoryDao
 ) : HistoryRepository {
-    override fun insertHistory(history: History) {
-        executorService.submit {
+    override suspend fun insertHistory(history: History) {
+        withContext(Dispatchers.IO) {
             historyDao.insertHistory(history.toData())
         }
     }
 
-    override fun getHistories(): List<History> {
-        return executorService.submit<List<History>> {
-            historyDao.getHistories().map { it.toDomain() }
-        }.get()
+    override suspend fun getHistories(): List<History> {
+        var histories = emptyList<History>()
+        withContext(Dispatchers.IO) {
+            histories = historyDao.getHistories().map { it.toDomain() }
+        }
+        return histories
     }
 }

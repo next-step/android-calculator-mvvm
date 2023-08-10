@@ -3,7 +3,7 @@ package camp.nextstep.edu.calculator.domain.repository
 import camp.nextstep.edu.calculator.domain.model.History
 
 interface HistoryRepository {
-    fun insertHistory(history: History)
+    suspend fun insertHistory(history: History)
 
-    fun getHistories(): List<History>
+    suspend fun getHistories(): List<History>
 }

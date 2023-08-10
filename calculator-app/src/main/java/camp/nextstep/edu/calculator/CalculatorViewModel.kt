@@ -3,12 +3,14 @@ package camp.nextstep.edu.calculator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import camp.nextstep.edu.calculator.domain.Calculator
 import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
 import camp.nextstep.edu.calculator.domain.model.History
 import camp.nextstep.edu.calculator.domain.usecase.GetCalculateHistoriesUseCase
 import camp.nextstep.edu.calculator.domain.usecase.PostCalculateUseCase
+import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
     private val postCalculateUseCase: PostCalculateUseCase,
@@ -46,13 +48,15 @@ class CalculatorViewModel(
     }
 
     fun calculate() {
-        postCalculateUseCase(calculator = calculator, expression = expression)
-            .onSuccess {
-                expression = Expression(listOf(it))
-                setText(expression)
-            }.onFailure {
-                _inCompleteExpressionError.value = Event(it.message ?: "알 수 없는 에러입니다.")
-            }
+        viewModelScope.launch {
+            postCalculateUseCase(calculator = calculator, expression = expression)
+                .onSuccess {
+                    expression = Expression(listOf(it))
+                    setText(expression)
+                }.onFailure {
+                    _inCompleteExpressionError.value = Event(it.message ?: "알 수 없는 에러입니다.")
+                }
+        }
     }
 
     fun toggleHistory() {
@@ -64,7 +68,9 @@ class CalculatorViewModel(
     }
 
     private fun getHistories() {
-        _histories.postValue(getCalculateHistoriesUseCase().orEmpty())
+        viewModelScope.launch {
+            _histories.postValue(getCalculateHistoriesUseCase().orEmpty())
+        }
     }
 
     private fun setText(expression: Expression) {

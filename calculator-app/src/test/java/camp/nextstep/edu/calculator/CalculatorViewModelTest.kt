@@ -166,7 +166,7 @@ internal class CalculatorViewModelTest {
 
         // then: 12 + 12 = 의 기록이 추가된다.
         testScope.launch {
-            assertEquals(listOf(History("12 + 12", 24)), viewModel.histories.getOrAwaitValue())
+            assertEquals(listOf(History(expressions = "12 + 12", result = 24)), viewModel.histories.getOrAwaitValue())
         }
     }
 

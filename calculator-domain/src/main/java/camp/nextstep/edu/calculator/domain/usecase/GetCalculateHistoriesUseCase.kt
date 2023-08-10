@@ -6,7 +6,7 @@ import camp.nextstep.edu.calculator.domain.repository.HistoryRepository
 class GetCalculateHistoriesUseCase(
     private val repository: HistoryRepository
 ) {
-    operator fun invoke(): List<History> {
+    suspend operator fun invoke(): List<History> {
         return repository.getHistories()
     }
 }

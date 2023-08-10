@@ -12,7 +12,7 @@ object AppModule {
         context: Context
     ): CalculatorViewModel {
 
-        val repository = DataModule.provideHistoryRepository(context = context, executorService = provideExecutorService())
+        val repository = DataModule.provideHistoryRepository(context = context)
 
         val getCalculateHistoriesUseCase by lazy { UseCaseModule.provideGetCalculateHistoriesUseCase(repository) }
         val postCalculateUseCase by lazy { UseCaseModule.providePostCalculateUseCase(repository) }
@@ -21,10 +21,5 @@ object AppModule {
             getCalculateHistoriesUseCase = getCalculateHistoriesUseCase,
             postCalculateUseCase = postCalculateUseCase
         )
-    }
-
-    private fun provideExecutorService(): ExecutorService {
-        val threadCount = Runtime.getRuntime().availableProcessors() * 2
-        return Executors.newFixedThreadPool(threadCount)
     }
 }
