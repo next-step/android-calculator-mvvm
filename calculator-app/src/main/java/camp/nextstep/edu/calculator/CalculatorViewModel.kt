@@ -8,11 +8,13 @@ import camp.nextstep.edu.calculator.domain.Calculator
 import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
 import camp.nextstep.edu.calculator.domain.RecordRepository
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class CalculatorViewModel(private val recordRepository: RecordRepository) : ViewModel() {
+class CalculatorViewModel(private val recordRepository: RecordRepository, private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO) : ViewModel() {
 
 	private val calculator = Calculator()
 
@@ -55,7 +57,7 @@ class CalculatorViewModel(private val recordRepository: RecordRepository) : View
 		}
 	}
 
-	private fun insertRecord(expression: Expression, result: Int) = viewModelScope.launch {
+	private fun insertRecord(expression: Expression, result: Int) = viewModelScope.launch(ioDispatcher) {
 		recordRepository.insert(expression, result)
 	}
 

@@ -2,21 +2,32 @@ package camp.nextstep.edu.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import camp.nextstep.edu.calculator.domain.Operator
+import camp.nextstep.edu.calculator.domain.RecordRepository
 import com.google.common.truth.Truth.assertThat
+import io.mockk.coVerify
+import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class CalculatorViewModelTest {
 
 	@get:Rule
 	val instantExecutorRule = InstantTaskExecutorRule()
 
+	@get:Rule
+	var mainCoroutineRule = MainCoroutineRule()
+
 	private lateinit var calculatorViewModel: CalculatorViewModel
+	private lateinit var recordRepository: RecordRepository
 
 	@Before
 	fun setUp() {
-		calculatorViewModel = CalculatorViewModel()
+		recordRepository = mockk(relaxed = true)
+		calculatorViewModel = CalculatorViewModel(recordRepository, mainCoroutineRule.testDispatcher)
 	}
 
 	@Test
@@ -143,6 +154,20 @@ class CalculatorViewModelTest {
 		// then
 		val actual = calculatorViewModel.expression.getOrAwaitValue()
 		assertThat(actual.toString()).isEqualTo("3")
+	}
+
+	@Test
+	fun `완성된 수식일 때, 계산을 하면, 계산기록을 추가한다`() = runBlocking {
+		// given
+		calculatorViewModel.addToExpression(1)
+		calculatorViewModel.addToExpression(Operator.Plus)
+		calculatorViewModel.addToExpression(2)
+
+		// when
+		calculatorViewModel.calculate()
+
+		// then
+		coVerify { recordRepository.insert(any(), any()) }
 	}
 
 	@Test
