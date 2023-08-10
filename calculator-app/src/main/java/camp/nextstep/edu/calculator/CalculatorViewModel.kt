@@ -71,7 +71,7 @@ class CalculatorViewModel(private val recordRepository: RecordRepository, privat
 		_expression.value = expressionSnapshot.removeLast()
 	}
 
-	fun showOrHideRecord() {
+	fun toggleRecord() {
 		val showRecordSnapshot = _showRecord.value ?: return
 
 		_showRecord.value = !showRecordSnapshot

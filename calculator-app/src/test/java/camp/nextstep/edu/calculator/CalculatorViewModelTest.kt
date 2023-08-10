@@ -183,4 +183,34 @@ class CalculatorViewModelTest {
 		val actual = calculatorViewModel.expressionInCompleted.getOrAwaitValue()
 		assertThat(actual).isEqualTo(Unit)
 	}
+
+	@Test
+	fun `최초 실행했을 때, 수식이 보인다`() {
+		// then
+		val actual = calculatorViewModel.showRecord.getOrAwaitValue()
+		assertThat(actual).isEqualTo(false)
+	}
+
+	@Test
+	fun `계산기록이 보여지고 있을때, 계산기록을 숨기면, 계산기록이 사라진다`() {
+		// given
+		calculatorViewModel.toggleRecord() // true
+
+		// when
+		calculatorViewModel.toggleRecord() // false
+
+		// then
+		val actual = calculatorViewModel.showRecord.getOrAwaitValue()
+		assertThat(actual).isEqualTo(false)
+	}
+
+	@Test
+	fun `수식이 보여지고 있을때, 계산기록을 띄우면, 계산기록이 보여진다`() {
+		// when
+		calculatorViewModel.toggleRecord() // true
+
+		// then
+		val actual = calculatorViewModel.showRecord.getOrAwaitValue()
+		assertThat(actual).isEqualTo(true)
+	}
 }
