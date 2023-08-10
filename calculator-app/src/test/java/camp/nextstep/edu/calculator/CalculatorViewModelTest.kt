@@ -3,14 +3,19 @@ package camp.nextstep.edu.calculator
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import camp.nextstep.edu.calculator.domain.Operator
 import camp.nextstep.edu.calculator.domain.model.History
+import camp.nextstep.edu.calculator.domain.repository.HistoryRepository
 import camp.nextstep.edu.calculator.domain.usecase.GetCalculateHistoriesUseCase
 import camp.nextstep.edu.calculator.domain.usecase.PostCalculateUseCase
 import com.google.common.truth.Truth.assertThat
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -30,12 +35,19 @@ internal class CalculatorViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     private val testScope = TestScope(testDispatcher)
 
-
     @Before
     fun setUp() {
-        val getCalculateHistoriesUseCase = GetCalculateHistoriesUseCase(mockk(relaxed = true))
-        val postCalculateUseCase = PostCalculateUseCase(mockk(relaxed = true))
+        Dispatchers.setMain(testDispatcher)
+
+        val repository: HistoryRepository = mockk(relaxed = true)
+        val getCalculateHistoriesUseCase = GetCalculateHistoriesUseCase(repository)
+        val postCalculateUseCase = PostCalculateUseCase(repository)
         viewModel = CalculatorViewModel(postCalculateUseCase = postCalculateUseCase, getCalculateHistoriesUseCase = getCalculateHistoriesUseCase)
+    }
+
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
     }
 
     @Test
