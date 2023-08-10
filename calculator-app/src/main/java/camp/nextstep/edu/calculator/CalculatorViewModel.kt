@@ -26,6 +26,10 @@ class CalculatorViewModel(private val recordRepository: RecordRepository, privat
 	val expressionInCompleted: LiveData<Unit>
 		get() = _expressionInCompleted
 
+	private val _showRecord: MutableLiveData<Boolean> = MutableLiveData(false)
+	val showRecord: LiveData<Boolean>
+		get() = _showRecord
+
 	val records = recordRepository.getAll()
 		.stateIn(
 			scope = viewModelScope,
@@ -65,5 +69,11 @@ class CalculatorViewModel(private val recordRepository: RecordRepository, privat
 		val expressionSnapshot = _expression.value ?: return
 
 		_expression.value = expressionSnapshot.removeLast()
+	}
+
+	fun showOrHideRecord() {
+		val showRecordSnapshot = _showRecord.value ?: return
+
+		_showRecord.value = !showRecordSnapshot
 	}
 }
