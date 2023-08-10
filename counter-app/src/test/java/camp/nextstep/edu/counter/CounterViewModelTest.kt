@@ -48,12 +48,12 @@ class CounterViewModelTest {
 	}
 
 	@Test
-	fun `count 값이 0 이하일 때, countDown 호출 시, countDownFailure 값을 true 로 설정한다`() {
+	fun `count 값이 0 이하일 때, countDown 호출 시, countDownFailure 값을 Unit 으로 설정한다`() {
 		// when
 		counterViewModel.countDown()
 
 		// then
 		val countDownFailure = counterViewModel.countDownFailure.getOrAwaitValue()
-		assertThat(countDownFailure).isEqualTo(true)
+		assertThat(countDownFailure).isEqualTo(Unit)
 	}
 }
