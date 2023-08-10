@@ -21,8 +21,8 @@ class CalculatorViewModel(
     private val _text: MutableLiveData<String> = MutableLiveData()
     val text: LiveData<String> = _text
 
-    private val _inCompleteExpressionError: MutableLiveData<Event<Unit>> = MutableLiveData()
-    val inCompleteExpressionError: LiveData<Event<Unit>> = _inCompleteExpressionError
+    private val _inCompleteExpressionError: MutableLiveData<Event<String>> = MutableLiveData()
+    val inCompleteExpressionError: LiveData<Event<String>> = _inCompleteExpressionError
 
     private val _historyVisible: MutableLiveData<Boolean> = MutableLiveData(false)
     val historyVisible: LiveData<Boolean> = _historyVisible
@@ -46,14 +46,13 @@ class CalculatorViewModel(
     }
 
     fun calculate() {
-        val result = calculator.calculate(expression.toString())
-        if (result == null) {
-            _inCompleteExpressionError.value = Event(Unit)
-        } else {
-            postCalculateUseCase(History(expressions = expression.toString(), result = result))
-            expression = Expression(listOf(result))
-            setText(expression)
-        }
+        postCalculateUseCase(calculator = calculator, expression = expression)
+            .onSuccess {
+                expression = Expression(listOf(it))
+                setText(expression)
+            }.onFailure {
+                _inCompleteExpressionError.value = Event(it.message ?: "알 수 없는 에러입니다.")
+            }
     }
 
     fun toggleHistory() {

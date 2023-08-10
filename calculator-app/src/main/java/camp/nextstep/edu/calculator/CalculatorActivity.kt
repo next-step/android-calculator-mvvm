@@ -39,8 +39,8 @@ class CalculatorActivity : AppCompatActivity() {
 
     private fun observerIncompleteExpressionError() {
         viewModel.inCompleteExpressionError.observe(this) {
-            it.consume()?.let {
-                Toast.makeText(this, R.string.incomplete_expression, Toast.LENGTH_SHORT).show()
+            it.consume()?.let { message ->
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             }
         }
     }
