@@ -2,21 +2,32 @@ package camp.nextstep.edu.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import camp.nextstep.edu.calculator.domain.Operator
+import camp.nextstep.edu.calculator.domain.RecordRepository
 import com.google.common.truth.Truth.assertThat
+import io.mockk.coVerify
+import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class CalculatorViewModelTest {
 
 	@get:Rule
 	val instantExecutorRule = InstantTaskExecutorRule()
 
+	@get:Rule
+	var mainCoroutineRule = MainCoroutineRule()
+
 	private lateinit var calculatorViewModel: CalculatorViewModel
+	private lateinit var recordRepository: RecordRepository
 
 	@Before
 	fun setUp() {
-		calculatorViewModel = CalculatorViewModel()
+		recordRepository = mockk(relaxed = true)
+		calculatorViewModel = CalculatorViewModel(recordRepository, mainCoroutineRule.testDispatcher)
 	}
 
 	@Test
@@ -146,6 +157,20 @@ class CalculatorViewModelTest {
 	}
 
 	@Test
+	fun `완성된 수식일 때, 계산을 하면, 계산기록을 추가한다`() = runBlocking {
+		// given
+		calculatorViewModel.addToExpression(1)
+		calculatorViewModel.addToExpression(Operator.Plus)
+		calculatorViewModel.addToExpression(2)
+
+		// when
+		calculatorViewModel.calculate()
+
+		// then
+		coVerify { recordRepository.insert(any(), any()) }
+	}
+
+	@Test
 	fun `미완성된 수식일 때, 계산을 하면, 수식 미완성에 대한 값을 Unit 으로 설정된다`() {
 		// given
 		calculatorViewModel.addToExpression(1)
@@ -157,5 +182,35 @@ class CalculatorViewModelTest {
 		// then
 		val actual = calculatorViewModel.expressionInCompleted.getOrAwaitValue()
 		assertThat(actual).isEqualTo(Unit)
+	}
+
+	@Test
+	fun `최초 실행했을 때, 수식이 보인다`() {
+		// then
+		val actual = calculatorViewModel.showRecord.getOrAwaitValue()
+		assertThat(actual).isEqualTo(false)
+	}
+
+	@Test
+	fun `계산기록이 보여지고 있을때, 계산기록을 숨기면, 계산기록이 사라진다`() {
+		// given
+		calculatorViewModel.toggleRecord() // true
+
+		// when
+		calculatorViewModel.toggleRecord() // false
+
+		// then
+		val actual = calculatorViewModel.showRecord.getOrAwaitValue()
+		assertThat(actual).isEqualTo(false)
+	}
+
+	@Test
+	fun `수식이 보여지고 있을때, 계산기록을 띄우면, 계산기록이 보여진다`() {
+		// when
+		calculatorViewModel.toggleRecord() // true
+
+		// then
+		val actual = calculatorViewModel.showRecord.getOrAwaitValue()
+		assertThat(actual).isEqualTo(true)
 	}
 }

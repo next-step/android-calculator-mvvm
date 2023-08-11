@@ -41,5 +41,9 @@ data class Expression(
 
     companion object {
         val EMPTY = Expression()
+
+        fun of(expression: String): Expression {
+            return Expression(expression.split(" "))
+        }
     }
 }
