@@ -5,11 +5,13 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import camp.nextstep.edu.calculator.databinding.ActivityCalculatorBinding
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class CalculatorActivity : AppCompatActivity() {
 
     private lateinit var viewDataBinding: ActivityCalculatorBinding
-    private val viewModel: CalculatorViewModel by viewModels { CalculatorViewModelFactory(this) }
+    private val viewModel: CalculatorViewModel by viewModels { CalculatorViewModelFactory(context = this) }
     private val historyAdapter by lazy { HistoryAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,8 +39,8 @@ class CalculatorActivity : AppCompatActivity() {
 
     private fun observerIncompleteExpressionError() {
         viewModel.inCompleteExpressionError.observe(this) {
-            it.consume()?.let {
-                Toast.makeText(this, R.string.incomplete_expression, Toast.LENGTH_SHORT).show()
+            it.consume()?.let { message ->
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             }
         }
     }

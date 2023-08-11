@@ -8,14 +8,13 @@ import camp.nextstep.edu.calculator.domain.Calculator
 import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
 import camp.nextstep.edu.calculator.domain.model.History
-import camp.nextstep.edu.calculator.domain.usecase.GetHistoriesUseCase
-import camp.nextstep.edu.calculator.domain.usecase.InsertHistoryUseCase
-import kotlinx.coroutines.Dispatchers
+import camp.nextstep.edu.calculator.domain.usecase.GetCalculateHistoriesUseCase
+import camp.nextstep.edu.calculator.domain.usecase.PostCalculateUseCase
 import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
-    private val insertHistoryUseCase: InsertHistoryUseCase,
-    private val getHistoriesUseCase: GetHistoriesUseCase
+    private val postCalculateUseCase: PostCalculateUseCase,
+    private val getCalculateHistoriesUseCase: GetCalculateHistoriesUseCase
 ): ViewModel() {
 
     private val calculator = Calculator()
@@ -24,8 +23,8 @@ class CalculatorViewModel(
     private val _text: MutableLiveData<String> = MutableLiveData()
     val text: LiveData<String> = _text
 
-    private val _inCompleteExpressionError: MutableLiveData<Event<Unit>> = MutableLiveData()
-    val inCompleteExpressionError: LiveData<Event<Unit>> = _inCompleteExpressionError
+    private val _inCompleteExpressionError: MutableLiveData<Event<String>> = MutableLiveData()
+    val inCompleteExpressionError: LiveData<Event<String>> = _inCompleteExpressionError
 
     private val _historyVisible: MutableLiveData<Boolean> = MutableLiveData(false)
     val historyVisible: LiveData<Boolean> = _historyVisible
@@ -49,15 +48,14 @@ class CalculatorViewModel(
     }
 
     fun calculate() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = calculator.calculate(expression.toString())
-            if (result == null) {
-                _inCompleteExpressionError.value = Event(Unit)
-            } else {
-                insertHistoryUseCase(History(expressions = expression.toString(), result = result))
-                expression = Expression(listOf(result))
-                setText(expression)
-            }
+        viewModelScope.launch {
+            postCalculateUseCase(calculator = calculator, expression = expression)
+                .onSuccess {
+                    expression = Expression(listOf(it))
+                    setText(expression)
+                }.onFailure {
+                    _inCompleteExpressionError.value = Event(it.message ?: "알 수 없는 에러입니다.")
+                }
         }
     }
 
@@ -70,8 +68,8 @@ class CalculatorViewModel(
     }
 
     private fun getHistories() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _histories.postValue(getHistoriesUseCase() ?: emptyList())
+        viewModelScope.launch {
+            _histories.postValue(getCalculateHistoriesUseCase().orEmpty())
         }
     }
 

@@ -5,6 +5,7 @@ import camp.nextstep.edu.calculator.domain.model.History
 
 fun HistoryEntity.toDomain(): History {
     return History(
+        id = this.uid,
         expressions = this.expressions ?: "",
         result = this.result
     )

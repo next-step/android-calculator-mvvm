@@ -8,12 +8,12 @@ import camp.nextstep.edu.calculator.data.database.HistoryDatabase
 import camp.nextstep.edu.calculator.data.repository.HistoryRepositoryImpl
 import camp.nextstep.edu.calculator.domain.model.History
 import camp.nextstep.edu.calculator.domain.repository.HistoryRepository
+import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import junit.framework.TestCase.assertTrue
 
 @RunWith(AndroidJUnit4::class)
 class HistoryRepositoryImplTest {
@@ -26,7 +26,9 @@ class HistoryRepositoryImplTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         database = Room.inMemoryDatabaseBuilder(
             context, HistoryDatabase::class.java).build()
-        repository = HistoryRepositoryImpl(database.historyDao())
+        repository = HistoryRepositoryImpl(
+            historyDao = database.historyDao()
+        )
     }
 
     @After
@@ -49,14 +51,14 @@ class HistoryRepositoryImplTest {
     fun `1_더하기_1_결과_저장`() {
         runBlocking {
             // when: 1 + 1 = 저장
-            val result = History("1 + 1", 2)
+            val result = History(expressions = "1 + 1", result = 2)
             repository.insertHistory(result)
         }
     }
 
     @Test
     fun `1_더하기_1_결과_저장후_해당_연산이_결과값이_저장되야_한다`() {
-        val expected = History("1 + 1", 2)
+        val expected = History(expressions = "1 + 1", result = 2)
         runBlocking {
             // when: 1 + 1 = 저장
             repository.insertHistory(expected)
@@ -69,7 +71,10 @@ class HistoryRepositoryImplTest {
 
     @Test
     fun `2_더하기_2_결과_1_더하기_1_결과_저장후_해당_연산이_결과값이_저장되야_한다`() {
-        val expected = listOf(History("2 + 2", 4), History("1 + 1", 2))
+        val expected = listOf(
+            History(expressions = "2 + 2", result = 4),
+            History(expressions = "1 + 1", result = 2)
+        )
         runBlocking {
             // when: 2 + 2 = 4, 1 + 1 = 2 저장
             repository.insertHistory(expected.first())

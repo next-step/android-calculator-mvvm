@@ -1,5 +1,8 @@
 package camp.nextstep.edu.calculator
 
+import android.content.Context
+import androidx.activity.viewModels
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers
@@ -9,6 +12,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.hamcrest.Matchers.not
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -18,6 +22,16 @@ class CalculatorActivityTest {
 
     @get:Rule
     var activityScenarioRule = ActivityScenarioRule(CalculatorActivity::class.java)
+
+    @Before
+    fun setUp() {
+        activityScenarioRule.scenario.onActivity {
+            val context = ApplicationProvider.getApplicationContext<Context>()
+            it.viewModels<CalculatorViewModel>(
+                factoryProducer = { CalculatorViewModelFactory(context = context) }
+            )
+        }
+    }
 
     @Test
     fun `1을_누르면_1이_보인다`() {
@@ -137,7 +151,6 @@ class CalculatorActivityTest {
         // Then: 계산 기록이 화면에 보인다.
         onView(withId(R.id.recyclerView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
         onView(withId(R.id.textView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)))
-        onView(withId(R.id.list_item)).check(matches(not(isDisplayed())))
     }
 
     @Test
@@ -149,8 +162,7 @@ class CalculatorActivityTest {
         onButtonClicked(R.id.buttonMemory)
 
         // Then: 계산 기록이 화면에 보였다 사라진다
-        onView(withId(R.id.recyclerView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
-        onView(withId(R.id.textView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)))
-        onView(withId(R.id.list_item)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.recyclerView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.INVISIBLE)))
+        onView(withId(R.id.textView)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
     }
 }

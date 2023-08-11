@@ -1,4 +1,4 @@
-package camp.nextstep.edu.calculator.data.module
+package camp.nextstep.edu.calculator.data.di
 
 import android.content.Context
 import camp.nextstep.edu.calculator.data.database.HistoryDatabase
@@ -11,7 +11,9 @@ object DataModule {
         return HistoryDatabase.getInstance(context)
     }
 
-    fun provideHistoryRepository(context: Context): HistoryRepository {
-        return HistoryRepositoryImpl(provideHistoryDataBase(context).historyDao())
+    fun provideHistoryRepository(
+        context: Context
+    ): HistoryRepository {
+        return HistoryRepositoryImpl(historyDao = provideHistoryDataBase(context).historyDao())
     }
 }
