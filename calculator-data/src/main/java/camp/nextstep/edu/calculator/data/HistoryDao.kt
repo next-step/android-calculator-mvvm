@@ -8,12 +8,12 @@ import androidx.room.Query
 @Dao
 interface HistoryDao {
 
-    @Query("SELECT * FROM History")
-    fun getAll(): List<History>
+    @Query("SELECT * FROM HistoryEntity")
+    fun getAll(): List<HistoryEntity>
 
     @Insert
-    fun insertAll(vararg histories: History)
+    fun insertAll(vararg histories: HistoryEntity)
 
     @Delete
-    fun delete(history: History)
+    fun delete(history: HistoryEntity)
 }

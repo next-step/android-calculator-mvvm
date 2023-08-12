@@ -2,7 +2,7 @@ package camp.nextstep.edu.calculator.domain
 
 enum class Operator(
     val sign: String,
-    val operation: (Int, Int) -> Int,
+    val operation: (Int, Int) -> Int
 ) {
     Plus("+", { x, y -> x + y }),
     Minus("-", { x, y -> x - y }),

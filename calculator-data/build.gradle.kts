@@ -31,6 +31,7 @@ dependencies {
     implementation("androidx.room:room-runtime:2.5.2")
     implementation("androidx.room:room-common:2.5.2")
     implementation("androidx.test:core-ktx:1.5.0")
+    implementation(project(":calculator-domain"))
 //     To use Kotlin Symbol Processing (KSP)
     ksp("androidx.room:room-compiler:2.5.2")
 

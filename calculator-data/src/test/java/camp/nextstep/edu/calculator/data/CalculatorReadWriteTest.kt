@@ -15,14 +15,14 @@ import kotlin.concurrent.thread
 @RunWith(RobolectricTestRunner::class)
 class CalculatorReadWriteTest {
     private lateinit var historyDao: HistoryDao
-    private lateinit var db: CalculatorDatabase
+    private lateinit var db: HistoryDatabase
 
     @Before
     fun createDb() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room.inMemoryDatabaseBuilder(
             context,
-            CalculatorDatabase::class.java
+            HistoryDatabase::class.java
         ).build()
         historyDao = db.historyDao()
     }
@@ -36,7 +36,7 @@ class CalculatorReadWriteTest {
     @Test
     @Throws(IOException::class)
     fun `3 + 5는 8 저장 후 불러옴`() {
-        val history = History(expression = "3 + 5", result = "8")
+        val history = HistoryEntity(expression = "3 + 5", result = "8")
         thread {
             historyDao.insertAll(history)
             val actual = historyDao.getAll()
