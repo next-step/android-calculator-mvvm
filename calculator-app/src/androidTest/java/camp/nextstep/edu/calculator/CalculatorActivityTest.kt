@@ -15,10 +15,10 @@ class CalculatorActivityTest {
 
     @Test
     fun click1() {
-        // when: '5 + 1' 버튼을 누르면
+        // when: '1' 버튼을 누르면
         onView(withId(R.id.button1)).perform(click())
 
-        // then: '5 + 1'이 보여야 한다
+        // then: '1'이 보여야 한다
         onView(withId(R.id.textView)).check(matches(withText("1")))
     }
 
@@ -74,7 +74,7 @@ class CalculatorActivityTest {
 
     @Test
     fun click32_plus_1_remove() {
-        // when: '32 + 1' 버튼을 누르면
+        // given: '32 + 1' 버튼을 누르면
         onView(withId(R.id.button3)).perform(click())
         onView(withId(R.id.button2)).perform(click())
         onView(withId(R.id.buttonPlus)).perform(click())
