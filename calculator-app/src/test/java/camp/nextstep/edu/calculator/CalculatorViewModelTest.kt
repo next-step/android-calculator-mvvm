@@ -2,15 +2,31 @@ package camp.nextstep.edu.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import camp.nextstep.edu.calculator.domain.Operator
+import camp.nextstep.edu.calculator.domain.repository.MemoryRepository
 import com.google.common.truth.Truth
+import io.mockk.mockk
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestCoroutineScheduler
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 class CalculatorViewModelTest {
+
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    private val viewModel = CalculatorViewModel()
+    private lateinit var repository: MemoryRepository
+
+    private lateinit var viewModel: CalculatorViewModel
+
+    @Before
+    fun setUp() {
+        repository = mockk()
+        val testScheduler = TestCoroutineScheduler()
+        val testDispatcher = StandardTestDispatcher(testScheduler)
+        viewModel = CalculatorViewModel(dispatchers = testDispatcher, memoryRepository = repository)
+    }
 
     @Test
     fun `입력없음 1 입력 1확인`() {
@@ -129,6 +145,7 @@ class CalculatorViewModelTest {
 
     @Test
     fun `3 + 2 입력 계산 5 확인`() {
+
         viewModel.addToExpression(3)
         viewModel.addToExpression(Operator.Plus)
         viewModel.addToExpression(2)
