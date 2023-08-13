@@ -14,7 +14,10 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class CalculatorViewModel(private val recordRepository: RecordRepository, private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO) : ViewModel() {
+class CalculatorViewModel(
+	private val recordRepository: RecordRepository,
+	private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
+) : ViewModel() {
 
 	private val calculator = Calculator()
 
