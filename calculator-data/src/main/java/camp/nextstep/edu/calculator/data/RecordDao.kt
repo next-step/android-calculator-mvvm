@@ -6,7 +6,7 @@ import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface RecordDao {
+internal interface RecordDao {
 
 	@Query("SELECT * FROM RecordEntity ORDER BY id ASC")
 	fun getAll(): Flow<List<RecordEntity>>
