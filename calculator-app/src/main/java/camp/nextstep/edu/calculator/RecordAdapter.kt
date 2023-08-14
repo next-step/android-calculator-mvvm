@@ -8,14 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import camp.nextstep.edu.calculator.databinding.ItemResultBinding
 import camp.nextstep.edu.calculator.domain.RecordResource
 
-class RecordAdapter : ListAdapter<RecordResource, RecordAdapter.RecordViewHolder>(recordDiffUtil) {
-
-	class RecordViewHolder(private val binding: ItemResultBinding): RecyclerView.ViewHolder(binding.root) {
-
-		fun bind(recorderResource: RecordResource) {
-			binding.recordResource = recorderResource
-		}
-	}
+class RecordAdapter : ListAdapter<RecordResource, RecordViewHolder>(recordDiffUtil) {
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordViewHolder {
 		return RecordViewHolder(ItemResultBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -35,5 +28,12 @@ class RecordAdapter : ListAdapter<RecordResource, RecordAdapter.RecordViewHolder
 				return oldItem == newItem
 			}
 		}
+	}
+}
+
+class RecordViewHolder(private val binding: ItemResultBinding) : RecyclerView.ViewHolder(binding.root) {
+
+	fun bind(recorderResource: RecordResource) {
+		binding.recordResource = recorderResource
 	}
 }
