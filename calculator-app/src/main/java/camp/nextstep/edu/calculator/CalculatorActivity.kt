@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import camp.nextstep.edu.calculator.CalculatorViewModel.EventType
-import camp.nextstep.edu.calculator.data.repository.MemoryDbRepository
+import camp.nextstep.edu.calculator.data.repository.DataInjector
 import camp.nextstep.edu.calculator.databinding.ActivityCalculatorBinding
 
 class CalculatorActivity : AppCompatActivity() {
@@ -19,7 +19,7 @@ class CalculatorActivity : AppCompatActivity() {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return if (modelClass.isAssignableFrom(CalculatorViewModel::class.java)) {
                     CalculatorViewModel(
-                        memoryRepository = MemoryDbRepository(this@CalculatorActivity.application)
+                        memoryRepository = DataInjector.provideMemoryRepository(this@CalculatorActivity.application)
                     ) as T
                 } else {
                     throw IllegalArgumentException()

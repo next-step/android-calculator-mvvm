@@ -5,20 +5,20 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Result::class], version = 1)
-abstract class ResultDatabase : RoomDatabase() {
-    abstract fun resultDao(): ResultDao
+@Database(entities = [MemoryEntity::class], version = 1)
+abstract class MemoryDatabase : RoomDatabase() {
+    abstract fun resultDao(): MemoryDao
 
     companion object {
-        private const val databaseName = "result"
-        private var Instance: ResultDatabase? = null
+        private const val databaseName = "memory.db"
+        private var Instance: MemoryDatabase? = null
 
-        fun getInstance(context: Context): ResultDatabase? {
+        fun getInstance(context: Context): MemoryDatabase? {
             if (Instance == null) {
-                synchronized(ResultDatabase::class) {
+                synchronized(MemoryDatabase::class) {
                     Instance = Room.databaseBuilder(
                         context.applicationContext,
-                        ResultDatabase::class.java,
+                        MemoryDatabase::class.java,
                         databaseName
                     ).build()
                 }
