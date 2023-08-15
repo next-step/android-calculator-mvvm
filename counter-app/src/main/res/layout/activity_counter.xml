@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="24sp"
-            android:text="@{viewModel.text}"
+            android:text="@{viewModel.number.toString()}"
             tools:text="11" />
 
         <Button
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Up"
-            android:onClick="@{() -> viewModel.clickUpButton()}"
+            android:onClick="@{() -> viewModel.incrementCounter()}"
             tools:ignore="HardcodedText" />
 
         <Button
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Down"
-            android:onClick="@{() -> viewModel.clickDownButton()}"
+            android:onClick="@{() -> viewModel.decrementCounter()}"
             tools:ignore="HardcodedText" />
     </LinearLayout>
 </layout>

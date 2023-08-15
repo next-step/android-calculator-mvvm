@@ -9,11 +9,8 @@ class Counter {
     }
 
     fun decrement() {
-        if (number > 0) {
-            number--
-            return
-        }
+        check(number > 0) { "0 이하로 내릴 수 없습니다" }
 
-        throw IllegalStateException("0 이하로 내릴 수 없습니다")
+        number--
     }
 }

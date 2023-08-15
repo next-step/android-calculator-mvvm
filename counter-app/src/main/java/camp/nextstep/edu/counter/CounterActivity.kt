@@ -19,8 +19,12 @@ class CounterActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewModel = counterViewModel
 
-        counterViewModel.showToastEvent.observe(this) { message ->
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        counterViewModel.showWarningMessageEvent.observe(this) { message ->
+            showToast(message)
         }
+    }
+
+    private fun showToast(message: String?) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

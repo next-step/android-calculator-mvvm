@@ -7,29 +7,29 @@ import androidx.lifecycle.ViewModelProvider
 
 class CounterViewModel(private val counter: Counter) : ViewModel() {
 
-    private val _text = MutableLiveData(counter.number.toString())
-    val text: LiveData<String> = _text
+    private val _number = MutableLiveData(counter.number)
+    val number: LiveData<Int> = _number
 
-    private val _showToastEvent = SingleLiveEvent<String>()
-    val showToastEvent: LiveData<String> = _showToastEvent
+    private val _showWarningMessageEvent = SingleLiveEvent<String>()
+    val showWarningMessageEvent: LiveData<String> = _showWarningMessageEvent
 
-    fun clickUpButton() {
+    fun incrementCounter() {
         counter.increment()
-        _text.value = counter.number.toString()
+        _number.value = counter.number
     }
 
-    fun clickDownButton() {
+    fun decrementCounter() {
         kotlin.runCatching {
             counter.decrement()
         }.onSuccess {
-            _text.value = counter.number.toString()
+            _number.value = counter.number
         }.onFailure {
-            showToast(it.message ?: "")
+            showWarningMessage(it.message ?: "")
         }
     }
 
-    private fun showToast(message: String) {
-        _showToastEvent.value = message
+    private fun showWarningMessage(message: String) {
+        _showWarningMessageEvent.value = message
     }
 }
 
