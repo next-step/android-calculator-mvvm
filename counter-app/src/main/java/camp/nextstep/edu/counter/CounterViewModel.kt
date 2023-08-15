@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class CounterViewModel: ViewModel() {
-    private var _counter = MutableLiveData<String>()
-    val counter: LiveData<String>
+class CounterViewModel(initCounter: Int = 0): ViewModel() {
+    private var _counter = MutableLiveData<Int>()
+    val counter: LiveData<Int>
         get() = _counter
 
     private var _toastEvent = SingleLiveEvent<String>()
@@ -14,24 +14,24 @@ class CounterViewModel: ViewModel() {
         get() = _toastEvent
 
     init {
-        _counter.value = "0"
+        _counter.value = initCounter
     }
 
     fun clickUpButton() {
         val currentCounter = _counter.value.toString()
         val newCounter = currentCounter.toInt() + 1
 
-        _counter.value = newCounter.toString()
+        _counter.value = newCounter
     }
 
     fun clickDownButton() {
-        if(_counter.value.equals("0")) {
+        if(_counter.value == 0) {
             _toastEvent.value = "0 이하로 내릴 수 없습니다"
         } else {
             val currentCounter = _counter.value.toString()
             val newCounter = currentCounter.toInt() - 1
 
-            _counter.value = newCounter.toString()
+            _counter.value = newCounter
         }
     }
 }

@@ -18,6 +18,10 @@ class CounterActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
+        initViewModelObserve()
+    }
+
+    private fun initViewModelObserve() {
         viewModel.toastEvent.observe(this) { msg ->
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
         }
