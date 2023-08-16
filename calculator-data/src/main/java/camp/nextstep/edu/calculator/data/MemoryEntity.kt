@@ -3,7 +3,7 @@ package camp.nextstep.edu.calculator.data
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import camp.nextstep.edu.calculator.domain.data.Memory
+import camp.nextstep.edu.calculator.domain.data.ResultExpression
 
 @Entity
 data class MemoryEntity(
@@ -17,8 +17,8 @@ data class MemoryEntity(
     var result: String = ""
 ) {
     companion object {
-        fun from(memory: Memory): MemoryEntity {
-            return MemoryEntity(expression = memory.expression, result = memory.result)
+        fun from(resultExpression: ResultExpression): MemoryEntity {
+            return MemoryEntity(expression = resultExpression.expression, result = resultExpression.result)
         }
     }
 }

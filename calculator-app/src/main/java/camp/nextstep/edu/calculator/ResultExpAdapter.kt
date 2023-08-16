@@ -5,11 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import camp.nextstep.edu.calculator.databinding.ItemResultBinding
-import camp.nextstep.edu.calculator.domain.data.Memory
+import camp.nextstep.edu.calculator.domain.data.ResultExpression
 
-class MemoryAdapter(
-    var items: List<Memory> = emptyList()
-) : RecyclerView.Adapter<MemoryAdapter.ItemViewHolder>() {
+class ResultExpAdapter(
+    var items: List<ResultExpression> = emptyList()
+) : RecyclerView.Adapter<ResultExpAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -25,7 +25,7 @@ class MemoryAdapter(
     }
 
     inner class ItemViewHolder(private val binding: ItemResultBinding) : ViewHolder(binding.root) {
-        fun bind(item: Memory) {
+        fun bind(item: ResultExpression) {
             binding.memory = item
             binding.executePendingBindings()
         }

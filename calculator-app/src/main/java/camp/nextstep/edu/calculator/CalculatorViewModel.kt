@@ -7,15 +7,15 @@ import androidx.lifecycle.viewModelScope
 import camp.nextstep.edu.calculator.domain.Calculator
 import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
-import camp.nextstep.edu.calculator.domain.data.Memory
-import camp.nextstep.edu.calculator.domain.repository.MemoryRepository
+import camp.nextstep.edu.calculator.domain.data.ResultExpression
+import camp.nextstep.edu.calculator.domain.repository.ResultExpressionRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
     private val dispatchers: CoroutineDispatcher = Dispatchers.IO,
-    private val memoryRepository: MemoryRepository
+    private val resultExpressionRepository: ResultExpressionRepository
 ) : ViewModel() {
 
     private val _expression = MutableLiveData(Expression.EMPTY)
@@ -30,14 +30,14 @@ class CalculatorViewModel(
     val memoryVisible: LiveData<Boolean>
         get() = _memoryVisible
 
-    private val _memoryItems = MutableLiveData<List<Memory>>()
-    val memoryItems: LiveData<List<Memory>>
-        get() = _memoryItems
+    private val _resultExpressionItems = MutableLiveData<List<ResultExpression>>()
+    val resultExpressionItems: LiveData<List<ResultExpression>>
+        get() = _resultExpressionItems
 
     init {
         viewModelScope.launch(dispatchers) {
-            val items: List<Memory> = memoryRepository.getMemoryList()
-            _memoryItems.postValue(items)
+            val items: List<ResultExpression> = resultExpressionRepository.getResultExpressionList()
+            _resultExpressionItems.postValue(items)
         }
     }
 
@@ -61,18 +61,18 @@ class CalculatorViewModel(
 
         val result = Calculator().calculate(expressionValue.toString())
         result?.let {
-            addMemory(Memory(expressionValue.toString(), it.toString()))
+            addMemory(ResultExpression(expressionValue.toString(), it.toString()))
             _expression.value = Expression(listOf(it))
         } ?: run {
             _event.value = EventType.SHOW_TOAST
         }
     }
 
-    private fun addMemory(memory: Memory) {
+    private fun addMemory(resultExpression: ResultExpression) {
         viewModelScope.launch(dispatchers) {
-            memoryRepository.addMemory(memory)
-            val items: List<Memory> = memoryRepository.getMemoryList()
-            _memoryItems.postValue(items)
+            resultExpressionRepository.addResultExpression(resultExpression)
+            val items: List<ResultExpression> = resultExpressionRepository.getResultExpressionList()
+            _resultExpressionItems.postValue(items)
         }
     }
 

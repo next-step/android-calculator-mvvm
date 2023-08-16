@@ -1,10 +1,10 @@
 package camp.nextstep.edu.calculator.data.repository
 
 import android.content.Context
-import camp.nextstep.edu.calculator.domain.repository.MemoryRepository
+import camp.nextstep.edu.calculator.domain.repository.ResultExpressionRepository
 
 object DataInjector {
-    fun provideMemoryRepository(context: Context): MemoryRepository {
-        return MemoryLocalRepository(context)
+    fun provideMemoryRepository(context: Context): ResultExpressionRepository {
+        return ResultExpressionDbRepository(context)
     }
 }

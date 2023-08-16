@@ -19,7 +19,7 @@ class CalculatorActivity : AppCompatActivity() {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return if (modelClass.isAssignableFrom(CalculatorViewModel::class.java)) {
                     CalculatorViewModel(
-                        memoryRepository = DataInjector.provideMemoryRepository(this@CalculatorActivity.application)
+                        resultExpressionRepository = DataInjector.provideMemoryRepository(this@CalculatorActivity.application)
                     ) as T
                 } else {
                     throw IllegalArgumentException()
@@ -50,8 +50,8 @@ class CalculatorActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.memoryItems.observe(this) { items ->
-            with(binding.recyclerView.adapter as MemoryAdapter) {
+        viewModel.resultExpressionItems.observe(this) { items ->
+            with(binding.recyclerView.adapter as ResultExpAdapter) {
                 this.items = items
             }
         }
@@ -60,7 +60,7 @@ class CalculatorActivity : AppCompatActivity() {
     private fun initRecyclerAdapter() {
         with(binding.recyclerView) {
             layoutManager = LinearLayoutManager(this@CalculatorActivity)
-            adapter = MemoryAdapter()
+            adapter = ResultExpAdapter()
         }
     }
 

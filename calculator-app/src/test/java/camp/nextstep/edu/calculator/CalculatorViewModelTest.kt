@@ -2,7 +2,7 @@ package camp.nextstep.edu.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import camp.nextstep.edu.calculator.domain.Operator
-import camp.nextstep.edu.calculator.domain.repository.MemoryRepository
+import camp.nextstep.edu.calculator.domain.repository.ResultExpressionRepository
 import com.google.common.truth.Truth
 import io.mockk.mockk
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -16,7 +16,7 @@ class CalculatorViewModelTest {
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var repository: MemoryRepository
+    private lateinit var repository: ResultExpressionRepository
 
     private lateinit var viewModel: CalculatorViewModel
 
@@ -25,7 +25,7 @@ class CalculatorViewModelTest {
         repository = mockk()
         val testScheduler = TestCoroutineScheduler()
         val testDispatcher = StandardTestDispatcher(testScheduler)
-        viewModel = CalculatorViewModel(dispatchers = testDispatcher, memoryRepository = repository)
+        viewModel = CalculatorViewModel(dispatchers = testDispatcher, resultExpressionRepository = repository)
     }
 
     @Test

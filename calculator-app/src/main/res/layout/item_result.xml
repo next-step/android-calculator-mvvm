@@ -3,7 +3,7 @@
     <data>
         <variable
             name="memory"
-            type="camp.nextstep.edu.calculator.domain.data.Memory" />
+            type="camp.nextstep.edu.calculator.domain.data.ResultExpression" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
