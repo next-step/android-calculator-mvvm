@@ -4,11 +4,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import camp.nextstep.edu.calculator.CalculatorViewModel.EventType
-import camp.nextstep.edu.calculator.data.repository.DataInjector
 import camp.nextstep.edu.calculator.databinding.ActivityCalculatorBinding
 
 class CalculatorActivity : AppCompatActivity() {
