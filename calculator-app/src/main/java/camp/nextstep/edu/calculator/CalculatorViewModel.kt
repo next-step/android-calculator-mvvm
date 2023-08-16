@@ -36,9 +36,11 @@ class CalculatorViewModel(
 
     init {
         viewModelScope.launch(dispatchers) {
-            _memoryItems.postValue(memoryRepository.getMemoryList())
+            val items: List<Memory> = memoryRepository.getMemoryList()
+            _memoryItems.postValue(items)
         }
     }
+
 
     fun addToExpression(operand: Int) {
         val expressionValue = _expression.value ?: return
@@ -70,7 +72,8 @@ class CalculatorViewModel(
     private fun addMemory(memory: Memory) {
         viewModelScope.launch(dispatchers) {
             memoryRepository.addMemory(memory)
-            _memoryItems.postValue(memoryRepository.getMemoryList())
+            val items: List<Memory> = memoryRepository.getMemoryList()
+            _memoryItems.postValue(items)
         }
     }
 
