@@ -14,6 +14,8 @@ import camp.nextstep.edu.calculator.databinding.ActivityCalculatorBinding
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
 
+    private val resultExpAdapter: ResultExpAdapter by lazy { ResultExpAdapter() }
+
     private val viewModel: CalculatorViewModel by viewModels {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -51,16 +53,14 @@ class CalculatorActivity : AppCompatActivity() {
         }
 
         viewModel.resultExpressionItems.observe(this) { items ->
-            with(binding.recyclerView.adapter as ResultExpAdapter) {
-                this.items = items
-            }
+            resultExpAdapter.items = items
         }
     }
 
     private fun initRecyclerAdapter() {
         with(binding.recyclerView) {
             layoutManager = LinearLayoutManager(this@CalculatorActivity)
-            adapter = ResultExpAdapter()
+            adapter = resultExpAdapter
         }
     }
 
