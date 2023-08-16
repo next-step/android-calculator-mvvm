@@ -24,7 +24,7 @@ class MemoryEntityDbTest {
 
         db = Room.inMemoryDatabaseBuilder(context, MemoryDatabase::class.java)
             .build()
-        memoryDao = db.resultDao()
+        memoryDao = db.memoryDao()
     }
 
     @After

@@ -11,7 +11,7 @@ internal class MemoryLocalRepository(
     context: Context,
     memoryDatabase: MemoryDatabase? = MemoryDatabase.getInstance(context)
 ) : MemoryRepository {
-    private val memoryDao: MemoryDao? = memoryDatabase?.resultDao()
+    private val memoryDao: MemoryDao? = memoryDatabase?.memoryDao()
 
     override suspend fun getMemoryList(): List<Memory> {
         val dao = memoryDao ?: return emptyList()
