@@ -40,7 +40,7 @@ class MemoryEntityDbTest {
 
         memoryDao.insert(memoryEntity)
         val resultList = memoryDao.getAll()
-        val actual = resultList[resultList.size - 1]
+        val actual = resultList.last()
 
         assertThat(actual, equalTo(memoryEntity))
     }
