@@ -41,7 +41,6 @@ class CalculatorViewModel(
         }
     }
 
-
     fun addToExpression(operand: Int) {
         val expressionValue = _expression.value ?: return
         _expression.value = expressionValue + operand
