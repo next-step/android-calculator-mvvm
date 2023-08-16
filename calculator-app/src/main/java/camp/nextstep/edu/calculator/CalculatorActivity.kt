@@ -17,17 +17,7 @@ class CalculatorActivity : AppCompatActivity() {
     private val resultExpAdapter: ResultExpAdapter by lazy { ResultExpAdapter() }
 
     private val viewModel: CalculatorViewModel by viewModels {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return if (modelClass.isAssignableFrom(CalculatorViewModel::class.java)) {
-                    CalculatorViewModel(
-                        resultExpressionRepository = DataInjector.provideMemoryRepository(this@CalculatorActivity.application)
-                    ) as T
-                } else {
-                    throw IllegalArgumentException()
-                }
-            }
-        }
+        CalculatorViewModel.CalculatorViewModelFactory(this@CalculatorActivity)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
