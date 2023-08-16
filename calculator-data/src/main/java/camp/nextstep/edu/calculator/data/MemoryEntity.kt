@@ -4,11 +4,11 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import camp.nextstep.edu.calculator.domain.data.Memory
-import java.util.UUID
 
 @Entity
 data class MemoryEntity(
-    @PrimaryKey val id: UUID = UUID.randomUUID(),
+    @PrimaryKey(autoGenerate = true)
+    var id: Long = 0,
 
     @ColumnInfo(name = "expression")
     var expression: String = "",
