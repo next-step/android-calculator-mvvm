@@ -6,50 +6,38 @@ import androidx.lifecycle.ViewModel
 import camp.nextstep.edu.calculator.domain.Calculator
 import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
+import kotlin.coroutines.coroutineContext
 
 class CalculatorViewModel(initFormula: List<Any> = emptyList()) : ViewModel() {
     private val calculator = Calculator()
     private var expression = Expression(initFormula)
 
-    private var _formula = MutableLiveData<String>()
-    val formula: LiveData<String>
+    private var _formula = MutableLiveData(expression)
+    val formula: LiveData<Expression>
         get() = _formula
 
-    private var _toastEvent = SingleLiveEvent<String>()
-    val toastEvent: LiveData<String>
+    private var _toastEvent = SingleLiveEvent<Int>()
+    val toastEvent: LiveData<Int>
         get() = _toastEvent
 
-
-    init {
-        setFormula()
-    }
-
     fun addToExpression(operand: Int) {
-        expression += operand
-        setFormula()
+        _formula.value = _formula.value?.plus(operand)
     }
 
     fun addToExpression(operator: Operator) {
-        expression += operator
-        setFormula()
+        _formula.value = _formula.value?.plus(operator)
     }
 
     fun removeLast() {
-        expression = expression.removeLast()
-        setFormula()
+        _formula.value = _formula.value?.removeLast()
     }
 
     fun calculate() {
-        val result = calculator.calculate(expression.toString())
+        val result = calculator.calculate(_formula.value.toString())
         if (result == null) {
-            _toastEvent.value = "완성되지 않은 수식입니다"
+            _toastEvent.value = R.string.incomplete_expression
         } else {
-            expression = Expression(listOf(result))
-            setFormula()
+            _formula.value = Expression(listOf(result))
         }
-    }
-
-    private fun setFormula() {
-        _formula.value = expression.toString()
     }
 }

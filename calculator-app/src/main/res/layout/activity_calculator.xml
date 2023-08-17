@@ -28,7 +28,7 @@
             android:hint="0"
             android:textAlignment="viewEnd"
             android:textSize="24sp"
-            android:text="@{viewModel.formula}"
+            android:text="@{viewModel.formula.toString()}"
             app:layout_constraintBottom_toBottomOf="@id/divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
