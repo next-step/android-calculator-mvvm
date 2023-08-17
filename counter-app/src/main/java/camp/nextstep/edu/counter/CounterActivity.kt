@@ -12,13 +12,16 @@ class CounterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        initBinding()
+        initViewModelObserve()
+        setContentView(binding.root)
+    }
+
+    private fun initBinding() {
         binding = ActivityCounterBinding.inflate(layoutInflater)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-
-        setContentView(binding.root)
-
-        initViewModelObserve()
     }
 
     private fun initViewModelObserve() {
