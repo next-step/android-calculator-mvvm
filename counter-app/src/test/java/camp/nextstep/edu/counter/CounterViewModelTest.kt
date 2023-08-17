@@ -10,16 +10,6 @@ class CounterViewModelTest {
     val instantExecutorRule = InstantTaskExecutorRule()
 
     @Test
-    fun `ViewModle생성`() {
-        // given :
-
-        // when : viewModel을 선언한다.
-        val viewModel = CounterViewModel()
-        // then :
-        assertThat(viewModel).isNotNull()
-    }
-
-    @Test
     fun `upButton 클릭`() {
         // given :viewModel을 선언한다.
         val viewModel = CounterViewModel()
@@ -30,7 +20,7 @@ class CounterViewModelTest {
         viewModel.clickUpButton()
 
         // then : 기존 수 보도 click 횟수 만큼 증가 한다.
-        assertThat(viewModel.counter.value).isEqualTo("3")
+        assertThat(viewModel.counter.value).isEqualTo(3)
     }
 
     @Test
@@ -42,21 +32,19 @@ class CounterViewModelTest {
         viewModel.clickDownButton()
 
         // then : 카운터 값에 변화가 없다.
-        assertThat(viewModel.counter.value).isEqualTo("0")
+        assertThat(viewModel.counter.value).isEqualTo(0)
     }
 
     @Test
     fun `카운터가 1 이상일 때 downButton 클릭`() {
         // given :viewModel을 선언하고 upButton()호출을 통해 counter를 증가시킨다.
         // counter == 2
-        val viewModel = CounterViewModel()
-        viewModel.clickUpButton()
-        viewModel.clickUpButton()
+        val viewModel = CounterViewModel(2)
 
         // when : clickUpButton()을 호출한다.
         viewModel.clickDownButton()
 
         // then : 카운터 값이 하나 줄어든다.
-        assertThat(viewModel.counter.value).isEqualTo("1")
+        assertThat(viewModel.counter.value).isEqualTo(1)
     }
 }
