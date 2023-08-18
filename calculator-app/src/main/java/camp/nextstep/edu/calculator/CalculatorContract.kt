@@ -1,21 +1,20 @@
 package camp.nextstep.edu.calculator
 
-import camp.nextstep.edu.calculator.domain.Expression
-import camp.nextstep.edu.calculator.domain.Operator
+import camp.nextstep.edu.calculator.domain.ArithmeticOperator
 
 interface CalculatorContract {
+
     interface View {
         var presenter: Presenter
 
-        fun showExpression(expression: Expression)
-        fun showResult(result: Int)
-        fun showIncompleteExpressionError()
+        fun showExpression(expression: String)
+        fun showToast(message: String)
     }
 
     interface Presenter {
-        fun addToExpression(operand: Int)
-        fun addToExpression(operator: Operator)
-        fun calculate()
-        fun removeLast()
+        fun onOperandClicked(operand: String)
+        fun onOperatorClicked(operator: ArithmeticOperator)
+        fun onEqualsClicked()
+        fun onDeleteClicked()
     }
 }

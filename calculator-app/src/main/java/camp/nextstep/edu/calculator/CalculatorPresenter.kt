@@ -1,37 +1,37 @@
 package camp.nextstep.edu.calculator
 
+import camp.nextstep.edu.calculator.domain.ArithmeticExpression
+import camp.nextstep.edu.calculator.domain.ArithmeticOperator
 import camp.nextstep.edu.calculator.domain.Calculator
 import camp.nextstep.edu.calculator.domain.Expression
-import camp.nextstep.edu.calculator.domain.Operator
 
-class CalculatorPresenter(
-    private val view: CalculatorContract.View
-) : CalculatorContract.Presenter {
+class CalculatorPresenter(private val view: CalculatorContract.View) : CalculatorContract.Presenter {
     private val calculator = Calculator()
-    private var expression = Expression.EMPTY
+    private val expression = Expression("")
 
-    override fun addToExpression(operand: Int) {
-        expression += operand
-        view.showExpression(expression)
+    override fun onOperandClicked(operand: String) {
+        expression.setOperand(operand)
+        view.showExpression(expression.value)
     }
 
-    override fun addToExpression(operator: Operator) {
-        expression += operator
-        view.showExpression(expression)
+    override fun onOperatorClicked(operator: ArithmeticOperator) {
+        expression.setOperator(operator.value)
+        view.showExpression(expression.value)
     }
 
-    override fun removeLast() {
-        expression = expression.removeLast()
-        view.showExpression(expression)
-    }
-
-    override fun calculate() {
-        val result = calculator.calculate(expression.toString())
-        if (result == null) {
-            view.showIncompleteExpressionError()
-        } else {
-            expression = Expression(listOf(result))
-            view.showResult(result)
+    override fun onEqualsClicked() {
+        kotlin.runCatching {
+            calculator.calculate(ArithmeticExpression(expression.value)).toString()
+        }.onSuccess { result ->
+            expression.setEquals(result)
+            view.showExpression(expression.value)
+        }.onFailure { exception ->
+            view.showToast(exception.message ?: "")
         }
+    }
+
+    override fun onDeleteClicked() {
+        expression.setDelete()
+        view.showExpression(expression.value)
     }
 }
