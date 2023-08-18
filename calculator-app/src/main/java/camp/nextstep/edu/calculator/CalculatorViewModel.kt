@@ -9,10 +9,7 @@ import camp.nextstep.edu.calculator.domain.ArithmeticOperator
 import camp.nextstep.edu.calculator.domain.Calculator
 import camp.nextstep.edu.calculator.domain.Expression
 
-class CalculatorViewModel(
-    private val calculator: Calculator,
-    private val expression: Expression,
-) : ViewModel() {
+class CalculatorViewModel(private val expression: Expression) : ViewModel() {
 
     private val _currentExpression = MutableLiveData(expression.value)
     val currentExpression: LiveData<String> = _currentExpression
@@ -32,7 +29,7 @@ class CalculatorViewModel(
 
     fun calculate() {
         kotlin.runCatching {
-            calculator.calculate(ArithmeticExpression(expression.value))
+            Calculator.calculate(ArithmeticExpression(expression.value))
         }.onSuccess { result ->
             expression.setEquals(result)
             _currentExpression.value = expression.value
@@ -55,10 +52,7 @@ class CalculatorViewModelFactory : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when (modelClass) {
-            CalculatorViewModel::class.java -> CalculatorViewModel(
-                calculator = Calculator(),
-                expression = Expression("")
-            )
+            CalculatorViewModel::class.java -> CalculatorViewModel(Expression(""))
 
             else -> throw IllegalStateException()
         } as T

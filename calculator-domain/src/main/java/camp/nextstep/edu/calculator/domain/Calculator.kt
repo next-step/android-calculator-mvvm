@@ -1,6 +1,6 @@
 package camp.nextstep.edu.calculator.domain
 
-class Calculator {
+object Calculator {
 
     fun calculate(expression: ArithmeticExpression): Int {
         val expressionItemList = expression.getExpressionItemList()
