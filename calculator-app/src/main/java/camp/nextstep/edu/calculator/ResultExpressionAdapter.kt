@@ -8,8 +8,7 @@ import camp.nextstep.edu.calculator.databinding.ItemResultBinding
 import camp.nextstep.edu.calculator.domain.data.ResultExpression
 
 class ResultExpressionAdapter(
-    items: List<ResultExpression> = emptyList(),
-    private var adapterItems: List<ResultExpression> = items
+    private var items: List<ResultExpression> = emptyList()
 ) : RecyclerView.Adapter<ResultExpressionAdapter.ItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -18,15 +17,15 @@ class ResultExpressionAdapter(
     }
 
     override fun getItemCount(): Int {
-        return adapterItems.size
+        return items.size
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.bind(adapterItems[position])
+        holder.bind(items[position])
     }
 
     fun updateItems(items: List<ResultExpression>) {
-        adapterItems = items
+        this.items = items
     }
 
     inner class ItemViewHolder(private val binding: ItemResultBinding) : ViewHolder(binding.root) {
