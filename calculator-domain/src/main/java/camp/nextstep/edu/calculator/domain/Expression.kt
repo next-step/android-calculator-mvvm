@@ -4,25 +4,25 @@ class Expression(value: String) {
     var value: String = value
         private set
 
-    fun setOperand(operand: String) {
-        value += operand
+    fun setOperand(operand: Int) {
+        value += operand.toString()
     }
 
-    fun setOperator(operator: String) {
+    fun setOperator(operator: ArithmeticOperator) {
         if (value.isEmpty()) return
 
         if (isLastStringOperand()) {
-            value += " $operator "
+            value += " ${operator.value} "
             return
         }
 
         if (isLastStringOperator()) {
-            value = value.dropLast(OPERATOR_CONCAT_STRING_LENGTH) + " $operator "
+            value = value.dropLast(OPERATOR_CONCAT_STRING_LENGTH) + " ${operator.value} "
         }
     }
 
-    fun setEquals(result: String) {
-        value = result
+    fun setEquals(result: Int) {
+        value = result.toString()
     }
 
     fun setDelete() {
