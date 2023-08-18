@@ -10,9 +10,8 @@ import kotlin.coroutines.coroutineContext
 
 class CalculatorViewModel(initFormula: List<Any> = emptyList()) : ViewModel() {
     private val calculator = Calculator()
-    private var expression = Expression(initFormula)
 
-    private var _formula = MutableLiveData(expression)
+    private var _formula = MutableLiveData(Expression(initFormula))
     val formula: LiveData<Expression>
         get() = _formula
 
