@@ -92,7 +92,7 @@ class CalculatorViewModel(
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return if (modelClass.isAssignableFrom(CalculatorViewModel::class.java)) {
                 CalculatorViewModel(
-                    resultExpressionRepository = DataInjector.provideMemoryRepository(context)
+                    resultExpressionRepository = DataInjector.provideResultExpressionRepository(context)
                 ) as T
             } else {
                 throw IllegalArgumentException()

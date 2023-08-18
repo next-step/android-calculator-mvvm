@@ -6,19 +6,19 @@ import androidx.room.PrimaryKey
 import camp.nextstep.edu.calculator.domain.data.ResultExpression
 
 @Entity
-data class MemoryEntity(
+data class ResultExpressionEntity(
     @PrimaryKey(autoGenerate = true)
-    var id: Long = 0,
+    val id: Long = 0,
 
     @ColumnInfo(name = "expression")
-    var expression: String = "",
+    val expression: String = "",
 
     @ColumnInfo(name = "result")
-    var result: String = ""
+    val result: String = ""
 ) {
     companion object {
-        fun from(resultExpression: ResultExpression): MemoryEntity {
-            return MemoryEntity(expression = resultExpression.expression, result = resultExpression.result)
+        fun from(resultExpression: ResultExpression): ResultExpressionEntity {
+            return ResultExpressionEntity(expression = resultExpression.expression, result = resultExpression.result)
         }
     }
 }

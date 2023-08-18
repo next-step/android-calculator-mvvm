@@ -1,31 +1,31 @@
 package camp.nextstep.edu.calculator.data.repository
 
-import camp.nextstep.edu.calculator.data.MemoryEntity
-import camp.nextstep.edu.calculator.data.MemoryDao
-import camp.nextstep.edu.calculator.data.MemoryDatabase
+import camp.nextstep.edu.calculator.data.ResultExpressionEntity
+import camp.nextstep.edu.calculator.data.CalculatorDao
+import camp.nextstep.edu.calculator.data.CalculatorDatabase
 import camp.nextstep.edu.calculator.domain.data.ResultExpression
 import camp.nextstep.edu.calculator.domain.repository.ResultExpressionRepository
 import android.content.Context
 
 internal class ResultExpressionDbRepository(
     context: Context,
-    memoryDatabase: MemoryDatabase? = MemoryDatabase.getInstance(context)
+    calculatorDatabase: CalculatorDatabase? = CalculatorDatabase.getInstance(context)
 ) : ResultExpressionRepository {
-    private val memoryDao: MemoryDao? = memoryDatabase?.memoryDao()
+    private val calculatorDao: CalculatorDao? = calculatorDatabase?.getDao()
 
     override suspend fun getResultExpressionList(): List<ResultExpression> {
-        val dao = memoryDao ?: return emptyList()
+        val dao = calculatorDao ?: return emptyList()
 
         return toResultExpressionList(dao.getAll())
     }
 
     override suspend fun addResultExpression(resultExpression: ResultExpression): Boolean {
-        val dao = memoryDao ?: return false
+        val dao = calculatorDao ?: return false
 
-        return dao.insert(MemoryEntity.from(resultExpression)) > 0
+        return dao.insert(ResultExpressionEntity.from(resultExpression)) > 0
     }
 
-    private fun toResultExpressionList(memoryEntityList: List<MemoryEntity>): List<ResultExpression> {
-        return memoryEntityList.map { ResultExpression(it.expression, it.result) }
+    private fun toResultExpressionList(resultExpressionEntityList: List<ResultExpressionEntity>): List<ResultExpression> {
+        return resultExpressionEntityList.map { ResultExpression(it.expression, it.result) }
     }
 }

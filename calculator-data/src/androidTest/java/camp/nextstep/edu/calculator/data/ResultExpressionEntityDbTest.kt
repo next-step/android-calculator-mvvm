@@ -13,18 +13,18 @@ import org.junit.runner.RunWith
 import java.io.IOException
 
 @RunWith(AndroidJUnit4::class)
-class MemoryEntityDbTest {
+class ResultExpressionEntityDbTest {
 
-    private lateinit var memoryDao: MemoryDao
-    private lateinit var db: MemoryDatabase
+    private lateinit var calculatorDao: CalculatorDao
+    private lateinit var db: CalculatorDatabase
 
     @Before
     fun createDb() {
         val context: Context = ApplicationProvider.getApplicationContext()
 
-        db = Room.inMemoryDatabaseBuilder(context, MemoryDatabase::class.java)
+        db = Room.inMemoryDatabaseBuilder(context, CalculatorDatabase::class.java)
             .build()
-        memoryDao = db.memoryDao()
+        calculatorDao = db.getDao()
     }
 
     @After
@@ -36,12 +36,12 @@ class MemoryEntityDbTest {
     @Test
     @Throws(Exception::class)
     fun insertMemoryGetAllListMemoryItem() {
-        val memoryEntity = MemoryEntity(expression = "44 + 3", result = "47")
+        val resultExpressionEntity = ResultExpressionEntity(expression = "44 + 3", result = "47")
 
-        memoryDao.insert(memoryEntity)
-        val resultList = memoryDao.getAll()
+        calculatorDao.insert(resultExpressionEntity)
+        val resultList = calculatorDao.getAll()
         val actual = resultList.last()
 
-        assertThat(actual, equalTo(memoryEntity))
+        assertThat(actual, equalTo(resultExpressionEntity))
     }
 }

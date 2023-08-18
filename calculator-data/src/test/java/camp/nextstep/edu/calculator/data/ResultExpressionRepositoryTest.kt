@@ -23,7 +23,7 @@ class ResultExpressionRepositoryTest {
     fun setUp() {
 
         val context: Context = ApplicationProvider.getApplicationContext()
-        resultExpressionRepository = DataInjector.provideMemoryRepository(context)
+        resultExpressionRepository = DataInjector.provideResultExpressionRepository(context)
     }
 
     @Test
@@ -33,8 +33,8 @@ class ResultExpressionRepositoryTest {
             val resultExpression = ResultExpression(expression = "44 + 3", result = "47")
 
             resultExpressionRepository.addResultExpression(resultExpression)
-            val memoryList = resultExpressionRepository.getResultExpressionList()
-            val actual = memoryList[memoryList.size - 1]
+            val resultExpressionList = resultExpressionRepository.getResultExpressionList()
+            val actual = resultExpressionList.last()
 
             assertThat(actual).isEqualTo(resultExpression)
         }

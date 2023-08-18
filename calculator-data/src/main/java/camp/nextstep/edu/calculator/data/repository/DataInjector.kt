@@ -4,7 +4,7 @@ import android.content.Context
 import camp.nextstep.edu.calculator.domain.repository.ResultExpressionRepository
 
 object DataInjector {
-    fun provideMemoryRepository(context: Context): ResultExpressionRepository {
+    fun provideResultExpressionRepository(context: Context): ResultExpressionRepository {
         return ResultExpressionDbRepository(context)
     }
 }

@@ -7,13 +7,13 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
-interface MemoryDao {
-    @Query("SELECT * FROM MemoryEntity")
-    fun getAll(): List<MemoryEntity>
+interface CalculatorDao {
+    @Query("SELECT * FROM ResultExpressionEntity")
+    fun getAll(): List<ResultExpressionEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(memoryEntity: MemoryEntity): Long
+    fun insert(resultExpressionEntity: ResultExpressionEntity): Long
 
     @Delete
-    fun delete(memoryEntity: MemoryEntity)
+    fun delete(resultExpressionEntity: ResultExpressionEntity)
 }
