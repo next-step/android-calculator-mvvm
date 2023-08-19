@@ -4,18 +4,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import camp.nextstep.edu.calculator.domain.Calculator
 import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
 import camp.nextstep.edu.calculator.domain.data.ResultExpression
-import camp.nextstep.edu.calculator.domain.repository.ResultExpressionRepository
+import camp.nextstep.edu.calculator.domain.usecase.AddResultExpressionUseCase
+import camp.nextstep.edu.calculator.domain.usecase.CalculateUseCase
+import camp.nextstep.edu.calculator.domain.usecase.GetResultExpressionListUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
     private val dispatchers: CoroutineDispatcher = Dispatchers.IO,
-    private val resultExpressionRepository: ResultExpressionRepository
+    private val calculateUseCase: CalculateUseCase = CalculateUseCase(),
+    private val addResultExpressionUseCase: AddResultExpressionUseCase,
+    private val getResultExpressionListUseCase: GetResultExpressionListUseCase,
 ) : ViewModel() {
 
     private val _expression = MutableLiveData(Expression.EMPTY)
@@ -36,7 +39,7 @@ class CalculatorViewModel(
 
     init {
         viewModelScope.launch(dispatchers) {
-            val items: List<ResultExpression> = resultExpressionRepository.getResultExpressionList()
+            val items: List<ResultExpression> = getResultExpressionListUseCase()
             _resultExpressionItems.postValue(items)
         }
     }
@@ -59,19 +62,20 @@ class CalculatorViewModel(
     fun calculate() {
         val expressionValue = _expression.value ?: return
 
-        val result = Calculator().calculate(expressionValue.toString())
+        val result: String? = calculateUseCase(expressionValue.toString())
+
         result?.let {
-            addMemory(ResultExpression(expressionValue.toString(), it.toString()))
+            addResultExpression(ResultExpression(expressionValue.toString(), it))
             _expression.value = Expression(listOf(it))
         } ?: run {
             _event.value = EventType.SHOW_TOAST
         }
     }
 
-    private fun addMemory(resultExpression: ResultExpression) {
+    private fun addResultExpression(resultExpression: ResultExpression) {
         viewModelScope.launch(dispatchers) {
-            resultExpressionRepository.addResultExpression(resultExpression)
-            val items: List<ResultExpression> = resultExpressionRepository.getResultExpressionList()
+            addResultExpressionUseCase(resultExpression)
+            val items: List<ResultExpression> = getResultExpressionListUseCase()
             _resultExpressionItems.postValue(items)
         }
     }
