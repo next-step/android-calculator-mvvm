@@ -1,25 +1,24 @@
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
+    id("com.android.library")
+    id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
 }
 
 android {
-    compileSdk = Version.compileSdk
+    namespace = "camp.nextstep.edu.calculator.data"
+    compileSdk = 33
 
     defaultConfig {
-        applicationId = "camp.nextstep.edu.calculator"
-        minSdk = Version.minSdk
-        targetSdk = Version.targetSdk
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = 24
+        targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
-        getByName("release") {
+        release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -34,27 +33,24 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        viewBinding = true
-        dataBinding = true
-    }
 }
 
 dependencies {
     implementation(project(":calculator-domain"))
-    implementation(project(":calculator-data"))
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${Version.kotlin}")
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.6.0")
-    implementation("com.google.android.material:material:1.7.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.fragment:fragment-ktx:1.5.5")
+    implementation("androidx.core:core-ktx:1.8.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.9.0")
+
+    implementation("androidx.room:room-runtime:2.5.2")
+    annotationProcessor("androidx.room:room-compiler:2.5.2")
+    annotationProcessor("android.arch.persistence.room:compiler:1.1.1")
+    kapt("androidx.room:room-compiler:2.5.2")
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.google.truth:truth:1.1.3")
-    testImplementation("androidx.arch.core:core-testing:2.1.0")
-    testImplementation("io.mockk:mockk:1.13.5")
+    testImplementation("org.robolectric:robolectric:4.9")
+    testImplementation("androidx.test.ext:junit:1.1.5")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
