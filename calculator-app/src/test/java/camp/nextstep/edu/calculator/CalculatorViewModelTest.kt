@@ -1,7 +1,6 @@
 package camp.nextstep.edu.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import camp.nextstep.edu.calculator.data.repository.DataInjector
 import camp.nextstep.edu.calculator.domain.Operator
 import camp.nextstep.edu.calculator.domain.repository.ResultExpressionRepository
 import camp.nextstep.edu.calculator.domain.usecase.AddResultExpressionUseCase
