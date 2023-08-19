@@ -32,7 +32,9 @@ class CalculatorActivity : AppCompatActivity() {
     }
 
     private fun observeEvent() {
-        viewModel.event.observe(this) { event ->
+        viewModel.event.observe(this) { eventType ->
+            val event: EventType = eventType ?: return@observe
+
             when (event) {
                 EventType.SHOW_TOAST -> {
                     showIncompleteExpressionError()

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import camp.nextstep.edu.calculator.CalculatorViewModel
 import camp.nextstep.edu.calculator.data.repository.DataInjector
 
+@Suppress("UNCHECKED_CAST")
 object ViewModelProviderFactory {
 
     fun getCalculatorViewModel(context: Context): ViewModelProvider.Factory {
