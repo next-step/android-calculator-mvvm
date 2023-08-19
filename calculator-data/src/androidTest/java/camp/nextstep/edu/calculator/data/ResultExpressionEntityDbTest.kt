@@ -35,7 +35,7 @@ class ResultExpressionEntityDbTest {
 
     @Test
     @Throws(Exception::class)
-    fun insertMemoryGetAllListMemoryItem() {
+    fun insertResultExpressionGetAllListLastItem() {
         val resultExpressionEntity = ResultExpressionEntity(expression = "44 + 3", result = "47")
 
         calculatorDao.insert(resultExpressionEntity)
