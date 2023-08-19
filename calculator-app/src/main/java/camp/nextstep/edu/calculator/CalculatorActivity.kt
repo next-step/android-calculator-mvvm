@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import camp.nextstep.edu.calculator.CalculatorViewModel.EventType
 import camp.nextstep.edu.calculator.databinding.ActivityCalculatorBinding
+import camp.nextstep.edu.calculator.viewmodel.ViewModelProviderFactory
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
@@ -14,7 +15,7 @@ class CalculatorActivity : AppCompatActivity() {
     private val resultExpressionAdapter: ResultExpressionAdapter by lazy { ResultExpressionAdapter() }
 
     private val viewModel: CalculatorViewModel by viewModels {
-        CalculatorViewModel.CalculatorViewModelFactory(this@CalculatorActivity)
+        ViewModelProviderFactory.getCalculatorViewModel(this@CalculatorActivity)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
