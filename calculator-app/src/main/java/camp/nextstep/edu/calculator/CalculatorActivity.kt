@@ -12,7 +12,7 @@ import camp.nextstep.edu.calculator.viewmodel.ViewModelProviderFactory
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
 
-    private val resultExpressionAdapter: ResultExpressionAdapter by lazy { ResultExpressionAdapter() }
+    private val resultExpressionAdapter: ResultExpressionAdapter = ResultExpressionAdapter()
 
     private val viewModel: CalculatorViewModel by viewModels {
         ViewModelProviderFactory.getCalculatorViewModel(this@CalculatorActivity)
