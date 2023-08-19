@@ -2,7 +2,7 @@
 <layout>
     <data>
         <variable
-            name="memory"
+            name="resultExpression"
             type="camp.nextstep.edu.calculator.domain.data.ResultExpression" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-            android:text="@{memory.expression}"
+            android:text="@{resultExpression.expression}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@sample/result.json/expression/data" />
@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-            android:text="@{`= ` + memory.result}"
+            android:text="@{`= ` + resultExpression.result}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_expression"
             tools:text="@sample/result.json/result/data" />

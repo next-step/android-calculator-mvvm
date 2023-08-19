@@ -30,7 +30,7 @@ class ResultExpressionAdapter(
 
     inner class ItemViewHolder(private val binding: ItemResultBinding) : ViewHolder(binding.root) {
         fun bind(item: ResultExpression) {
-            binding.memory = item
+            binding.resultExpression = item
             binding.executePendingBindings()
         }
     }
