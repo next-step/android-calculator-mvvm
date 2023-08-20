@@ -2,8 +2,9 @@
 
 plugins {
     id("com.android.application")
-    id("kotlin-android")
-    id("kotlin-kapt")
+    kotlin("android")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
     id("org.jlleitschuh.gradle.ktlint") version "11.5.0"
 }
 
@@ -53,10 +54,18 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.fragment:fragment-ktx:1.6.1")
 
+    implementation("com.google.dagger:hilt-android:2.47")
+    kapt("com.google.dagger:hilt-android-compiler:2.47")
+
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.google.truth:truth:1.1.4")
     testImplementation("androidx.arch.core:core-testing:2.2.0")
     testImplementation("io.mockk:mockk:1.10.6")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
 }

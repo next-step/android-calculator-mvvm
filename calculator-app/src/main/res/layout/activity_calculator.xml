@@ -40,6 +40,7 @@
             app:layout_constraintEnd_toEndOf="@id/textView"
             app:layout_constraintStart_toStartOf="@id/textView"
             app:layout_constraintBottom_toBottomOf="@id/divider"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_result"
             tools:visibility="visible"
             />

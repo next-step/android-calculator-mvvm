@@ -11,6 +11,7 @@ java {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Version.kotlin}")
+    implementation("javax.inject:javax.inject:1")
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.google.truth:truth:1.1.4")

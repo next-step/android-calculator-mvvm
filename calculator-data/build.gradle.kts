@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
     id("org.jlleitschuh.gradle.ktlint") version "11.5.0"
 }
 
@@ -28,12 +29,15 @@ android {
 }
 
 dependencies {
-    implementation("androidx.room:room-runtime:2.5.2")
+    api("androidx.room:room-runtime:2.5.2")
     implementation("androidx.room:room-common:2.5.2")
+    implementation("androidx.room:room-ktx:2.5.2")
     implementation("androidx.test:core-ktx:1.5.0")
     implementation(project(":calculator-domain"))
 //     To use Kotlin Symbol Processing (KSP)
     ksp("androidx.room:room-compiler:2.5.2")
+    implementation("com.google.dagger:hilt-android:2.47")
+    ksp("com.google.dagger:hilt-android-compiler:2.47")
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Version.kotlin}")
 

@@ -10,17 +10,20 @@ import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
 import camp.nextstep.edu.calculator.domain.repo.History
 import camp.nextstep.edu.calculator.domain.repo.HistoryRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CalculatorViewModel(
-    expression: Expression? = null,
+@HiltViewModel
+class CalculatorViewModel @Inject constructor(
+    expression: Expression = Expression.EMPTY,
     private val repository: HistoryRepository
 ) : ViewModel() {
 
     private val calculator = Calculator()
 
-    private val _expression = MutableLiveData(Expression.EMPTY)
+    private val _expression = MutableLiveData(expression)
     val expression: LiveData<Expression> = _expression
 
     private val _uiState = SingleLiveEvent<CalculatorUiState>()
