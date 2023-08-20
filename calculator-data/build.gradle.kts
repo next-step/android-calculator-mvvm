@@ -45,4 +45,5 @@ dependencies {
     testImplementation("com.google.truth:truth:1.1.4")
     testImplementation("io.mockk:mockk:1.10.6")
     testImplementation("org.robolectric:robolectric:4.9")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
 }
