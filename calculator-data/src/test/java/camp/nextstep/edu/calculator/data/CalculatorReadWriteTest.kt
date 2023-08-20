@@ -33,11 +33,10 @@ class CalculatorReadWriteTest {
         db.close()
     }
 
-
     private suspend fun insertAndGet(): HistoryEntity {
         val history = HistoryEntity(expression = "3 + 5", result = "8")
         historyDao.insertAll(history)
-        return historyDao.getAll().get(0)
+        return historyDao.getAll()[0]
     }
 
     @Test
