@@ -19,10 +19,10 @@ class CalculatorViewModelTest {
         calculatorViewModel = CalculatorViewModel(Expression(""))
         // when
         val input = 7
-        calculatorViewModel.setOperand(input)
+        calculatorViewModel.addOperand(input)
         val expected = input.toString()
         // then
-        val actual = calculatorViewModel.currentExpression.getOrAwaitValue()
+        val actual = calculatorViewModel.expression.getOrAwaitValue().value
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -32,10 +32,10 @@ class CalculatorViewModelTest {
         calculatorViewModel = CalculatorViewModel(Expression("7"))
         // when
         val input = 7
-        calculatorViewModel.setOperand(input)
+        calculatorViewModel.addOperand(input)
         val expected = "7$input"
         // then
-        val actual = calculatorViewModel.currentExpression.getOrAwaitValue()
+        val actual = calculatorViewModel.expression.getOrAwaitValue().value
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -45,10 +45,10 @@ class CalculatorViewModelTest {
         calculatorViewModel = CalculatorViewModel(Expression("7 + "))
         // when
         val input = 7
-        calculatorViewModel.setOperand(input)
+        calculatorViewModel.addOperand(input)
         val expected = "7 + $input"
         // then
-        val actual = calculatorViewModel.currentExpression.getOrAwaitValue()
+        val actual = calculatorViewModel.expression.getOrAwaitValue().value
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -58,10 +58,10 @@ class CalculatorViewModelTest {
         calculatorViewModel = CalculatorViewModel(Expression(""))
         // when
         val input = ArithmeticOperator.PLUS
-        calculatorViewModel.setOperator(input)
+        calculatorViewModel.addOperator(input)
         val expected = ""
         // then
-        val actual = calculatorViewModel.currentExpression.getOrAwaitValue()
+        val actual = calculatorViewModel.expression.getOrAwaitValue().value
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -71,10 +71,10 @@ class CalculatorViewModelTest {
         calculatorViewModel = CalculatorViewModel(Expression("7"))
         // when
         val input = ArithmeticOperator.PLUS
-        calculatorViewModel.setOperator(input)
+        calculatorViewModel.addOperator(input)
         val expected = "7 ${input.value} "
         // then
-        val actual = calculatorViewModel.currentExpression.getOrAwaitValue()
+        val actual = calculatorViewModel.expression.getOrAwaitValue().value
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -84,10 +84,10 @@ class CalculatorViewModelTest {
         calculatorViewModel = CalculatorViewModel(Expression("7 + "))
         // when
         val input = ArithmeticOperator.MULTIPLY
-        calculatorViewModel.setOperator(input)
+        calculatorViewModel.addOperator(input)
         val expected = "7 ${input.value} "
         // then
-        val actual = calculatorViewModel.currentExpression.getOrAwaitValue()
+        val actual = calculatorViewModel.expression.getOrAwaitValue().value
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -99,7 +99,7 @@ class CalculatorViewModelTest {
         calculatorViewModel.calculate()
         val expected = "85"
         // then
-        val actual = calculatorViewModel.currentExpression.getOrAwaitValue()
+        val actual = calculatorViewModel.expression.getOrAwaitValue().value
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -111,8 +111,19 @@ class CalculatorViewModelTest {
         calculatorViewModel.calculate()
         val expected = "7 + 78 - "
         // then
-        val actual = calculatorViewModel.currentExpression.getOrAwaitValue()
+        val actual = calculatorViewModel.expression.getOrAwaitValue().value
         assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun `비정상적인_수식일_때_Equal을_입력하면_경고_메시지_이벤트가_트리거된다`() {
+        // given
+        calculatorViewModel = CalculatorViewModel(Expression("7 + 78 - "))
+        // when
+        calculatorViewModel.calculate()
+        // then
+        val actual = calculatorViewModel.showWarningMessageEvent.getOrAwaitValue()
+        assertThat(actual).isNotEmpty()
     }
 
     @Test
@@ -123,7 +134,7 @@ class CalculatorViewModelTest {
         calculatorViewModel.delete()
         val expected = "7 + 78"
         // then
-        val actual = calculatorViewModel.currentExpression.getOrAwaitValue()
+        val actual = calculatorViewModel.expression.getOrAwaitValue().value
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -135,7 +146,7 @@ class CalculatorViewModelTest {
         calculatorViewModel.delete()
         val expected = "7 + 7"
         // then
-        val actual = calculatorViewModel.currentExpression.getOrAwaitValue()
+        val actual = calculatorViewModel.expression.getOrAwaitValue().value
         assertThat(actual).isEqualTo(expected)
     }
 }

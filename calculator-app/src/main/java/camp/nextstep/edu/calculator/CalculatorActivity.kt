@@ -16,9 +16,16 @@ class CalculatorActivity : AppCompatActivity() {
         binding = ActivityCalculatorBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        initView()
+        observeEvent()
+    }
+
+    private fun initView() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+    }
 
+    private fun observeEvent() {
         viewModel.showWarningMessageEvent.observe(this) {
             showToast(it)
         }

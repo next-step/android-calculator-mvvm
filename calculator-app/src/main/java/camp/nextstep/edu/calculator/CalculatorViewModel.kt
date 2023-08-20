@@ -9,38 +9,34 @@ import camp.nextstep.edu.calculator.domain.ArithmeticOperator
 import camp.nextstep.edu.calculator.domain.Calculator
 import camp.nextstep.edu.calculator.domain.Expression
 
-class CalculatorViewModel(private val expression: Expression) : ViewModel() {
+class CalculatorViewModel(expression: Expression) : ViewModel() {
 
-    private val _currentExpression = MutableLiveData(expression.value)
-    val currentExpression: LiveData<String> = _currentExpression
+    private val _expression = MutableLiveData(expression)
+    val expression: LiveData<Expression> = _expression
 
     private val _showWarningMessageEvent = SingleLiveEvent<String>()
     val showWarningMessageEvent: LiveData<String> = _showWarningMessageEvent
 
-    fun setOperand(operand: Int) {
-        expression.setOperand(operand)
-        _currentExpression.value = expression.value
+    fun addOperand(operand: Int) {
+        _expression.value = expression.value?.addOperand(operand)
     }
 
-    fun setOperator(operator: ArithmeticOperator) {
-        expression.setOperator(operator)
-        _currentExpression.value = expression.value
+    fun addOperator(operator: ArithmeticOperator) {
+        _expression.value = expression.value?.addOperator(operator)
     }
 
     fun calculate() {
         kotlin.runCatching {
-            Calculator.calculate(ArithmeticExpression(expression.value))
+            Calculator.calculate(ArithmeticExpression(expression.value?.value ?: ""))
         }.onSuccess { result ->
-            expression.setEquals(result)
-            _currentExpression.value = expression.value
+            _expression.value = expression.value?.setEquals(result)
         }.onFailure { exception ->
             showWarningMessage(exception.message ?: "")
         }
     }
 
     fun delete() {
-        expression.setDelete()
-        _currentExpression.value = expression.value
+        _expression.value = expression.value?.setDelete()
     }
 
     private fun showWarningMessage(message: String) {

@@ -23,7 +23,7 @@
             android:layout_height="0dp"
             android:layout_marginBottom="16dp"
             android:hint="0"
-            android:text="@{viewModel.currentExpression}"
+            android:text="@{viewModel.expression.value}"
             android:textAlignment="viewEnd"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="@id/divider"
@@ -90,7 +90,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.setOperand(7)}"
+                android:onClick="@{() -> viewModel.addOperand(7)}"
                 android:text="@string/calculator_7" />
 
             <Button
@@ -98,7 +98,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.setOperand(8)}"
+                android:onClick="@{() -> viewModel.addOperand(8)}"
                 android:text="@string/calculator_8" />
 
             <Button
@@ -106,7 +106,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.setOperand(9)}"
+                android:onClick="@{() -> viewModel.addOperand(9)}"
                 android:text="@string/calculator_9" />
 
             <Button
@@ -114,7 +114,7 @@
                 style="@style/Widget.Calculator.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.setOperator(ArithmeticOperator.DIVIDE)}"
+                android:onClick="@{() -> viewModel.addOperator(ArithmeticOperator.DIVIDE)}"
                 android:text="@string/calculator_divide" />
 
             <Button
@@ -122,7 +122,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.setOperand(4)}"
+                android:onClick="@{() -> viewModel.addOperand(4)}"
                 android:text="@string/calculator_4" />
 
             <Button
@@ -130,7 +130,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.setOperand(5)}"
+                android:onClick="@{() -> viewModel.addOperand(5)}"
                 android:text="@string/calculator_5" />
 
             <Button
@@ -138,7 +138,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.setOperand(6)}"
+                android:onClick="@{() -> viewModel.addOperand(6)}"
                 android:text="@string/calculator_6" />
 
             <Button
@@ -146,7 +146,7 @@
                 style="@style/Widget.Calculator.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.setOperator(ArithmeticOperator.MULTIPLY)}"
+                android:onClick="@{() -> viewModel.addOperator(ArithmeticOperator.MULTIPLY)}"
                 android:text="@string/calculator_multiply" />
 
             <Button
@@ -154,7 +154,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.setOperand(1)}"
+                android:onClick="@{() -> viewModel.addOperand(1)}"
                 android:text="@string/calculator_1" />
 
             <Button
@@ -162,7 +162,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.setOperand(2)}"
+                android:onClick="@{() -> viewModel.addOperand(2)}"
                 android:text="@string/calculator_2" />
 
             <Button
@@ -170,7 +170,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.setOperand(3)}"
+                android:onClick="@{() -> viewModel.addOperand(3)}"
                 android:text="@string/calculator_3" />
 
             <Button
@@ -178,7 +178,7 @@
                 style="@style/Widget.Calculator.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.setOperator(ArithmeticOperator.MINUS)}"
+                android:onClick="@{() -> viewModel.addOperator(ArithmeticOperator.MINUS)}"
                 android:text="@string/calculator_minus" />
 
             <Button
@@ -186,6 +186,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{() -> viewModel.addOperand(0)}"
                 android:text="@string/calculator_0" />
 
             <Space
@@ -206,7 +207,7 @@
                 style="@style/Widget.Calculator.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.setOperator(ArithmeticOperator.PLUS)}"
+                android:onClick="@{() -> viewModel.addOperator(ArithmeticOperator.PLUS)}"
                 android:text="@string/calculator_plus" />
         </GridLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

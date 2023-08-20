@@ -1,42 +1,26 @@
 package camp.nextstep.edu.calculator.domain
 
-class Expression(value: String) {
-    var value: String = value
-        private set
+data class Expression(val value: String) {
 
-    fun setOperand(operand: Int) {
-        value += operand.toString()
-    }
+    fun addOperand(operand: Int) = this.copy(value = value + operand.toString())
 
-    fun setOperator(operator: ArithmeticOperator) {
-        if (value.isEmpty()) return
-
-        if (isLastStringOperand()) {
-            value += " ${operator.value} "
-            return
+    fun addOperator(operator: ArithmeticOperator): Expression =
+        when {
+            value.isEmpty() -> this
+            isLastStringOperand() -> this.copy(value = value + " ${operator.value} ")
+            isLastStringOperator() -> this.copy(value = value.dropLast(OPERATOR_CONCAT_STRING_LENGTH) + " ${operator.value} ")
+            else -> this
         }
 
-        if (isLastStringOperator()) {
-            value = value.dropLast(OPERATOR_CONCAT_STRING_LENGTH) + " ${operator.value} "
+    fun setEquals(result: Int) = this.copy(value = result.toString())
+
+    fun setDelete(): Expression =
+        when {
+            value.isEmpty() -> this
+            isLastStringOperand() -> this.copy(value = value.dropLast(OPERAND_CONCAT_STRING_LENGTH))
+            isLastStringOperator() -> this.copy(value = value.dropLast(OPERATOR_CONCAT_STRING_LENGTH))
+            else -> this
         }
-    }
-
-    fun setEquals(result: Int) {
-        value = result.toString()
-    }
-
-    fun setDelete() {
-        if (value.isEmpty()) return
-
-        if (isLastStringOperand()) {
-            value = value.dropLast(OPERAND_CONCAT_STRING_LENGTH)
-            return
-        }
-
-        if (isLastStringOperator()) {
-            value = value.dropLast(OPERATOR_CONCAT_STRING_LENGTH)
-        }
-    }
 
     private fun isLastStringOperator() =
         ArithmeticOperator.isArithmeticOperator(value.trimEnd().last().toString())
