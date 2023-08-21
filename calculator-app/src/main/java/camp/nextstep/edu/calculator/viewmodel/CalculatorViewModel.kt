@@ -11,17 +11,15 @@ import camp.nextstep.edu.calculator.domain.Operator
 import camp.nextstep.edu.calculator.domain.repo.History
 import camp.nextstep.edu.calculator.domain.repo.HistoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CalculatorViewModel @Inject constructor(
-    expression: Expression = Expression.EMPTY,
+    expression: Expression,
+    private val calculator: Calculator,
     private val repository: HistoryRepository
 ) : ViewModel() {
-
-    private val calculator = Calculator()
 
     private val _expression = MutableLiveData(expression)
     val expression: LiveData<Expression> = _expression
@@ -31,12 +29,6 @@ class CalculatorViewModel @Inject constructor(
 
     private val _histories = MutableLiveData<List<History>>()
     val histories: LiveData<List<History>> = _histories
-
-    init {
-        if (expression != null) {
-            _expression.value = expression
-        }
-    }
 
     fun addToExpression(operand: Int) {
         val expression = _expression.value ?: return
@@ -53,12 +45,9 @@ class CalculatorViewModel @Inject constructor(
     }
 
     fun loadHistory() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val history = repository.loadHistories()
-
-            viewModelScope.launch(Dispatchers.Main) {
-                _histories.value = history
-            }
+            _histories.value = history
         }
     }
 
@@ -70,7 +59,7 @@ class CalculatorViewModel @Inject constructor(
             _uiState.value = CalculatorUiState.ErrorNotCompleteExpression()
         } else {
             val history = History(expression.toString(), result)
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch {
                 repository.addHistory(history)
             }
             _expression.value = Expression(listOf(result))

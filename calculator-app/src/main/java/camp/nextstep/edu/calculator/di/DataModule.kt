@@ -5,6 +5,7 @@ import androidx.room.Room
 import camp.nextstep.edu.calculator.data.HistoryDao
 import camp.nextstep.edu.calculator.data.HistoryDatabase
 import camp.nextstep.edu.calculator.data.HistoryRepositoryImpl
+import camp.nextstep.edu.calculator.domain.Calculator
 import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.repo.HistoryRepository
 import dagger.Binds
@@ -46,6 +47,11 @@ abstract class DataModule {
         @Provides
         fun provideExpression(): Expression {
             return Expression.EMPTY
+        }
+
+        @Provides
+        fun provideCalculator(): Calculator {
+            return Calculator()
         }
     }
 }
