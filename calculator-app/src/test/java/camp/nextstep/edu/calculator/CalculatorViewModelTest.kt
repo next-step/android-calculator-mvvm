@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import camp.nextstep.edu.calculator.domain.Operator
 import camp.nextstep.edu.calculator.domain.repository.ResultExpressionRepository
 import camp.nextstep.edu.calculator.domain.usecase.AddResultExpressionUseCase
+import camp.nextstep.edu.calculator.domain.usecase.CalculateUseCase
 import camp.nextstep.edu.calculator.domain.usecase.GetResultExpressionListUseCase
 import com.google.common.truth.Truth
 import io.mockk.mockk
@@ -29,6 +30,7 @@ class CalculatorViewModelTest {
         val testDispatcher = StandardTestDispatcher(testScheduler)
         viewModel = CalculatorViewModel(
             dispatchers = testDispatcher,
+            calculateUseCase = CalculateUseCase(),
             addResultExpressionUseCase = AddResultExpressionUseCase(repository),
             getResultExpressionListUseCase = GetResultExpressionListUseCase(repository)
         )
