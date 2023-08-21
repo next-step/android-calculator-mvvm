@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import camp.nextstep.edu.calculator.CalculatorViewModel
 import camp.nextstep.edu.calculator.data.repository.DataInjector
 import camp.nextstep.edu.calculator.domain.usecase.AddResultExpressionUseCase
+import camp.nextstep.edu.calculator.domain.usecase.CalculateUseCase
 import camp.nextstep.edu.calculator.domain.usecase.GetResultExpressionListUseCase
 
 @Suppress("UNCHECKED_CAST")
@@ -17,6 +18,7 @@ object ViewModelProviderFactory {
                 return if (modelClass.isAssignableFrom(CalculatorViewModel::class.java)) {
                     val repository = DataInjector.provideResultExpressionRepository(context)
                     CalculatorViewModel(
+                        calculateUseCase = CalculateUseCase(),
                         addResultExpressionUseCase = AddResultExpressionUseCase(repository),
                         getResultExpressionListUseCase = GetResultExpressionListUseCase(repository)
                     ) as T

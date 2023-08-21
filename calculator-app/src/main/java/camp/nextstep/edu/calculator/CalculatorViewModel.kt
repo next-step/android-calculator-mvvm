@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
     private val dispatchers: CoroutineDispatcher = Dispatchers.IO,
-    private val calculateUseCase: CalculateUseCase = CalculateUseCase(),
+    private val calculateUseCase: CalculateUseCase,
     private val addResultExpressionUseCase: AddResultExpressionUseCase,
     private val getResultExpressionListUseCase: GetResultExpressionListUseCase,
 ) : ViewModel() {
