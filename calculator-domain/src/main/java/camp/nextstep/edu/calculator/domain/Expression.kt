@@ -1,45 +1,34 @@
 package camp.nextstep.edu.calculator.domain
 
-data class Expression(
-    private val values: List<Any> = emptyList()
-) {
-    operator fun plus(operand: Int): Expression {
-        return when (val last = values.lastOrNull()) {
-            is Operator -> Expression(values + operand)
-            is Int -> Expression(values.dropLast(1) + "$last$operand".toInt())
-            null -> Expression(listOf(operand))
-            else -> throw IllegalStateException("Failed plus operand. last: $last")
-        }
-    }
+data class Expression(val value: String) {
 
-    operator fun plus(operator: Operator): Expression {
-        return when (val last = values.lastOrNull()) {
-            is Operator -> Expression(values.dropLast(1) + operator)
-            is Int -> Expression(values + operator)
-            null -> EMPTY
-            else -> throw IllegalStateException("Failed plus operator. last: $last")
-        }
-    }
+    fun addOperand(operand: Int) = this.copy(value = value + operand.toString())
 
-    fun removeLast(): Expression {
-        return when (val last = values.lastOrNull()) {
-            is Operator -> Expression(values.dropLast(1))
-            is Int -> {
-                val operand = (last / 10).takeIf { it != 0 }
-                Expression(values.dropLast(1) + listOfNotNull(operand))
-            }
-            null -> EMPTY
-            else -> throw IllegalStateException("Failed remove last. last: $last")
+    fun addOperator(operator: ArithmeticOperator): Expression =
+        when {
+            value.isEmpty() -> this
+            isLastStringOperand() -> this.copy(value = value + " ${operator.value} ")
+            isLastStringOperator() -> this.copy(value = value.dropLast(OPERATOR_CONCAT_STRING_LENGTH) + " ${operator.value} ")
+            else -> this
         }
-    }
 
-    override fun toString(): String {
-        return values.joinToString(" ") {
-            if (it is Operator) it.sign else it.toString()
+    fun setEquals(result: Int) = this.copy(value = result.toString())
+
+    fun setDelete(): Expression =
+        when {
+            value.isEmpty() -> this
+            isLastStringOperand() -> this.copy(value = value.dropLast(OPERAND_CONCAT_STRING_LENGTH))
+            isLastStringOperator() -> this.copy(value = value.dropLast(OPERATOR_CONCAT_STRING_LENGTH))
+            else -> this
         }
-    }
+
+    private fun isLastStringOperator() =
+        ArithmeticOperator.isArithmeticOperator(value.trimEnd().last().toString())
+
+    private fun isLastStringOperand() = value.last().isDigit()
 
     companion object {
-        val EMPTY = Expression()
+        private const val OPERAND_CONCAT_STRING_LENGTH = 1
+        private const val OPERATOR_CONCAT_STRING_LENGTH = 3
     }
 }
