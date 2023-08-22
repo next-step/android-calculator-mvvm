@@ -1,6 +1,7 @@
 plugins {
     id("java-library")
     id("org.jetbrains.kotlin.jvm")
+    id("org.jlleitschuh.gradle.ktlint") version "11.5.0"
 }
 
 java {
@@ -10,8 +11,9 @@ java {
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Version.kotlin}")
+    implementation("javax.inject:javax.inject:1")
 
     testImplementation("junit:junit:4.13.2")
-    testImplementation("com.google.truth:truth:1.1.3")
+    testImplementation("com.google.truth:truth:1.1.4")
     testImplementation("io.mockk:mockk:1.10.6")
 }
