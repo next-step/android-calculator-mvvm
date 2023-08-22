@@ -7,7 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
-interface CalculatorDao {
+internal interface CalculatorDao {
     @Query("SELECT * FROM ResultExpressionEntity")
     fun getAll(): List<ResultExpressionEntity>
 

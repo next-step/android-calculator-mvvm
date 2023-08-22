@@ -7,14 +7,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import camp.nextstep.edu.calculator.CalculatorViewModel.EventType
 import camp.nextstep.edu.calculator.databinding.ActivityCalculatorBinding
+import camp.nextstep.edu.calculator.viewmodel.ViewModelProviderFactory
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
 
-    private val resultExpressionAdapter: ResultExpressionAdapter by lazy { ResultExpressionAdapter() }
+    private val resultExpressionAdapter: ResultExpressionAdapter = ResultExpressionAdapter()
 
     private val viewModel: CalculatorViewModel by viewModels {
-        CalculatorViewModel.CalculatorViewModelFactory(this@CalculatorActivity)
+        ViewModelProviderFactory.getCalculatorViewModel(this@CalculatorActivity)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +32,9 @@ class CalculatorActivity : AppCompatActivity() {
     }
 
     private fun observeEvent() {
-        viewModel.event.observe(this) { event ->
+        viewModel.event.observe(this) { eventType ->
+            val event: EventType = eventType ?: return@observe
+
             when (event) {
                 EventType.SHOW_TOAST -> {
                     showIncompleteExpressionError()

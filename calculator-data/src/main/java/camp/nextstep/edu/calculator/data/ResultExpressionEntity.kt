@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import camp.nextstep.edu.calculator.domain.data.ResultExpression
 
 @Entity
-data class ResultExpressionEntity(
+internal data class ResultExpressionEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
 
