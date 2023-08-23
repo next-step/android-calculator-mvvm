@@ -1,36 +1,41 @@
 package camp.nextstep.edu.calculator
 
 import android.annotation.SuppressLint
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.View
-import android.widget.Adapter
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import camp.nextstep.edu.calculator.databinding.ActivityCalculatorBinding
 import com.example.calculator.data.CalculatorDatabase
 
 class CalculatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalculatorBinding
-    private lateinit var adapter: Adpter
-    private val viewModel: CalculatorViewModel by viewModels()
+    private lateinit var recordAdapter: RecordAdapter
+    private lateinit var viewModel: CalculatorViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        baseContext
+        initViewModel()
         initBinding()
         initViewModelObserve()
         initRecyclerView()
+
         setContentView(binding.root)
-        viewModel.setCalculatorDao(CalculatorDatabase.getInstance(this)!!)
+    }
+
+    private fun initViewModel() {
+        val calculatorDao = CalculatorDatabase.getInstance(this)!!.CalculatorDao()
+        val viewModelFactory = CalculatorViewModelFactory(calculatorDao = calculatorDao)
+        viewModel = ViewModelProvider(this, viewModelFactory)[CalculatorViewModel::class.java]
     }
 
     private fun initRecyclerView() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = Adpter()
-        binding.recyclerView.adapter = adapter
+        recordAdapter = RecordAdapter()
+        binding.recyclerView.adapter = recordAdapter
     }
 
     private fun initBinding() {
@@ -47,8 +52,8 @@ class CalculatorActivity : AppCompatActivity() {
         }
 
         viewModel.memoryList.observe(this) {
-            adapter.setMemoryList(it)
-            adapter.notifyDataSetChanged()
+            recordAdapter.setMemoryList(it)
+            recordAdapter.notifyDataSetChanged()
         }
 
         viewModel.showHistory.observe(this) { isSwhoHistory ->

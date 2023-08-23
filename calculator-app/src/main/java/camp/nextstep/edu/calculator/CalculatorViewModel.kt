@@ -15,10 +15,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.concurrent.thread
 
-class CalculatorViewModel(initFormula: List<Any> = emptyList()) : ViewModel() {
+class CalculatorViewModel(initFormula: List<Any> = emptyList(), private val calculatorDao: CalculatorDao? = null) : ViewModel() {
     private val calculator = Calculator()
-    private lateinit var calculatorDao: CalculatorDao
-    private var isShowHistory = false
 
     private var _formula = MutableLiveData(Expression(initFormula))
     val formula: LiveData<Expression>
@@ -57,10 +55,10 @@ class CalculatorViewModel(initFormula: List<Any> = emptyList()) : ViewModel() {
             _formula.value = Expression(listOf(result))
 
             CoroutineScope(Dispatchers.IO).launch {
-                calculatorDao.insertMemory(
+                calculatorDao!!.insertMemory(
                     MemoryEntity(
                         expression = formula,
-                        result = "= $result"
+                        result = result.toString()
                     )
                 )
             }
@@ -68,14 +66,16 @@ class CalculatorViewModel(initFormula: List<Any> = emptyList()) : ViewModel() {
     }
 
     fun getHistory() {
-        if(isShowHistory) {
-            isShowHistory = false
-            _showHistoryEvent.value = isShowHistory
+        if(_showHistoryEvent.value == null) {
+            _showHistoryEvent.value = false
+        }
+
+        if(_showHistoryEvent.value!!) {
+            _showHistoryEvent.value = false
         } else {
-            isShowHistory = true
             CoroutineScope(Dispatchers.IO).launch {
                 val memoryList = arrayListOf<Memory>()
-                for (memory in calculatorDao.getMemories()) {
+                for (memory in calculatorDao!!.getMemories()) {
                     memoryList.add(
                         Memory(
                             expression = memory.expression,
@@ -83,14 +83,9 @@ class CalculatorViewModel(initFormula: List<Any> = emptyList()) : ViewModel() {
                         )
                     )
                 }
-                _showHistoryEvent.postValue(isShowHistory)
                 _memoryList.postValue(memoryList)
+                _showHistoryEvent.postValue(true)
             }
         }
-
-    }
-
-    fun setCalculatorDao(calculatorDatabase: CalculatorDatabase) {
-        calculatorDao = calculatorDatabase.CalculatorDao()
     }
 }
