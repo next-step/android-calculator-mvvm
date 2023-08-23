@@ -1,8 +1,14 @@
 package camp.nextstep.edu.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import camp.nextstep.edu.calculator.domain.Memory
 import camp.nextstep.edu.calculator.domain.Operator
+import com.example.calculator.data.CalculatorDao
+import com.example.calculator.data.CalculatorDatabase
+import com.example.calculator.data.MemoryEntity
 import com.google.common.truth.Truth.assertThat
+import io.mockk.every
+import io.mockk.mockk
 import org.junit.Rule
 import org.junit.Test
 
@@ -123,5 +129,35 @@ class CalculatorViewModelTest {
         // then : 토스트 메시지 "완성되지 않은 수식입니다"를 보여줍니다.
         // R.string.incomplete_expression == 완성되지 않은 수식입니다.
         assertThat(viewModel.toastEvent.value).isEqualTo(R.string.incomplete_expression)
+    }
+
+    // calculate()
+    @Test
+    fun `계산을 하면 로컬 DB에 저장되고 불러오기를 할 수 있다`() {
+        // given : mockk를 활용해 DB를 기능을 구현한다.
+        val calculatorDao: CalculatorDao = mockk()
+        val memoryEntity = MemoryEntity(expression = "33 + 12", result = "45")
+        val memoryEntityList = listOf(memoryEntity)
+
+        every {
+            calculatorDao.insertMemory(memoryEntity)
+        }
+
+        every { calculatorDao.getMemories() } returns memoryEntityList
+
+        val viewModel = CalculatorViewModel(
+            initFormula = listOf<Any>(33, Operator.Plus, 12),
+            calculatorDao = calculatorDao
+        )
+        val expression = "33 + 12"
+        val result = "45"
+
+        // when : 계산을 한다.
+        viewModel.calculate()
+
+
+        // then : DB에 저장된 값과 계산된 결과의 값이 같다.
+        assertThat(calculatorDao.getMemories()[0].expression).isEqualTo(expression)
+        assertThat(calculatorDao.getMemories()[0].result).isEqualTo(result)
     }
 }
