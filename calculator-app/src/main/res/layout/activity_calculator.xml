@@ -8,9 +8,7 @@
             name="viewModel"
             type="camp.nextstep.edu.calculator.CalculatorViewModel" />
 
-        <variable
-            name="operator"
-            type="camp.nextstep.edu.calculator.domain.Operator" />
+        <import type="camp.nextstep.edu.calculator.domain.Operator"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -76,7 +74,8 @@
             app:icon="@drawable/ic_baseline_access_time_24"
             app:layout_constraintBottom_toBottomOf="@id/buttonDelete"
             app:layout_constraintStart_toStartOf="@id/input"
-            app:layout_constraintTop_toTopOf="@id/buttonDelete" />
+            app:layout_constraintTop_toTopOf="@id/buttonDelete"
+            android:onClick="@{()->viewModel.getHistory()}"/>
 
         <GridLayout
             android:id="@+id/input"
@@ -118,7 +117,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/calculator_divide"
-                android:onClick="@{()->viewModel.addToExpression(operator.Divide)}"/>
+                android:onClick="@{()->viewModel.addToExpression(Operator.Divide)}"/>
 
             <Button
                 android:id="@+id/button4"
@@ -150,7 +149,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/calculator_multiply"
-                android:onClick="@{()->viewModel.addToExpression(operator.Multiply)}"/>
+                android:onClick="@{()->viewModel.addToExpression(Operator.Multiply)}"/>
 
             <Button
                 android:id="@+id/button1"
@@ -182,7 +181,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/calculator_minus"
-                android:onClick="@{()->viewModel.addToExpression(operator.Minus)}"/>
+                android:onClick="@{()->viewModel.addToExpression(Operator.Minus)}"/>
 
             <Button
                 android:id="@+id/button0"
@@ -211,7 +210,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/calculator_plus"
-                android:onClick="@{()->viewModel.addToExpression(operator.Plus)}"/>
+                android:onClick="@{()->viewModel.addToExpression(Operator.Plus)}"/>
         </GridLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
