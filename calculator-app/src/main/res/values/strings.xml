@@ -16,5 +16,4 @@
     <string name="calculator_multiply">×</string>
     <string name="calculator_divide">÷</string>
     <string name="incomplete_expression">완성되지 않은 수식입니다.</string>
-    <string name="text_calculate_result">= %1$s</string>
 </resources>

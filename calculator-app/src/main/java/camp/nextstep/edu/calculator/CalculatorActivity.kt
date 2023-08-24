@@ -52,8 +52,7 @@ class CalculatorActivity : AppCompatActivity() {
         }
 
         viewModel.memoryList.observe(this) {
-            recordAdapter.setMemoryList(it)
-            recordAdapter.notifyDataSetChanged()
+            recordAdapter.setData(it)
         }
 
         viewModel.showHistory.observe(this) { isSwhoHistory ->

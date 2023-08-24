@@ -15,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.concurrent.thread
 
-class CalculatorViewModel(initFormula: List<Any> = emptyList(), private val calculatorDao: CalculatorDao? = null) : ViewModel() {
+class CalculatorViewModel(initFormula: List<Any> = emptyList(), private val calculatorDao: CalculatorDao) : ViewModel() {
     private val calculator = Calculator()
 
     private var _formula = MutableLiveData(Expression(initFormula))
@@ -55,7 +55,7 @@ class CalculatorViewModel(initFormula: List<Any> = emptyList(), private val calc
             _formula.value = Expression(listOf(result))
 
             CoroutineScope(Dispatchers.IO).launch {
-                calculatorDao!!.insertMemory(
+                calculatorDao.insertMemory(
                     MemoryEntity(
                         expression = formula,
                         result = result.toString()
@@ -75,9 +75,10 @@ class CalculatorViewModel(initFormula: List<Any> = emptyList(), private val calc
         } else {
             CoroutineScope(Dispatchers.IO).launch {
                 val memoryList = arrayListOf<Memory>()
-                for (memory in calculatorDao!!.getMemories()) {
+                for (memory in calculatorDao.getMemories()) {
                     memoryList.add(
                         Memory(
+                            index = memory.id,
                             expression = memory.expression,
                             result = memory.result
                         )
