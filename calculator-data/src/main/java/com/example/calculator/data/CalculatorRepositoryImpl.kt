@@ -5,8 +5,7 @@ import camp.nextstep.edu.calculator.domain.Memory
 
 // DB인스턴스 생성
 
-internal class CalculatorRepositoryImpl(private val calculatorDao: CalculatorDao) :
-    CalculatorRepository {
+internal class CalculatorRepositoryImpl(private val calculatorDao: CalculatorDao) : CalculatorRepository {
 
     override fun insertMemory(memory: Memory) {
         calculatorDao.insertMemory(
