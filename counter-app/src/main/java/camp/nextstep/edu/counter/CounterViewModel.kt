@@ -5,16 +5,18 @@
 
 package camp.nextstep.edu.counter
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 
 class CounterViewModel : ViewModel() {
-    private val _count = SingleLiveEvent<Int>().apply { value = 0 }
-    val count: SingleLiveEvent<Int>
+    private val _count = MutableLiveData<Int>().apply { value = 0 }
+    val count: LiveData<Int>
         get() = _count
 
     private val _uiEffect = SingleLiveEvent<UiEffect>()
-    val uiEffect: SingleLiveEvent<UiEffect>
+    val uiEffect: LiveData<UiEffect>
         get() = _uiEffect
 
     fun increase() {
