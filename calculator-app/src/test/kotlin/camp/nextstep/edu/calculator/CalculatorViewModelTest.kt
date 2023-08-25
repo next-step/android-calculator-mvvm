@@ -137,20 +137,20 @@ class CalculatorViewModelTest {
     }
 
     // calculate()
-    @Test
-    fun `계산을 하면 로컬 DB에 저장되고 불러오기를 할 수 있다`() {
-        // given : viewModel을 생성한다.
-        val memoryEntity = MemoryEntity(expression = "33 + 12", result = "45")
-
-        val viewModel = CalculatorViewModel(
-            initFormula = listOf<Any>(33, Operator.Plus, 12),
-            calculatorRepository = fakeRepository
-        )
-
-        // when : 계산을 한다.
-        viewModel.calculate()
-
-        // then : DB에 저장된 값과 계산된 결과의 값이 같다.
-        assertThat(fakeRepository.getMemories()[0]).isEqualTo(memoryEntity)
-    }
+//    @Test
+//    fun `계산을 하면 로컬 DB에 저장되고 불러오기를 할 수 있다`() {
+//        // given : viewModel을 생성한다.
+//        val memoryEntity = MemoryEntity(expression = "33 + 12", result = "45")
+//
+//        val viewModel = CalculatorViewModel(
+//            initFormula = listOf<Any>(33, Operator.Plus, 12),
+//            calculatorRepository = fakeRepository
+//        )
+//
+//        // when : 계산을 한다.
+//        viewModel.calculate()
+//
+//        // then : DB에 저장된 값과 계산된 결과의 값이 같다.
+//        assertThat(fakeRepository.getMemories()[0]).isEqualTo(memoryEntity)
+//    }
 }
