@@ -7,10 +7,10 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities =
-        [MemoryEntity::class],
-        version = 1
+    [MemoryEntity::class],
+    version = 1
 )
-abstract class CalculatorDatabase: RoomDatabase() {
+abstract class CalculatorDatabase : RoomDatabase() {
     abstract fun CalculatorDao(): CalculatorDao
 
     companion object {
@@ -24,8 +24,7 @@ abstract class CalculatorDatabase: RoomDatabase() {
                         context.applicationContext,
                         CalculatorDatabase::class.java,
                         "calculator.db"
-                    )
-                        .build()
+                    ).build()
                 }
             return instance
         }
