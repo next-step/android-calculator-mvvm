@@ -7,9 +7,11 @@ import camp.nextstep.edu.calculator.domain.Calculator
 import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
 
-class CalculatorViewModel : ViewModel() {
+class CalculatorViewModel(
+    private var expression: Expression = Expression.EMPTY
+) : ViewModel() {
+
     private val calculator = Calculator()
-    private var expression = Expression.EMPTY
     private val _result = MutableLiveData<String>().apply { value = "" }
     val result: LiveData<String>
         get() = _result
