@@ -19,33 +19,21 @@ class CalculatorViewModel : ViewModel() {
         get() = _uiEffect
 
     fun addToExpression(operand: Int) {
-        runCatching {
-            expression += operand
-        }.onSuccess {
-            _result.value = expression.toString()
-        }.onFailure {
-            _uiEffect.value = UiEffect.ShowErrorMessage(it.message)
-        }
+        updateExpression { expression += operand }
     }
 
     fun addToExpression(operator: Operator) {
-        runCatching {
-            expression += operator
-        }.onSuccess {
-            _result.value = expression.toString()
-        }.onFailure {
-            _uiEffect.value = UiEffect.ShowErrorMessage(it.message)
-        }
+        updateExpression { expression += operator }
     }
 
     fun removeLast() {
-        runCatching {
-            expression = expression.removeLast()
-        }.onSuccess {
-            _result.value = expression.toString()
-        }.onFailure {
-            _uiEffect.value = UiEffect.ShowErrorMessage(it.message)
-        }
+        updateExpression { expression = expression.removeLast() }
+    }
+
+    private fun updateExpression(action: () -> Unit) {
+        runCatching { action() }
+            .onSuccess { _result.value = expression.toString() }
+            .onFailure { _uiEffect.value = UiEffect.ShowErrorMessage(it.message) }
     }
 
     fun calculate() {
