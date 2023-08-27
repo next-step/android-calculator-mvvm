@@ -41,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":calculator-data"))
     implementation(project(":calculator-domain"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${Version.kotlin}")
