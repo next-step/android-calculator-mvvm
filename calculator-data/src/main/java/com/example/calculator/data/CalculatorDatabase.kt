@@ -1,9 +1,14 @@
 package com.example.calculator.data
 
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.Database
+import androidx.room.RenameColumn
+import androidx.room.RenameTable
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.AutoMigrationSpec
+import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
     entities =
@@ -27,10 +32,6 @@ abstract class CalculatorDatabase : RoomDatabase() {
                     ).build()
                 }
             return instance
-        }
-
-        fun destroyInstance() {
-            instance = null
         }
     }
 }

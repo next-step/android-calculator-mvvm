@@ -5,7 +5,7 @@ import camp.nextstep.edu.calculator.domain.Memory
 import com.example.calculator.data.MemoryEntity
 
 class FakeRepository: CalculatorRepository {
-    private val memoryEntityList = arrayListOf<Memory>()
+    private val memoryEntityList = mutableListOf<Memory>()
     override fun insertMemory(memory: Memory) {
         memoryEntityList.add(memory)
     }

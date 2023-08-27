@@ -17,12 +17,7 @@ internal class CalculatorRepositoryImpl(private val calculatorDao: CalculatorDao
     }
 
     override fun getMemories(): List<Memory> {
-        val arrMemoryList = arrayListOf<Memory>()
-        for(memoryEntity in calculatorDao.getMemories()) {
-            arrMemoryList.add(Memory(index = memoryEntity.id, expression = memoryEntity.expression, result = memoryEntity.result))
-        }
+        val arrMemoryList = calculatorDao.getMemories().map { Memory(id = it.id, expression = it.expression, result = it.result) }
         return arrMemoryList.toList()
     }
-
-
 }

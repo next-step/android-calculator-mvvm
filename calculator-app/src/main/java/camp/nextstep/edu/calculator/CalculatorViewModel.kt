@@ -12,7 +12,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CalculatorViewModel(initFormula: List<Any> = emptyList(), private val calculatorRepository: CalculatorRepository) : ViewModel() {
+class CalculatorViewModel(
+        initFormula: List<Any> = emptyList(),
+        private val calculatorRepository: CalculatorRepository
+) : ViewModel() {
     private val calculator = Calculator()
 
     private var _formula = MutableLiveData(Expression(initFormula))
@@ -53,34 +56,34 @@ class CalculatorViewModel(initFormula: List<Any> = emptyList(), private val calc
 
             CoroutineScope(Dispatchers.IO).launch {
                 calculatorRepository.insertMemory(
-                    Memory(
-                        expression = formula,
-                        result = result.toString()
-                    )
+                        Memory(
+                                id = 0,
+                                expression = formula,
+                                result = result.toString()
+                        )
                 )
             }
         }
     }
 
     fun getHistory() {
-        if(_showHistoryEvent.value == null) {
+        if (_showHistoryEvent.value == null) {
             _showHistoryEvent.value = false
         }
+        val a = arrayListOf<Int>()
 
-        if(_showHistoryEvent.value!!) {
+        if (_showHistoryEvent.value!!) {
             _showHistoryEvent.value = false
         } else {
             CoroutineScope(Dispatchers.IO).launch {
-                val memoryList = arrayListOf<Memory>()
-                for (memory in calculatorRepository.getMemories()) {
-                    memoryList.add(
-                        Memory(
-                            index = memory.index,
-                            expression = memory.expression,
-                            result = memory.result
-                        )
+                val memoryList = calculatorRepository.getMemories().map {
+                    Memory(
+                            id = it.id,
+                            expression = it.expression,
+                            result = it.result
                     )
                 }
+
                 _memoryList.postValue(memoryList)
                 _showHistoryEvent.postValue(true)
             }

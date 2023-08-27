@@ -11,9 +11,9 @@ class RecordAdapter : RecyclerView.Adapter<RecordAdapter.RecordViewHolder>() {
 
     private var memoryList = emptyList<Memory>()
 
-    class RecordViewHolder(private var itemResultBinding: ItemResultBinding): RecyclerView.ViewHolder(itemResultBinding.root) {
-        fun bind(memory : Memory) {
-           itemResultBinding.memory = memory
+    class RecordViewHolder(private var itemResultBinding: ItemResultBinding) : RecyclerView.ViewHolder(itemResultBinding.root) {
+        fun bind(memory: Memory) {
+            itemResultBinding.memory = memory
         }
     }
 
@@ -26,11 +26,7 @@ class RecordAdapter : RecyclerView.Adapter<RecordAdapter.RecordViewHolder>() {
     override fun getItemCount() = memoryList.size
 
     override fun onBindViewHolder(holder: RecordViewHolder, position: Int) {
-       holder.bind(memoryList[position])
-    }
-
-    fun setMemoryList(memoryList: List<Memory>) {
-        this.memoryList = memoryList
+        holder.bind(memoryList[position])
     }
 
     fun setData(newMemoryList: List<Memory>) {
@@ -41,15 +37,15 @@ class RecordAdapter : RecyclerView.Adapter<RecordAdapter.RecordViewHolder>() {
     }
 
     class RecodeDiffUtill(
-        private val oldList: List<Memory>,
-        private val newList: List<Memory>,
-    ): DiffUtil.Callback(){
-        override fun getOldListSize()= oldList.size
+            private val oldList: List<Memory>,
+            private val newList: List<Memory>,
+    ) : DiffUtil.Callback() {
+        override fun getOldListSize() = oldList.size
 
         override fun getNewListSize() = newList.size
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition].index == newList[newItemPosition].index
+            return oldList[oldItemPosition].id == newList[newItemPosition].id
         }
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

@@ -55,7 +55,7 @@ class CalculatorActivity : AppCompatActivity() {
         }
 
         viewModel.showHistory.observe(this) { isSwhoHistory ->
-            if(isSwhoHistory) {
+            if (isSwhoHistory) {
                 binding.recyclerView.visibility = View.VISIBLE
                 binding.textView.visibility = View.INVISIBLE
             } else {
@@ -63,5 +63,5 @@ class CalculatorActivity : AppCompatActivity() {
                 binding.textView.visibility = View.VISIBLE
             }
         }
-     }
+    }
 }

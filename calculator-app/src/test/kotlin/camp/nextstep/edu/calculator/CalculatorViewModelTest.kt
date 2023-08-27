@@ -2,11 +2,14 @@ package camp.nextstep.edu.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import camp.nextstep.edu.calculator.domain.CalculatorRepository
+import camp.nextstep.edu.calculator.domain.Memory
 import camp.nextstep.edu.calculator.domain.Operator
 import com.example.calculator.data.CalculatorDao
 import com.example.calculator.data.MemoryEntity
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -137,20 +140,24 @@ class CalculatorViewModelTest {
     }
 
     // calculate()
-//    @Test
-//    fun `계산을 하면 로컬 DB에 저장되고 불러오기를 할 수 있다`() {
-//        // given : viewModel을 생성한다.
-//        val memoryEntity = MemoryEntity(expression = "33 + 12", result = "45")
-//
-//        val viewModel = CalculatorViewModel(
-//            initFormula = listOf<Any>(33, Operator.Plus, 12),
-//            calculatorRepository = fakeRepository
-//        )
-//
-//        // when : 계산을 한다.
-//        viewModel.calculate()
-//
-//        // then : DB에 저장된 값과 계산된 결과의 값이 같다.
-//        assertThat(fakeRepository.getMemories()[0]).isEqualTo(memoryEntity)
-//    }
+    @Test
+    fun `계산을 하면 로컬 DB에 저장되고 불러오기를 할 수 있다`() {
+        // given : viewModel을 생성한다.
+        val memory = Memory(expression = "33 + 12", result = "45")
+
+        val viewModel = CalculatorViewModel(
+            initFormula = listOf<Any>(33, Operator.Plus, 12),
+            calculatorRepository = fakeRepository
+        )
+
+        // when : 계산을 한다.
+        runTest {
+            viewModel.calculate()
+            delay(1000)
+        }
+
+
+        // then : DB에 저장된 값과 계산된 결과의 값이 같다.
+        assertThat(fakeRepository.getMemories()[0]).isEqualTo(memory)
+    }
 }
