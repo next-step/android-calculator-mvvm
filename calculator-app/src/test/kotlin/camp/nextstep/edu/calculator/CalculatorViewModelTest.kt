@@ -9,6 +9,7 @@ import com.example.calculator.data.MemoryEntity
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -151,11 +152,9 @@ class CalculatorViewModelTest {
         )
 
         // when : 계산을 한다.
-        runTest {
+        runTest(UnconfinedTestDispatcher()) {
             viewModel.calculate()
-            delay(1000)
         }
-
 
         // then : DB에 저장된 값과 계산된 결과의 값이 같다.
         assertThat(fakeRepository.getMemories()[0]).isEqualTo(memory)
