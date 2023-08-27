@@ -9,7 +9,11 @@ import camp.nextstep.edu.calculator.databinding.ActivityCalculatorBinding
 class CalculatorActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCalculatorBinding
-    private val viewModel: CalculatorViewModel by viewModels()
+    private val viewModel: CalculatorViewModel by viewModels {
+        CalculatorViewModelFactory(
+            (application as CalculatorApplication).repository
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
