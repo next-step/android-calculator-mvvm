@@ -2,7 +2,7 @@ package camp.nextstep.edu.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import camp.nextstep.edu.calculator.domain.Operator
-import com.google.common.truth.Truth
+import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Rule
 
@@ -26,7 +26,7 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(1)
 
         // then
-        Truth.assertThat(viewModel.result.getOrAwaitValue()).isEqualTo("1")
+        assertThat(viewModel.result.getOrAwaitValue()).isEqualTo("1")
     }
 
     @Test
@@ -39,7 +39,7 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(3)
 
         // then
-        Truth.assertThat(viewModel.result.getOrAwaitValue()).isEqualTo("5 + 3")
+        assertThat(viewModel.result.getOrAwaitValue()).isEqualTo("5 + 3")
     }
 
     @Test
@@ -51,7 +51,7 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(9)
 
         // then
-        Truth.assertThat(viewModel.result.getOrAwaitValue()).isEqualTo("89")
+        assertThat(viewModel.result.getOrAwaitValue()).isEqualTo("89")
     }
 
     @Test
@@ -63,7 +63,7 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(Operator.Divide)
 
         // then
-        Truth.assertThat(viewModel.result.getOrAwaitValue()).isEmpty()
+        assertThat(viewModel.result.getOrAwaitValue()).isEmpty()
     }
 
     @Test
@@ -75,7 +75,7 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(Operator.Plus)
 
         // then
-        Truth.assertThat(viewModel.result.getOrAwaitValue()).isEqualTo("8 +")
+        assertThat(viewModel.result.getOrAwaitValue()).isEqualTo("8 +")
     }
 
     @Test
@@ -88,7 +88,7 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(Operator.Minus)
 
         // then
-        Truth.assertThat(viewModel.result.getOrAwaitValue()).isEqualTo("8 -")
+        assertThat(viewModel.result.getOrAwaitValue()).isEqualTo("8 -")
     }
 
     @Test
@@ -97,7 +97,7 @@ class CalculatorViewModelTest {
         viewModel.removeLast()
 
         // then
-        Truth.assertThat(viewModel.result.getOrAwaitValue()).isEmpty()
+        assertThat(viewModel.result.getOrAwaitValue()).isEmpty()
     }
 
     @Test
@@ -112,7 +112,7 @@ class CalculatorViewModelTest {
         viewModel.removeLast()
 
         // then
-        Truth.assertThat(viewModel.result.getOrAwaitValue()).isEqualTo("32")
+        assertThat(viewModel.result.getOrAwaitValue()).isEqualTo("32")
     }
 
     @Test
@@ -126,7 +126,7 @@ class CalculatorViewModelTest {
         viewModel.calculate()
 
         // then
-        Truth.assertThat(viewModel.result.getOrAwaitValue()).isEqualTo("5")
+        assertThat(viewModel.result.getOrAwaitValue()).isEqualTo("5")
     }
 
     @Test
@@ -139,6 +139,6 @@ class CalculatorViewModelTest {
         viewModel.calculate()
 
         // then
-        Truth.assertThat(viewModel.uiEffect.getOrAwaitValue()).isEqualTo(UiEffect.InCompleteExpressionError)
+        assertThat(viewModel.uiEffect.getOrAwaitValue()).isEqualTo(UiEffect.InCompleteExpressionError)
     }
 }
