@@ -11,7 +11,7 @@ import camp.nextstep.edu.calculator.domain.Memory
 import camp.nextstep.edu.calculator.domain.repository.CalculatorRepository
 
 
-class CalculatorRepositoryImpl(
+class DefaultCalculatorRepository(
     private val calculatorDao: CalculatorDao
 ) : CalculatorRepository {
     override suspend fun saveMemory(expression: String, result: Int) {

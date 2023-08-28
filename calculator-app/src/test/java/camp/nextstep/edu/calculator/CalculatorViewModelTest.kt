@@ -2,7 +2,7 @@ package camp.nextstep.edu.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import camp.nextstep.edu.calculator.data.local.CalculatorDao
-import camp.nextstep.edu.calculator.data.repository.CalculatorRepositoryImpl
+import camp.nextstep.edu.calculator.data.repository.DefaultCalculatorRepository
 import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
 import camp.nextstep.edu.calculator.domain.repository.CalculatorRepository
@@ -22,7 +22,7 @@ class CalculatorViewModelTest {
 
     @Before
     fun init() {
-        repository = CalculatorRepositoryImpl(mockk<CalculatorDao>())
+        repository = DefaultCalculatorRepository(mockk<CalculatorDao>())
         viewModel = CalculatorViewModel(repository)
     }
 

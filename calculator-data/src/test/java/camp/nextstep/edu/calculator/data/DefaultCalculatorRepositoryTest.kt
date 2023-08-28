@@ -3,7 +3,7 @@ package camp.nextstep.edu.calculator.data
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import camp.nextstep.edu.calculator.data.local.CalculatorDatabase
-import camp.nextstep.edu.calculator.data.repository.CalculatorRepositoryImpl
+import camp.nextstep.edu.calculator.data.repository.DefaultCalculatorRepository
 import camp.nextstep.edu.calculator.domain.Memory
 import camp.nextstep.edu.calculator.domain.repository.CalculatorRepository
 import com.google.common.truth.Truth.assertThat
@@ -14,7 +14,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
-class CalculatorRepositoryImplTest {
+class DefaultCalculatorRepositoryTest {
 
     private lateinit var calculatorRepository: CalculatorRepository
 
@@ -22,7 +22,7 @@ class CalculatorRepositoryImplTest {
     fun init() {
         val context: Context = ApplicationProvider.getApplicationContext()
         calculatorRepository =
-            CalculatorRepositoryImpl(CalculatorDatabase.getDatabase(context).calculatorDao())
+            DefaultCalculatorRepository(CalculatorDatabase.getDatabase(context).calculatorDao())
     }
 
     @Test

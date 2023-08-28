@@ -7,10 +7,10 @@ package camp.nextstep.edu.calculator
 
 import android.app.Application
 import camp.nextstep.edu.calculator.data.local.CalculatorDatabase
-import camp.nextstep.edu.calculator.data.repository.CalculatorRepositoryImpl
+import camp.nextstep.edu.calculator.data.repository.DefaultCalculatorRepository
 
 class CalculatorApplication : Application() {
 
     private val dataBase by lazy { CalculatorDatabase.getDatabase(this) }
-    val repository by lazy { CalculatorRepositoryImpl(dataBase.calculatorDao()) }
+    val repository by lazy { DefaultCalculatorRepository(dataBase.calculatorDao()) }
 }
