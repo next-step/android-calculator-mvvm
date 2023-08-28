@@ -7,12 +7,13 @@ package camp.nextstep.edu.calculator.data.local
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import camp.nextstep.edu.calculator.data.entity.MemoryEntity
 
 @Dao
 interface CalculatorDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveMemory(memory: MemoryEntity)
 
     @Query("SELECT * FROM memory")
