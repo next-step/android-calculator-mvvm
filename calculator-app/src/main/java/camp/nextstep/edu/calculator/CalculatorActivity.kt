@@ -13,7 +13,7 @@ class CalculatorActivity : AppCompatActivity() {
     private lateinit var adapter: CalculatorAdapter
     private val viewModel: CalculatorViewModel by viewModels {
         CalculatorViewModelFactory(
-            (application as CalculatorApplication).repository
+            (application as CalculatorApplication).calculatorRepository
         )
     }
 
