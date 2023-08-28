@@ -11,6 +11,6 @@ import camp.nextstep.edu.calculator.data.repository.CalculatorRepositoryImpl
 
 class CalculatorApplication : Application() {
 
-    val dataBase by lazy { CalculatorDatabase.getDatabase(this) }
+    private val dataBase by lazy { CalculatorDatabase.getDatabase(this) }
     val repository by lazy { CalculatorRepositoryImpl(dataBase.calculatorDao()) }
 }
