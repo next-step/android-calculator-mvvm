@@ -9,8 +9,6 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
 import camp.nextstep.edu.calculator.data.entity.MemoryEntity
 
 @Database(entities = [MemoryEntity::class], version = 1)
@@ -35,13 +33,6 @@ abstract class CalculatorDatabase : RoomDatabase() {
                 INSTANCE = instance
                 // return instance
                 instance
-            }
-        }
-
-        // 싱글턴으로 생성(object 키워드를 사용)
-        val MIGRATION_1_2 = object : Migration(1, 2) {
-            override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL("ALTER TABLE user ADD COLUMN address TEXT")
             }
         }
     }
