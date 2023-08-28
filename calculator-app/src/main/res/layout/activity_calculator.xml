@@ -5,6 +5,8 @@
 
         <import type="camp.nextstep.edu.calculator.domain.Operator" />
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="camp.nextstep.edu.calculator.CalculatorViewModel" />
@@ -24,7 +26,8 @@
             android:layout_height="0dp"
             android:layout_marginBottom="16dp"
             android:hint="0"
-            android:text="@{viewModel.result}"
+            android:text="@{viewModel.uiState.result}"
+            android:visibility="@{viewModel.uiState.historyMode ? View.GONE : View.VISIBLE}"
             android:textAlignment="viewEnd"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="@id/divider"
@@ -37,11 +40,14 @@
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/textView"
-            app:layout_constraintEnd_toEndOf="@id/textView"
-            app:layout_constraintStart_toStartOf="@id/textView"
-            app:layout_constraintTop_toTopOf="@id/textView"
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:visibility="@{viewModel.uiState.historyMode ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/item_result"
             tools:visibility="visible" />
 
