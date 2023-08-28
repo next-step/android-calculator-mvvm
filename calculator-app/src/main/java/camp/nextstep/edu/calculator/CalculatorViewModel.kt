@@ -61,9 +61,7 @@ class CalculatorViewModel(
     }
 
     fun loadHistory() = viewModelScope.launch {
-        val result = withContext(Dispatchers.IO) {
-            repository.findMemories()
-        }
+        val result = repository.findMemories()
 
         _uiState.value = uiState.value?.copy(
             history = result,
