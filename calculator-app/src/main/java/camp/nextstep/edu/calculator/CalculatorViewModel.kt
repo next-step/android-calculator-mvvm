@@ -3,7 +3,6 @@ package camp.nextstep.edu.calculator
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import camp.nextstep.edu.calculator.domain.Calculator
 import camp.nextstep.edu.calculator.domain.Expression
@@ -12,7 +11,6 @@ import camp.nextstep.edu.calculator.domain.Operator
 import camp.nextstep.edu.calculator.domain.repository.CalculatorRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class CalculatorViewModel(
     private val repository: CalculatorRepository,
@@ -67,17 +65,6 @@ class CalculatorViewModel(
             history = result,
             historyMode = uiState.value?.historyMode?.not() ?: false
         )
-    }
-}
-
-class CalculatorViewModelFactory(private val repository: CalculatorRepository) :
-    ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(CalculatorViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return CalculatorViewModel(repository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
 
