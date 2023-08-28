@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import camp.nextstep.edu.calculator.domain.Calculator
 import camp.nextstep.edu.calculator.domain.Expression
+import camp.nextstep.edu.calculator.domain.Memory
 import camp.nextstep.edu.calculator.domain.Operator
 import camp.nextstep.edu.calculator.domain.repository.CalculatorRepository
 import kotlinx.coroutines.launch
@@ -18,9 +19,10 @@ class CalculatorViewModel(
 ) : ViewModel() {
 
     private val calculator = Calculator()
-    private val _result = MutableLiveData<String>().apply { value = "" }
-    val result: LiveData<String>
-        get() = _result
+    private val _uiState =
+        MutableLiveData<UiState>().apply { value = UiState("", emptyList(), false) }
+    val uiState: LiveData<UiState>
+        get() = _uiState
 
     private val _uiEffect = SingleLiveEvent<UiEffect>()
     val uiEffect: LiveData<UiEffect>
@@ -40,7 +42,7 @@ class CalculatorViewModel(
 
     private fun updateExpression(action: () -> Unit) {
         runCatching { action() }
-            .onSuccess { _result.value = expression.toString() }
+            .onSuccess { _uiState.value = uiState.value?.copy(result = expression.toString()) }
             .onFailure { _uiEffect.value = UiEffect.ShowErrorMessage(it.message) }
     }
 
@@ -53,17 +55,20 @@ class CalculatorViewModel(
                 repository.saveMemory(expression.toString(), result)
             }
             expression = Expression(listOf(result))
-            _result.value = result.toString()
+            _uiState.value = uiState.value?.copy(result = result.toString())
         }
     }
 
     fun loadHistory() = viewModelScope.launch {
-        val history = repository.findMemories()
-        _uiEffect.value = UiEffect.ShowErrorMessage(history.toString())
+        _uiState.value = uiState.value?.copy(
+            history = repository.findMemories(),
+            historyMode = uiState.value?.historyMode?.not() ?: false
+        )
     }
 }
 
-class CalculatorViewModelFactory(private val repository: CalculatorRepository): ViewModelProvider.Factory {
+class CalculatorViewModelFactory(private val repository: CalculatorRepository) :
+    ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CalculatorViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
@@ -72,6 +77,12 @@ class CalculatorViewModelFactory(private val repository: CalculatorRepository): 
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
+
+data class UiState(
+    val result: String,
+    val history: List<Memory>,
+    val historyMode: Boolean = false
+)
 
 sealed interface UiEffect {
     object InCompleteExpressionError : UiEffect
