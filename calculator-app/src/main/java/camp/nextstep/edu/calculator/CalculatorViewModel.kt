@@ -10,8 +10,9 @@ import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Memory
 import camp.nextstep.edu.calculator.domain.Operator
 import camp.nextstep.edu.calculator.domain.repository.CalculatorRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.IllegalArgumentException
+import kotlinx.coroutines.withContext
 
 class CalculatorViewModel(
     private val repository: CalculatorRepository,
@@ -42,7 +43,7 @@ class CalculatorViewModel(
 
     private fun updateExpression(action: () -> Unit) {
         runCatching { action() }
-            .onSuccess { _uiState.value = uiState.value?.copy(result = expression.toString()) }
+            .onSuccess { _uiState.value = uiState.value?.copy(result = expression.toString(), historyMode = false) }
             .onFailure { _uiEffect.value = UiEffect.ShowErrorMessage(it.message) }
     }
 
@@ -51,7 +52,7 @@ class CalculatorViewModel(
         if (result == null) {
             _uiEffect.value = UiEffect.InCompleteExpressionError
         } else {
-            viewModelScope.launch {
+            viewModelScope.launch(Dispatchers.IO) {
                 repository.saveMemory(expression.toString(), result)
             }
             expression = Expression(listOf(result))
@@ -60,8 +61,12 @@ class CalculatorViewModel(
     }
 
     fun loadHistory() = viewModelScope.launch {
+        val result = withContext(Dispatchers.IO) {
+            repository.findMemories()
+        }
+
         _uiState.value = uiState.value?.copy(
-            history = repository.findMemories(),
+            history = result,
             historyMode = uiState.value?.historyMode?.not() ?: false
         )
     }
