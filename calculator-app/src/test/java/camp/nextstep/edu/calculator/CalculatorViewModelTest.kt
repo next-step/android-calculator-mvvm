@@ -1,21 +1,17 @@
 package camp.nextstep.edu.calculator
 
-import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.test.core.app.ApplicationProvider
-import camp.nextstep.edu.calculator.data.local.CalculatorDatabase
+import camp.nextstep.edu.calculator.data.local.CalculatorDao
 import camp.nextstep.edu.calculator.data.repository.CalculatorRepositoryImpl
 import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
 import camp.nextstep.edu.calculator.domain.repository.CalculatorRepository
 import com.google.common.truth.Truth.assertThat
+import io.mockk.mockk
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 
-@RunWith(RobolectricTestRunner::class)
 class CalculatorViewModelTest {
 
     @Rule
@@ -26,9 +22,7 @@ class CalculatorViewModelTest {
 
     @Before
     fun init() {
-        val context: Context = ApplicationProvider.getApplicationContext()
-        repository =
-            CalculatorRepositoryImpl(CalculatorDatabase.getDatabase(context).calculatorDao())
+        repository = CalculatorRepositoryImpl(mockk<CalculatorDao>())
         viewModel = CalculatorViewModel(repository)
     }
 
@@ -38,7 +32,8 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(1)
 
         // then
-        assertThat(viewModel.uiState.getOrAwaitValue().result).isEqualTo("1")
+        val result = (viewModel.uiState.getOrAwaitValue() as? UiState.Result)?.result
+        assertThat(result).isEqualTo("1")
     }
 
     @Test
@@ -50,7 +45,8 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(3)
 
         // then
-        assertThat(viewModel.uiState.getOrAwaitValue().result).isEqualTo("5 + 3")
+        val result = (viewModel.uiState.getOrAwaitValue() as? UiState.Result)?.result
+        assertThat(result).isEqualTo("5 + 3")
     }
 
     @Test
@@ -62,7 +58,8 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(9)
 
         // then
-        assertThat(viewModel.uiState.getOrAwaitValue().result).isEqualTo("89")
+        val result = (viewModel.uiState.getOrAwaitValue() as? UiState.Result)?.result
+        assertThat(result).isEqualTo("89")
     }
 
     @Test
@@ -74,7 +71,8 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(Operator.Divide)
 
         // then
-        assertThat(viewModel.uiState.getOrAwaitValue().result).isEmpty()
+        val result = (viewModel.uiState.getOrAwaitValue() as? UiState.Result)?.result
+        assertThat(result).isEmpty()
     }
 
     @Test
@@ -86,7 +84,8 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(Operator.Plus)
 
         // then
-        assertThat(viewModel.uiState.getOrAwaitValue().result).isEqualTo("8 +")
+        val result = (viewModel.uiState.getOrAwaitValue() as? UiState.Result)?.result
+        assertThat(result).isEqualTo("8 +")
     }
 
     @Test
@@ -98,7 +97,8 @@ class CalculatorViewModelTest {
         viewModel.addToExpression(Operator.Minus)
 
         // then
-        assertThat(viewModel.uiState.getOrAwaitValue().result).isEqualTo("8 -")
+        val result = (viewModel.uiState.getOrAwaitValue() as? UiState.Result)?.result
+        assertThat(result).isEqualTo("8 -")
     }
 
     @Test
@@ -107,7 +107,8 @@ class CalculatorViewModelTest {
         viewModel.removeLast()
 
         // then
-        assertThat(viewModel.uiState.getOrAwaitValue().result).isEmpty()
+        val result = (viewModel.uiState.getOrAwaitValue() as? UiState.Result)?.result
+        assertThat(result).isEmpty()
     }
 
     @Test
@@ -120,7 +121,8 @@ class CalculatorViewModelTest {
         viewModel.removeLast()
 
         // then
-        assertThat(viewModel.uiState.getOrAwaitValue().result).isEqualTo("32")
+        val result = (viewModel.uiState.getOrAwaitValue() as? UiState.Result)?.result
+        assertThat(result).isEqualTo("32")
     }
 
     @Test
@@ -132,7 +134,8 @@ class CalculatorViewModelTest {
         viewModel.calculate()
 
         // then
-        assertThat(viewModel.uiState.getOrAwaitValue().result).isEqualTo("5")
+        val result = (viewModel.uiState.getOrAwaitValue() as? UiState.Result)?.result
+        assertThat(result).isEqualTo("5")
     }
 
     @Test
@@ -144,6 +147,7 @@ class CalculatorViewModelTest {
         viewModel.calculate()
 
         // then
-        assertThat(viewModel.uiEffect.getOrAwaitValue()).isEqualTo(UiEffect.InCompleteExpressionError)
+        val result = (viewModel.uiEffect.getOrAwaitValue() as? UiEffect)
+        assertThat(result).isEqualTo(UiEffect.InCompleteExpressionError)
     }
 }

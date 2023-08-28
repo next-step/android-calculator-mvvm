@@ -18,7 +18,7 @@ class CalculatorViewModel(
 ) : ViewModel() {
 
     private val calculator = Calculator()
-    private val _uiState = MutableLiveData<UiState>()
+    private val _uiState = MutableLiveData<UiState>().apply { value = UiState.Result(result = "") }
     val uiState: LiveData<UiState>
         get() = _uiState
 
