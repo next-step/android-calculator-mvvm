@@ -18,8 +18,7 @@ class CalculatorViewModel(
 ) : ViewModel() {
 
     private val calculator = Calculator()
-    private val _uiState =
-        MutableLiveData<UiState>().apply { value = UiState("", emptyList(), false) }
+    private val _uiState = MutableLiveData<UiState>()
     val uiState: LiveData<UiState>
         get() = _uiState
 
@@ -41,7 +40,7 @@ class CalculatorViewModel(
 
     private fun updateExpression(action: () -> Unit) {
         runCatching { action() }
-            .onSuccess { _uiState.value = uiState.value?.copy(result = expression.toString(), historyMode = false) }
+            .onSuccess { _uiState.value = UiState.Result(result = expression.toString()) }
             .onFailure { _uiEffect.value = UiEffect.ShowErrorMessage(it.message) }
     }
 
@@ -54,25 +53,46 @@ class CalculatorViewModel(
                 repository.saveMemory(expression.toString(), result)
             }
             expression = Expression(listOf(result))
-            _uiState.value = uiState.value?.copy(result = result.toString())
+            _uiState.value = UiState.Result(result = expression.toString())
+        }
+    }
+
+    fun onClickHistory() {
+        if ((uiState.value as? UiState.Result)?.historyMode == false) {
+            setHistoryMode(true)
+            loadHistory()
+        } else {
+            setHistoryMode(false)
         }
     }
 
     fun loadHistory() = viewModelScope.launch {
         val result = repository.findMemories()
 
-        _uiState.value = uiState.value?.copy(
-            history = result,
-            historyMode = uiState.value?.historyMode?.not() ?: false
+        _uiState.value = UiState.History(
+            history = result
+        )
+    }
+
+    private fun setHistoryMode(boolean: Boolean) {
+        _uiState.value = UiState.Result(
+            result = expression.toString(),
+            historyMode = boolean
         )
     }
 }
 
-data class UiState(
-    val result: String,
-    val history: List<Memory>,
-    val historyMode: Boolean = false
-)
+sealed interface UiState {
+    data class Result(
+        val result: String,
+        val historyMode: Boolean = false
+    ) : UiState
+
+    data class History(
+        val history: List<Memory>,
+    ) : UiState
+}
+
 
 sealed interface UiEffect {
     object InCompleteExpressionError : UiEffect
