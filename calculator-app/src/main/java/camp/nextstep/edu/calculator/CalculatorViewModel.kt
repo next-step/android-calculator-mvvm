@@ -58,38 +58,29 @@ class CalculatorViewModel(
     }
 
     fun onClickHistory() {
-        if ((uiState.value as? UiState.Result)?.historyMode == false) {
-            setHistoryMode(true)
+        if (uiState.value is UiState.Result) {
             loadHistory()
         } else {
-            setHistoryMode(false)
+            _uiState.value = UiState.Result(result = expression.toString())
         }
     }
 
-    fun loadHistory() = viewModelScope.launch {
+    private fun loadHistory() = viewModelScope.launch {
         val result = repository.findMemories()
 
         _uiState.value = UiState.History(
             history = result
         )
     }
-
-    private fun setHistoryMode(boolean: Boolean) {
-        _uiState.value = UiState.Result(
-            result = expression.toString(),
-            historyMode = boolean
-        )
-    }
 }
 
 sealed interface UiState {
     data class Result(
-        val result: String,
-        val historyMode: Boolean = false
+        val result: String
     ) : UiState
 
     data class History(
-        val history: List<Memory>,
+        val history: List<Memory>
     ) : UiState
 }
 

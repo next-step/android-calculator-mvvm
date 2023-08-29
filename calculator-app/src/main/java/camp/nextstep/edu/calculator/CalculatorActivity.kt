@@ -1,7 +1,6 @@
 package camp.nextstep.edu.calculator
 
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -36,10 +35,7 @@ class CalculatorActivity : AppCompatActivity() {
     private fun initObserver() {
         viewModel.uiState.observe(this) { uiState ->
             when(uiState) {
-                is UiState.Result -> {
-                    binding.textView.text = uiState.result
-                    setHistoryMode(uiState.historyMode)
-                }
+                is UiState.Result -> Unit
                 is UiState.History -> adapter.submitList(uiState.history)
             }
         }
@@ -58,16 +54,6 @@ class CalculatorActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-        }
-    }
-
-    private fun setHistoryMode(isHistoryMode: Boolean) {
-        if (isHistoryMode) {
-            binding.textView.visibility = View.GONE
-            binding.recyclerView.visibility = View.VISIBLE
-        } else {
-            binding.textView.visibility = View.VISIBLE
-            binding.recyclerView.visibility = View.GONE
         }
     }
 }
