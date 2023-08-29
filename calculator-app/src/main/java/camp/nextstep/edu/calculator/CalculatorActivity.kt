@@ -9,7 +9,12 @@ import camp.nextstep.edu.calculator.databinding.ActivityCalculatorBinding
 class CalculatorActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCalculatorBinding
-    private val viewModel: CalculatorViewModel by viewModels()
+    private lateinit var adapter: CalculatorAdapter
+    private val viewModel: CalculatorViewModel by viewModels {
+        CalculatorViewModelFactory(
+            (application as CalculatorApplication).calculatorRepository
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,10 +27,19 @@ class CalculatorActivity : AppCompatActivity() {
         binding = ActivityCalculatorBinding.inflate(layoutInflater)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        adapter = CalculatorAdapter(this)
+        binding.recyclerView.adapter = adapter
         setContentView(binding.root)
     }
 
     private fun initObserver() {
+        viewModel.uiState.observe(this) { uiState ->
+            when(uiState) {
+                is UiState.Result -> Unit
+                is UiState.History -> adapter.submitList(uiState.history)
+            }
+        }
+
         viewModel.uiEffect.observe(this) { uiEffect ->
             when (uiEffect) {
                 is UiEffect.ShowErrorMessage -> Toast.makeText(
