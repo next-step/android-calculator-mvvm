@@ -13,8 +13,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CalculatorViewModel(
-        initFormula: List<Any> = emptyList(),
-        private val calculatorRepository: CalculatorRepository
+    initFormula: List<Any> = emptyList(),
+    private val calculatorRepository: CalculatorRepository
 ) : ViewModel() {
     private val calculator = Calculator()
 
@@ -56,10 +56,10 @@ class CalculatorViewModel(
 
             CoroutineScope(Dispatchers.IO).launch {
                 calculatorRepository.insertMemory(
-                        Memory(
-                                expression = formula,
-                                result = result.toString()
-                        )
+                    Memory(
+                        expression = formula,
+                        result = result.toString()
+                    )
                 )
             }
         }
@@ -75,9 +75,11 @@ class CalculatorViewModel(
         } else {
             CoroutineScope(Dispatchers.IO).launch {
                 val memoryList = calculatorRepository.getMemories().mapIndexed { index, memory ->
-                    CalculatorMemory(index = index,
-                            expression = memory.expression,
-                            result = memory.result)
+                    CalculatorMemory(
+                        index = index,
+                        expression = memory.expression,
+                        result = memory.result
+                    )
                 }
 
                 _calculatorMemoryList.postValue(memoryList)

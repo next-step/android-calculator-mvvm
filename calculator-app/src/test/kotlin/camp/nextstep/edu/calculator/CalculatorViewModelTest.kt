@@ -8,6 +8,7 @@ import com.example.calculator.data.CalculatorDao
 import com.example.calculator.data.MemoryEntity
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -141,6 +142,7 @@ class CalculatorViewModelTest {
     }
 
     // calculate()
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `계산을 하면 로컬 DB에 저장되고 불러오기를 할 수 있다`() {
         // given : viewModel을 생성한다.
@@ -155,7 +157,6 @@ class CalculatorViewModelTest {
         runTest(UnconfinedTestDispatcher()) {
             viewModel.calculate()
         }
-
         // then : DB에 저장된 값과 계산된 결과의 값이 같다.
         assertThat(fakeRepository.getMemories()[0]).isEqualTo(memory)
     }
