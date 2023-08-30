@@ -26,9 +26,9 @@ class CalculatorViewModel(
     val toastEvent: LiveData<Int>
         get() = _toastEvent
 
-    private var _memoryList = MutableLiveData<List<Memory>>()
-    val memoryList: LiveData<List<Memory>>
-        get() = _memoryList
+    private var _calculatorMemoryList = MutableLiveData<List<CalculatorMemory>>()
+    val calculatorMemoryList: LiveData<List<CalculatorMemory>>
+        get() = _calculatorMemoryList
 
     private var _showHistoryEvent = SingleLiveEvent<Boolean>()
     val showHistory: LiveData<Boolean>
@@ -57,7 +57,6 @@ class CalculatorViewModel(
             CoroutineScope(Dispatchers.IO).launch {
                 calculatorRepository.insertMemory(
                         Memory(
-                                id = 0,
                                 expression = formula,
                                 result = result.toString()
                         )
@@ -70,21 +69,18 @@ class CalculatorViewModel(
         if (_showHistoryEvent.value == null) {
             _showHistoryEvent.value = false
         }
-        val a = arrayListOf<Int>()
 
         if (_showHistoryEvent.value!!) {
             _showHistoryEvent.value = false
         } else {
             CoroutineScope(Dispatchers.IO).launch {
-                val memoryList = calculatorRepository.getMemories().map {
-                    Memory(
-                            id = it.id,
-                            expression = it.expression,
-                            result = it.result
-                    )
+                val memoryList = calculatorRepository.getMemories().mapIndexed { index, memory ->
+                    CalculatorMemory(index = index,
+                            expression = memory.expression,
+                            result = memory.result)
                 }
 
-                _memoryList.postValue(memoryList)
+                _calculatorMemoryList.postValue(memoryList)
                 _showHistoryEvent.postValue(true)
             }
         }

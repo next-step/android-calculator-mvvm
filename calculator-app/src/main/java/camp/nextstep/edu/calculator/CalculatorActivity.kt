@@ -50,12 +50,12 @@ class CalculatorActivity : AppCompatActivity() {
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
         }
 
-        viewModel.memoryList.observe(this) {
+        viewModel.calculatorMemoryList.observe(this) {
             recordAdapter.setData(it)
         }
 
-        viewModel.showHistory.observe(this) { isSwhoHistory ->
-            if (isSwhoHistory) {
+        viewModel.showHistory.observe(this) { isShowHistory ->
+            if (isShowHistory) {
                 binding.recyclerView.visibility = View.VISIBLE
                 binding.textView.visibility = View.INVISIBLE
             } else {
