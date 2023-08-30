@@ -144,7 +144,7 @@ class CalculatorViewModelTest {
     @Test
     fun `계산을 하면 로컬 DB에 저장되고 불러오기를 할 수 있다`() {
         // given : viewModel을 생성한다.
-        val memory = Memory(id = 0, expression = "33 + 12", result = "45")
+        val memory = Memory(expression = "33 + 12", result = "45")
 
         val viewModel = CalculatorViewModel(
             initFormula = listOf<Any>(33, Operator.Plus, 12),
