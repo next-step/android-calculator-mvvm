@@ -23,13 +23,11 @@ class CalculatorViewModelTest {
     @JvmField
     val instantExecutorRule = InstantTaskExecutorRule()
     private lateinit var viewModel: CalculatorViewModel
-    private lateinit var repository: CalculatorRepository
     private lateinit var testDispatcher: TestDispatcher
-    private val context = mockk<Context>(relaxed = true)
+    private val repository: CalculatorRepository = mockk(relaxed = true)
 
     @Before
     fun init() {
-        repository = DataInjector.provideCalculatorRepository(context)
         viewModel = CalculatorViewModel(repository)
         testDispatcher = StandardTestDispatcher()
     }
