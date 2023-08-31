@@ -1,18 +1,11 @@
 package camp.nextstep.edu.calculator
 
-import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import camp.nextstep.edu.calculator.data.DataInjector
 import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
 import camp.nextstep.edu.calculator.domain.repository.CalculatorRepository
 import com.google.common.truth.Truth.assertThat
-import io.mockk.Runs
-import io.mockk.coEvery
-import io.mockk.coJustAwait
-import io.mockk.coJustRun
 import io.mockk.coVerify
-import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestDispatcher
