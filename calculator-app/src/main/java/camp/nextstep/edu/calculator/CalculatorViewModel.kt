@@ -44,14 +44,12 @@ class CalculatorViewModel(
             .onFailure { _uiEffect.value = UiEffect.ShowErrorMessage(it.message) }
     }
 
-    fun calculate() {
+    fun calculate() = viewModelScope.launch(Dispatchers.IO) {
         val result = calculator.calculate(expression.toString())
         if (result == null) {
             _uiEffect.value = UiEffect.InCompleteExpressionError
         } else {
-            viewModelScope.launch(Dispatchers.IO) {
-                repository.saveMemory(expression.toString(), result)
-            }
+            repository.saveMemory(expression.toString(), result)
             expression = Expression(listOf(result))
             _uiState.value = UiState.Result(result = expression.toString())
         }

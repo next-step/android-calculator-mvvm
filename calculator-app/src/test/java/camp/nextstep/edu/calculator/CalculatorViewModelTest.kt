@@ -7,8 +7,12 @@ import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
 import camp.nextstep.edu.calculator.domain.repository.CalculatorRepository
 import com.google.common.truth.Truth.assertThat
+import io.mockk.Runs
 import io.mockk.coEvery
+import io.mockk.coJustAwait
+import io.mockk.coJustRun
 import io.mockk.coVerify
+import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestDispatcher
@@ -135,19 +139,16 @@ class CalculatorViewModelTest {
     fun `입력된 수신이 완전할 때, 사용자가 = 버튼을 누르면 입력된 수식의 결과가 화면에 보여야 한다`() = runTest(testDispatcher) {
         // given
         viewModel = CalculatorViewModel(repository, Expression(listOf(3, Operator.Plus, 2)))
-        coEvery {
-            repository.saveMemory("3 + 2", 5)
-         } answers { nothing }
 
         // when
         viewModel.calculate()
 
         // then
-        val result = (viewModel.uiState.getOrAwaitValue() as? UiState.Result)?.result
-        assertThat(result).isEqualTo("5")
         coVerify {
             repository.saveMemory("3 + 2", 5)
         }
+        val result = (viewModel.uiState.getOrAwaitValue() as? UiState.Result)?.result
+        assertThat(result).isEqualTo("5")
     }
 
     @Test
