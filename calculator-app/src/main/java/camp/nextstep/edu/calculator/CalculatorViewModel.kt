@@ -4,18 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import camp.nextstep.edu.calculator.domain.Calculator
+import camp.nextstep.edu.calculator.domain.CalculatorRepository
 import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Memory
 import camp.nextstep.edu.calculator.domain.Operator
-import com.example.calculator.data.CalculatorDao
-import com.example.calculator.data.CalculatorDatabase
-import com.example.calculator.data.MemoryEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlin.concurrent.thread
 
-class CalculatorViewModel(initFormula: List<Any> = emptyList(), private val calculatorDao: CalculatorDao? = null) : ViewModel() {
+class CalculatorViewModel(
+    initFormula: List<Any> = emptyList(),
+    private val calculatorRepository: CalculatorRepository
+) : ViewModel() {
     private val calculator = Calculator()
 
     private var _formula = MutableLiveData(Expression(initFormula))
@@ -26,9 +26,9 @@ class CalculatorViewModel(initFormula: List<Any> = emptyList(), private val calc
     val toastEvent: LiveData<Int>
         get() = _toastEvent
 
-    private var _memoryList = MutableLiveData<List<Memory>>()
-    val memoryList: LiveData<List<Memory>>
-        get() = _memoryList
+    private var _calculatorMemoryList = MutableLiveData<List<CalculatorMemory>>()
+    val calculatorMemoryList: LiveData<List<CalculatorMemory>>
+        get() = _calculatorMemoryList
 
     private var _showHistoryEvent = SingleLiveEvent<Boolean>()
     val showHistory: LiveData<Boolean>
@@ -55,8 +55,8 @@ class CalculatorViewModel(initFormula: List<Any> = emptyList(), private val calc
             _formula.value = Expression(listOf(result))
 
             CoroutineScope(Dispatchers.IO).launch {
-                calculatorDao!!.insertMemory(
-                    MemoryEntity(
+                calculatorRepository.insertMemory(
+                    Memory(
                         expression = formula,
                         result = result.toString()
                     )
@@ -66,24 +66,23 @@ class CalculatorViewModel(initFormula: List<Any> = emptyList(), private val calc
     }
 
     fun getHistory() {
-        if(_showHistoryEvent.value == null) {
+        if (_showHistoryEvent.value == null) {
             _showHistoryEvent.value = false
         }
 
-        if(_showHistoryEvent.value!!) {
+        if (_showHistoryEvent.value!!) {
             _showHistoryEvent.value = false
         } else {
             CoroutineScope(Dispatchers.IO).launch {
-                val memoryList = arrayListOf<Memory>()
-                for (memory in calculatorDao!!.getMemories()) {
-                    memoryList.add(
-                        Memory(
-                            expression = memory.expression,
-                            result = memory.result
-                        )
+                val memoryList = calculatorRepository.getMemories().mapIndexed { index, memory ->
+                    CalculatorMemory(
+                        index = index,
+                        expression = memory.expression,
+                        result = memory.result
                     )
                 }
-                _memoryList.postValue(memoryList)
+
+                _calculatorMemoryList.postValue(memoryList)
                 _showHistoryEvent.postValue(true)
             }
         }

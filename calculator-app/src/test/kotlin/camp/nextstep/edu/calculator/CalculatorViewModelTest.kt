@@ -1,25 +1,35 @@
 package camp.nextstep.edu.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import camp.nextstep.edu.calculator.domain.CalculatorRepository
 import camp.nextstep.edu.calculator.domain.Memory
 import camp.nextstep.edu.calculator.domain.Operator
 import com.example.calculator.data.CalculatorDao
-import com.example.calculator.data.CalculatorDatabase
 import com.example.calculator.data.MemoryEntity
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
-import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runTest
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 class CalculatorViewModelTest {
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule()
+    private lateinit var fakeRepository: CalculatorRepository
+
+    @Before
+    fun init() {
+        fakeRepository = FakeRepository()
+    }
 
     @Test
     fun `입력된 숫자가 없을 때, 숫자 클릭 시 해당 숫자가 수식 문자열에 추가된다`() {
         // given : 기본 뷰모델 생성
-        val viewModel = CalculatorViewModel()
+        val viewModel = CalculatorViewModel(calculatorRepository = fakeRepository)
 
         // when : 숫자 클릭
         viewModel.addToExpression(2)
@@ -31,7 +41,7 @@ class CalculatorViewModelTest {
     @Test
     fun `입력된 숫자가 있을 때, 숫자 클릭 시 해당 숫자가 기존 수식 문자열에 추가된다`() {
         // given : 기본 수식이 1인 뷰모델 생성
-        val viewModel = CalculatorViewModel(listOf<Any>(1))
+        val viewModel = CalculatorViewModel(listOf<Any>(1), calculatorRepository = fakeRepository)
 
         // when : 숫자 클릭
         viewModel.addToExpression(2)
@@ -43,7 +53,7 @@ class CalculatorViewModelTest {
     @Test
     fun `입력된 숫자가 없을 때, 연산자 클릭 시 수식에 변화가 일어나지 않는다`() {
         // given : 기본 뷰모델 생성
-        val viewModel = CalculatorViewModel()
+        val viewModel = CalculatorViewModel(calculatorRepository = fakeRepository)
 
         // when : 연산자 클릭 ( + )
         viewModel.addToExpression(Operator.Plus)
@@ -55,7 +65,7 @@ class CalculatorViewModelTest {
     @Test
     fun `입력된 숫자가 있을 때, 연산자 클릭 시 기존 수식 문자열에 공백과 연산자가 추가된다`() {
         // given : 기본 수식이 3인 뷰모델 생성
-        val viewModel = CalculatorViewModel(listOf<Any>(3))
+        val viewModel = CalculatorViewModel(listOf<Any>(3), calculatorRepository = fakeRepository)
 
         // when : 연산자 클릭 ( / )
         viewModel.addToExpression(Operator.Divide)
@@ -67,7 +77,7 @@ class CalculatorViewModelTest {
     @Test
     fun `입력된 수식이 없을 때, 지우기 버튼 클릭 시 아무 변화가 일어나지 않는다`() {
         // given : 기본 뷰모델 생성
-        val viewModel = CalculatorViewModel()
+        val viewModel = CalculatorViewModel(calculatorRepository = fakeRepository)
 
         // when : 지우기 버튼 클릭
         viewModel.removeLast()
@@ -79,7 +89,7 @@ class CalculatorViewModelTest {
     @Test
     fun `입력된 수식이 있을 때, 지우기 버튼 클릭 시 수식 문자열의 마지막 문자가 삭제된다`() {
         // given : 기본 수식이 33 + 12 인 뷰모델 생성
-        val viewModel = CalculatorViewModel(listOf<Any>(33, Operator.Plus, 12))
+        val viewModel = CalculatorViewModel(listOf<Any>(33, Operator.Plus, 12), calculatorRepository = fakeRepository)
 
         // when : 지우기 버튼 클릭
         viewModel.removeLast()
@@ -109,7 +119,7 @@ class CalculatorViewModelTest {
     @Test
     fun `입력된 수신이 완전할 때, 계산 버튼 클릭 시 계산된 결과를 보여준다`() {
         // given : 기본 수식이 33 + 12 인 뷰모델 생성
-        val viewModel = CalculatorViewModel(listOf<Any>(33, Operator.Plus, 12))
+        val viewModel = CalculatorViewModel(listOf<Any>(33, Operator.Plus, 12), calculatorRepository = fakeRepository)
 
         // when : 계산 버튼 클릭
         viewModel.calculate()
@@ -121,7 +131,7 @@ class CalculatorViewModelTest {
     @Test
     fun `입력된 수식이 완전하지 않을 때, 계산 버튼 클릭 시 에러 토스트 메시지를 보여준다`() {
         // given : 기본 수식이 33 + 12 / 인 뷰모델 생성
-        val viewModel = CalculatorViewModel(listOf<Any>(33, Operator.Plus, 12, Operator.Divide))
+        val viewModel = CalculatorViewModel(listOf<Any>(33, Operator.Plus, 12, Operator.Divide), calculatorRepository = fakeRepository)
 
         // when : 계산 버튼 클릭
         viewModel.calculate()
@@ -132,32 +142,22 @@ class CalculatorViewModelTest {
     }
 
     // calculate()
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `계산을 하면 로컬 DB에 저장되고 불러오기를 할 수 있다`() {
-        // given : mockk를 활용해 DB를 기능을 구현한다.
-        val calculatorDao: CalculatorDao = mockk()
-        val memoryEntity = MemoryEntity(expression = "33 + 12", result = "45")
-        val memoryEntityList = listOf(memoryEntity)
-
-        every {
-            calculatorDao.insertMemory(memoryEntity)
-        }
-
-        every { calculatorDao.getMemories() } returns memoryEntityList
+        // given : viewModel을 생성한다.
+        val memory = Memory(expression = "33 + 12", result = "45")
 
         val viewModel = CalculatorViewModel(
             initFormula = listOf<Any>(33, Operator.Plus, 12),
-            calculatorDao = calculatorDao
+            calculatorRepository = fakeRepository
         )
-        val expression = "33 + 12"
-        val result = "45"
 
         // when : 계산을 한다.
-        viewModel.calculate()
-
-
+        runTest(UnconfinedTestDispatcher()) {
+            viewModel.calculate()
+        }
         // then : DB에 저장된 값과 계산된 결과의 값이 같다.
-        assertThat(calculatorDao.getMemories()[0].expression).isEqualTo(expression)
-        assertThat(calculatorDao.getMemories()[0].result).isEqualTo(result)
+        assertThat(fakeRepository.getMemories()[0]).isEqualTo(memory)
     }
 }

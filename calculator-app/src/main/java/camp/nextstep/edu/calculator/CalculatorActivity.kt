@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -51,13 +50,12 @@ class CalculatorActivity : AppCompatActivity() {
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
         }
 
-        viewModel.memoryList.observe(this) {
-            recordAdapter.setMemoryList(it)
-            recordAdapter.notifyDataSetChanged()
+        viewModel.calculatorMemoryList.observe(this) {
+            recordAdapter.setData(it)
         }
 
-        viewModel.showHistory.observe(this) { isSwhoHistory ->
-            if(isSwhoHistory) {
+        viewModel.showHistory.observe(this) { isShowHistory ->
+            if (isShowHistory) {
                 binding.recyclerView.visibility = View.VISIBLE
                 binding.textView.visibility = View.INVISIBLE
             } else {
@@ -65,5 +63,5 @@ class CalculatorActivity : AppCompatActivity() {
                 binding.textView.visibility = View.VISIBLE
             }
         }
-     }
+    }
 }
