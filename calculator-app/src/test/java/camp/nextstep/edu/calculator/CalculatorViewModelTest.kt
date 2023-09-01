@@ -8,26 +8,31 @@ import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 class CalculatorViewModelTest {
 
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
+
     @Rule
     @JvmField
     val instantExecutorRule = InstantTaskExecutorRule()
+
     private lateinit var viewModel: CalculatorViewModel
-    private lateinit var testDispatcher: TestDispatcher
     private val repository: CalculatorRepository = mockk(relaxed = true)
 
     @Before
     fun init() {
         viewModel = CalculatorViewModel(repository)
-        testDispatcher = StandardTestDispatcher()
     }
 
     @Test
