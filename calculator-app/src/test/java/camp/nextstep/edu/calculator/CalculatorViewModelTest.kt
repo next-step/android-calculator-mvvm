@@ -1,28 +1,37 @@
 package camp.nextstep.edu.calculator
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import camp.nextstep.edu.calculator.data.local.CalculatorDao
-import camp.nextstep.edu.calculator.data.repository.DefaultCalculatorRepository
 import camp.nextstep.edu.calculator.domain.Expression
 import camp.nextstep.edu.calculator.domain.Operator
 import camp.nextstep.edu.calculator.domain.repository.CalculatorRepository
 import com.google.common.truth.Truth.assertThat
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
 class CalculatorViewModelTest {
 
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
+
     @Rule
     @JvmField
     val instantExecutorRule = InstantTaskExecutorRule()
+
     private lateinit var viewModel: CalculatorViewModel
-    private lateinit var repository: CalculatorRepository
+    private val repository: CalculatorRepository = mockk(relaxed = true)
 
     @Before
     fun init() {
-        repository = DefaultCalculatorRepository(mockk<CalculatorDao>())
         viewModel = CalculatorViewModel(repository)
     }
 
@@ -134,6 +143,9 @@ class CalculatorViewModelTest {
         viewModel.calculate()
 
         // then
+        coVerify {
+            repository.saveMemory("3 + 2", 5)
+        }
         val result = (viewModel.uiState.getOrAwaitValue() as? UiState.Result)?.result
         assertThat(result).isEqualTo("5")
     }

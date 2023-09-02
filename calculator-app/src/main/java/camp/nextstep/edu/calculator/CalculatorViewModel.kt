@@ -49,11 +49,11 @@ class CalculatorViewModel(
         if (result == null) {
             _uiEffect.value = UiEffect.InCompleteExpressionError
         } else {
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch {
                 repository.saveMemory(expression.toString(), result)
+                expression = Expression(listOf(result))
+                _uiState.value = UiState.Result(result = expression.toString())
             }
-            expression = Expression(listOf(result))
-            _uiState.value = UiState.Result(result = expression.toString())
         }
     }
 
