@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import camp.nextstep.edu.calculator.data.CalculatorModule
+import camp.nextstep.edu.calculator.domain.Expression
 
 class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
@@ -16,6 +17,7 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
 
     private fun createCalculatorViewModel(): CalculatorViewModel {
         return CalculatorViewModel(
+            Expression.EMPTY,
             CalculatorModule.provideCalculatorRepository(context)
         )
     }

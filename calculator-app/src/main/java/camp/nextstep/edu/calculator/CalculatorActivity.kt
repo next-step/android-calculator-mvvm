@@ -31,9 +31,6 @@ class CalculatorActivity : AppCompatActivity() {
 
     private fun initObserver() {
         with(viewModel) {
-            expression.observe(this@CalculatorActivity) {
-                binding.textView.text = it.toString()
-            }
             inCompleteExpressionEvent.observe(this@CalculatorActivity) {
                 Toast.makeText(this@CalculatorActivity, R.string.incomplete_expression, Toast.LENGTH_SHORT).show()
             }

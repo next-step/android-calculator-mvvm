@@ -14,12 +14,13 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 class CalculatorViewModel(
+    expression: Expression = Expression.EMPTY,
     private val calculatorRepository: CalculatorRepositoryInterface
 ) : ViewModel() {
 
     private val calculator = Calculator()
 
-    private val _expression = MutableLiveData(Expression.EMPTY)
+    private val _expression = MutableLiveData(expression)
     val expression: LiveData<Expression> = _expression
 
     private val _inCompleteExpressionEvent = SingleLiveEvent<Unit>()
@@ -45,11 +46,11 @@ class CalculatorViewModel(
     }
 
     fun addToExpression(operand: Int) {
-        _expression.value = _expression.value?.plus(operand)
+        _expression.value = expression.value?.plus(operand)
     }
 
     fun addToExpression(operator: Operator) {
-        _expression.value = _expression.value?.plus(operator)
+        _expression.value = expression.value?.plus(operator)
     }
 
     fun removeLast() {
