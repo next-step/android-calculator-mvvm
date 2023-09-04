@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import camp.nextstep.edu.calculator.databinding.ActivityCalculatorBinding
 
 class CalculatorActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCalculatorBinding
-    private val viewModel: CalculatorViewModel by viewModels { CalculatorViewModelFactory() }
+    private val calculatorViewModel: CalculatorViewModel by viewModels { CalculatorViewModelFactory(this) }
+    private val resultAdapter: ResultAdapter by lazy { ResultAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,17 +19,26 @@ class CalculatorActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initView()
-        observeEvent()
+        initObserver()
     }
 
     private fun initView() {
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        with(binding) {
+            viewModel = calculatorViewModel
+            lifecycleOwner = this@CalculatorActivity
+            recyclerView.layoutManager = LinearLayoutManager(this@CalculatorActivity)
+            recyclerView.adapter = resultAdapter
+        }
     }
 
-    private fun observeEvent() {
-        viewModel.showWarningMessageEvent.observe(this) {
-            showToast(it)
+    private fun initObserver() {
+        with(calculatorViewModel) {
+            resultList.observe(this@CalculatorActivity) { resultList ->
+                resultAdapter.submitList(resultList)
+            }
+            showWarningMessageEvent.observe(this@CalculatorActivity) {
+                showToast(it)
+            }
         }
     }
 
