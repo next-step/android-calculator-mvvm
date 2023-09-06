@@ -11,6 +11,8 @@
 
         <import type="camp.nextstep.edu.calculator.domain.Operator" />
 
+        <import type="android.view.View" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,8 +27,10 @@
             android:layout_height="0dp"
             android:layout_marginBottom="16dp"
             android:hint="0"
+            android:text="@{vm.expression.toString()}"
             android:textAlignment="viewEnd"
             android:textSize="24sp"
+            android:visibility="@{!vm.historyVisibleState}"
             app:layout_constraintBottom_toBottomOf="@id/divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,11 +41,15 @@
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:visibility="gone"
+            android:overScrollMode="never"
+            android:visibility="@{vm.historyVisibleState}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="@id/textView"
             app:layout_constraintEnd_toEndOf="@id/textView"
             app:layout_constraintStart_toStartOf="@id/textView"
             app:layout_constraintTop_toTopOf="@id/textView"
+            app:reverseLayout="true"
+            app:stackFromEnd="true"
             tools:listitem="@layout/item_result"
             tools:visibility="visible" />
 
@@ -71,6 +79,7 @@
             style="@style/Widget.Calculator.Button.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> vm.onClickHistoryBtn()}"
             app:icon="@drawable/ic_baseline_access_time_24"
             app:layout_constraintBottom_toBottomOf="@id/buttonDelete"
             app:layout_constraintStart_toStartOf="@id/input"
@@ -91,7 +100,7 @@
                 style="@style/Widget.Calculator.Button.Uncolored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> vm.addToExpression(3)}"
+                android:onClick="@{() -> vm.addToExpression(7)}"
                 android:text="@string/calculator_7" />
 
             <Button
